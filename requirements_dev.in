@@ -1,0 +1,38 @@
+-r requirements.in
+
+# GIT UTILITIES
+# -------------------------------------
+bumpversion
+
+# PIP UTILITIES
+# -------------------------------------
+wheel
+pip-tools
+
+# LINT UTILITIES
+# -------------------------------------
+flake8
+
+# TEST UTILITIES
+# -------------------------------------
+tox
+coverage
+pytest
+mock
+
+# DOC UTILITIES
+# -------------------------------------
+sphinx
+watchdog
+restructuredtext_lint
+
+# DIST UTILITIES
+# -------------------------------------
+# required by `travis_pypi_setup.py`
+cryptography
+PyYAML
+
+
+# DEV UTILITIES (Your stuff here)
+# -------------------------------------
+ipdb
