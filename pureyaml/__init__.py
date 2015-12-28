@@ -18,3 +18,5 @@ logging.getLogger(__name__).addHandler(NullHandler())
 __author__ = 'Manu Phatak'
 __email__ = 'bionikspoon@gmail.com'
 __version__ = '0.1.0'
+
+from yaml import load
