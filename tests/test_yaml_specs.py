@@ -6,7 +6,7 @@ source: https://en.wikipedia.org/wiki/YAML#Basic_components_of_YAML
 from base64 import standard_b64decode
 from textwrap import dedent
 
-from pytest import fixture, mark
+from pytest import mark
 
 import pureyaml
 
@@ -163,7 +163,7 @@ node_anchors_and_references = """
 """
 
 
-@mark.skipif
+@mark.xfail(reason='References not supported')
 def test_can_read_node_anchors_and_references():
     result = pureyaml.load(node_anchors_and_references)
     expected = [  # :off
@@ -227,46 +227,42 @@ g: Yes                     # a boolean True (yaml1.1), string "Yes" (yaml1.2)
 h: Yes we have No bananas  # a string, "Yes" and "No" disambiguated by context.
 """
 
-
-@fixture
-def casted_data():
-    return pureyaml.load(casted_data_types)
-
-
-def test_can_read_casted_data_types__int(casted_data):
-    assert isinstance(casted_data['a'], int)
-
-
-def test_can_read_casted_data_types__str_with_quoates(casted_data):
-    assert isinstance(casted_data['b'], str)
+casted_data_type_args = [  # :off
+    ('a', int),
+    ('b', str),
+    ('c', float),
+    ('d', float),
+    ('e', str),
+    ('f', str),
+    ('g', bool),
+    ('h', str)
+]  # :on
 
 
-def test_can_read_casted_data_types__implicit_float(casted_data):
-    assert isinstance(casted_data['c'], float)
+@mark.parametrize('key,type_', casted_data_type_args)
+def test_can_read_casted_data_types(key, type_):
+    data = pureyaml.load(casted_data_types)
+    assert isinstance(data[key], type_)
 
 
-def test_can_read_casted_data_types__casted_float(casted_data):
-    assert isinstance(casted_data['d'], float)
+def test_can_read_values_from_casted_data__str_from_int():
+    data = pureyaml.load(casted_data_types)
+    assert data['e'] == '123'
 
 
-def test_can_read_casted_data_types__casted_str_from_in(casted_data):
-    assert isinstance(casted_data['e'], str)
-    assert casted_data['e'] == '123'
+def test_can_read_values_from_casted_data__str_from_keyword():
+    data = pureyaml.load(casted_data_types)
+    assert data['f'] == 'Yes'
 
 
-def test_can_read_casted_data_types__casted_str_from_keyword(casted_data):
-    assert isinstance(casted_data['f'], str)
-    assert casted_data['f'] == 'Yes'
+def test_can_read_values_from_casted_data__bool():
+    data = pureyaml.load(casted_data_types)
+    assert data['g'] is True
 
 
-def test_can_read_casted_data_types__bool(casted_data):
-    assert isinstance(casted_data['g'], bool)
-    assert casted_data['g'] is True
-
-
-def test_can_read_casted_data_types__str_from_context(casted_data):
-    assert isinstance(casted_data['h'], str)
-    assert casted_data['h'] == 'Yes we have No bananas'
+def test_can_read_values_from_casted_data__str_from_context():
+    data = pureyaml.load(casted_data_types)
+    assert data['h'] == 'Yes we have No bananas'
 
 
 specified_data_types__binary = """
@@ -291,3 +287,30 @@ def test_can_read_specified_data_types__binary():
     expected = {'picture': picture}
 
     assert result == expected
+
+
+sanity_args = [  # :off
+    list_block,
+    list_inline,
+    dict_block,
+    dict_inline,
+    str_literal,
+    str_folded,
+    lists_of_dicts,
+    dicts_of_lists,
+    mark.xfail(node_anchors_and_references),
+    casted_data_types,
+    specified_data_types__binary
+]  # :on
+
+
+@mark.parametrize('sample', sanity_args)
+def test__sanity(sample):
+
+    load_result = pureyaml.load(sample)
+    dump_result = pureyaml.dump(load_result)
+    load_expected = pureyaml.load(dump_result)
+    dump_expected = pureyaml.dump(load_expected)
+
+    assert load_result == load_expected
+    assert dump_result == dump_expected
