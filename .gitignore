@@ -64,3 +64,6 @@ target/
 
 # pip wheels
 wheelhouse/
+
+# random sandbox
+.tmp/
