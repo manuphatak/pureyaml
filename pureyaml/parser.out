@@ -13,18 +13,20 @@ Rule 7     scalar -> INT
 Rule 8     scalar -> STRING
 Rule 9     collection -> sequence
 Rule 10    collection -> map
-Rule 11    map -> scalar MAP_INDICATOR scalar
-Rule 12    sequence -> sequence_item sequence
-Rule 13    sequence -> sequence_item
-Rule 14    sequence_item -> SEQUENCE_INDICATOR scalar
+Rule 11    map -> map_item map
+Rule 12    map -> map_item
+Rule 13    map_item -> scalar MAP_INDICATOR scalar
+Rule 14    sequence -> sequence_item sequence
+Rule 15    sequence -> sequence_item
+Rule 16    sequence_item -> SEQUENCE_INDICATOR scalar
 
 Terminals, with rules where they appear
 
 DOC_END_INDICATOR    : 1 3
 DOC_START_INDICATOR  : 1 2 3 4
 INT                  : 7
-MAP_INDICATOR        : 11
-SEQUENCE_INDICATOR   : 14
+MAP_INDICATOR        : 13
+SEQUENCE_INDICATOR   : 16
 STRING               : 8
 error                : 
 
@@ -33,10 +35,11 @@ Nonterminals, with rules where they appear
 collection           : 6
 doc                  : 1 2 3 4
 docs                 : 1 2 0
-map                  : 10
-scalar               : 5 11 11 14
-sequence             : 9 12
-sequence_item        : 12 13
+map                  : 10 11
+map_item             : 11 12
+scalar               : 5 13 13 16
+sequence             : 9 14
+sequence_item        : 14 15
 
 Parsing method: LALR
 
@@ -70,14 +73,16 @@ state 2
     (8) scalar -> . STRING
     (9) collection -> . sequence
     (10) collection -> . map
-    (12) sequence -> . sequence_item sequence
-    (13) sequence -> . sequence_item
-    (11) map -> . scalar MAP_INDICATOR scalar
-    (14) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (14) sequence -> . sequence_item sequence
+    (15) sequence -> . sequence_item
+    (11) map -> . map_item map
+    (12) map -> . map_item
+    (16) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (13) map_item -> . scalar MAP_INDICATOR scalar
 
     INT             shift and go to state 6
     STRING          shift and go to state 4
-    SEQUENCE_INDICATOR shift and go to state 11
+    SEQUENCE_INDICATOR shift and go to state 12
 
     map                            shift and go to state 3
     sequence                       shift and go to state 5
@@ -85,6 +90,7 @@ state 2
     collection                     shift and go to state 8
     scalar                         shift and go to state 9
     sequence_item                  shift and go to state 10
+    map_item                       shift and go to state 11
 
 state 3
 
@@ -104,6 +110,8 @@ state 4
     DOC_START_INDICATOR reduce using rule 8 (scalar -> STRING .)
     $end            reduce using rule 8 (scalar -> STRING .)
     SEQUENCE_INDICATOR reduce using rule 8 (scalar -> STRING .)
+    INT             reduce using rule 8 (scalar -> STRING .)
+    STRING          reduce using rule 8 (scalar -> STRING .)
 
 
 state 5
@@ -124,6 +132,8 @@ state 6
     DOC_START_INDICATOR reduce using rule 7 (scalar -> INT .)
     $end            reduce using rule 7 (scalar -> INT .)
     SEQUENCE_INDICATOR reduce using rule 7 (scalar -> INT .)
+    INT             reduce using rule 7 (scalar -> INT .)
+    STRING          reduce using rule 7 (scalar -> INT .)
 
 
 state 7
@@ -137,11 +147,11 @@ state 7
     (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
     (4) docs -> . DOC_START_INDICATOR doc
 
-    DOC_END_INDICATOR shift and go to state 12
+    DOC_END_INDICATOR shift and go to state 13
     $end            reduce using rule 4 (docs -> DOC_START_INDICATOR doc .)
     DOC_START_INDICATOR shift and go to state 2
 
-    docs                           shift and go to state 13
+    docs                           shift and go to state 14
 
 state 8
 
@@ -155,42 +165,62 @@ state 8
 state 9
 
     (5) doc -> scalar .
-    (11) map -> scalar . MAP_INDICATOR scalar
+    (13) map_item -> scalar . MAP_INDICATOR scalar
 
     DOC_END_INDICATOR reduce using rule 5 (doc -> scalar .)
     DOC_START_INDICATOR reduce using rule 5 (doc -> scalar .)
     $end            reduce using rule 5 (doc -> scalar .)
-    MAP_INDICATOR   shift and go to state 14
+    MAP_INDICATOR   shift and go to state 15
 
 
 state 10
 
-    (12) sequence -> sequence_item . sequence
-    (13) sequence -> sequence_item .
-    (12) sequence -> . sequence_item sequence
-    (13) sequence -> . sequence_item
-    (14) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (14) sequence -> sequence_item . sequence
+    (15) sequence -> sequence_item .
+    (14) sequence -> . sequence_item sequence
+    (15) sequence -> . sequence_item
+    (16) sequence_item -> . SEQUENCE_INDICATOR scalar
 
-    DOC_END_INDICATOR reduce using rule 13 (sequence -> sequence_item .)
-    DOC_START_INDICATOR reduce using rule 13 (sequence -> sequence_item .)
-    $end            reduce using rule 13 (sequence -> sequence_item .)
-    SEQUENCE_INDICATOR shift and go to state 11
+    DOC_END_INDICATOR reduce using rule 15 (sequence -> sequence_item .)
+    DOC_START_INDICATOR reduce using rule 15 (sequence -> sequence_item .)
+    $end            reduce using rule 15 (sequence -> sequence_item .)
+    SEQUENCE_INDICATOR shift and go to state 12
 
     sequence_item                  shift and go to state 10
-    sequence                       shift and go to state 15
+    sequence                       shift and go to state 16
 
 state 11
 
-    (14) sequence_item -> SEQUENCE_INDICATOR . scalar
+    (11) map -> map_item . map
+    (12) map -> map_item .
+    (11) map -> . map_item map
+    (12) map -> . map_item
+    (13) map_item -> . scalar MAP_INDICATOR scalar
+    (7) scalar -> . INT
+    (8) scalar -> . STRING
+
+    DOC_END_INDICATOR reduce using rule 12 (map -> map_item .)
+    DOC_START_INDICATOR reduce using rule 12 (map -> map_item .)
+    $end            reduce using rule 12 (map -> map_item .)
+    INT             shift and go to state 6
+    STRING          shift and go to state 4
+
+    map                            shift and go to state 17
+    scalar                         shift and go to state 18
+    map_item                       shift and go to state 11
+
+state 12
+
+    (16) sequence_item -> SEQUENCE_INDICATOR . scalar
     (7) scalar -> . INT
     (8) scalar -> . STRING
 
     INT             shift and go to state 6
     STRING          shift and go to state 4
 
-    scalar                         shift and go to state 16
+    scalar                         shift and go to state 19
 
-state 12
+state 13
 
     (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR . docs
     (3) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .
@@ -202,57 +232,75 @@ state 12
     $end            reduce using rule 3 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
     DOC_START_INDICATOR shift and go to state 2
 
-    docs                           shift and go to state 17
+    docs                           shift and go to state 20
 
-state 13
+state 14
 
     (2) docs -> DOC_START_INDICATOR doc docs .
 
     $end            reduce using rule 2 (docs -> DOC_START_INDICATOR doc docs .)
 
 
-state 14
+state 15
 
-    (11) map -> scalar MAP_INDICATOR . scalar
+    (13) map_item -> scalar MAP_INDICATOR . scalar
     (7) scalar -> . INT
     (8) scalar -> . STRING
 
     INT             shift and go to state 6
     STRING          shift and go to state 4
 
-    scalar                         shift and go to state 18
-
-state 15
-
-    (12) sequence -> sequence_item sequence .
-
-    DOC_END_INDICATOR reduce using rule 12 (sequence -> sequence_item sequence .)
-    DOC_START_INDICATOR reduce using rule 12 (sequence -> sequence_item sequence .)
-    $end            reduce using rule 12 (sequence -> sequence_item sequence .)
-
+    scalar                         shift and go to state 21
 
 state 16
 
-    (14) sequence_item -> SEQUENCE_INDICATOR scalar .
+    (14) sequence -> sequence_item sequence .
 
-    SEQUENCE_INDICATOR reduce using rule 14 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DOC_END_INDICATOR reduce using rule 14 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DOC_START_INDICATOR reduce using rule 14 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    $end            reduce using rule 14 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_END_INDICATOR reduce using rule 14 (sequence -> sequence_item sequence .)
+    DOC_START_INDICATOR reduce using rule 14 (sequence -> sequence_item sequence .)
+    $end            reduce using rule 14 (sequence -> sequence_item sequence .)
 
 
 state 17
+
+    (11) map -> map_item map .
+
+    DOC_END_INDICATOR reduce using rule 11 (map -> map_item map .)
+    DOC_START_INDICATOR reduce using rule 11 (map -> map_item map .)
+    $end            reduce using rule 11 (map -> map_item map .)
+
+
+state 18
+
+    (13) map_item -> scalar . MAP_INDICATOR scalar
+
+    MAP_INDICATOR   shift and go to state 15
+
+
+state 19
+
+    (16) sequence_item -> SEQUENCE_INDICATOR scalar .
+
+    SEQUENCE_INDICATOR reduce using rule 16 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_END_INDICATOR reduce using rule 16 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_START_INDICATOR reduce using rule 16 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    $end            reduce using rule 16 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+
+
+state 20
 
     (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .
 
     $end            reduce using rule 1 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .)
 
 
-state 18
+state 21
 
-    (11) map -> scalar MAP_INDICATOR scalar .
+    (13) map_item -> scalar MAP_INDICATOR scalar .
 
-    DOC_END_INDICATOR reduce using rule 11 (map -> scalar MAP_INDICATOR scalar .)
-    DOC_START_INDICATOR reduce using rule 11 (map -> scalar MAP_INDICATOR scalar .)
-    $end            reduce using rule 11 (map -> scalar MAP_INDICATOR scalar .)
+    INT             reduce using rule 13 (map_item -> scalar MAP_INDICATOR scalar .)
+    STRING          reduce using rule 13 (map_item -> scalar MAP_INDICATOR scalar .)
+    DOC_END_INDICATOR reduce using rule 13 (map_item -> scalar MAP_INDICATOR scalar .)
+    DOC_START_INDICATOR reduce using rule 13 (map_item -> scalar MAP_INDICATOR scalar .)
+    $end            reduce using rule 13 (map_item -> scalar MAP_INDICATOR scalar .)
 

@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '802C00C348F3CC25B9FD287FD1305C9C'
+_lr_signature = '65D21F9C5EB5B6D494F03C07600FA37E'
     
-_lr_action_items = {'STRING':([2,11,14,],[4,4,4,]),'DOC_START_INDICATOR':([0,3,4,5,6,7,8,9,10,12,15,16,18,],[2,-10,-8,-9,-7,2,-6,-5,-13,2,-12,-14,-11,]),'INT':([2,11,14,],[6,6,6,]),'MAP_INDICATOR':([4,6,9,],[-8,-7,14,]),'DOC_END_INDICATOR':([3,4,5,6,7,8,9,10,15,16,18,],[-10,-8,-9,-7,12,-6,-5,-13,-12,-14,-11,]),'SEQUENCE_INDICATOR':([2,4,6,10,16,],[11,-8,-7,11,-14,]),'$end':([1,3,4,5,6,7,8,9,10,12,13,15,16,17,18,],[0,-10,-8,-9,-7,-4,-6,-5,-13,-3,-2,-12,-14,-1,-11,]),}
+_lr_action_items = {'STRING':([2,4,6,11,12,15,21,],[4,-8,-7,4,4,4,-13,]),'DOC_START_INDICATOR':([0,3,4,5,6,7,8,9,10,11,13,16,17,19,21,],[2,-10,-8,-9,-7,2,-6,-5,-15,-12,2,-14,-11,-16,-13,]),'INT':([2,4,6,11,12,15,21,],[6,-8,-7,6,6,6,-13,]),'MAP_INDICATOR':([4,6,9,18,],[-8,-7,15,15,]),'DOC_END_INDICATOR':([3,4,5,6,7,8,9,10,11,16,17,19,21,],[-10,-8,-9,-7,13,-6,-5,-15,-12,-14,-11,-16,-13,]),'SEQUENCE_INDICATOR':([2,4,6,10,19,],[12,-8,-7,12,-16,]),'$end':([1,3,4,5,6,7,8,9,10,11,13,14,16,17,19,20,21,],[0,-10,-8,-9,-7,-4,-6,-5,-15,-12,-3,-2,-14,-11,-16,-1,-13,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'map':([2,],[3,]),'sequence':([2,10,],[5,15,]),'doc':([2,],[7,]),'collection':([2,],[8,]),'scalar':([2,11,14,],[9,16,18,]),'docs':([0,7,12,],[1,13,17,]),'sequence_item':([2,10,],[10,10,]),}
+_lr_goto_items = {'map':([2,11,],[3,17,]),'sequence':([2,10,],[5,16,]),'doc':([2,],[7,]),'collection':([2,],[8,]),'scalar':([2,11,12,15,],[9,18,19,21,]),'docs':([0,7,13,],[1,14,20,]),'sequence_item':([2,10,],[10,10,]),'map_item':([2,11,],[11,11,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -36,8 +36,10 @@ _lr_productions = [
   ('scalar -> STRING','scalar',1,'p_scalar_string','pureyaml.py',84),
   ('collection -> sequence','collection',1,'p_collection','pureyaml.py',91),
   ('collection -> map','collection',1,'p_collection','pureyaml.py',92),
-  ('map -> scalar MAP_INDICATOR scalar','map',3,'p_map','pureyaml.py',98),
-  ('sequence -> sequence_item sequence','sequence',2,'p_sequence_init','pureyaml.py',104),
-  ('sequence -> sequence_item','sequence',1,'p_sequence_tail','pureyaml.py',111),
-  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','pureyaml.py',118),
+  ('map -> map_item map','map',2,'p_map_init','pureyaml.py',99),
+  ('map -> map_item','map',1,'p_map_last','pureyaml.py',106),
+  ('map_item -> scalar MAP_INDICATOR scalar','map_item',3,'p_map_item','pureyaml.py',113),
+  ('sequence -> sequence_item sequence','sequence',2,'p_sequence_init','pureyaml.py',120),
+  ('sequence -> sequence_item','sequence',1,'p_sequence_last','pureyaml.py',127),
+  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','pureyaml.py',134),
 ]

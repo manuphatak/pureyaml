@@ -93,11 +93,27 @@ def p_collection(p):
     """
     p[0] = p[1]
 
-def p_map(p):
+
+def p_map_init(p):
     """
-    map : scalar MAP_INDICATOR scalar
+    map : map_item map
     """
-    p[0] = Map((p[1], p[3]))
+    p[0] = Map(p[1]) + p[2]
+
+
+def p_map_last(p):
+    """
+    map : map_item
+    """
+    p[0] = Map(p[1])
+
+
+def p_map_item(p):
+    """
+    map_item    : scalar MAP_INDICATOR scalar
+    """
+    p[0] = p[1], p[3]
+
 
 def p_sequence_init(p):
     """
@@ -106,7 +122,7 @@ def p_sequence_init(p):
     p[0] = Sequence(p[1]) + p[2]
 
 
-def p_sequence_tail(p):
+def p_sequence_last(p):
     """
     sequence    : sequence_item
     """
@@ -120,8 +136,8 @@ def p_sequence_item(p):
     p[0] = p[2]
 
 
-def p_error(_):
-    raise SyntaxError
+def p_error(p):
+    raise SyntaxError('Unexpected expression: {0!r}:{1!r}'.format(p.type, p.value))
 
 
 parser = yacc(debug=True)

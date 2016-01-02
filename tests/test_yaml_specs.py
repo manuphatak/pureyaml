@@ -17,16 +17,17 @@ list_block = """
     - The Man Who Wasn't There
 """
 
-list_inline = """
---- # Shopping list
-[milk, pumpkin pie, eggs, juice]
-"""
-
 
 def test_can_read_list_block():
     result = pureyaml.load(list_block)
 
     assert result == ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
+
+
+list_inline = """
+--- # Shopping list
+[milk, pumpkin pie, eggs, juice]
+"""
 
 
 def test_can_read_list_inline():
@@ -41,16 +42,17 @@ dict_block = """
     age: 33
 """
 
-dict_inline = """
-{name: John Smith, age: 33}
-"""
-
 
 def test_can_read_dict_block():
     result = pureyaml.load(dict_block)
     expected = {'name': 'John Smith', 'age': 33}
 
     assert result == expected
+
+
+dict_inline = """
+{name: John Smith, age: 33}
+"""
 
 
 def test_can_read_dict_inline():
@@ -69,17 +71,6 @@ data: |
     So he carefully spat on the ceiling
 """
 
-str_folded = """
-data: >
-    Wrapped text
-    will be folded
-    into a single
-    paragraph
-
-    Blank lines denote
-    paragraph breaks
-"""
-
 
 def test_can_read_str_literal():
     result = pureyaml.load(str_literal)
@@ -96,6 +87,18 @@ def test_can_read_str_literal():
     assert result == expected
 
 
+str_folded = """
+data: >
+    Wrapped text
+    will be folded
+    into a single
+    paragraph
+
+    Blank lines denote
+    paragraph breaks
+"""
+
+
 def test_can_read_str_folded():
     result = pureyaml.load(str_folded)
     data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks\n"
@@ -110,13 +113,6 @@ lists_of_dicts = """
   age: 27
 """
 
-dicts_of_lists = """
-men: [John Smith, Bill Jones]
-women:
-    - Mary Smith
-    - Susan Williams
-"""
-
 
 def test_can_read_lists_of_dicts():
     result = pureyaml.load(lists_of_dicts)
@@ -126,6 +122,14 @@ def test_can_read_lists_of_dicts():
     ]  # :on
 
     assert result == expected
+
+
+dicts_of_lists = """
+men: [John Smith, Bill Jones]
+women:
+    - Mary Smith
+    - Susan Williams
+"""
 
 
 def test_can_read_dicts_of_lists():
@@ -306,7 +310,6 @@ sanity_args = [  # :off
 
 @mark.parametrize('sample', sanity_args)
 def test__sanity(sample):
-
     load_result = pureyaml.load(sample)
     dump_result = pureyaml.dump(load_result)
     load_expected = pureyaml.load(dump_result)

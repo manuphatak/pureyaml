@@ -149,7 +149,7 @@ def test_three_item_sequence():
         ---
         - Hello World
         - Foo Bar
-        - More Items
+        - More Sequence Items
         ...
     """)[1:-1]
 
@@ -157,7 +157,7 @@ def test_three_item_sequence():
     expected = Docs(Doc(Sequence(  # :off
         String('Hello World'),
         String('Foo Bar'),
-        String('More Items'),
+        String('More Sequence Items'),
     )))  # :on
 
     print(nodes)
@@ -173,7 +173,41 @@ def test_1_item_map():
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
-        (String('Hello'), String('World'))
+        (String('Hello'), String('World')),
+    )))  # :on
+
+    assert nodes == expected
+
+def test_2_item_map():
+    text = dedent("""
+        ---
+        Hello: World
+        Foo: Bar
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map(  # :off
+        (String('Hello'), String('World')),
+        (String('Foo'), String('Bar')),
+    )))  # :on
+
+    assert nodes == expected
+
+def test_3_item_map():
+    text = dedent("""
+        ---
+        Hello: World
+        Foo: Bar
+        More: Map Items
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map(  # :off
+        (String('Hello'), String('World')),
+        (String('Foo'), String('Bar')),
+        (String('More'), String('Map Items')),
     )))  # :on
 
     assert nodes == expected

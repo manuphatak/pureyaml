@@ -60,6 +60,7 @@ class Sequence(Collection):
 
 class Map(Collection):
     def __init__(self, *args):
+
         for arg in args:
             assert len(arg) == 2
-        super(Map, self).__init__(args)
+        super(Map, self).__init__(*args)
