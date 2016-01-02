@@ -47,8 +47,8 @@ setup(  # :off
     author='Manu Phatak',
     author_email='bionikspoon@gmail.com',
     url='https://github.com/bionikspoon/pureyaml',
-    packages=['pureyaml',],
-    package_dir={'pureyaml':'pureyaml'},
+    packages=['pureyaml'],
+    package_dir={'pureyaml': 'pureyaml'},
     include_package_data=True,
     license='MIT',
     zip_safe=False,
@@ -74,5 +74,5 @@ setup(  # :off
     test_suite='tests',
     install_requires=requirements,
     tests_require=test_requirements,
-    setup_requires = setup_requirements,
+    setup_requires=setup_requirements,
 )  # :on

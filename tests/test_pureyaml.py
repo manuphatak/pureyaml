@@ -11,7 +11,7 @@ from textwrap import dedent
 
 from pytest import mark
 
-from pureyaml.nodes import *
+from pureyaml.nodes import *  # noqa
 from pureyaml.pureyaml import parser
 
 skip = mark.skipif
