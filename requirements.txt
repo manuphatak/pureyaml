@@ -4,5 +4,6 @@
 #
 #    pip-compile requirements.in
 #
+future==0.15.2
+ply==3.8
 pyyaml==3.11
-six==1.10.0

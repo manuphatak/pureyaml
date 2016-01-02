@@ -1,5 +1,5 @@
 # PROJECT REQUIREMENTS (Your stuff here)
 # -------------------------------------
-six
-
+future
 PyYAML
+ply

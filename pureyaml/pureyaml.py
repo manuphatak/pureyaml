@@ -14,7 +14,7 @@ tokens = [  # :off
     'DOC_END_INDICATOR',
     'SEQUENCE_INDICATOR',
     'MAP_INDICATOR',
-    'DOUBLE_QUOTE',
+    # 'DOUBLE_QUOTE',
     'CAST_INDICATOR',
     'CAST_TYPE',
     'FLOAT',
@@ -23,16 +23,69 @@ tokens = [  # :off
     'STRING',
 ]  # :on
 
+states = (  # :off
+    ('doublequote', 'exclusive'),
+    ('comment', 'exclusive'),
+    ('singlequote', 'exclusive'),
+
+)  # :on
+
+# state: doublequote
+# -------------------------------------------------------------------
+
+t_doublequote_STRING = r'(?:\\"|[^"])+'
+
+
+def t_begin_doublequote(t):
+    r'(?<!\\)"'
+    t.lexer.begin('doublequote')
+
+
+def t_doublequote_end(t):
+    r'(?<!\\)"'
+    t.lexer.begin('INITIAL')
+
+
+# state: comment
+# -------------------------------------------------------------------
+def t_begin_comment(t):
+    r'\s*\# '
+    t.lexer.begin('comment')
+
+
+def t_comment_end(t):
+    r'\n'
+    t.lexer.begin('INITIAL')
+
+
+def t_comment_ignore_COMMENT(t):
+    r'[^\n]+'
+
+
+# state: singlequote
+# -------------------------------------------------------------------
+
+t_singlequote_STRING = r"(?:\\'|[^'])+"
+
+
+def t_begin_singlequote(t):
+    r"(?<!\\)'"
+    t.lexer.begin('singlequote')
+
+
+def t_singlequote_end(t):
+    r"(?<!\\)'"
+    t.lexer.begin('INITIAL')
+
+
+# state: INITIAL
+# -------------------------------------------------------------------
+
 t_DOC_START_INDICATOR = r'---'
 t_DOC_END_INDICATOR = r'\.\.\.'
 t_SEQUENCE_INDICATOR = r'-\ '
 t_MAP_INDICATOR = r':\ *'
-t_DOUBLE_QUOTE = r'(?<!\\)"'
 t_ignore_EOL = r'\s*\n'
-
-
-def t_ignore_COMMENT(t):
-    r'\s*\#.*\n?'
 
 
 def t_CAST_INDICATOR(t):
@@ -62,11 +115,11 @@ def t_BOOL(t):
 
 
 def t_STRING(t):
-    r'(?:[\w ,!\\]|(?<=\\)")+'
+    r'(?:\\.)|[\w ,!\\]+'
     return t
 
 
-def t_error(t):
+def t_ANY_error(t):
     raise SyntaxError('Bad character: {!r}'.format(t.value[0]))
 
 
@@ -196,11 +249,11 @@ def p_scalar_bool(p):
 #     """
 #     p[0] = Str(p[1] + p[2].value)
 
-def p_scalar_string_double_quote(p):
-    """
-    scalar  : DOUBLE_QUOTE scalar DOUBLE_QUOTE
-    """
-    p[0] = Str(p[2].value)
+# def p_scalar_string_double_quote(p):
+#     """
+#     scalar  : DOUBLE_QUOTE scalar DOUBLE_QUOTE
+#     """
+#     p[0] = Str(p[2].value)
 
 
 def p_scalar_string(p):
