@@ -36,6 +36,9 @@ requirements = ['six', 'pyyaml']
 # TODO: put package test requirements here
 test_requirements = ['pytest', 'mock']
 
+# TODO: put package setup requirements here
+setup_requirements = ['flake8']
+
 setup(  # :off
     name='pureyaml',
     version='0.1.0',
@@ -47,7 +50,6 @@ setup(  # :off
     packages=['pureyaml',],
     package_dir={'pureyaml':'pureyaml'},
     include_package_data=True,
-    install_requires=requirements,
     license='MIT',
     zip_safe=False,
     cmdclass={'test': PyTest},
@@ -70,5 +72,7 @@ setup(  # :off
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    install_requires=requirements,
+    tests_require=test_requirements,
+    setup_requires = setup_requirements,
 )  # :on

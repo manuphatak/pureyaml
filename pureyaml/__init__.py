@@ -9,6 +9,7 @@ Yet another yaml parser, in pure python.
 
 """
 from __future__ import absolute_import
+
 import logging
 
 from ._compat import NullHandler
@@ -20,3 +21,5 @@ __email__ = 'bionikspoon@gmail.com'
 __version__ = '0.1.0'
 
 from yaml import load, dump
+
+__all__ = ['load', 'dump']

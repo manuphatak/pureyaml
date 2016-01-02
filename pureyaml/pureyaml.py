@@ -7,7 +7,7 @@ from __future__ import absolute_import
 from ply.lex import lex
 from ply.yacc import yacc
 
-from .nodes import *
+from .nodes import *  # noqa
 
 
 def find_column(token):
@@ -49,23 +49,42 @@ states = (  # :off
 
 # state: multiple
 # -------------------------------------------------------------------
-def t_ignore_INDENT(t):
-    r'\n\ +'
+def setup_indent(t):
+    # strip newline
     t.value = t.value[1:]
 
-    if not hasattr(t.lexer, 'doc_indent_length') or not t.lexer.doc_indent_length:
-        t.lexer.doc_indent_length = len(t.value)
-    if not hasattr(t.lexer, 'doc_indent'):
-        t.lexer.doc_indent = 0
+    # initialize
+    is_first_indent_found = any([  # :off
+        not hasattr(t.lexer, 'indent_token_size'),
+        not t.lexer.indent_token_size
+    ])  # :on
+    if is_first_indent_found:
+        t.lexer.indent_token_size = len(t.value)
+    if not hasattr(t.lexer, 'indent_depth'):
+        t.lexer.indent_depth = 0
 
-    indent_length = t.lexer.doc_indent_length
-    current_indent = (len(t.value) // indent_length  # :off
-                      if indent_length > 0
-                      else 0)  # :on
+    # calculate depth
+    indent_token_size = t.lexer.indent_token_size
+    if indent_token_size > 0:
+        indent_depth = len(t.value) // indent_token_size
+    else:
+        indent_depth = 0
 
-    old_indent, t.lexer.doc_indent = (t.lexer.doc_indent), current_indent
+    # calculate change in depth
+    indent_delta = indent_depth - t.lexer.indent_depth
 
-    indent_delta = current_indent - old_indent
+    # set current indent_depth and indent_delta
+    t.lexer.indent_delta, t.lexer.indent_depth = indent_delta, indent_depth
+
+    return t
+
+
+def t_ignore_INDENT(t):
+    r'\n\ +'
+
+    t = setup_indent(t)
+
+    indent_delta = t.lexer.indent_delta
 
     if indent_delta > 0:
         t.type = 'INDENT'
