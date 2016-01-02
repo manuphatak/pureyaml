@@ -31,6 +31,10 @@ t_DOUBLE_QUOTE = r'(?<!\\)"'
 t_ignore_EOL = r'\s*\n'
 
 
+def t_ignore_COMMENT(t):
+    r'\s*\#.*\n?'
+
+
 def t_CAST_INDICATOR(t):
     r'!!'
     return t
@@ -99,62 +103,10 @@ def p_docs_implicit(p):
 
 def p_doc(p):
     """
-    doc : scalar
-        | collection
+    doc : collection
+        | scalar
     """
     p[0] = Doc(p[1])
-
-
-def p_scalar_explicit_cast(p):
-    """
-    scalar  : CAST_INDICATOR CAST_TYPE scalar
-    """
-    type_nodes = {'int': Int, 'str': Str, 'float': Float}
-    p[0] = type_nodes[p[2]](p[3].value)
-
-
-def p_scalar_float(p):
-    """
-    scalar  : FLOAT
-    """
-
-    p[0] = Float(p[1])
-
-
-def p_scalar_int(p):
-    """
-    scalar  : INT
-    """
-
-    p[0] = Int(p[1])
-
-
-def p_scalar_bool(p):
-    """
-    scalar  : BOOL
-    """
-    p[0] = Bool(p[1])
-
-
-def p_scalar_disambiguous_string(p):
-    """
-    scalar  : BOOL scalar
-    """
-    p[0] = Str(p[1] + p[2].value)
-
-
-def p_scalar_string_double_quote(p):
-    """
-    scalar  : DOUBLE_QUOTE scalar DOUBLE_QUOTE
-    """
-    p[0] = Str(p[2].value)
-
-
-def p_scalar_string(p):
-    """
-    scalar  : STRING
-    """
-    p[0] = Str(p[1])
 
 
 def p_collection(p):
@@ -205,6 +157,57 @@ def p_sequence_item(p):
     sequence_item   : SEQUENCE_INDICATOR scalar
     """
     p[0] = p[2]
+
+
+def p_scalar_explicit_cast(p):
+    """
+    scalar  : CAST_INDICATOR CAST_TYPE scalar
+    """
+    type_nodes = {'int': Int, 'str': Str, 'float': Float}
+    p[0] = type_nodes[p[2]](p[3].value)
+
+
+def p_scalar_float(p):
+    """
+    scalar  : FLOAT
+    """
+
+    p[0] = Float(p[1])
+
+
+def p_scalar_int(p):
+    """
+    scalar  : INT
+    """
+
+    p[0] = Int(p[1])
+
+
+def p_scalar_bool(p):
+    """
+    scalar  : BOOL
+    """
+    p[0] = Bool(p[1])
+
+
+# def p_scalar_disambiguous_string(p):
+#     """
+#     scalar  : BOOL scalar
+#     """
+#     p[0] = Str(p[1] + p[2].value)
+
+def p_scalar_string_double_quote(p):
+    """
+    scalar  : DOUBLE_QUOTE scalar DOUBLE_QUOTE
+    """
+    p[0] = Str(p[2].value)
+
+
+def p_scalar_string(p):
+    """
+    scalar  : STRING
+    """
+    p[0] = Str(p[1])
 
 
 def p_error(p):
