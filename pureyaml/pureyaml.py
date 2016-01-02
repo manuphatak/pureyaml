@@ -14,7 +14,12 @@ tokens = [  # :off
     'DOC_END_INDICATOR',
     'SEQUENCE_INDICATOR',
     'MAP_INDICATOR',
+    'DOUBLE_QUOTE',
+    'CAST_INDICATOR',
+    'CAST_TYPE',
+    'FLOAT',
     'INT',
+    'BOOL',
     'STRING',
 ]  # :on
 
@@ -22,16 +27,38 @@ t_DOC_START_INDICATOR = r'---'
 t_DOC_END_INDICATOR = r'\.\.\.'
 t_SEQUENCE_INDICATOR = r'-\ '
 t_MAP_INDICATOR = r':\ *'
+t_DOUBLE_QUOTE = r'(?<!\\)"'
 t_ignore_EOL = r'\s*\n'
 
 
+def t_CAST_INDICATOR(t):
+    r'!!'
+    return t
+
+
+def t_CAST_TYPE(t):
+    r'(?<=\!\!)[a-z]+\ '
+    t.value = t.value[:-1]
+    return t
+
+
+def t_FLOAT(t):
+    r'\d*\.\d+'
+    return t
+
+
 def t_INT(t):
-    r'[\d]+'
+    r'\d+'
+    return t
+
+
+def t_BOOL(t):
+    r'Yes|No'
     return t
 
 
 def t_STRING(t):
-    r'[\w ]+'
+    r'(?:[\w ,!\\]|(?<=\\)")+'
     return t
 
 
@@ -63,12 +90,35 @@ def p_docs_last(p):
     p[0] = Docs(p[2])
 
 
+def p_docs_implicit(p):
+    """
+    docs    : doc
+    """
+    p[0] = p[1]
+
+
 def p_doc(p):
     """
     doc : scalar
         | collection
     """
     p[0] = Doc(p[1])
+
+
+def p_scalar_explicit_cast(p):
+    """
+    scalar  : CAST_INDICATOR CAST_TYPE scalar
+    """
+    type_nodes = {'int': Int, 'str': Str, 'float': Float}
+    p[0] = type_nodes[p[2]](p[3].value)
+
+
+def p_scalar_float(p):
+    """
+    scalar  : FLOAT
+    """
+
+    p[0] = Float(p[1])
 
 
 def p_scalar_int(p):
@@ -79,11 +129,32 @@ def p_scalar_int(p):
     p[0] = Int(p[1])
 
 
+def p_scalar_bool(p):
+    """
+    scalar  : BOOL
+    """
+    p[0] = Bool(p[1])
+
+
+def p_scalar_disambiguous_string(p):
+    """
+    scalar  : BOOL scalar
+    """
+    p[0] = Str(p[1] + p[2].value)
+
+
+def p_scalar_string_double_quote(p):
+    """
+    scalar  : DOUBLE_QUOTE scalar DOUBLE_QUOTE
+    """
+    p[0] = Str(p[2].value)
+
+
 def p_scalar_string(p):
     """
     scalar  : STRING
     """
-    p[0] = String(p[1])
+    p[0] = Str(p[1])
 
 
 def p_collection(p):

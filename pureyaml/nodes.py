@@ -11,7 +11,10 @@ class Node(object):
         self.value = value
 
     def __eq__(self, other):
-        return self.value == other.value and type(self) == type(other)
+        try:
+            return self.value == other.value and type(self) == type(other)
+        except AttributeError:
+            return False
 
     def __repr__(self):
         return '<%s:%s>' % (self.__class__.__name__, self.value)
@@ -39,6 +42,17 @@ class Doc(Node):
     pass
 
 
+class Sequence(Collection):
+    pass
+
+
+class Map(Collection):
+    def __init__(self, *args):
+        for arg in args:
+            assert len(arg) == 2
+        super(Map, self).__init__(*args)
+
+
 class Scalar(Node):
     type = NotImplemented
 
@@ -46,7 +60,7 @@ class Scalar(Node):
         self.value = self.type(value)
 
 
-class String(Scalar):
+class Str(Scalar):
     type = str
 
 
@@ -54,13 +68,23 @@ class Int(Scalar):
     type = int
 
 
-class Sequence(Collection):
-    pass
+class Float(Scalar):
+    type = float
 
 
-class Map(Collection):
-    def __init__(self, *args):
+class Bool(Scalar):
+    type = bool
+    TRUE_VALUES = [True, 'Yes', 1]
+    FALSE_VALUES = [False, 'No', 0]
 
-        for arg in args:
-            assert len(arg) == 2
-        super(Map, self).__init__(*args)
+    def __init__(self, value):
+        assert value in self.TRUE_VALUES or value in self.FALSE_VALUES
+        self.value = value
+
+    def __eq__(self, other):
+        try:
+            self_is_true = self.value in self.TRUE_VALUES
+            other_is_true = other.value in self.TRUE_VALUES
+            return self_is_true == other_is_true and type(self) == type(other)
+        except AttributeError:
+            return False
