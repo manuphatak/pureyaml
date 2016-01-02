@@ -7,14 +7,122 @@ test_pureyaml
 
 Tests for `pureyaml` module.
 """
-from pytest import fixture
+from textwrap import dedent
 
-@fixture
-def boilerplate():
-    from pureyaml.pureyaml import Boilerplate
+from pytest import mark
 
-    return Boilerplate()
+from pureyaml.nodes import *
+from pureyaml.pureyaml import parser
+
+skip = mark.skipif
 
 
-def test_cookiecutter_automates_boilerplate(boilerplate):
-    assert str(boilerplate) == "Success"
+def test_basic_single_doc():
+    text = dedent("""
+        ---
+        Hello World
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(String('Hello World')))
+
+    assert nodes == expected
+
+
+def test_doc_with_no_end_of_doc_indicator():
+    text = dedent("""
+        ---
+        Hello World
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(String('Hello World')))
+
+    assert nodes == expected
+
+
+def test_two_docs():
+    text = dedent("""
+        ---
+        Hello World
+        ...
+        ---
+        Foo Bar
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(String('Hello World')), Doc(String('Foo Bar')))
+
+    assert nodes == expected
+
+
+def test_three_docs():
+    text = dedent("""
+        ---
+        Hello World
+        ...
+        ---
+        Foo Bar
+        ...
+        ---
+        More Docs
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(  # :off
+        Doc(String('Hello World')),
+        Doc(String('Foo Bar')),
+        Doc(String('More Docs'))
+    )  # :on
+
+    assert nodes == expected
+
+
+def test_three_docs_no_end_of_doc_indicators():
+    text = dedent("""
+        ---
+        Hello World
+        ---
+        Foo Bar
+        ---
+        More Docs
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(  # :off
+        Doc(String('Hello World')),
+        Doc(String('Foo Bar')),
+        Doc(String('More Docs'))
+    )  # :on
+
+    assert nodes == expected
+
+
+def test_scalar_int():
+    text = dedent("""
+        ---
+        123
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Int(123)))
+
+    assert nodes == expected
+
+
+@skip
+def test_one_item_sequence():
+    text = dedent("""
+        ---
+        - Hello World
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence('Hello World', )))
+
+    assert nodes == expected
