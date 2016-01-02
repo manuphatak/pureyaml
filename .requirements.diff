@@ -1,0 +1,10 @@
+diff --git i/requirements.txt w/requirements.txt
+index 577ff6a..2d64d74 100644
+--- i/requirements.txt
++++ w/requirements.txt
+@@ -4,4 +4,5 @@
+ #
+ #    pip-compile requirements.in
+ #
++pyyaml==3.11
+ six==1.10.0

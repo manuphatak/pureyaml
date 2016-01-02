@@ -4,4 +4,5 @@
 #
 #    pip-compile requirements.in
 #
+pyyaml==3.11
 six==1.10.0
