@@ -9,14 +9,30 @@ from ply.yacc import yacc
 
 from .nodes import *
 
-tokens = ['DOC_START_INDICATOR', 'DOC_END_INDICATOR', 'STRING', 'INT']
+tokens = [  # :off
+    'DOC_START_INDICATOR',
+    'DOC_END_INDICATOR',
+    'SEQUENCE_INDICATOR',
+    'MAP_INDICATOR',
+    'INT',
+    'STRING',
+]  # :on
 
 t_DOC_START_INDICATOR = r'---'
 t_DOC_END_INDICATOR = r'\.\.\.'
-# t_SEQUENCE_INDICATOR = r'- '
+t_SEQUENCE_INDICATOR = r'-\ '
+t_MAP_INDICATOR = r':\ *'
 t_ignore_EOL = r'\s*\n'
-t_STRING = r'[\w ]+'
-t_INT = r'[\d]+'
+
+
+def t_INT(t):
+    r'[\d]+'
+    return t
+
+
+def t_STRING(t):
+    r'[\w ]+'
+    return t
 
 
 def t_error(t):
@@ -50,8 +66,17 @@ def p_docs_last(p):
 def p_doc(p):
     """
     doc : scalar
+        | collection
     """
     p[0] = Doc(p[1])
+
+
+def p_scalar_int(p):
+    """
+    scalar  : INT
+    """
+
+    p[0] = Int(p[1])
 
 
 def p_scalar_string(p):
@@ -61,8 +86,42 @@ def p_scalar_string(p):
     p[0] = String(p[1])
 
 
-def p_error(p):
-    print('Syntax error')
+def p_collection(p):
+    """
+    collection  : sequence
+                | map
+    """
+    p[0] = p[1]
+
+def p_map(p):
+    """
+    map : scalar MAP_INDICATOR scalar
+    """
+    p[0] = Map((p[1], p[3]))
+
+def p_sequence_init(p):
+    """
+    sequence    : sequence_item sequence
+    """
+    p[0] = Sequence(p[1]) + p[2]
+
+
+def p_sequence_tail(p):
+    """
+    sequence    : sequence_item
+    """
+    p[0] = Sequence(p[1])
+
+
+def p_sequence_item(p):
+    """
+    sequence_item   : SEQUENCE_INDICATOR scalar
+    """
+    p[0] = p[2]
+
+
+def p_error(_):
+    raise SyntaxError
 
 
 parser = yacc(debug=True)

@@ -110,11 +110,9 @@ def test_scalar_int():
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Int(123)))
-
     assert nodes == expected
 
 
-@skip
 def test_one_item_sequence():
     text = dedent("""
         ---
@@ -123,6 +121,59 @@ def test_one_item_sequence():
     """)[1:-1]
 
     nodes = parser.parse(text)
-    expected = Docs(Doc(Sequence('Hello World', )))
+    expected = Docs(Doc(Sequence(String('Hello World', ))))
+
+    assert nodes == expected
+
+
+def test_two_item_sequence():
+    text = dedent("""
+        ---
+        - Hello World
+        - Foo Bar
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        String('Hello World'),
+        String('Foo Bar'),
+    )))  # :on
+
+    print(nodes)
+    assert nodes == expected
+
+
+def test_three_item_sequence():
+    text = dedent("""
+        ---
+        - Hello World
+        - Foo Bar
+        - More Items
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        String('Hello World'),
+        String('Foo Bar'),
+        String('More Items'),
+    )))  # :on
+
+    print(nodes)
+    assert nodes == expected
+
+
+def test_1_item_map():
+    text = dedent("""
+        ---
+        Hello: World
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map(  # :off
+        (String('Hello'), String('World'))
+    )))  # :on
 
     assert nodes == expected

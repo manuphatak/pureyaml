@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '5D4680E0B17543F4043436FD3D959BD5'
+_lr_signature = '802C00C348F3CC25B9FD287FD1305C9C'
     
-_lr_action_items = {'DOC_END_INDICATOR':([3,4,5,],[-6,6,-5,]),'STRING':([2,],[3,]),'DOC_START_INDICATOR':([0,3,4,5,6,],[2,-6,2,-5,2,]),'$end':([1,3,4,5,6,7,8,],[0,-6,-4,-5,-3,-2,-1,]),}
+_lr_action_items = {'STRING':([2,11,14,],[4,4,4,]),'DOC_START_INDICATOR':([0,3,4,5,6,7,8,9,10,12,15,16,18,],[2,-10,-8,-9,-7,2,-6,-5,-13,2,-12,-14,-11,]),'INT':([2,11,14,],[6,6,6,]),'MAP_INDICATOR':([4,6,9,],[-8,-7,14,]),'DOC_END_INDICATOR':([3,4,5,6,7,8,9,10,15,16,18,],[-10,-8,-9,-7,12,-6,-5,-13,-12,-14,-11,]),'SEQUENCE_INDICATOR':([2,4,6,10,16,],[11,-8,-7,11,-14,]),'$end':([1,3,4,5,6,7,8,9,10,12,13,15,16,17,18,],[0,-10,-8,-9,-7,-4,-6,-5,-13,-3,-2,-12,-14,-1,-11,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'docs':([0,4,6,],[1,7,8,]),'scalar':([2,],[5,]),'doc':([2,],[4,]),}
+_lr_goto_items = {'map':([2,],[3,]),'sequence':([2,10,],[5,15,]),'doc':([2,],[7,]),'collection':([2,],[8,]),'scalar':([2,11,14,],[9,16,18,]),'docs':([0,7,12,],[1,13,17,]),'sequence_item':([2,10,],[10,10,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,10 +26,18 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> docs","S'",1,None,None,None),
-  ('docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs','docs',4,'p_docs_init','pureyaml.py',31),
-  ('docs -> DOC_START_INDICATOR doc docs','docs',3,'p_docs_init','pureyaml.py',32),
-  ('docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR','docs',3,'p_docs_last','pureyaml.py',44),
-  ('docs -> DOC_START_INDICATOR doc','docs',2,'p_docs_last','pureyaml.py',45),
-  ('doc -> scalar','doc',1,'p_doc','pureyaml.py',52),
-  ('scalar -> STRING','scalar',1,'p_scalar_string','pureyaml.py',59),
+  ('docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs','docs',4,'p_docs_init','pureyaml.py',47),
+  ('docs -> DOC_START_INDICATOR doc docs','docs',3,'p_docs_init','pureyaml.py',48),
+  ('docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR','docs',3,'p_docs_last','pureyaml.py',60),
+  ('docs -> DOC_START_INDICATOR doc','docs',2,'p_docs_last','pureyaml.py',61),
+  ('doc -> scalar','doc',1,'p_doc','pureyaml.py',68),
+  ('doc -> collection','doc',1,'p_doc','pureyaml.py',69),
+  ('scalar -> INT','scalar',1,'p_scalar_int','pureyaml.py',76),
+  ('scalar -> STRING','scalar',1,'p_scalar_string','pureyaml.py',84),
+  ('collection -> sequence','collection',1,'p_collection','pureyaml.py',91),
+  ('collection -> map','collection',1,'p_collection','pureyaml.py',92),
+  ('map -> scalar MAP_INDICATOR scalar','map',3,'p_map','pureyaml.py',98),
+  ('sequence -> sequence_item sequence','sequence',2,'p_sequence_init','pureyaml.py',104),
+  ('sequence -> sequence_item','sequence',1,'p_sequence_tail','pureyaml.py',111),
+  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','pureyaml.py',118),
 ]
