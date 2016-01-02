@@ -9,26 +9,94 @@ from ply.yacc import yacc
 
 from .nodes import *
 
+
+def find_column(token):
+    text = token.lexer.lexdata
+    last_cr = text.rfind('\n', 0, token.lexpos)
+    if last_cr < 0:
+        last_cr = 0
+    column = (token.lexpos - last_cr) + 1
+    return column
+
+
+# LEXER
+# ===================================================================
 tokens = [  # :off
     'DOC_START_INDICATOR',
     'DOC_END_INDICATOR',
     'SEQUENCE_INDICATOR',
     'MAP_INDICATOR',
-    # 'DOUBLE_QUOTE',
-    'CAST_INDICATOR',
     'CAST_TYPE',
     'FLOAT',
     'INT',
     'BOOL',
     'STRING',
+    'LITERAL_LINE',
+    'INDENT',
+    'DEDENT',
+    'NODENT',
 ]  # :on
 
 states = (  # :off
+    ('tag', 'inclusive'),
     ('doublequote', 'exclusive'),
     ('comment', 'exclusive'),
     ('singlequote', 'exclusive'),
+    ('literal', 'exclusive'),
 
 )  # :on
+
+
+# state: multiple
+# -------------------------------------------------------------------
+def t_ignore_INDENT(t):
+    r'\n\ +'
+    t.value = t.value[1:]
+
+    if not hasattr(t.lexer, 'doc_indent_length') or not t.lexer.doc_indent_length:
+        t.lexer.doc_indent_length = len(t.value)
+    if not hasattr(t.lexer, 'doc_indent'):
+        t.lexer.doc_indent = 0
+
+    indent_length = t.lexer.doc_indent_length
+    current_indent = (len(t.value) // indent_length  # :off
+                      if indent_length > 0
+                      else 0)  # :on
+
+    old_indent, t.lexer.doc_indent = (t.lexer.doc_indent), current_indent
+
+    indent_delta = current_indent - old_indent
+
+    if indent_delta > 0:
+        t.type = 'INDENT'
+    elif indent_delta < 0:
+        t.type = 'DEDENT'
+    else:
+        t.type = 'NODENT'
+
+    return t
+
+
+def t_ANY_error(t):
+    raise SyntaxError('Bad character: {!r}'.format(t.value[0]))
+
+
+# state: tag
+# -------------------------------------------------------------------
+def t_begin_tag(t):
+    r'(?<!\\)!'
+    t.lexer.push_state('tag')
+
+
+def t_tag_end(t):
+    r'\ '
+    t.lexer.pop_state()
+
+
+def t_tag_CAST_TYPE(t):
+    r'(?<=\!)[a-z]+'
+    return t
+
 
 # state: doublequote
 # -------------------------------------------------------------------
@@ -78,6 +146,28 @@ def t_singlequote_end(t):
     t.lexer.begin('INITIAL')
 
 
+# state: literal
+# -------------------------------------------------------------------
+
+def t_literal_LITERAL_LINE(t):
+    r'[\w\s]+'
+    return t
+
+
+def t_begin_literal(t):
+    r'(?<!\\)\|'
+    t.lexer.begin('literal')
+
+
+def t_literal_end(t):
+    r'\n\n'
+    t.lexer.begin('INITIAL')
+
+
+# def t_literal_UNDENT(t):
+#     pass
+
+
 # state: INITIAL
 # -------------------------------------------------------------------
 
@@ -86,17 +176,6 @@ t_DOC_END_INDICATOR = r'\.\.\.'
 t_SEQUENCE_INDICATOR = r'-\ '
 t_MAP_INDICATOR = r':\ *'
 t_ignore_EOL = r'\s*\n'
-
-
-def t_CAST_INDICATOR(t):
-    r'!!'
-    return t
-
-
-def t_CAST_TYPE(t):
-    r'(?<=\!\!)[a-z]+\ '
-    t.value = t.value[:-1]
-    return t
 
 
 def t_FLOAT(t):
@@ -119,13 +198,11 @@ def t_STRING(t):
     return t
 
 
-def t_ANY_error(t):
-    raise SyntaxError('Bad character: {!r}'.format(t.value[0]))
-
-
 lexer = lex(debug=True)
 
 
+# PARSER
+# ===================================================================
 def p_docs_init(p):
     """
     docs    : DOC_START_INDICATOR doc DOC_END_INDICATOR docs
@@ -214,10 +291,10 @@ def p_sequence_item(p):
 
 def p_scalar_explicit_cast(p):
     """
-    scalar  : CAST_INDICATOR CAST_TYPE scalar
+    scalar  : CAST_TYPE scalar
     """
     type_nodes = {'int': Int, 'str': Str, 'float': Float}
-    p[0] = type_nodes[p[2]](p[3].value)
+    p[0] = type_nodes[p[1]](p[2].value)
 
 
 def p_scalar_float(p):
@@ -243,17 +320,11 @@ def p_scalar_bool(p):
     p[0] = Bool(p[1])
 
 
-# def p_scalar_disambiguous_string(p):
-#     """
-#     scalar  : BOOL scalar
-#     """
-#     p[0] = Str(p[1] + p[2].value)
-
-# def p_scalar_string_double_quote(p):
-#     """
-#     scalar  : DOUBLE_QUOTE scalar DOUBLE_QUOTE
-#     """
-#     p[0] = Str(p[2].value)
+def p_scalar_literal(p):
+    """
+    scalar  : literal_lines
+    """
+    p[0] = p[1]
 
 
 def p_scalar_string(p):
@@ -261,6 +332,13 @@ def p_scalar_string(p):
     scalar  : STRING
     """
     p[0] = Str(p[1])
+
+
+def p_literal_lines(p):
+    """
+    literal_lines   : LITERAL_LINE
+    """
+    p[0] = p[1]
 
 
 def p_error(p):

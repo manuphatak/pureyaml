@@ -151,7 +151,6 @@ def test_two_item_sequence():
         Str('Foo Bar'),
     )))  # :on
 
-    print(nodes)
     assert nodes == expected
 
 
@@ -171,7 +170,6 @@ def test_three_item_sequence():
         Str('More Sequence Items'),
     )))  # :on
 
-    print(nodes)
     assert nodes == expected
 
 
@@ -441,5 +439,118 @@ def test_longer_map_with_scalars_and_comments():
         (Str('g'), Bool('Yes')),
 
     ))  # :on
+
+    assert nodes == expected
+
+
+@skip
+def test_unnecessary_indent_1_item():
+    text = dedent("""
+        --- # Favorite movies
+            - Casablanca
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('Casablanca'),
+    )))  # :on
+
+    assert nodes == expected
+
+
+@skip
+def test_unnecessary_indent_2_items():
+    text = dedent("""
+        --- # Favorite movies
+            - Casablanca
+            - South by Southwest
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('Casablanca'),
+        Str('South by Southwest'),
+    )))  # :on
+
+    assert nodes == expected
+
+
+@skip
+def test_unnecessary_indent_3_items():
+    text = dedent("""
+        --- # Favorite movies
+            - Casablanca
+            - South by Southwest
+            - The Man Who Wasnt There
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('Casablanca'),
+        Str('South by Southwest'),
+        Str('The Man Who Wasnt There'),
+    )))  # :on
+
+    assert nodes == expected
+
+
+@skip
+def test_unnecessary_indent_1_item_no_dedent():
+    text = dedent("""
+        --- # Favorite movies
+            - Casablanca
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('Casablanca'),
+    )))  # :on
+
+    assert nodes == expected
+
+
+@skip
+def test_unnecessary_indent_3_with_edge_items():
+    text = dedent("""
+        --- # Favorite movies
+            - Casablanca
+            - North by Northwest
+            - The Man Who Wasn't There
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('Casablanca'),
+        Str('North by Northwest'),
+        Str('The Man Who Wasn\'t There'),
+    )))  # :on
+
+    assert nodes == expected
+
+
+@skip
+def test_scalar_literal_one_line():
+    text = dedent("""
+        |
+          literal
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Doc(Str('literal'))
+
+    assert nodes == expected
+
+
+@skip
+def test_scalar_literal_ascii_art():
+    text = dedent("""
+        --- |
+          \//||\/||
+          // ||  ||__
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
