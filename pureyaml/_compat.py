@@ -4,9 +4,9 @@
 try:
     from logging import NullHandler
 except ImportError:  # pragma: no cover
-    import logging
+    import logging  # :off
 
-
-    class NullHandler(logging.Handler):  # Python < 2.7
+    # Python < 2.7
+    class NullHandler(logging.Handler):  # :on
         def emit(self, record):
             pass
