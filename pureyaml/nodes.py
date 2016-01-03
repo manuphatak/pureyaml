@@ -29,10 +29,11 @@ class Collection(Node):
     def __add__(self, other):
         Docs = self.__class__
 
-        if isinstance(other, Docs):
-            value = self.value + other.value
-        else:
-            value = self.value + (other,)
+        if not isinstance(other, Docs):
+            self_cls_name, other_cls_name = self.__class__.__name__, other.__class__.__name__
+            raise TypeError('%s + %s :: %s + %s' % (self_cls_name, other_cls_name, self, other))
+
+        value = self.value + other.value
         return Docs(*value)
 
 

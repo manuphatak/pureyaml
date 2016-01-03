@@ -2,8 +2,6 @@ Created by PLY version 3.8 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    DEDENT
-    INDENT
     NODENT
 
 Grammar
@@ -11,55 +9,60 @@ Grammar
 Rule 0     S' -> docs
 Rule 1     docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs
 Rule 2     docs -> DOC_START_INDICATOR doc docs
-Rule 3     docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR
-Rule 4     docs -> DOC_START_INDICATOR doc
-Rule 5     docs -> doc
-Rule 6     doc -> collection
-Rule 7     doc -> scalar
-Rule 8     collection -> sequence
-Rule 9     collection -> map
-Rule 10    map -> map_item map
-Rule 11    map -> map_item
-Rule 12    map_item -> scalar MAP_INDICATOR scalar
-Rule 13    sequence -> sequence_item sequence
-Rule 14    sequence -> sequence_item
-Rule 15    sequence_item -> SEQUENCE_INDICATOR scalar
-Rule 16    scalar -> CAST_TYPE scalar
-Rule 17    scalar -> FLOAT
-Rule 18    scalar -> INT
-Rule 19    scalar -> BOOL
-Rule 20    scalar -> literal_lines
-Rule 21    scalar -> STRING
-Rule 22    literal_lines -> LITERAL_LINE
+Rule 3     docs -> DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+Rule 4     docs -> DOC_START_INDICATOR INDENT doc docs DEDENT
+Rule 5     docs -> DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+Rule 6     docs -> DOC_START_INDICATOR INDENT doc DEDENT
+Rule 7     docs -> DOC_START_INDICATOR INDENT doc
+Rule 8     docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR
+Rule 9     docs -> DOC_START_INDICATOR doc
+Rule 10    docs -> doc
+Rule 11    doc -> collection
+Rule 12    doc -> scalar
+Rule 13    collection -> sequence
+Rule 14    collection -> map
+Rule 15    map -> map_item map
+Rule 16    map -> map_item
+Rule 17    map_item -> scalar MAP_INDICATOR scalar
+Rule 18    sequence -> sequence_item sequence
+Rule 19    sequence -> sequence_item
+Rule 20    sequence_item -> SEQUENCE_INDICATOR scalar
+Rule 21    scalar -> CAST_TYPE scalar
+Rule 22    scalar -> FLOAT
+Rule 23    scalar -> INT
+Rule 24    scalar -> BOOL
+Rule 25    scalar -> literal_lines
+Rule 26    scalar -> STRING
+Rule 27    literal_lines -> LITERAL_LINE
 
 Terminals, with rules where they appear
 
-BOOL                 : 19
-CAST_TYPE            : 16
-DEDENT               : 
-DOC_END_INDICATOR    : 1 3
-DOC_START_INDICATOR  : 1 2 3 4
-FLOAT                : 17
-INDENT               : 
-INT                  : 18
-LITERAL_LINE         : 22
-MAP_INDICATOR        : 12
+BOOL                 : 24
+CAST_TYPE            : 21
+DEDENT               : 3 4 5 6
+DOC_END_INDICATOR    : 1 3 5 8
+DOC_START_INDICATOR  : 1 2 3 4 5 6 7 8 9
+FLOAT                : 22
+INDENT               : 3 4 5 6 7
+INT                  : 23
+LITERAL_LINE         : 27
+MAP_INDICATOR        : 17
 NODENT               : 
-SEQUENCE_INDICATOR   : 15
-STRING               : 21
+SEQUENCE_INDICATOR   : 20
+STRING               : 26
 error                : 
 
 Nonterminals, with rules where they appear
 
-collection           : 6
-doc                  : 1 2 3 4 5
-docs                 : 1 2 0
-literal_lines        : 20
-map                  : 9 10
-map_item             : 10 11
-scalar               : 7 12 12 15 16
-sequence             : 8 13
-sequence_item        : 13 14
+collection           : 11
+doc                  : 1 2 3 4 5 6 7 8 9 10
+docs                 : 1 2 3 4 0
+literal_lines        : 25
+map                  : 14 15
+map_item             : 15 16
+scalar               : 12 17 17 20 21
+sequence             : 13 18
+sequence_item        : 18 19
 
 Parsing method: LALR
 
@@ -68,328 +71,351 @@ state 0
     (0) S' -> . docs
     (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
     (2) docs -> . DOC_START_INDICATOR doc docs
-    (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
-    (4) docs -> . DOC_START_INDICATOR doc
-    (5) docs -> . doc
-    (6) doc -> . collection
-    (7) doc -> . scalar
-    (8) collection -> . sequence
-    (9) collection -> . map
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (13) sequence -> . sequence_item sequence
-    (14) sequence -> . sequence_item
-    (10) map -> . map_item map
-    (11) map -> . map_item
-    (22) literal_lines -> . LITERAL_LINE
-    (15) sequence_item -> . SEQUENCE_INDICATOR scalar
-    (12) map_item -> . scalar MAP_INDICATOR scalar
+    (3) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+    (4) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT
+    (5) docs -> . DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+    (6) docs -> . DOC_START_INDICATOR INDENT doc DEDENT
+    (7) docs -> . DOC_START_INDICATOR INDENT doc
+    (8) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (9) docs -> . DOC_START_INDICATOR doc
+    (10) docs -> . doc
+    (11) doc -> . collection
+    (12) doc -> . scalar
+    (13) collection -> . sequence
+    (14) collection -> . map
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (27) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) map_item -> . scalar MAP_INDICATOR scalar
 
-    DOC_START_INDICATOR shift and go to state 4
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    DOC_START_INDICATOR shift and go to state 3
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
     SEQUENCE_INDICATOR shift and go to state 17
 
     map                            shift and go to state 1
-    literal_lines                  shift and go to state 2
-    sequence                       shift and go to state 5
-    docs                           shift and go to state 7
-    collection                     shift and go to state 10
-    scalar                         shift and go to state 12
-    doc                            shift and go to state 14
+    literal_lines                  shift and go to state 14
+    sequence                       shift and go to state 4
+    docs                           shift and go to state 6
+    collection                     shift and go to state 9
+    scalar                         shift and go to state 11
+    doc                            shift and go to state 13
     sequence_item                  shift and go to state 15
     map_item                       shift and go to state 16
 
 state 1
 
-    (9) collection -> map .
+    (14) collection -> map .
 
-    DOC_END_INDICATOR reduce using rule 9 (collection -> map .)
-    DOC_START_INDICATOR reduce using rule 9 (collection -> map .)
-    CAST_TYPE       reduce using rule 9 (collection -> map .)
-    FLOAT           reduce using rule 9 (collection -> map .)
-    INT             reduce using rule 9 (collection -> map .)
-    BOOL            reduce using rule 9 (collection -> map .)
-    STRING          reduce using rule 9 (collection -> map .)
-    LITERAL_LINE    reduce using rule 9 (collection -> map .)
-    SEQUENCE_INDICATOR reduce using rule 9 (collection -> map .)
-    $end            reduce using rule 9 (collection -> map .)
+    DEDENT          reduce using rule 14 (collection -> map .)
+    DOC_START_INDICATOR reduce using rule 14 (collection -> map .)
+    CAST_TYPE       reduce using rule 14 (collection -> map .)
+    FLOAT           reduce using rule 14 (collection -> map .)
+    INT             reduce using rule 14 (collection -> map .)
+    BOOL            reduce using rule 14 (collection -> map .)
+    STRING          reduce using rule 14 (collection -> map .)
+    LITERAL_LINE    reduce using rule 14 (collection -> map .)
+    SEQUENCE_INDICATOR reduce using rule 14 (collection -> map .)
+    $end            reduce using rule 14 (collection -> map .)
+    DOC_END_INDICATOR reduce using rule 14 (collection -> map .)
 
 
 state 2
 
-    (20) scalar -> literal_lines .
+    (26) scalar -> STRING .
 
-    MAP_INDICATOR   reduce using rule 20 (scalar -> literal_lines .)
-    DOC_END_INDICATOR reduce using rule 20 (scalar -> literal_lines .)
-    DOC_START_INDICATOR reduce using rule 20 (scalar -> literal_lines .)
-    CAST_TYPE       reduce using rule 20 (scalar -> literal_lines .)
-    FLOAT           reduce using rule 20 (scalar -> literal_lines .)
-    INT             reduce using rule 20 (scalar -> literal_lines .)
-    BOOL            reduce using rule 20 (scalar -> literal_lines .)
-    STRING          reduce using rule 20 (scalar -> literal_lines .)
-    LITERAL_LINE    reduce using rule 20 (scalar -> literal_lines .)
-    SEQUENCE_INDICATOR reduce using rule 20 (scalar -> literal_lines .)
-    $end            reduce using rule 20 (scalar -> literal_lines .)
+    MAP_INDICATOR   reduce using rule 26 (scalar -> STRING .)
+    $end            reduce using rule 26 (scalar -> STRING .)
+    DEDENT          reduce using rule 26 (scalar -> STRING .)
+    DOC_END_INDICATOR reduce using rule 26 (scalar -> STRING .)
+    DOC_START_INDICATOR reduce using rule 26 (scalar -> STRING .)
+    CAST_TYPE       reduce using rule 26 (scalar -> STRING .)
+    FLOAT           reduce using rule 26 (scalar -> STRING .)
+    INT             reduce using rule 26 (scalar -> STRING .)
+    BOOL            reduce using rule 26 (scalar -> STRING .)
+    STRING          reduce using rule 26 (scalar -> STRING .)
+    LITERAL_LINE    reduce using rule 26 (scalar -> STRING .)
+    SEQUENCE_INDICATOR reduce using rule 26 (scalar -> STRING .)
 
 
 state 3
 
-    (21) scalar -> STRING .
-
-    MAP_INDICATOR   reduce using rule 21 (scalar -> STRING .)
-    DOC_END_INDICATOR reduce using rule 21 (scalar -> STRING .)
-    DOC_START_INDICATOR reduce using rule 21 (scalar -> STRING .)
-    CAST_TYPE       reduce using rule 21 (scalar -> STRING .)
-    FLOAT           reduce using rule 21 (scalar -> STRING .)
-    INT             reduce using rule 21 (scalar -> STRING .)
-    BOOL            reduce using rule 21 (scalar -> STRING .)
-    STRING          reduce using rule 21 (scalar -> STRING .)
-    LITERAL_LINE    reduce using rule 21 (scalar -> STRING .)
-    SEQUENCE_INDICATOR reduce using rule 21 (scalar -> STRING .)
-    $end            reduce using rule 21 (scalar -> STRING .)
-
-
-state 4
-
     (1) docs -> DOC_START_INDICATOR . doc DOC_END_INDICATOR docs
     (2) docs -> DOC_START_INDICATOR . doc docs
-    (3) docs -> DOC_START_INDICATOR . doc DOC_END_INDICATOR
-    (4) docs -> DOC_START_INDICATOR . doc
-    (6) doc -> . collection
-    (7) doc -> . scalar
-    (8) collection -> . sequence
-    (9) collection -> . map
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (13) sequence -> . sequence_item sequence
-    (14) sequence -> . sequence_item
-    (10) map -> . map_item map
-    (11) map -> . map_item
-    (22) literal_lines -> . LITERAL_LINE
-    (15) sequence_item -> . SEQUENCE_INDICATOR scalar
-    (12) map_item -> . scalar MAP_INDICATOR scalar
+    (3) docs -> DOC_START_INDICATOR . INDENT doc docs DEDENT DOC_END_INDICATOR
+    (4) docs -> DOC_START_INDICATOR . INDENT doc docs DEDENT
+    (5) docs -> DOC_START_INDICATOR . INDENT doc DEDENT DOC_END_INDICATOR
+    (6) docs -> DOC_START_INDICATOR . INDENT doc DEDENT
+    (7) docs -> DOC_START_INDICATOR . INDENT doc
+    (8) docs -> DOC_START_INDICATOR . doc DOC_END_INDICATOR
+    (9) docs -> DOC_START_INDICATOR . doc
+    (11) doc -> . collection
+    (12) doc -> . scalar
+    (13) collection -> . sequence
+    (14) collection -> . map
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (27) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) map_item -> . scalar MAP_INDICATOR scalar
 
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    INDENT          shift and go to state 18
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
     SEQUENCE_INDICATOR shift and go to state 17
 
     map                            shift and go to state 1
-    literal_lines                  shift and go to state 2
-    sequence                       shift and go to state 5
-    doc                            shift and go to state 18
-    collection                     shift and go to state 10
-    scalar                         shift and go to state 12
+    literal_lines                  shift and go to state 14
+    sequence                       shift and go to state 4
+    doc                            shift and go to state 19
+    collection                     shift and go to state 9
+    scalar                         shift and go to state 11
     sequence_item                  shift and go to state 15
     map_item                       shift and go to state 16
 
+state 4
+
+    (13) collection -> sequence .
+
+    DEDENT          reduce using rule 13 (collection -> sequence .)
+    DOC_START_INDICATOR reduce using rule 13 (collection -> sequence .)
+    CAST_TYPE       reduce using rule 13 (collection -> sequence .)
+    FLOAT           reduce using rule 13 (collection -> sequence .)
+    INT             reduce using rule 13 (collection -> sequence .)
+    BOOL            reduce using rule 13 (collection -> sequence .)
+    STRING          reduce using rule 13 (collection -> sequence .)
+    LITERAL_LINE    reduce using rule 13 (collection -> sequence .)
+    SEQUENCE_INDICATOR reduce using rule 13 (collection -> sequence .)
+    $end            reduce using rule 13 (collection -> sequence .)
+    DOC_END_INDICATOR reduce using rule 13 (collection -> sequence .)
+
+
 state 5
 
-    (8) collection -> sequence .
+    (23) scalar -> INT .
 
-    DOC_END_INDICATOR reduce using rule 8 (collection -> sequence .)
-    DOC_START_INDICATOR reduce using rule 8 (collection -> sequence .)
-    CAST_TYPE       reduce using rule 8 (collection -> sequence .)
-    FLOAT           reduce using rule 8 (collection -> sequence .)
-    INT             reduce using rule 8 (collection -> sequence .)
-    BOOL            reduce using rule 8 (collection -> sequence .)
-    STRING          reduce using rule 8 (collection -> sequence .)
-    LITERAL_LINE    reduce using rule 8 (collection -> sequence .)
-    SEQUENCE_INDICATOR reduce using rule 8 (collection -> sequence .)
-    $end            reduce using rule 8 (collection -> sequence .)
+    MAP_INDICATOR   reduce using rule 23 (scalar -> INT .)
+    $end            reduce using rule 23 (scalar -> INT .)
+    DEDENT          reduce using rule 23 (scalar -> INT .)
+    DOC_END_INDICATOR reduce using rule 23 (scalar -> INT .)
+    DOC_START_INDICATOR reduce using rule 23 (scalar -> INT .)
+    CAST_TYPE       reduce using rule 23 (scalar -> INT .)
+    FLOAT           reduce using rule 23 (scalar -> INT .)
+    INT             reduce using rule 23 (scalar -> INT .)
+    BOOL            reduce using rule 23 (scalar -> INT .)
+    STRING          reduce using rule 23 (scalar -> INT .)
+    LITERAL_LINE    reduce using rule 23 (scalar -> INT .)
+    SEQUENCE_INDICATOR reduce using rule 23 (scalar -> INT .)
 
 
 state 6
-
-    (18) scalar -> INT .
-
-    MAP_INDICATOR   reduce using rule 18 (scalar -> INT .)
-    DOC_END_INDICATOR reduce using rule 18 (scalar -> INT .)
-    DOC_START_INDICATOR reduce using rule 18 (scalar -> INT .)
-    CAST_TYPE       reduce using rule 18 (scalar -> INT .)
-    FLOAT           reduce using rule 18 (scalar -> INT .)
-    INT             reduce using rule 18 (scalar -> INT .)
-    BOOL            reduce using rule 18 (scalar -> INT .)
-    STRING          reduce using rule 18 (scalar -> INT .)
-    LITERAL_LINE    reduce using rule 18 (scalar -> INT .)
-    SEQUENCE_INDICATOR reduce using rule 18 (scalar -> INT .)
-    $end            reduce using rule 18 (scalar -> INT .)
-
-
-state 7
 
     (0) S' -> docs .
 
 
 
+state 7
+
+    (22) scalar -> FLOAT .
+
+    MAP_INDICATOR   reduce using rule 22 (scalar -> FLOAT .)
+    $end            reduce using rule 22 (scalar -> FLOAT .)
+    DEDENT          reduce using rule 22 (scalar -> FLOAT .)
+    DOC_END_INDICATOR reduce using rule 22 (scalar -> FLOAT .)
+    DOC_START_INDICATOR reduce using rule 22 (scalar -> FLOAT .)
+    CAST_TYPE       reduce using rule 22 (scalar -> FLOAT .)
+    FLOAT           reduce using rule 22 (scalar -> FLOAT .)
+    INT             reduce using rule 22 (scalar -> FLOAT .)
+    BOOL            reduce using rule 22 (scalar -> FLOAT .)
+    STRING          reduce using rule 22 (scalar -> FLOAT .)
+    LITERAL_LINE    reduce using rule 22 (scalar -> FLOAT .)
+    SEQUENCE_INDICATOR reduce using rule 22 (scalar -> FLOAT .)
+
+
 state 8
 
-    (17) scalar -> FLOAT .
+    (27) literal_lines -> LITERAL_LINE .
 
-    MAP_INDICATOR   reduce using rule 17 (scalar -> FLOAT .)
-    DOC_END_INDICATOR reduce using rule 17 (scalar -> FLOAT .)
-    DOC_START_INDICATOR reduce using rule 17 (scalar -> FLOAT .)
-    CAST_TYPE       reduce using rule 17 (scalar -> FLOAT .)
-    FLOAT           reduce using rule 17 (scalar -> FLOAT .)
-    INT             reduce using rule 17 (scalar -> FLOAT .)
-    BOOL            reduce using rule 17 (scalar -> FLOAT .)
-    STRING          reduce using rule 17 (scalar -> FLOAT .)
-    LITERAL_LINE    reduce using rule 17 (scalar -> FLOAT .)
-    SEQUENCE_INDICATOR reduce using rule 17 (scalar -> FLOAT .)
-    $end            reduce using rule 17 (scalar -> FLOAT .)
+    MAP_INDICATOR   reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    DOC_END_INDICATOR reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    DOC_START_INDICATOR reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    CAST_TYPE       reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    FLOAT           reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    INT             reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    BOOL            reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    STRING          reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    LITERAL_LINE    reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    SEQUENCE_INDICATOR reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    $end            reduce using rule 27 (literal_lines -> LITERAL_LINE .)
+    DEDENT          reduce using rule 27 (literal_lines -> LITERAL_LINE .)
 
 
 state 9
 
-    (22) literal_lines -> LITERAL_LINE .
+    (11) doc -> collection .
 
-    CAST_TYPE       reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    FLOAT           reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    INT             reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    BOOL            reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    STRING          reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    LITERAL_LINE    reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    $end            reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    DOC_END_INDICATOR reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    DOC_START_INDICATOR reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    SEQUENCE_INDICATOR reduce using rule 22 (literal_lines -> LITERAL_LINE .)
-    MAP_INDICATOR   reduce using rule 22 (literal_lines -> LITERAL_LINE .)
+    DEDENT          reduce using rule 11 (doc -> collection .)
+    $end            reduce using rule 11 (doc -> collection .)
+    DOC_START_INDICATOR reduce using rule 11 (doc -> collection .)
+    CAST_TYPE       reduce using rule 11 (doc -> collection .)
+    FLOAT           reduce using rule 11 (doc -> collection .)
+    INT             reduce using rule 11 (doc -> collection .)
+    BOOL            reduce using rule 11 (doc -> collection .)
+    STRING          reduce using rule 11 (doc -> collection .)
+    LITERAL_LINE    reduce using rule 11 (doc -> collection .)
+    SEQUENCE_INDICATOR reduce using rule 11 (doc -> collection .)
+    DOC_END_INDICATOR reduce using rule 11 (doc -> collection .)
 
 
 state 10
 
-    (6) doc -> collection .
+    (21) scalar -> CAST_TYPE . scalar
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (27) literal_lines -> . LITERAL_LINE
 
-    $end            reduce using rule 6 (doc -> collection .)
-    DOC_END_INDICATOR reduce using rule 6 (doc -> collection .)
-    DOC_START_INDICATOR reduce using rule 6 (doc -> collection .)
-    CAST_TYPE       reduce using rule 6 (doc -> collection .)
-    FLOAT           reduce using rule 6 (doc -> collection .)
-    INT             reduce using rule 6 (doc -> collection .)
-    BOOL            reduce using rule 6 (doc -> collection .)
-    STRING          reduce using rule 6 (doc -> collection .)
-    LITERAL_LINE    reduce using rule 6 (doc -> collection .)
-    SEQUENCE_INDICATOR reduce using rule 6 (doc -> collection .)
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
 
+    scalar                         shift and go to state 20
+    literal_lines                  shift and go to state 14
 
 state 11
 
-    (16) scalar -> CAST_TYPE . scalar
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (22) literal_lines -> . LITERAL_LINE
+    (12) doc -> scalar .
+    (17) map_item -> scalar . MAP_INDICATOR scalar
 
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    DEDENT          reduce using rule 12 (doc -> scalar .)
+    $end            reduce using rule 12 (doc -> scalar .)
+    DOC_START_INDICATOR reduce using rule 12 (doc -> scalar .)
+    CAST_TYPE       reduce using rule 12 (doc -> scalar .)
+    FLOAT           reduce using rule 12 (doc -> scalar .)
+    INT             reduce using rule 12 (doc -> scalar .)
+    BOOL            reduce using rule 12 (doc -> scalar .)
+    STRING          reduce using rule 12 (doc -> scalar .)
+    LITERAL_LINE    reduce using rule 12 (doc -> scalar .)
+    SEQUENCE_INDICATOR reduce using rule 12 (doc -> scalar .)
+    DOC_END_INDICATOR reduce using rule 12 (doc -> scalar .)
+    MAP_INDICATOR   shift and go to state 21
 
-    scalar                         shift and go to state 19
-    literal_lines                  shift and go to state 2
 
 state 12
 
-    (7) doc -> scalar .
-    (12) map_item -> scalar . MAP_INDICATOR scalar
+    (24) scalar -> BOOL .
 
-    $end            reduce using rule 7 (doc -> scalar .)
-    DOC_END_INDICATOR reduce using rule 7 (doc -> scalar .)
-    DOC_START_INDICATOR reduce using rule 7 (doc -> scalar .)
-    CAST_TYPE       reduce using rule 7 (doc -> scalar .)
-    FLOAT           reduce using rule 7 (doc -> scalar .)
-    INT             reduce using rule 7 (doc -> scalar .)
-    BOOL            reduce using rule 7 (doc -> scalar .)
-    STRING          reduce using rule 7 (doc -> scalar .)
-    LITERAL_LINE    reduce using rule 7 (doc -> scalar .)
-    SEQUENCE_INDICATOR reduce using rule 7 (doc -> scalar .)
-    MAP_INDICATOR   shift and go to state 20
+    MAP_INDICATOR   reduce using rule 24 (scalar -> BOOL .)
+    $end            reduce using rule 24 (scalar -> BOOL .)
+    DEDENT          reduce using rule 24 (scalar -> BOOL .)
+    DOC_END_INDICATOR reduce using rule 24 (scalar -> BOOL .)
+    DOC_START_INDICATOR reduce using rule 24 (scalar -> BOOL .)
+    CAST_TYPE       reduce using rule 24 (scalar -> BOOL .)
+    FLOAT           reduce using rule 24 (scalar -> BOOL .)
+    INT             reduce using rule 24 (scalar -> BOOL .)
+    BOOL            reduce using rule 24 (scalar -> BOOL .)
+    STRING          reduce using rule 24 (scalar -> BOOL .)
+    LITERAL_LINE    reduce using rule 24 (scalar -> BOOL .)
+    SEQUENCE_INDICATOR reduce using rule 24 (scalar -> BOOL .)
 
 
 state 13
 
-    (19) scalar -> BOOL .
+    (10) docs -> doc .
 
-    MAP_INDICATOR   reduce using rule 19 (scalar -> BOOL .)
-    DOC_END_INDICATOR reduce using rule 19 (scalar -> BOOL .)
-    DOC_START_INDICATOR reduce using rule 19 (scalar -> BOOL .)
-    CAST_TYPE       reduce using rule 19 (scalar -> BOOL .)
-    FLOAT           reduce using rule 19 (scalar -> BOOL .)
-    INT             reduce using rule 19 (scalar -> BOOL .)
-    BOOL            reduce using rule 19 (scalar -> BOOL .)
-    STRING          reduce using rule 19 (scalar -> BOOL .)
-    LITERAL_LINE    reduce using rule 19 (scalar -> BOOL .)
-    SEQUENCE_INDICATOR reduce using rule 19 (scalar -> BOOL .)
-    $end            reduce using rule 19 (scalar -> BOOL .)
+    $end            reduce using rule 10 (docs -> doc .)
+    DEDENT          reduce using rule 10 (docs -> doc .)
 
 
 state 14
 
-    (5) docs -> doc .
+    (25) scalar -> literal_lines .
 
-    $end            reduce using rule 5 (docs -> doc .)
+    MAP_INDICATOR   reduce using rule 25 (scalar -> literal_lines .)
+    $end            reduce using rule 25 (scalar -> literal_lines .)
+    DEDENT          reduce using rule 25 (scalar -> literal_lines .)
+    DOC_END_INDICATOR reduce using rule 25 (scalar -> literal_lines .)
+    DOC_START_INDICATOR reduce using rule 25 (scalar -> literal_lines .)
+    CAST_TYPE       reduce using rule 25 (scalar -> literal_lines .)
+    FLOAT           reduce using rule 25 (scalar -> literal_lines .)
+    INT             reduce using rule 25 (scalar -> literal_lines .)
+    BOOL            reduce using rule 25 (scalar -> literal_lines .)
+    STRING          reduce using rule 25 (scalar -> literal_lines .)
+    LITERAL_LINE    reduce using rule 25 (scalar -> literal_lines .)
+    SEQUENCE_INDICATOR reduce using rule 25 (scalar -> literal_lines .)
 
 
 state 15
 
-    (13) sequence -> sequence_item . sequence
-    (14) sequence -> sequence_item .
-    (13) sequence -> . sequence_item sequence
-    (14) sequence -> . sequence_item
-    (15) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence -> sequence_item . sequence
+    (19) sequence -> sequence_item .
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
 
   ! shift/reduce conflict for SEQUENCE_INDICATOR resolved as shift
-    DOC_END_INDICATOR reduce using rule 14 (sequence -> sequence_item .)
-    DOC_START_INDICATOR reduce using rule 14 (sequence -> sequence_item .)
-    CAST_TYPE       reduce using rule 14 (sequence -> sequence_item .)
-    FLOAT           reduce using rule 14 (sequence -> sequence_item .)
-    INT             reduce using rule 14 (sequence -> sequence_item .)
-    BOOL            reduce using rule 14 (sequence -> sequence_item .)
-    STRING          reduce using rule 14 (sequence -> sequence_item .)
-    LITERAL_LINE    reduce using rule 14 (sequence -> sequence_item .)
-    $end            reduce using rule 14 (sequence -> sequence_item .)
+    $end            reduce using rule 19 (sequence -> sequence_item .)
+    DOC_END_INDICATOR reduce using rule 19 (sequence -> sequence_item .)
+    DOC_START_INDICATOR reduce using rule 19 (sequence -> sequence_item .)
+    CAST_TYPE       reduce using rule 19 (sequence -> sequence_item .)
+    FLOAT           reduce using rule 19 (sequence -> sequence_item .)
+    INT             reduce using rule 19 (sequence -> sequence_item .)
+    BOOL            reduce using rule 19 (sequence -> sequence_item .)
+    STRING          reduce using rule 19 (sequence -> sequence_item .)
+    LITERAL_LINE    reduce using rule 19 (sequence -> sequence_item .)
+    DEDENT          reduce using rule 19 (sequence -> sequence_item .)
     SEQUENCE_INDICATOR shift and go to state 17
 
-  ! SEQUENCE_INDICATOR [ reduce using rule 14 (sequence -> sequence_item .) ]
+  ! SEQUENCE_INDICATOR [ reduce using rule 19 (sequence -> sequence_item .) ]
 
     sequence_item                  shift and go to state 15
-    sequence                       shift and go to state 21
+    sequence                       shift and go to state 22
 
 state 16
 
-    (10) map -> map_item . map
-    (11) map -> map_item .
-    (10) map -> . map_item map
-    (11) map -> . map_item
-    (12) map_item -> . scalar MAP_INDICATOR scalar
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (22) literal_lines -> . LITERAL_LINE
+    (15) map -> map_item . map
+    (16) map -> map_item .
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (17) map_item -> . scalar MAP_INDICATOR scalar
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (27) literal_lines -> . LITERAL_LINE
 
   ! shift/reduce conflict for CAST_TYPE resolved as shift
   ! shift/reduce conflict for FLOAT resolved as shift
@@ -397,268 +423,433 @@ state 16
   ! shift/reduce conflict for BOOL resolved as shift
   ! shift/reduce conflict for STRING resolved as shift
   ! shift/reduce conflict for LITERAL_LINE resolved as shift
-    $end            reduce using rule 11 (map -> map_item .)
-    DOC_END_INDICATOR reduce using rule 11 (map -> map_item .)
-    DOC_START_INDICATOR reduce using rule 11 (map -> map_item .)
-    SEQUENCE_INDICATOR reduce using rule 11 (map -> map_item .)
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    $end            reduce using rule 16 (map -> map_item .)
+    DEDENT          reduce using rule 16 (map -> map_item .)
+    DOC_END_INDICATOR reduce using rule 16 (map -> map_item .)
+    DOC_START_INDICATOR reduce using rule 16 (map -> map_item .)
+    SEQUENCE_INDICATOR reduce using rule 16 (map -> map_item .)
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
 
-  ! CAST_TYPE       [ reduce using rule 11 (map -> map_item .) ]
-  ! FLOAT           [ reduce using rule 11 (map -> map_item .) ]
-  ! INT             [ reduce using rule 11 (map -> map_item .) ]
-  ! BOOL            [ reduce using rule 11 (map -> map_item .) ]
-  ! STRING          [ reduce using rule 11 (map -> map_item .) ]
-  ! LITERAL_LINE    [ reduce using rule 11 (map -> map_item .) ]
+  ! CAST_TYPE       [ reduce using rule 16 (map -> map_item .) ]
+  ! FLOAT           [ reduce using rule 16 (map -> map_item .) ]
+  ! INT             [ reduce using rule 16 (map -> map_item .) ]
+  ! BOOL            [ reduce using rule 16 (map -> map_item .) ]
+  ! STRING          [ reduce using rule 16 (map -> map_item .) ]
+  ! LITERAL_LINE    [ reduce using rule 16 (map -> map_item .) ]
 
-    map                            shift and go to state 22
-    scalar                         shift and go to state 23
+    map                            shift and go to state 23
+    scalar                         shift and go to state 24
     map_item                       shift and go to state 16
-    literal_lines                  shift and go to state 2
+    literal_lines                  shift and go to state 14
 
 state 17
 
-    (15) sequence_item -> SEQUENCE_INDICATOR . scalar
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (22) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> SEQUENCE_INDICATOR . scalar
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (27) literal_lines -> . LITERAL_LINE
 
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
 
-    scalar                         shift and go to state 24
-    literal_lines                  shift and go to state 2
+    scalar                         shift and go to state 25
+    literal_lines                  shift and go to state 14
 
 state 18
 
-    (1) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR docs
-    (2) docs -> DOC_START_INDICATOR doc . docs
-    (3) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR
-    (4) docs -> DOC_START_INDICATOR doc .
-    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
-    (2) docs -> . DOC_START_INDICATOR doc docs
-    (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
-    (4) docs -> . DOC_START_INDICATOR doc
-    (5) docs -> . doc
-    (6) doc -> . collection
-    (7) doc -> . scalar
-    (8) collection -> . sequence
-    (9) collection -> . map
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (13) sequence -> . sequence_item sequence
-    (14) sequence -> . sequence_item
-    (10) map -> . map_item map
-    (11) map -> . map_item
-    (22) literal_lines -> . LITERAL_LINE
-    (15) sequence_item -> . SEQUENCE_INDICATOR scalar
-    (12) map_item -> . scalar MAP_INDICATOR scalar
+    (3) docs -> DOC_START_INDICATOR INDENT . doc docs DEDENT DOC_END_INDICATOR
+    (4) docs -> DOC_START_INDICATOR INDENT . doc docs DEDENT
+    (5) docs -> DOC_START_INDICATOR INDENT . doc DEDENT DOC_END_INDICATOR
+    (6) docs -> DOC_START_INDICATOR INDENT . doc DEDENT
+    (7) docs -> DOC_START_INDICATOR INDENT . doc
+    (11) doc -> . collection
+    (12) doc -> . scalar
+    (13) collection -> . sequence
+    (14) collection -> . map
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (27) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) map_item -> . scalar MAP_INDICATOR scalar
 
-    DOC_END_INDICATOR shift and go to state 25
-    $end            reduce using rule 4 (docs -> DOC_START_INDICATOR doc .)
-    DOC_START_INDICATOR shift and go to state 4
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
     SEQUENCE_INDICATOR shift and go to state 17
 
     map                            shift and go to state 1
-    literal_lines                  shift and go to state 2
-    sequence                       shift and go to state 5
-    doc                            shift and go to state 14
-    collection                     shift and go to state 10
-    scalar                         shift and go to state 12
-    docs                           shift and go to state 26
+    literal_lines                  shift and go to state 14
+    sequence                       shift and go to state 4
+    doc                            shift and go to state 26
+    collection                     shift and go to state 9
+    scalar                         shift and go to state 11
     sequence_item                  shift and go to state 15
     map_item                       shift and go to state 16
 
 state 19
 
-    (16) scalar -> CAST_TYPE scalar .
-
-    MAP_INDICATOR   reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    DOC_END_INDICATOR reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    DOC_START_INDICATOR reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    CAST_TYPE       reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    FLOAT           reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    INT             reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    BOOL            reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    STRING          reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    LITERAL_LINE    reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    SEQUENCE_INDICATOR reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-    $end            reduce using rule 16 (scalar -> CAST_TYPE scalar .)
-
-
-state 20
-
-    (12) map_item -> scalar MAP_INDICATOR . scalar
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (22) literal_lines -> . LITERAL_LINE
-
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
-
-    scalar                         shift and go to state 27
-    literal_lines                  shift and go to state 2
-
-state 21
-
-    (13) sequence -> sequence_item sequence .
-
-    DOC_END_INDICATOR reduce using rule 13 (sequence -> sequence_item sequence .)
-    DOC_START_INDICATOR reduce using rule 13 (sequence -> sequence_item sequence .)
-    CAST_TYPE       reduce using rule 13 (sequence -> sequence_item sequence .)
-    FLOAT           reduce using rule 13 (sequence -> sequence_item sequence .)
-    INT             reduce using rule 13 (sequence -> sequence_item sequence .)
-    BOOL            reduce using rule 13 (sequence -> sequence_item sequence .)
-    STRING          reduce using rule 13 (sequence -> sequence_item sequence .)
-    LITERAL_LINE    reduce using rule 13 (sequence -> sequence_item sequence .)
-    SEQUENCE_INDICATOR reduce using rule 13 (sequence -> sequence_item sequence .)
-    $end            reduce using rule 13 (sequence -> sequence_item sequence .)
-
-
-state 22
-
-    (10) map -> map_item map .
-
-    $end            reduce using rule 10 (map -> map_item map .)
-    DOC_END_INDICATOR reduce using rule 10 (map -> map_item map .)
-    DOC_START_INDICATOR reduce using rule 10 (map -> map_item map .)
-    CAST_TYPE       reduce using rule 10 (map -> map_item map .)
-    FLOAT           reduce using rule 10 (map -> map_item map .)
-    INT             reduce using rule 10 (map -> map_item map .)
-    BOOL            reduce using rule 10 (map -> map_item map .)
-    STRING          reduce using rule 10 (map -> map_item map .)
-    LITERAL_LINE    reduce using rule 10 (map -> map_item map .)
-    SEQUENCE_INDICATOR reduce using rule 10 (map -> map_item map .)
-
-
-state 23
-
-    (12) map_item -> scalar . MAP_INDICATOR scalar
-
-    MAP_INDICATOR   shift and go to state 20
-
-
-state 24
-
-    (15) sequence_item -> SEQUENCE_INDICATOR scalar .
-
-    SEQUENCE_INDICATOR reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    $end            reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DOC_END_INDICATOR reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DOC_START_INDICATOR reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    CAST_TYPE       reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    FLOAT           reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    INT             reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    BOOL            reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    STRING          reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    LITERAL_LINE    reduce using rule 15 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-
-
-state 25
-
-    (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR . docs
-    (3) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .
+    (1) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR docs
+    (2) docs -> DOC_START_INDICATOR doc . docs
+    (8) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR
+    (9) docs -> DOC_START_INDICATOR doc .
     (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
     (2) docs -> . DOC_START_INDICATOR doc docs
-    (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
-    (4) docs -> . DOC_START_INDICATOR doc
-    (5) docs -> . doc
-    (6) doc -> . collection
-    (7) doc -> . scalar
-    (8) collection -> . sequence
-    (9) collection -> . map
-    (16) scalar -> . CAST_TYPE scalar
-    (17) scalar -> . FLOAT
-    (18) scalar -> . INT
-    (19) scalar -> . BOOL
-    (20) scalar -> . literal_lines
-    (21) scalar -> . STRING
-    (13) sequence -> . sequence_item sequence
-    (14) sequence -> . sequence_item
-    (10) map -> . map_item map
-    (11) map -> . map_item
-    (22) literal_lines -> . LITERAL_LINE
-    (15) sequence_item -> . SEQUENCE_INDICATOR scalar
-    (12) map_item -> . scalar MAP_INDICATOR scalar
+    (3) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+    (4) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT
+    (5) docs -> . DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+    (6) docs -> . DOC_START_INDICATOR INDENT doc DEDENT
+    (7) docs -> . DOC_START_INDICATOR INDENT doc
+    (8) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (9) docs -> . DOC_START_INDICATOR doc
+    (10) docs -> . doc
+    (11) doc -> . collection
+    (12) doc -> . scalar
+    (13) collection -> . sequence
+    (14) collection -> . map
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (27) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) map_item -> . scalar MAP_INDICATOR scalar
 
-    $end            reduce using rule 3 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
-    DOC_START_INDICATOR shift and go to state 4
-    CAST_TYPE       shift and go to state 11
-    FLOAT           shift and go to state 8
-    INT             shift and go to state 6
-    BOOL            shift and go to state 13
-    STRING          shift and go to state 3
-    LITERAL_LINE    shift and go to state 9
+    DOC_END_INDICATOR shift and go to state 27
+    $end            reduce using rule 9 (docs -> DOC_START_INDICATOR doc .)
+    DEDENT          reduce using rule 9 (docs -> DOC_START_INDICATOR doc .)
+    DOC_START_INDICATOR shift and go to state 3
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
     SEQUENCE_INDICATOR shift and go to state 17
 
     map                            shift and go to state 1
-    literal_lines                  shift and go to state 2
-    sequence                       shift and go to state 5
-    doc                            shift and go to state 14
-    collection                     shift and go to state 10
-    scalar                         shift and go to state 12
+    literal_lines                  shift and go to state 14
+    sequence                       shift and go to state 4
+    doc                            shift and go to state 13
+    collection                     shift and go to state 9
+    scalar                         shift and go to state 11
     docs                           shift and go to state 28
     sequence_item                  shift and go to state 15
     map_item                       shift and go to state 16
 
+state 20
+
+    (21) scalar -> CAST_TYPE scalar .
+
+    MAP_INDICATOR   reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    $end            reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    DEDENT          reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    DOC_END_INDICATOR reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    DOC_START_INDICATOR reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    CAST_TYPE       reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    FLOAT           reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    INT             reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    BOOL            reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    STRING          reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    LITERAL_LINE    reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+    SEQUENCE_INDICATOR reduce using rule 21 (scalar -> CAST_TYPE scalar .)
+
+
+state 21
+
+    (17) map_item -> scalar MAP_INDICATOR . scalar
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (27) literal_lines -> . LITERAL_LINE
+
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
+
+    scalar                         shift and go to state 29
+    literal_lines                  shift and go to state 14
+
+state 22
+
+    (18) sequence -> sequence_item sequence .
+
+    $end            reduce using rule 18 (sequence -> sequence_item sequence .)
+    DOC_END_INDICATOR reduce using rule 18 (sequence -> sequence_item sequence .)
+    DOC_START_INDICATOR reduce using rule 18 (sequence -> sequence_item sequence .)
+    CAST_TYPE       reduce using rule 18 (sequence -> sequence_item sequence .)
+    FLOAT           reduce using rule 18 (sequence -> sequence_item sequence .)
+    INT             reduce using rule 18 (sequence -> sequence_item sequence .)
+    BOOL            reduce using rule 18 (sequence -> sequence_item sequence .)
+    STRING          reduce using rule 18 (sequence -> sequence_item sequence .)
+    LITERAL_LINE    reduce using rule 18 (sequence -> sequence_item sequence .)
+    SEQUENCE_INDICATOR reduce using rule 18 (sequence -> sequence_item sequence .)
+    DEDENT          reduce using rule 18 (sequence -> sequence_item sequence .)
+
+
+state 23
+
+    (15) map -> map_item map .
+
+    $end            reduce using rule 15 (map -> map_item map .)
+    DEDENT          reduce using rule 15 (map -> map_item map .)
+    DOC_END_INDICATOR reduce using rule 15 (map -> map_item map .)
+    DOC_START_INDICATOR reduce using rule 15 (map -> map_item map .)
+    CAST_TYPE       reduce using rule 15 (map -> map_item map .)
+    FLOAT           reduce using rule 15 (map -> map_item map .)
+    INT             reduce using rule 15 (map -> map_item map .)
+    BOOL            reduce using rule 15 (map -> map_item map .)
+    STRING          reduce using rule 15 (map -> map_item map .)
+    LITERAL_LINE    reduce using rule 15 (map -> map_item map .)
+    SEQUENCE_INDICATOR reduce using rule 15 (map -> map_item map .)
+
+
+state 24
+
+    (17) map_item -> scalar . MAP_INDICATOR scalar
+
+    MAP_INDICATOR   shift and go to state 21
+
+
+state 25
+
+    (20) sequence_item -> SEQUENCE_INDICATOR scalar .
+
+    SEQUENCE_INDICATOR reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    $end            reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DEDENT          reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_END_INDICATOR reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_START_INDICATOR reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    CAST_TYPE       reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    FLOAT           reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    INT             reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    BOOL            reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    STRING          reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    LITERAL_LINE    reduce using rule 20 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+
+
 state 26
+
+    (3) docs -> DOC_START_INDICATOR INDENT doc . docs DEDENT DOC_END_INDICATOR
+    (4) docs -> DOC_START_INDICATOR INDENT doc . docs DEDENT
+    (5) docs -> DOC_START_INDICATOR INDENT doc . DEDENT DOC_END_INDICATOR
+    (6) docs -> DOC_START_INDICATOR INDENT doc . DEDENT
+    (7) docs -> DOC_START_INDICATOR INDENT doc .
+    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
+    (2) docs -> . DOC_START_INDICATOR doc docs
+    (3) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+    (4) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT
+    (5) docs -> . DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+    (6) docs -> . DOC_START_INDICATOR INDENT doc DEDENT
+    (7) docs -> . DOC_START_INDICATOR INDENT doc
+    (8) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (9) docs -> . DOC_START_INDICATOR doc
+    (10) docs -> . doc
+    (11) doc -> . collection
+    (12) doc -> . scalar
+    (13) collection -> . sequence
+    (14) collection -> . map
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (27) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) map_item -> . scalar MAP_INDICATOR scalar
+
+  ! shift/reduce conflict for DEDENT resolved as shift
+    DEDENT          shift and go to state 30
+    $end            reduce using rule 7 (docs -> DOC_START_INDICATOR INDENT doc .)
+    DOC_START_INDICATOR shift and go to state 3
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
+    SEQUENCE_INDICATOR shift and go to state 17
+
+  ! DEDENT          [ reduce using rule 7 (docs -> DOC_START_INDICATOR INDENT doc .) ]
+
+    map                            shift and go to state 1
+    literal_lines                  shift and go to state 14
+    sequence                       shift and go to state 4
+    doc                            shift and go to state 13
+    collection                     shift and go to state 9
+    scalar                         shift and go to state 11
+    docs                           shift and go to state 31
+    sequence_item                  shift and go to state 15
+    map_item                       shift and go to state 16
+
+state 27
+
+    (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR . docs
+    (8) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .
+    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
+    (2) docs -> . DOC_START_INDICATOR doc docs
+    (3) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+    (4) docs -> . DOC_START_INDICATOR INDENT doc docs DEDENT
+    (5) docs -> . DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+    (6) docs -> . DOC_START_INDICATOR INDENT doc DEDENT
+    (7) docs -> . DOC_START_INDICATOR INDENT doc
+    (8) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (9) docs -> . DOC_START_INDICATOR doc
+    (10) docs -> . doc
+    (11) doc -> . collection
+    (12) doc -> . scalar
+    (13) collection -> . sequence
+    (14) collection -> . map
+    (21) scalar -> . CAST_TYPE scalar
+    (22) scalar -> . FLOAT
+    (23) scalar -> . INT
+    (24) scalar -> . BOOL
+    (25) scalar -> . literal_lines
+    (26) scalar -> . STRING
+    (18) sequence -> . sequence_item sequence
+    (19) sequence -> . sequence_item
+    (15) map -> . map_item map
+    (16) map -> . map_item
+    (27) literal_lines -> . LITERAL_LINE
+    (20) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) map_item -> . scalar MAP_INDICATOR scalar
+
+    $end            reduce using rule 8 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
+    DEDENT          reduce using rule 8 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
+    DOC_START_INDICATOR shift and go to state 3
+    CAST_TYPE       shift and go to state 10
+    FLOAT           shift and go to state 7
+    INT             shift and go to state 5
+    BOOL            shift and go to state 12
+    STRING          shift and go to state 2
+    LITERAL_LINE    shift and go to state 8
+    SEQUENCE_INDICATOR shift and go to state 17
+
+    map                            shift and go to state 1
+    literal_lines                  shift and go to state 14
+    sequence                       shift and go to state 4
+    doc                            shift and go to state 13
+    collection                     shift and go to state 9
+    scalar                         shift and go to state 11
+    docs                           shift and go to state 32
+    sequence_item                  shift and go to state 15
+    map_item                       shift and go to state 16
+
+state 28
 
     (2) docs -> DOC_START_INDICATOR doc docs .
 
     $end            reduce using rule 2 (docs -> DOC_START_INDICATOR doc docs .)
+    DEDENT          reduce using rule 2 (docs -> DOC_START_INDICATOR doc docs .)
 
 
-state 27
+state 29
 
-    (12) map_item -> scalar MAP_INDICATOR scalar .
+    (17) map_item -> scalar MAP_INDICATOR scalar .
 
-    CAST_TYPE       reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    FLOAT           reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    INT             reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    BOOL            reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    STRING          reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    LITERAL_LINE    reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    $end            reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    DOC_END_INDICATOR reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    DOC_START_INDICATOR reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
-    SEQUENCE_INDICATOR reduce using rule 12 (map_item -> scalar MAP_INDICATOR scalar .)
+    CAST_TYPE       reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    FLOAT           reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    INT             reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    BOOL            reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    STRING          reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    LITERAL_LINE    reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    DEDENT          reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    $end            reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    DOC_END_INDICATOR reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    DOC_START_INDICATOR reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
+    SEQUENCE_INDICATOR reduce using rule 17 (map_item -> scalar MAP_INDICATOR scalar .)
 
 
-state 28
+state 30
+
+    (5) docs -> DOC_START_INDICATOR INDENT doc DEDENT . DOC_END_INDICATOR
+    (6) docs -> DOC_START_INDICATOR INDENT doc DEDENT .
+
+    DOC_END_INDICATOR shift and go to state 33
+    $end            reduce using rule 6 (docs -> DOC_START_INDICATOR INDENT doc DEDENT .)
+    DEDENT          reduce using rule 6 (docs -> DOC_START_INDICATOR INDENT doc DEDENT .)
+
+
+state 31
+
+    (3) docs -> DOC_START_INDICATOR INDENT doc docs . DEDENT DOC_END_INDICATOR
+    (4) docs -> DOC_START_INDICATOR INDENT doc docs . DEDENT
+
+    DEDENT          shift and go to state 34
+
+
+state 32
 
     (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .
 
     $end            reduce using rule 1 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .)
+    DEDENT          reduce using rule 1 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .)
+
+
+state 33
+
+    (5) docs -> DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR .
+
+    $end            reduce using rule 5 (docs -> DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR .)
+    DEDENT          reduce using rule 5 (docs -> DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR .)
+
+
+state 34
+
+    (3) docs -> DOC_START_INDICATOR INDENT doc docs DEDENT . DOC_END_INDICATOR
+    (4) docs -> DOC_START_INDICATOR INDENT doc docs DEDENT .
+
+    DOC_END_INDICATOR shift and go to state 35
+    $end            reduce using rule 4 (docs -> DOC_START_INDICATOR INDENT doc docs DEDENT .)
+    DEDENT          reduce using rule 4 (docs -> DOC_START_INDICATOR INDENT doc docs DEDENT .)
+
+
+state 35
+
+    (3) docs -> DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR .
+
+    $end            reduce using rule 3 (docs -> DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR .)
+    DEDENT          reduce using rule 3 (docs -> DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR .)
 
 WARNING: 
 WARNING: Conflicts:
@@ -670,3 +861,4 @@ WARNING: shift/reduce conflict for INT in state 16 resolved as shift
 WARNING: shift/reduce conflict for BOOL in state 16 resolved as shift
 WARNING: shift/reduce conflict for STRING in state 16 resolved as shift
 WARNING: shift/reduce conflict for LITERAL_LINE in state 16 resolved as shift
+WARNING: shift/reduce conflict for DEDENT in state 26 resolved as shift

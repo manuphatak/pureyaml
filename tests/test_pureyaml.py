@@ -12,7 +12,7 @@ from textwrap import dedent
 from pytest import mark
 
 from pureyaml.nodes import *  # noqa
-from pureyaml.pureyaml import parser
+from pureyaml.pureyaml import parser, lexer
 
 skip = mark.skipif
 
@@ -445,7 +445,7 @@ def test_longer_map_with_scalars_and_comments():
 
 def test_unnecessary_indent_1_item():
     text = dedent("""
-        --- # Favorite movies
+        ---
             - Casablanca
         ...
     """)[1:-1]

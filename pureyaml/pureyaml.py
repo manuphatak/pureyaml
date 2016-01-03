@@ -70,21 +70,23 @@ def t_ignore_INDENT(t):
 
     next_indent_length, curr_indent_length = len(t.value), t.lexer.indent_stack[-1]
     if next_indent_length > curr_indent_length:
-        indent_stack.push(next_indent_length)
+        indent_stack.append(next_indent_length)
         t.type = 'INDENT'
+        return t
+
     elif next_indent_length == curr_indent_length:
-        t.type = 'NODENT'
+        # t.type = 'NODENT'
+        pass
     else:
         prev_indent_length = indent_stack.pop()
         t.lexer.lexpos -= curr_indent_length - prev_indent_length
 
         t.type = 'DEDENT'
-
-    return t
+        return t
 
 
 def t_ANY_error(t):
-    raise SyntaxError('Bad character: {!r}'.format(t.value[0]))
+    raise SyntaxError(show_error(t, t.value[0]))
 
 
 # state: tag
@@ -128,7 +130,7 @@ def t_begin_comment(t):
 
 
 def t_comment_end(t):
-    r'\n'
+    r'(?=\n)'
     t.lexer.begin('INITIAL')
 
 
@@ -170,17 +172,29 @@ def t_literal_end(t):
     t.lexer.begin('INITIAL')
 
 
-# def t_literal_UNDENT(t):
-#     pass
-
-
 # state: INITIAL
 # -------------------------------------------------------------------
 
-t_DOC_START_INDICATOR = r'---'
-t_DOC_END_INDICATOR = r'\.\.\.'
-t_SEQUENCE_INDICATOR = r'-\ '
-t_MAP_INDICATOR = r':\ *'
+def t_DOC_START_INDICATOR(t):
+    r'---'
+    return t
+
+
+def t_DOC_END_INDICATOR(t):
+    r'\.\.\.'
+    return t
+
+
+def t_SEQUENCE_INDICATOR(t):
+    r'-\ '
+    return t
+
+
+def t_MAP_INDICATOR(t):
+    r':\ *'
+    return t
+
+
 t_ignore_EOL = r'\s*\n'
 
 
@@ -214,12 +228,28 @@ def p_docs_init(p):
     docs    : DOC_START_INDICATOR doc DOC_END_INDICATOR docs
             | DOC_START_INDICATOR doc docs
     """
+
     if len(p) == 5:
         docs = p[4]
     else:
         docs = p[3]
 
     p[0] = Docs(p[2]) + docs
+
+
+def p_docs_indent(p):
+    """
+    docs    : DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+            | DOC_START_INDICATOR INDENT doc docs DEDENT
+            | DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+            | DOC_START_INDICATOR INDENT doc DEDENT
+            | DOC_START_INDICATOR INDENT doc
+    """
+    if len(p) == 6 or len(p) == 7:
+        p[0] = Docs(p[3]) + p[4]
+
+    elif len(p) == 4 or len(p) == 5:
+        p[0] = Docs(p[3])
 
 
 def p_docs_last(p):
@@ -347,19 +377,35 @@ def p_literal_lines(p):
     p[0] = p[1]
 
 
-def p_error(p):
+def show_error(p, value):
+    # setup
     show_chars = 30
     preview_start = max(0, p.lexpos - show_chars)
     preview_end = min(len(p.lexer.lexdata), p.lexpos + show_chars + 1)
+
+    # line 3
     pre_error_text = p.lexer.lexdata[preview_start:p.lexpos]
     cur_error_text = p.lexer.lexdata[p.lexpos]
     suf_error_text = p.lexer.lexdata[p.lexpos + 1:preview_end]
-    line1 = 'Unexpected expression: %r:%r' % (p.type, p.value)
-    line2 = repr(''.join([pre_error_text, cur_error_text, suf_error_text]))[1:-1]
-    error_arrows = '^' * max(1, len(repr(p.value)[1:-1]))
-    line3 = error_arrows.rjust(len(repr(pre_error_text)), ' ')
 
-    raise SyntaxError('\n'.join(['', '', line1, line2, line3]))
+    # line 4
+    error_length = max(1, len(repr(value)[1:-1]))
+    width = len(repr(pre_error_text + cur_error_text)[1:-1]) + len(repr(value)[1:-1])
+    error_lines = [  # :off
+        '\n',
+        'Unexpected value: %r:%r' % (p.type, value),
+        repr(''.join([pre_error_text, cur_error_text, suf_error_text]))[1:-1],
+        ('^' * error_length).rjust(width, ' '),
+    ]  # :on
+    return '\n'.join(error_lines)
+
+
+def p_error(p):
+    # guard, empty p
+    if p is None:
+        raise SyntaxError('Unknown origin %s' % p)
+
+    raise SyntaxError(show_error(p, p.value))
 
 
 parser = yacc(debug=True)
