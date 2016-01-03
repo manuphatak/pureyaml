@@ -80,7 +80,7 @@ def t_ignore_INDENT(t):
 
         t.type = 'DEDENT'
 
-        # return t
+    return t
 
 
 def t_ANY_error(t):
@@ -354,12 +354,12 @@ def p_error(p):
     pre_error_text = p.lexer.lexdata[preview_start:p.lexpos]
     cur_error_text = p.lexer.lexdata[p.lexpos]
     suf_error_text = p.lexer.lexdata[p.lexpos + 1:preview_end]
-    line1 = 'Unexpected expression: %s:%r' % (p.type, p.value)
+    line1 = 'Unexpected expression: %r:%r' % (p.type, p.value)
     line2 = repr(''.join([pre_error_text, cur_error_text, suf_error_text]))[1:-1]
-    error_arrows = '^' * len(p.value)
+    error_arrows = '^' * max(1, len(repr(p.value)[1:-1]))
     line3 = error_arrows.rjust(len(repr(pre_error_text)), ' ')
 
-    raise SyntaxError('\n'.join([line1, line2, line3]))
+    raise SyntaxError('\n'.join(['', '', line1, line2, line3]))
 
 
 parser = yacc(debug=True)
