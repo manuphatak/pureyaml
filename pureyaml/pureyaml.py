@@ -54,46 +54,33 @@ def setup_indent(t):
     t.value = t.value[1:]
 
     # initialize
-    is_first_indent_found = any([  # :off
-        not hasattr(t.lexer, 'indent_token_size'),
-        not t.lexer.indent_token_size
-    ])  # :on
-    if is_first_indent_found:
-        t.lexer.indent_token_size = len(t.value)
-    if not hasattr(t.lexer, 'indent_depth'):
-        t.lexer.indent_depth = 0
-
-    # calculate depth
-    indent_token_size = t.lexer.indent_token_size
-    if indent_token_size > 0:
-        indent_depth = len(t.value) // indent_token_size
-    else:
-        indent_depth = 0
-
-    # calculate change in depth
-    indent_delta = indent_depth - t.lexer.indent_depth
-
-    # set current indent_depth and indent_delta
-    t.lexer.indent_delta, t.lexer.indent_depth = indent_delta, indent_depth
+    if not hasattr(t.lexer, 'indent_stack'):
+        t.lexer.indent_stack = [0]
 
     return t
 
 
 def t_ignore_INDENT(t):
-    r'\n\ +'
+    r'\n\ *'
 
     t = setup_indent(t)
+    indent_stack = t.lexer.indent_stack
 
-    indent_delta = t.lexer.indent_delta
+    assert indent_stack == sorted(indent_stack)
 
-    if indent_delta > 0:
+    next_indent_length, curr_indent_length = len(t.value), t.lexer.indent_stack[-1]
+    if next_indent_length > curr_indent_length:
+        indent_stack.push(next_indent_length)
         t.type = 'INDENT'
-    elif indent_delta < 0:
-        t.type = 'DEDENT'
-    else:
+    elif next_indent_length == curr_indent_length:
         t.type = 'NODENT'
+    else:
+        prev_indent_length = indent_stack.pop()
+        t.lexer.lexpos -= curr_indent_length - prev_indent_length
 
-    return t
+        t.type = 'DEDENT'
+
+        # return t
 
 
 def t_ANY_error(t):
@@ -361,7 +348,18 @@ def p_literal_lines(p):
 
 
 def p_error(p):
-    raise SyntaxError('Unexpected expression: {0!r}:{1!r}'.format(p.type, p.value))
+    show_chars = 30
+    preview_start = max(0, p.lexpos - show_chars)
+    preview_end = min(len(p.lexer.lexdata), p.lexpos + show_chars + 1)
+    pre_error_text = p.lexer.lexdata[preview_start:p.lexpos]
+    cur_error_text = p.lexer.lexdata[p.lexpos]
+    suf_error_text = p.lexer.lexdata[p.lexpos + 1:preview_end]
+    line1 = 'Unexpected expression: %s:%r' % (p.type, p.value)
+    line2 = repr(''.join([pre_error_text, cur_error_text, suf_error_text]))[1:-1]
+    error_arrows = '^' * len(p.value)
+    line3 = error_arrows.rjust(len(repr(pre_error_text)), ' ')
+
+    raise SyntaxError('\n'.join([line1, line2, line3]))
 
 
 parser = yacc(debug=True)

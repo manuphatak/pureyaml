@@ -443,7 +443,6 @@ def test_longer_map_with_scalars_and_comments():
     assert nodes == expected
 
 
-@skip
 def test_unnecessary_indent_1_item():
     text = dedent("""
         --- # Favorite movies
