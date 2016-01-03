@@ -40,9 +40,9 @@ tokens = [  # :off
 states = (  # :off
     ('tag', 'inclusive'),
     ('doublequote', 'exclusive'),
-    ('comment', 'exclusive'),
+    ('commentstate', 'exclusive'),
     ('singlequote', 'exclusive'),
-    ('literal', 'exclusive'),
+    # ('literal', 'exclusive'),
 
 )  # :on
 
@@ -94,11 +94,12 @@ def t_ANY_error(t):
 def t_begin_tag(t):
     r'(?<!\\)!'
     t.lexer.push_state('tag')
+    t.lexer.begin('tag')
 
 
 def t_tag_end(t):
     r'\ '
-    t.lexer.pop_state()
+    t.lexer.begin('INITIAL')
 
 
 def t_tag_CAST_TYPE(t):
@@ -122,20 +123,19 @@ def t_doublequote_end(t):
     t.lexer.begin('INITIAL')
 
 
-# state: comment
+# state: commentstate
 # -------------------------------------------------------------------
-def t_begin_comment(t):
-    r'\s*\# '
-    t.lexer.begin('comment')
+t_commentstate_ignore_COMMENT = r'[^\n]+'
 
 
-def t_comment_end(t):
+def t_begin_commentstate(t):
+    r'\s*[\#]\ ?'
+    t.lexer.begin('commentstate')
+
+
+def t_commentstate_end(t):
     r'(?=\n)'
     t.lexer.begin('INITIAL')
-
-
-def t_comment_ignore_COMMENT(t):
-    r'[^\n]+'
 
 
 # state: singlequote
@@ -146,37 +146,38 @@ t_singlequote_STRING = r"(?:\\'|[^'])+"
 
 def t_begin_singlequote(t):
     r"(?<!\\)'"
-    t.lexer.begin('singlequote')
+    t.lexer.push_state('singlequote')
 
 
 def t_singlequote_end(t):
     r"(?<!\\)'"
-    t.lexer.begin('INITIAL')
+    t.lexer.pop_state()
 
 
-# state: literal
-# -------------------------------------------------------------------
-
-def t_literal_LITERAL_LINE(t):
-    r'[\w\s]+'
-    return t
-
-
-def t_begin_literal(t):
-    r'(?<!\\)\|'
-    t.lexer.begin('literal')
-
-
-def t_literal_end(t):
-    r'\n\n'
-    t.lexer.begin('INITIAL')
+#
+# # state: literal
+# # -------------------------------------------------------------------
+#
+# def t_literal_LITERAL_LINE(t):
+#     r'[\w\s]+'
+#     return t
+#
+#
+# def t_begin_literal(t):
+#     r'(?<!\\)\|'
+#     t.lexer.push_state('literal')
+#
+#
+# def t_literal_end(t):
+#     r'\n\n'
+#     t.lexer.pop_state()
 
 
 # state: INITIAL
 # -------------------------------------------------------------------
 
 def t_DOC_START_INDICATOR(t):
-    r'---'
+    r'\-\-\-'
     return t
 
 
@@ -214,7 +215,7 @@ def t_BOOL(t):
 
 
 def t_STRING(t):
-    r'(?:\\.)|[\w ,!\\]+'
+    r'(?:\\.)|[\w\ ,!\\]+'
     return t
 
 
@@ -364,11 +365,11 @@ def p_scalar_bool(p):
     p[0] = Bool(p[1])
 
 
-def p_scalar_literal(p):
-    """
-    scalar  : literal_lines
-    """
-    p[0] = p[1]
+# def p_scalar_literal(p):
+#     """
+#     scalar  : literal_lines
+#     """
+#     p[0] = p[1]
 
 
 def p_scalar_string(p):
@@ -378,11 +379,11 @@ def p_scalar_string(p):
     p[0] = Str(p[1])
 
 
-def p_literal_lines(p):
-    """
-    literal_lines   : LITERAL_LINE
-    """
-    p[0] = p[1]
+# def p_literal_lines(p):
+#     """
+#     literal_lines   : LITERAL_LINE
+#     """
+#     p[0] = p[1]
 
 
 def show_error(p, value):
@@ -416,4 +417,4 @@ def p_error(p):
     raise SyntaxError(show_error(p, p.value))
 
 
-parser = yacc(debug=True)
+parser = yacc(debug=True, tabmodule='_parsetab', debugfile='_parser.out')
