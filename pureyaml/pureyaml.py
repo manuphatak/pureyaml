@@ -237,19 +237,19 @@ def p_docs_init(p):
     p[0] = Docs(p[2]) + docs
 
 
-def p_docs_indent(p):
-    """
-    docs    : DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
-            | DOC_START_INDICATOR INDENT doc docs DEDENT
-            | DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
-            | DOC_START_INDICATOR INDENT doc DEDENT
-            | DOC_START_INDICATOR INDENT doc
-    """
-    if len(p) == 6 or len(p) == 7:
-        p[0] = Docs(p[3]) + p[4]
-
-    elif len(p) == 4 or len(p) == 5:
-        p[0] = Docs(p[3])
+# def p_docs_indent(p):
+#     """
+#     docs    : DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR
+#             | DOC_START_INDICATOR INDENT doc docs DEDENT
+#             | DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR
+#             | DOC_START_INDICATOR INDENT doc DEDENT
+#             | DOC_START_INDICATOR INDENT doc
+#     """
+#     if len(p) == 6 or len(p) == 7:
+#         p[0] = Docs(p[3]) + p[4]
+#
+#     elif len(p) == 4 or len(p) == 5:
+#         p[0] = Docs(p[3])
 
 
 def p_docs_last(p):
@@ -273,6 +273,14 @@ def p_doc(p):
         | scalar
     """
     p[0] = Doc(p[1])
+
+
+def p_doc_indent(p):
+    """
+    doc : INDENT collection DEDENT
+        | INDENT scalar DEDENT
+    """
+    p[0] = Doc(p[2])
 
 
 def p_collection(p):
@@ -382,19 +390,19 @@ def show_error(p, value):
     show_chars = 30
     preview_start = max(0, p.lexpos - show_chars)
     preview_end = min(len(p.lexer.lexdata), p.lexpos + show_chars + 1)
-
+    error_length = max(1, len(repr(value)[1:-1]))
+    error_end = p.lexpos + error_length
     # line 3
     pre_error_text = p.lexer.lexdata[preview_start:p.lexpos]
-    cur_error_text = p.lexer.lexdata[p.lexpos]
-    suf_error_text = p.lexer.lexdata[p.lexpos + 1:preview_end]
+    cur_error_text = p.lexer.lexdata[p.lexpos:error_end]
+    suf_error_text = p.lexer.lexdata[error_end + 1:preview_end]
 
     # line 4
-    error_length = max(1, len(repr(value)[1:-1]))
-    width = len(repr(pre_error_text + cur_error_text)[1:-1]) + len(repr(value)[1:-1])
+    width = len(repr(pre_error_text + cur_error_text)[1:-1])
     error_lines = [  # :off
         '\n',
         'Unexpected value: %r:%r' % (p.type, value),
-        repr(''.join([pre_error_text, cur_error_text, suf_error_text]))[1:-1],
+        repr(pre_error_text + cur_error_text + suf_error_text)[1:-1],
         ('^' * error_length).rjust(width, ' '),
     ]  # :on
     return '\n'.join(error_lines)

@@ -443,6 +443,21 @@ def test_longer_map_with_scalars_and_comments():
     assert nodes == expected
 
 
+def test_unnecessary_indent_1_scalar_item():
+    text = dedent("""
+        ---
+            123
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Int('Casablanca'),
+    )))  # :on
+
+    assert nodes == expected
+
+
 def test_unnecessary_indent_1_item():
     text = dedent("""
         ---

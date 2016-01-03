@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '2B685670634DF20D105DDA00A28B4812'
+_lr_signature = 'A8C172C0467A43FA9B9A3FD0548AECBB'
     
-_lr_action_items = {'DEDENT':([1,2,4,5,7,8,9,11,12,13,14,15,16,19,20,22,23,25,26,27,28,29,30,31,32,33,34,35,],[-14,-26,-13,-23,-22,-27,-11,-12,-24,-10,-25,-19,-16,-9,-21,-18,-15,-20,30,-8,-2,-17,-6,34,-1,-5,-4,-3,]),'INDENT':([3,],[18,]),'STRING':([0,1,2,3,4,5,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,25,26,27,29,],[2,-14,-26,2,-13,-23,-22,-27,-11,2,-12,-24,-25,-19,2,2,2,2,-21,2,-18,-15,-20,2,2,-17,]),'DOC_START_INDICATOR':([0,1,2,4,5,7,8,9,11,12,14,15,16,19,20,22,23,25,26,27,29,],[3,-14,-26,-13,-23,-22,-27,-11,-12,-24,-25,-19,-16,3,-21,-18,-15,-20,3,3,-17,]),'INT':([0,1,2,3,4,5,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,25,26,27,29,],[5,-14,-26,5,-13,-23,-22,-27,-11,5,-12,-24,-25,-19,5,5,5,5,-21,5,-18,-15,-20,5,5,-17,]),'FLOAT':([0,1,2,3,4,5,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,25,26,27,29,],[7,-14,-26,7,-13,-23,-22,-27,-11,7,-12,-24,-25,-19,7,7,7,7,-21,7,-18,-15,-20,7,7,-17,]),'MAP_INDICATOR':([2,5,7,8,11,12,14,20,24,],[-26,-23,-22,-27,21,-24,-25,-21,21,]),'DOC_END_INDICATOR':([1,2,4,5,7,8,9,11,12,14,15,16,19,20,22,23,25,29,30,34,],[-14,-26,-13,-23,-22,-27,-11,-12,-24,-25,-19,-16,27,-21,-18,-15,-20,-17,33,35,]),'CAST_TYPE':([0,1,2,3,4,5,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,25,26,27,29,],[10,-14,-26,10,-13,-23,-22,-27,-11,10,-12,-24,-25,-19,10,10,10,10,-21,10,-18,-15,-20,10,10,-17,]),'LITERAL_LINE':([0,1,2,3,4,5,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,25,26,27,29,],[8,-14,-26,8,-13,-23,-22,-27,-11,8,-12,-24,-25,-19,8,8,8,8,-21,8,-18,-15,-20,8,8,-17,]),'SEQUENCE_INDICATOR':([0,1,2,3,4,5,7,8,9,11,12,14,15,16,18,19,20,22,23,25,26,27,29,],[17,-14,-26,17,-13,-23,-22,-27,-11,-12,-24,-25,17,-16,17,17,-21,-18,-15,-20,17,17,-17,]),'BOOL':([0,1,2,3,4,5,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,25,26,27,29,],[12,-14,-26,12,-13,-23,-22,-27,-11,12,-12,-24,-25,-19,12,12,12,12,-21,12,-18,-15,-20,12,12,-17,]),'$end':([1,2,4,5,6,7,8,9,11,12,13,14,15,16,19,20,22,23,25,26,27,28,29,30,32,33,34,35,],[-14,-26,-13,-23,0,-22,-27,-11,-12,-24,-10,-25,-19,-16,-9,-21,-18,-15,-20,-7,-8,-2,-17,-6,-1,-5,-4,-3,]),}
+_lr_action_items = {'DEDENT':([1,3,5,6,8,9,13,15,16,17,19,20,22,24,25,27,32,],[-11,-23,-10,-20,-19,-24,-21,-22,-16,-13,28,29,-18,-15,-12,-17,-14,]),'INDENT':([0,1,3,4,5,6,8,9,10,12,13,15,16,17,21,22,24,25,27,28,29,30,32,],[2,-11,-23,2,-10,-20,-19,-24,-6,-7,-21,-22,-16,-13,2,-18,-15,-12,-17,-8,-9,2,-14,]),'STRING':([0,1,2,3,4,5,6,8,9,10,11,12,13,15,16,17,18,21,22,23,24,25,27,28,29,30,32,],[3,-11,3,-23,3,-10,-20,-19,-24,-6,3,-7,-21,-22,-16,3,3,3,-18,3,-15,-12,-17,-8,-9,3,-14,]),'DOC_START_INDICATOR':([0,1,3,5,6,8,9,10,12,13,15,16,17,21,22,24,25,27,28,29,30,32,],[4,-11,-23,-10,-20,-19,-24,-6,-7,-21,-22,-16,-13,4,-18,-15,-12,-17,-8,-9,4,-14,]),'INT':([0,1,2,3,4,5,6,8,9,10,11,12,13,15,16,17,18,21,22,23,24,25,27,28,29,30,32,],[6,-11,6,-23,6,-10,-20,-19,-24,-6,6,-7,-21,-22,-16,6,6,6,-18,6,-15,-12,-17,-8,-9,6,-14,]),'FLOAT':([0,1,2,3,4,5,6,8,9,10,11,12,13,15,16,17,18,21,22,23,24,25,27,28,29,30,32,],[8,-11,8,-23,8,-10,-20,-19,-24,-6,8,-7,-21,-22,-16,8,8,8,-18,8,-15,-12,-17,-8,-9,8,-14,]),'MAP_INDICATOR':([3,6,8,9,12,13,15,20,22,26,],[-23,-20,-19,-24,23,-21,-22,23,-18,23,]),'DOC_END_INDICATOR':([1,3,5,6,8,9,10,12,13,15,16,17,21,22,24,25,27,28,29,32,],[-11,-23,-10,-20,-19,-24,-6,-7,-21,-22,-16,-13,30,-18,-15,-12,-17,-8,-9,-14,]),'CAST_TYPE':([0,1,2,3,4,5,6,8,9,10,11,12,13,15,16,17,18,21,22,23,24,25,27,28,29,30,32,],[11,-11,11,-23,11,-10,-20,-19,-24,-6,11,-7,-21,-22,-16,11,11,11,-18,11,-15,-12,-17,-8,-9,11,-14,]),'LITERAL_LINE':([0,1,2,3,4,5,6,8,9,10,11,12,13,15,16,17,18,21,22,23,24,25,27,28,29,30,32,],[9,-11,9,-23,9,-10,-20,-19,-24,-6,9,-7,-21,-22,-16,9,9,9,-18,9,-15,-12,-17,-8,-9,9,-14,]),'SEQUENCE_INDICATOR':([0,1,2,3,4,5,6,8,9,10,12,13,15,16,17,21,22,24,25,27,28,29,30,32,],[18,-11,18,-23,18,-10,-20,-19,-24,-6,-7,-21,-22,18,-13,18,-18,-15,-12,-17,-8,-9,18,-14,]),'BOOL':([0,1,2,3,4,5,6,8,9,10,11,12,13,15,16,17,18,21,22,23,24,25,27,28,29,30,32,],[13,-11,13,-23,13,-10,-20,-19,-24,-6,13,-7,-21,-22,-16,13,13,13,-18,13,-15,-12,-17,-8,-9,13,-14,]),'$end':([1,3,5,6,7,8,9,10,12,13,14,15,16,17,21,22,24,25,27,28,29,30,31,32,33,],[-11,-23,-10,-20,0,-19,-24,-6,-7,-21,-5,-22,-16,-13,-4,-18,-15,-12,-17,-8,-9,-3,-2,-14,-1,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'map':([0,3,16,18,19,26,27,],[1,1,23,1,1,1,1,]),'literal_lines':([0,3,10,16,17,18,19,21,26,27,],[14,14,14,14,14,14,14,14,14,14,]),'sequence':([0,3,15,18,19,26,27,],[4,4,22,4,4,4,4,]),'docs':([0,19,26,27,],[6,28,31,32,]),'collection':([0,3,18,19,26,27,],[9,9,9,9,9,9,]),'scalar':([0,3,10,16,17,18,19,21,26,27,],[11,11,20,24,25,11,11,29,11,11,]),'doc':([0,3,18,19,26,27,],[13,19,26,13,13,13,]),'sequence_item':([0,3,15,18,19,26,27,],[15,15,15,15,15,15,15,]),'map_item':([0,3,16,18,19,26,27,],[16,16,16,16,16,16,16,]),}
+_lr_goto_items = {'map':([0,2,4,17,21,30,],[1,1,1,25,1,1,]),'literal_lines':([0,2,4,11,17,18,21,23,30,],[15,15,15,15,15,15,15,15,15,]),'sequence':([0,2,4,16,21,30,],[5,5,5,24,5,5,]),'docs':([0,21,30,],[7,31,33,]),'collection':([0,2,4,21,30,],[10,19,10,10,10,]),'scalar':([0,2,4,11,17,18,21,23,30,],[12,20,12,22,26,27,12,32,12,]),'doc':([0,4,21,30,],[14,21,14,14,]),'sequence_item':([0,2,4,16,21,30,],[16,16,16,16,16,16,]),'map_item':([0,2,4,17,21,30,],[17,17,17,17,17,17,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -28,29 +28,26 @@ _lr_productions = [
   ("S' -> docs","S'",1,None,None,None),
   ('docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs','docs',4,'p_docs_init','pureyaml.py',228),
   ('docs -> DOC_START_INDICATOR doc docs','docs',3,'p_docs_init','pureyaml.py',229),
-  ('docs -> DOC_START_INDICATOR INDENT doc docs DEDENT DOC_END_INDICATOR','docs',6,'p_docs_indent','pureyaml.py',242),
-  ('docs -> DOC_START_INDICATOR INDENT doc docs DEDENT','docs',5,'p_docs_indent','pureyaml.py',243),
-  ('docs -> DOC_START_INDICATOR INDENT doc DEDENT DOC_END_INDICATOR','docs',5,'p_docs_indent','pureyaml.py',244),
-  ('docs -> DOC_START_INDICATOR INDENT doc DEDENT','docs',4,'p_docs_indent','pureyaml.py',245),
-  ('docs -> DOC_START_INDICATOR INDENT doc','docs',3,'p_docs_indent','pureyaml.py',246),
   ('docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR','docs',3,'p_docs_last','pureyaml.py',257),
   ('docs -> DOC_START_INDICATOR doc','docs',2,'p_docs_last','pureyaml.py',258),
   ('docs -> doc','docs',1,'p_docs_implicit','pureyaml.py',265),
   ('doc -> collection','doc',1,'p_doc','pureyaml.py',272),
   ('doc -> scalar','doc',1,'p_doc','pureyaml.py',273),
-  ('collection -> sequence','collection',1,'p_collection','pureyaml.py',280),
-  ('collection -> map','collection',1,'p_collection','pureyaml.py',281),
-  ('map -> map_item map','map',2,'p_map_init','pureyaml.py',288),
-  ('map -> map_item','map',1,'p_map_last','pureyaml.py',295),
-  ('map_item -> scalar MAP_INDICATOR scalar','map_item',3,'p_map_item','pureyaml.py',302),
-  ('sequence -> sequence_item sequence','sequence',2,'p_sequence_init','pureyaml.py',309),
-  ('sequence -> sequence_item','sequence',1,'p_sequence_last','pureyaml.py',316),
-  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','pureyaml.py',323),
-  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar_explicit_cast','pureyaml.py',330),
-  ('scalar -> FLOAT','scalar',1,'p_scalar_float','pureyaml.py',338),
-  ('scalar -> INT','scalar',1,'p_scalar_int','pureyaml.py',346),
-  ('scalar -> BOOL','scalar',1,'p_scalar_bool','pureyaml.py',354),
-  ('scalar -> literal_lines','scalar',1,'p_scalar_literal','pureyaml.py',361),
-  ('scalar -> STRING','scalar',1,'p_scalar_string','pureyaml.py',368),
-  ('literal_lines -> LITERAL_LINE','literal_lines',1,'p_literal_lines','pureyaml.py',375),
+  ('doc -> INDENT collection DEDENT','doc',3,'p_doc_indent','pureyaml.py',280),
+  ('doc -> INDENT scalar DEDENT','doc',3,'p_doc_indent','pureyaml.py',281),
+  ('collection -> sequence','collection',1,'p_collection','pureyaml.py',288),
+  ('collection -> map','collection',1,'p_collection','pureyaml.py',289),
+  ('map -> map_item map','map',2,'p_map_init','pureyaml.py',296),
+  ('map -> map_item','map',1,'p_map_last','pureyaml.py',303),
+  ('map_item -> scalar MAP_INDICATOR scalar','map_item',3,'p_map_item','pureyaml.py',310),
+  ('sequence -> sequence_item sequence','sequence',2,'p_sequence_init','pureyaml.py',317),
+  ('sequence -> sequence_item','sequence',1,'p_sequence_last','pureyaml.py',324),
+  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','pureyaml.py',331),
+  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar_explicit_cast','pureyaml.py',338),
+  ('scalar -> FLOAT','scalar',1,'p_scalar_float','pureyaml.py',346),
+  ('scalar -> INT','scalar',1,'p_scalar_int','pureyaml.py',354),
+  ('scalar -> BOOL','scalar',1,'p_scalar_bool','pureyaml.py',362),
+  ('scalar -> literal_lines','scalar',1,'p_scalar_literal','pureyaml.py',369),
+  ('scalar -> STRING','scalar',1,'p_scalar_string','pureyaml.py',376),
+  ('literal_lines -> LITERAL_LINE','literal_lines',1,'p_literal_lines','pureyaml.py',383),
 ]
