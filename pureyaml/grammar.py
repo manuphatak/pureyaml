@@ -12,15 +12,6 @@ from ply.yacc import yacc
 from .nodes import *  # noqa
 
 
-def find_column(token):
-    text = token.lexer.lexdata
-    last_cr = text.rfind('\n', 0, token.lexpos)
-    if last_cr < 0:
-        last_cr = 0
-    column = (token.lexpos - last_cr) + 1
-    return column
-
-
 class TokenList(object):
     tokens = [  # :off
         'DOC_START_INDICATOR',
@@ -221,8 +212,12 @@ class YAMLParser(TokenList):
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
-        kwargs.setdefault('lexer', YAMLLexer.build(debug=self.debug))
-        return self.parser.parsedebug(data, **kwargs)
+        print('')
+        print(self.tokenize(data))
+        kwargs.setdefault('lexer', YAMLLexer.build(debug=True))
+        kwargs.setdefault('debug', True)
+
+        return self.parser.parse(data, **kwargs)
 
     def tokenize(self, data):
         tokens = YAMLLexer.tokenize(data)
@@ -280,7 +275,9 @@ class YAMLParser(TokenList):
     def p_doc_indent(self, p):
         """
         doc : INDENT collection DEDENT
+            | INDENT collection
             | INDENT scalar DEDENT
+            | INDENT scalar
         """
         p[0] = Doc(p[2])
 
@@ -378,6 +375,10 @@ class YAMLParser(TokenList):
             raise SyntaxError('Unknown origin %s' % p)
 
         raise SyntaxError(show_error(p, p.value))
+
+
+class YAMLSyntaxError(SyntaxError):
+    pass
 
 
 def show_error(p, value):

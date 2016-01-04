@@ -43,7 +43,7 @@ def test_doc_with_no_end_of_doc_indicator():
     assert nodes == expected
 
 
-def test_two_docs():
+def test_2_docs():
     text = dedent("""
         ---
         Hello World
@@ -59,7 +59,7 @@ def test_two_docs():
     assert nodes == expected
 
 
-def test_three_docs():
+def test_3_docs():
     text = dedent("""
         ---
         Hello World
@@ -82,7 +82,7 @@ def test_three_docs():
     assert nodes == expected
 
 
-def test_three_docs_no_end_of_doc_indicators():
+def test_3_docs_no_end_of_doc_indicators():
     text = dedent("""
         ---
         Hello World
@@ -125,7 +125,7 @@ def test_scalar_int():
     assert nodes == expected
 
 
-def test_one_item_sequence():
+def test_1_item_sequence():
     text = dedent("""
         ---
         - Hello World
@@ -138,7 +138,7 @@ def test_one_item_sequence():
     assert nodes == expected
 
 
-def test_two_item_sequence():
+def test_2_item_sequence():
     text = dedent("""
         ---
         - Hello World
@@ -155,7 +155,7 @@ def test_two_item_sequence():
     assert nodes == expected
 
 
-def test_three_item_sequence():
+def test_3_item_sequence():
     text = dedent("""
         ---
         - Hello World
@@ -471,7 +471,20 @@ def test_unnecessary_indent_1_item():
     assert nodes == expected
 
 
-@skipif
+def test_unnecessary_indent_1_item_with_comment():
+    text = dedent("""
+        --- # Favorite movies
+            - Casablanca
+        ...
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('Casablanca'),
+    )))  # :on
+    assert nodes == expected
+
+
 def test_unnecessary_indent_2_items():
     text = dedent("""
         --- # Favorite movies
@@ -488,7 +501,6 @@ def test_unnecessary_indent_2_items():
     assert nodes == expected
 
 
-@skipif
 def test_unnecessary_indent_3_items():
     text = dedent("""
         --- # Favorite movies
@@ -507,16 +519,20 @@ def test_unnecessary_indent_3_items():
     assert nodes == expected
 
 
-@skipif
-def test_unnecessary_indent_1_item_no_dedent():
+def test_unnecessary_indent_3_items_with_dedent():
     text = dedent("""
         --- # Favorite movies
             - Casablanca
+            - South by Southwest
+            - The Man Who Wasnt There
+        ...
     """)[1:-1]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
+        Str('South by Southwest'),
+        Str('The Man Who Wasnt There'),
     )))  # :on
 
     assert nodes == expected
@@ -524,9 +540,11 @@ def test_unnecessary_indent_1_item_no_dedent():
 
 @skipif
 def test_unnecessary_indent_3_with_edge_items():
+    # edges: numbers and text, bool 'No' and text, single quote
     text = dedent("""
         --- # Favorite movies
-            - Casablanca
+            - 21 Jump Street
+            - se7en
             - North by Northwest
             - The Man Who Wasn't There
     """)[1:-1]
@@ -542,7 +560,7 @@ def test_unnecessary_indent_3_with_edge_items():
 
 
 @skipif
-def test_scalar_literal_one_line():
+def test_scalar_literal_1_line():
     text = dedent("""
         |
           literal
