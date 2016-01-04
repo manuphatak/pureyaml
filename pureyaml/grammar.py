@@ -8,11 +8,12 @@ from functools import wraps
 
 from .nodes import *  # noqa
 
+
 def strict(*types):
     def decorator(func):
         @wraps(func)
         def wrapper(self, p):
-            return self.func( p)
+            return self.func(p)
 
         return wrapper
 
@@ -284,4 +285,3 @@ class YAMLProductions(TokenList):
         #     literal_lines   : LITERAL_LINE
         #     """
         #     p[0] = p[1]
-
