@@ -22,7 +22,7 @@ class TokenList(object):
         'FLOAT',
         'INT',
         'BOOL',
-        'STRING',
+        'SCALAR',
         'LITERAL_LINE',
         'INDENT',
         'DEDENT',
@@ -109,11 +109,14 @@ class YAMLLexer(TokenList):
     # state: doublequote
     # -------------------------------------------------------------------
 
-    t_doublequote_STRING = r'(?:\\"|[^"])+'
+    t_doublequote_SCALAR = r'(?:\\"|[^"])+'
 
     def t_begin_doublequote(self, t):
         r'(?<!\\)"'
         t.lexer.begin('doublequote')
+        t.type = 'CAST_TYPE'
+        t.value = 'str'
+        return t
 
     def t_doublequote_end(self, t):
         r'(?<!\\)"'
@@ -134,15 +137,18 @@ class YAMLLexer(TokenList):
     # state: singlequote
     # -------------------------------------------------------------------
 
-    t_singlequote_STRING = r"(?:\\'|[^'])+"
+    t_singlequote_SCALAR = r"(?:\\'|[^'])+"
 
     def t_begin_singlequote(self, t):
         r"(?<!\\)'"
-        t.lexer.push_state('singlequote')
+        t.lexer.begin('singlequote')
+        t.type = 'CAST_TYPE'
+        t.value = 'str'
+        return t
 
     def t_singlequote_end(self, t):
         r"(?<!\\)'"
-        t.lexer.pop_state()
+        t.lexer.begin('INITIAL')
 
     #
     # # state: literal
@@ -194,7 +200,7 @@ class YAMLLexer(TokenList):
         r'Yes|No'
         return t
 
-    def t_STRING(self, t):
+    def t_SCALAR(self, t):
         r'(?:\\.)|[\w\ ,!\\]+'
         return t
 
@@ -329,28 +335,28 @@ class YAMLParser(TokenList):
         scalar  : CAST_TYPE scalar
         """
         type_nodes = {'int': Int, 'str': Str, 'float': Float}
-        p[0] = type_nodes[p[1]](p[2].value)
+        p[0] = ScalarDispatch(p[2].value, cast=p[1])
 
     def p_scalar_float(self, p):
         """
         scalar  : FLOAT
         """
 
-        p[0] = Float(p[1])
+        p[0] = ScalarDispatch(p[1], cast='float')
 
     def p_scalar_int(self, p):
         """
         scalar  : INT
         """
 
-        p[0] = Int(p[1])
+        p[0] = ScalarDispatch(p[1], cast='int')
 
     def p_scalar_bool(self, p):
         """
         scalar  : BOOL
         """
-        p[0] = Bool(p[1])
-
+        p[0] = ScalarDispatch(p[1], cast='bool')
+    #
     # def p_scalar_literal(self, p):
     #     """
     #     scalar  : literal_lines
@@ -359,9 +365,9 @@ class YAMLParser(TokenList):
 
     def p_scalar_string(self, p):
         """
-        scalar  : STRING
+        scalar  : SCALAR
         """
-        p[0] = Str(p[1])
+        p[0] = ScalarDispatch(p[1])
 
     # def p_literal_lines(self, p):
     #     """

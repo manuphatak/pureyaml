@@ -5,7 +5,8 @@ nodes
 """
 from __future__ import absolute_import
 
-__all__ = ['Docs', 'Doc', 'Sequence', 'Map', 'Str', 'Int', 'Float', 'Bool']
+
+# __all__ = ['Docs', 'Doc', 'Sequence', 'Map', 'Str', 'Int', 'Float', 'Bool']
 
 
 class Node(object):
@@ -91,3 +92,20 @@ class Bool(Scalar):
             return self_is_true == other_is_true and type(self) == type(other)
         except AttributeError:
             return False
+
+
+class ScalarDispatch(object):
+    map = {  # :off
+        'str': Str,
+        'int': Int,
+        'float': Float,
+        'bool': Bool,
+    }  # :on
+
+    def __new__(cls, value, cast=None):
+        if cast is not None:
+            return cls.map[cast](value)
+
+        return cls.map['str'](value)
+        # return cls.map[type(value).__name__](value)
+        # return object.__new__(cls)

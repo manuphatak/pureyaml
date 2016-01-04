@@ -357,7 +357,6 @@ def test_casting_explicit_str_from_bool():
     assert nodes == expected
 
 
-@skipif
 def test_uses_context_for_disambiguated_str():
     # TODO make this work
     text = dedent("""
