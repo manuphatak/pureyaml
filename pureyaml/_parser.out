@@ -8,10 +8,10 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> docs
-Rule 1     docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs
-Rule 2     docs -> DOC_START_INDICATOR doc docs
-Rule 3     docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR
-Rule 4     docs -> DOC_START_INDICATOR doc
+Rule 1     docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR
+Rule 2     docs -> DOC_START_INDICATOR doc
+Rule 3     docs -> docs DOC_START_INDICATOR doc DOC_END_INDICATOR
+Rule 4     docs -> docs DOC_START_INDICATOR doc
 Rule 5     docs -> doc
 Rule 6     doc -> collection
 Rule 7     doc -> scalar
@@ -21,11 +21,11 @@ Rule 10    doc -> INDENT scalar DEDENT
 Rule 11    doc -> INDENT scalar
 Rule 12    collection -> sequence
 Rule 13    collection -> map
-Rule 14    map -> map_item map
-Rule 15    map -> map_item
+Rule 14    map -> map_item
+Rule 15    map -> map map_item
 Rule 16    map_item -> scalar MAP_INDICATOR scalar
-Rule 17    sequence -> sequence_item sequence
-Rule 18    sequence -> sequence_item
+Rule 17    sequence -> sequence_item
+Rule 18    sequence -> sequence sequence_item
 Rule 19    sequence_item -> SEQUENCE_INDICATOR scalar
 Rule 20    scalar -> CAST_TYPE scalar
 Rule 21    scalar -> SCALAR
@@ -48,11 +48,11 @@ Nonterminals, with rules where they appear
 
 collection           : 6 8 9
 doc                  : 1 2 3 4 5
-docs                 : 1 2 0
-map                  : 13 14
+docs                 : 3 4 0
+map                  : 13 15
 map_item             : 14 15
 scalar               : 7 10 11 16 16 19 20
-sequence             : 12 17
+sequence             : 12 18
 sequence_item        : 17 18
 
 Parsing method: LALR
@@ -60,10 +60,10 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . docs
-    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
-    (2) docs -> . DOC_START_INDICATOR doc docs
-    (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
-    (4) docs -> . DOC_START_INDICATOR doc
+    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (2) docs -> . DOC_START_INDICATOR doc
+    (3) docs -> . docs DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (4) docs -> . docs DOC_START_INDICATOR doc
     (5) docs -> . doc
     (6) doc -> . collection
     (7) doc -> . scalar
@@ -75,10 +75,10 @@ state 0
     (13) collection -> . map
     (20) scalar -> . CAST_TYPE scalar
     (21) scalar -> . SCALAR
-    (17) sequence -> . sequence_item sequence
-    (18) sequence -> . sequence_item
-    (14) map -> . map_item map
-    (15) map -> . map_item
+    (17) sequence -> . sequence_item
+    (18) sequence -> . sequence sequence_item
+    (14) map -> . map_item
+    (15) map -> . map map_item
     (19) sequence_item -> . SEQUENCE_INDICATOR scalar
     (16) map_item -> . scalar MAP_INDICATOR scalar
 
@@ -100,16 +100,20 @@ state 0
 state 1
 
     (13) collection -> map .
+    (15) map -> map . map_item
+    (16) map_item -> . scalar MAP_INDICATOR scalar
+    (20) scalar -> . CAST_TYPE scalar
+    (21) scalar -> . SCALAR
 
     DEDENT          reduce using rule 13 (collection -> map .)
+    DOC_START_INDICATOR reduce using rule 13 (collection -> map .)
     $end            reduce using rule 13 (collection -> map .)
     DOC_END_INDICATOR reduce using rule 13 (collection -> map .)
-    DOC_START_INDICATOR reduce using rule 13 (collection -> map .)
-    INDENT          reduce using rule 13 (collection -> map .)
-    CAST_TYPE       reduce using rule 13 (collection -> map .)
-    SCALAR          reduce using rule 13 (collection -> map .)
-    SEQUENCE_INDICATOR reduce using rule 13 (collection -> map .)
+    CAST_TYPE       shift and go to state 9
+    SCALAR          shift and go to state 7
 
+    scalar                         shift and go to state 14
+    map_item                       shift and go to state 15
 
 state 2
 
@@ -121,10 +125,10 @@ state 2
     (13) collection -> . map
     (20) scalar -> . CAST_TYPE scalar
     (21) scalar -> . SCALAR
-    (17) sequence -> . sequence_item sequence
-    (18) sequence -> . sequence_item
-    (14) map -> . map_item map
-    (15) map -> . map_item
+    (17) sequence -> . sequence_item
+    (18) sequence -> . sequence sequence_item
+    (14) map -> . map_item
+    (15) map -> . map map_item
     (19) sequence_item -> . SEQUENCE_INDICATOR scalar
     (16) map_item -> . scalar MAP_INDICATOR scalar
 
@@ -134,17 +138,15 @@ state 2
 
     map                            shift and go to state 1
     sequence                       shift and go to state 4
-    collection                     shift and go to state 14
-    scalar                         shift and go to state 15
+    collection                     shift and go to state 16
+    scalar                         shift and go to state 17
     sequence_item                  shift and go to state 12
     map_item                       shift and go to state 13
 
 state 3
 
-    (1) docs -> DOC_START_INDICATOR . doc DOC_END_INDICATOR docs
-    (2) docs -> DOC_START_INDICATOR . doc docs
-    (3) docs -> DOC_START_INDICATOR . doc DOC_END_INDICATOR
-    (4) docs -> DOC_START_INDICATOR . doc
+    (1) docs -> DOC_START_INDICATOR . doc DOC_END_INDICATOR
+    (2) docs -> DOC_START_INDICATOR . doc
     (6) doc -> . collection
     (7) doc -> . scalar
     (8) doc -> . INDENT collection DEDENT
@@ -155,10 +157,10 @@ state 3
     (13) collection -> . map
     (20) scalar -> . CAST_TYPE scalar
     (21) scalar -> . SCALAR
-    (17) sequence -> . sequence_item sequence
-    (18) sequence -> . sequence_item
-    (14) map -> . map_item map
-    (15) map -> . map_item
+    (17) sequence -> . sequence_item
+    (18) sequence -> . sequence sequence_item
+    (14) map -> . map_item
+    (15) map -> . map map_item
     (19) sequence_item -> . SEQUENCE_INDICATOR scalar
     (16) map_item -> . scalar MAP_INDICATOR scalar
 
@@ -169,7 +171,7 @@ state 3
 
     map                            shift and go to state 1
     sequence                       shift and go to state 4
-    doc                            shift and go to state 16
+    doc                            shift and go to state 18
     collection                     shift and go to state 8
     scalar                         shift and go to state 10
     sequence_item                  shift and go to state 12
@@ -178,16 +180,16 @@ state 3
 state 4
 
     (12) collection -> sequence .
+    (18) sequence -> sequence . sequence_item
+    (19) sequence_item -> . SEQUENCE_INDICATOR scalar
 
     DEDENT          reduce using rule 12 (collection -> sequence .)
+    DOC_START_INDICATOR reduce using rule 12 (collection -> sequence .)
     $end            reduce using rule 12 (collection -> sequence .)
     DOC_END_INDICATOR reduce using rule 12 (collection -> sequence .)
-    DOC_START_INDICATOR reduce using rule 12 (collection -> sequence .)
-    INDENT          reduce using rule 12 (collection -> sequence .)
-    CAST_TYPE       reduce using rule 12 (collection -> sequence .)
-    SCALAR          reduce using rule 12 (collection -> sequence .)
-    SEQUENCE_INDICATOR reduce using rule 12 (collection -> sequence .)
+    SEQUENCE_INDICATOR shift and go to state 5
 
+    sequence_item                  shift and go to state 19
 
 state 5
 
@@ -198,12 +200,15 @@ state 5
     CAST_TYPE       shift and go to state 9
     SCALAR          shift and go to state 7
 
-    scalar                         shift and go to state 17
+    scalar                         shift and go to state 20
 
 state 6
 
     (0) S' -> docs .
+    (3) docs -> docs . DOC_START_INDICATOR doc DOC_END_INDICATOR
+    (4) docs -> docs . DOC_START_INDICATOR doc
 
+    DOC_START_INDICATOR shift and go to state 21
 
 
 state 7
@@ -212,26 +217,21 @@ state 7
 
     DEDENT          reduce using rule 21 (scalar -> SCALAR .)
     MAP_INDICATOR   reduce using rule 21 (scalar -> SCALAR .)
+    DOC_START_INDICATOR reduce using rule 21 (scalar -> SCALAR .)
     $end            reduce using rule 21 (scalar -> SCALAR .)
     DOC_END_INDICATOR reduce using rule 21 (scalar -> SCALAR .)
-    DOC_START_INDICATOR reduce using rule 21 (scalar -> SCALAR .)
-    INDENT          reduce using rule 21 (scalar -> SCALAR .)
+    SEQUENCE_INDICATOR reduce using rule 21 (scalar -> SCALAR .)
     CAST_TYPE       reduce using rule 21 (scalar -> SCALAR .)
     SCALAR          reduce using rule 21 (scalar -> SCALAR .)
-    SEQUENCE_INDICATOR reduce using rule 21 (scalar -> SCALAR .)
 
 
 state 8
 
     (6) doc -> collection .
 
+    DOC_START_INDICATOR reduce using rule 6 (doc -> collection .)
     $end            reduce using rule 6 (doc -> collection .)
     DOC_END_INDICATOR reduce using rule 6 (doc -> collection .)
-    DOC_START_INDICATOR reduce using rule 6 (doc -> collection .)
-    INDENT          reduce using rule 6 (doc -> collection .)
-    CAST_TYPE       reduce using rule 6 (doc -> collection .)
-    SCALAR          reduce using rule 6 (doc -> collection .)
-    SEQUENCE_INDICATOR reduce using rule 6 (doc -> collection .)
 
 
 state 9
@@ -243,124 +243,129 @@ state 9
     CAST_TYPE       shift and go to state 9
     SCALAR          shift and go to state 7
 
-    scalar                         shift and go to state 18
+    scalar                         shift and go to state 22
 
 state 10
 
     (7) doc -> scalar .
     (16) map_item -> scalar . MAP_INDICATOR scalar
 
+    DOC_START_INDICATOR reduce using rule 7 (doc -> scalar .)
     $end            reduce using rule 7 (doc -> scalar .)
     DOC_END_INDICATOR reduce using rule 7 (doc -> scalar .)
-    DOC_START_INDICATOR reduce using rule 7 (doc -> scalar .)
-    INDENT          reduce using rule 7 (doc -> scalar .)
-    CAST_TYPE       reduce using rule 7 (doc -> scalar .)
-    SCALAR          reduce using rule 7 (doc -> scalar .)
-    SEQUENCE_INDICATOR reduce using rule 7 (doc -> scalar .)
-    MAP_INDICATOR   shift and go to state 19
+    MAP_INDICATOR   shift and go to state 23
 
 
 state 11
 
     (5) docs -> doc .
 
+    DOC_START_INDICATOR reduce using rule 5 (docs -> doc .)
     $end            reduce using rule 5 (docs -> doc .)
 
 
 state 12
 
-    (17) sequence -> sequence_item . sequence
-    (18) sequence -> sequence_item .
-    (17) sequence -> . sequence_item sequence
-    (18) sequence -> . sequence_item
-    (19) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (17) sequence -> sequence_item .
 
-  ! shift/reduce conflict for SEQUENCE_INDICATOR resolved as shift
-    $end            reduce using rule 18 (sequence -> sequence_item .)
-    DOC_END_INDICATOR reduce using rule 18 (sequence -> sequence_item .)
-    DOC_START_INDICATOR reduce using rule 18 (sequence -> sequence_item .)
-    INDENT          reduce using rule 18 (sequence -> sequence_item .)
-    CAST_TYPE       reduce using rule 18 (sequence -> sequence_item .)
-    SCALAR          reduce using rule 18 (sequence -> sequence_item .)
-    DEDENT          reduce using rule 18 (sequence -> sequence_item .)
-    SEQUENCE_INDICATOR shift and go to state 5
+    SEQUENCE_INDICATOR reduce using rule 17 (sequence -> sequence_item .)
+    DOC_START_INDICATOR reduce using rule 17 (sequence -> sequence_item .)
+    $end            reduce using rule 17 (sequence -> sequence_item .)
+    DOC_END_INDICATOR reduce using rule 17 (sequence -> sequence_item .)
+    DEDENT          reduce using rule 17 (sequence -> sequence_item .)
 
-  ! SEQUENCE_INDICATOR [ reduce using rule 18 (sequence -> sequence_item .) ]
-
-    sequence_item                  shift and go to state 12
-    sequence                       shift and go to state 20
 
 state 13
 
-    (14) map -> map_item . map
-    (15) map -> map_item .
-    (14) map -> . map_item map
-    (15) map -> . map_item
-    (16) map_item -> . scalar MAP_INDICATOR scalar
-    (20) scalar -> . CAST_TYPE scalar
-    (21) scalar -> . SCALAR
+    (14) map -> map_item .
 
-  ! shift/reduce conflict for CAST_TYPE resolved as shift
-  ! shift/reduce conflict for SCALAR resolved as shift
-    $end            reduce using rule 15 (map -> map_item .)
-    DEDENT          reduce using rule 15 (map -> map_item .)
-    DOC_END_INDICATOR reduce using rule 15 (map -> map_item .)
-    DOC_START_INDICATOR reduce using rule 15 (map -> map_item .)
-    INDENT          reduce using rule 15 (map -> map_item .)
-    SEQUENCE_INDICATOR reduce using rule 15 (map -> map_item .)
-    CAST_TYPE       shift and go to state 9
-    SCALAR          shift and go to state 7
+    CAST_TYPE       reduce using rule 14 (map -> map_item .)
+    SCALAR          reduce using rule 14 (map -> map_item .)
+    DOC_START_INDICATOR reduce using rule 14 (map -> map_item .)
+    $end            reduce using rule 14 (map -> map_item .)
+    DOC_END_INDICATOR reduce using rule 14 (map -> map_item .)
+    DEDENT          reduce using rule 14 (map -> map_item .)
 
-  ! CAST_TYPE       [ reduce using rule 15 (map -> map_item .) ]
-  ! SCALAR          [ reduce using rule 15 (map -> map_item .) ]
-
-    map                            shift and go to state 21
-    scalar                         shift and go to state 22
-    map_item                       shift and go to state 13
 
 state 14
+
+    (16) map_item -> scalar . MAP_INDICATOR scalar
+
+    MAP_INDICATOR   shift and go to state 23
+
+
+state 15
+
+    (15) map -> map map_item .
+
+    CAST_TYPE       reduce using rule 15 (map -> map map_item .)
+    SCALAR          reduce using rule 15 (map -> map map_item .)
+    DOC_START_INDICATOR reduce using rule 15 (map -> map map_item .)
+    $end            reduce using rule 15 (map -> map map_item .)
+    DOC_END_INDICATOR reduce using rule 15 (map -> map map_item .)
+    DEDENT          reduce using rule 15 (map -> map map_item .)
+
+
+state 16
 
     (8) doc -> INDENT collection . DEDENT
     (9) doc -> INDENT collection .
 
-    DEDENT          shift and go to state 23
+    DEDENT          shift and go to state 24
+    DOC_START_INDICATOR reduce using rule 9 (doc -> INDENT collection .)
     $end            reduce using rule 9 (doc -> INDENT collection .)
     DOC_END_INDICATOR reduce using rule 9 (doc -> INDENT collection .)
-    DOC_START_INDICATOR reduce using rule 9 (doc -> INDENT collection .)
-    INDENT          reduce using rule 9 (doc -> INDENT collection .)
-    CAST_TYPE       reduce using rule 9 (doc -> INDENT collection .)
-    SCALAR          reduce using rule 9 (doc -> INDENT collection .)
-    SEQUENCE_INDICATOR reduce using rule 9 (doc -> INDENT collection .)
 
 
-state 15
+state 17
 
     (10) doc -> INDENT scalar . DEDENT
     (11) doc -> INDENT scalar .
     (16) map_item -> scalar . MAP_INDICATOR scalar
 
-    DEDENT          shift and go to state 24
+    DEDENT          shift and go to state 25
+    DOC_START_INDICATOR reduce using rule 11 (doc -> INDENT scalar .)
     $end            reduce using rule 11 (doc -> INDENT scalar .)
     DOC_END_INDICATOR reduce using rule 11 (doc -> INDENT scalar .)
-    DOC_START_INDICATOR reduce using rule 11 (doc -> INDENT scalar .)
-    INDENT          reduce using rule 11 (doc -> INDENT scalar .)
-    CAST_TYPE       reduce using rule 11 (doc -> INDENT scalar .)
-    SCALAR          reduce using rule 11 (doc -> INDENT scalar .)
-    SEQUENCE_INDICATOR reduce using rule 11 (doc -> INDENT scalar .)
-    MAP_INDICATOR   shift and go to state 19
+    MAP_INDICATOR   shift and go to state 23
 
 
-state 16
+state 18
 
-    (1) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR docs
-    (2) docs -> DOC_START_INDICATOR doc . docs
-    (3) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR
-    (4) docs -> DOC_START_INDICATOR doc .
-    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
-    (2) docs -> . DOC_START_INDICATOR doc docs
-    (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
-    (4) docs -> . DOC_START_INDICATOR doc
-    (5) docs -> . doc
+    (1) docs -> DOC_START_INDICATOR doc . DOC_END_INDICATOR
+    (2) docs -> DOC_START_INDICATOR doc .
+
+    DOC_END_INDICATOR shift and go to state 26
+    DOC_START_INDICATOR reduce using rule 2 (docs -> DOC_START_INDICATOR doc .)
+    $end            reduce using rule 2 (docs -> DOC_START_INDICATOR doc .)
+
+
+state 19
+
+    (18) sequence -> sequence sequence_item .
+
+    SEQUENCE_INDICATOR reduce using rule 18 (sequence -> sequence sequence_item .)
+    DOC_START_INDICATOR reduce using rule 18 (sequence -> sequence sequence_item .)
+    $end            reduce using rule 18 (sequence -> sequence sequence_item .)
+    DOC_END_INDICATOR reduce using rule 18 (sequence -> sequence sequence_item .)
+    DEDENT          reduce using rule 18 (sequence -> sequence sequence_item .)
+
+
+state 20
+
+    (19) sequence_item -> SEQUENCE_INDICATOR scalar .
+
+    SEQUENCE_INDICATOR reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DEDENT          reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_START_INDICATOR reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    $end            reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+    DOC_END_INDICATOR reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
+
+
+state 21
+
+    (3) docs -> docs DOC_START_INDICATOR . doc DOC_END_INDICATOR
+    (4) docs -> docs DOC_START_INDICATOR . doc
     (6) doc -> . collection
     (7) doc -> . scalar
     (8) doc -> . INDENT collection DEDENT
@@ -371,16 +376,13 @@ state 16
     (13) collection -> . map
     (20) scalar -> . CAST_TYPE scalar
     (21) scalar -> . SCALAR
-    (17) sequence -> . sequence_item sequence
-    (18) sequence -> . sequence_item
-    (14) map -> . map_item map
-    (15) map -> . map_item
+    (17) sequence -> . sequence_item
+    (18) sequence -> . sequence sequence_item
+    (14) map -> . map_item
+    (15) map -> . map map_item
     (19) sequence_item -> . SEQUENCE_INDICATOR scalar
     (16) map_item -> . scalar MAP_INDICATOR scalar
 
-    DOC_END_INDICATOR shift and go to state 25
-    $end            reduce using rule 4 (docs -> DOC_START_INDICATOR doc .)
-    DOC_START_INDICATOR shift and go to state 3
     INDENT          shift and go to state 2
     CAST_TYPE       shift and go to state 9
     SCALAR          shift and go to state 7
@@ -388,43 +390,27 @@ state 16
 
     map                            shift and go to state 1
     sequence                       shift and go to state 4
-    doc                            shift and go to state 11
     collection                     shift and go to state 8
     scalar                         shift and go to state 10
-    docs                           shift and go to state 26
+    doc                            shift and go to state 27
     sequence_item                  shift and go to state 12
     map_item                       shift and go to state 13
 
-state 17
-
-    (19) sequence_item -> SEQUENCE_INDICATOR scalar .
-
-    SEQUENCE_INDICATOR reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DEDENT          reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    $end            reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DOC_END_INDICATOR reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    DOC_START_INDICATOR reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    INDENT          reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    CAST_TYPE       reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-    SCALAR          reduce using rule 19 (sequence_item -> SEQUENCE_INDICATOR scalar .)
-
-
-state 18
+state 22
 
     (20) scalar -> CAST_TYPE scalar .
 
     DEDENT          reduce using rule 20 (scalar -> CAST_TYPE scalar .)
     MAP_INDICATOR   reduce using rule 20 (scalar -> CAST_TYPE scalar .)
+    DOC_START_INDICATOR reduce using rule 20 (scalar -> CAST_TYPE scalar .)
     $end            reduce using rule 20 (scalar -> CAST_TYPE scalar .)
     DOC_END_INDICATOR reduce using rule 20 (scalar -> CAST_TYPE scalar .)
-    DOC_START_INDICATOR reduce using rule 20 (scalar -> CAST_TYPE scalar .)
-    INDENT          reduce using rule 20 (scalar -> CAST_TYPE scalar .)
+    SEQUENCE_INDICATOR reduce using rule 20 (scalar -> CAST_TYPE scalar .)
     CAST_TYPE       reduce using rule 20 (scalar -> CAST_TYPE scalar .)
     SCALAR          reduce using rule 20 (scalar -> CAST_TYPE scalar .)
-    SEQUENCE_INDICATOR reduce using rule 20 (scalar -> CAST_TYPE scalar .)
 
 
-state 19
+state 23
 
     (16) map_item -> scalar MAP_INDICATOR . scalar
     (20) scalar -> . CAST_TYPE scalar
@@ -433,141 +419,60 @@ state 19
     CAST_TYPE       shift and go to state 9
     SCALAR          shift and go to state 7
 
-    scalar                         shift and go to state 27
-
-state 20
-
-    (17) sequence -> sequence_item sequence .
-
-    $end            reduce using rule 17 (sequence -> sequence_item sequence .)
-    DOC_END_INDICATOR reduce using rule 17 (sequence -> sequence_item sequence .)
-    DOC_START_INDICATOR reduce using rule 17 (sequence -> sequence_item sequence .)
-    INDENT          reduce using rule 17 (sequence -> sequence_item sequence .)
-    CAST_TYPE       reduce using rule 17 (sequence -> sequence_item sequence .)
-    SCALAR          reduce using rule 17 (sequence -> sequence_item sequence .)
-    SEQUENCE_INDICATOR reduce using rule 17 (sequence -> sequence_item sequence .)
-    DEDENT          reduce using rule 17 (sequence -> sequence_item sequence .)
-
-
-state 21
-
-    (14) map -> map_item map .
-
-    $end            reduce using rule 14 (map -> map_item map .)
-    DEDENT          reduce using rule 14 (map -> map_item map .)
-    DOC_END_INDICATOR reduce using rule 14 (map -> map_item map .)
-    DOC_START_INDICATOR reduce using rule 14 (map -> map_item map .)
-    INDENT          reduce using rule 14 (map -> map_item map .)
-    CAST_TYPE       reduce using rule 14 (map -> map_item map .)
-    SCALAR          reduce using rule 14 (map -> map_item map .)
-    SEQUENCE_INDICATOR reduce using rule 14 (map -> map_item map .)
-
-
-state 22
-
-    (16) map_item -> scalar . MAP_INDICATOR scalar
-
-    MAP_INDICATOR   shift and go to state 19
-
-
-state 23
-
-    (8) doc -> INDENT collection DEDENT .
-
-    $end            reduce using rule 8 (doc -> INDENT collection DEDENT .)
-    DOC_END_INDICATOR reduce using rule 8 (doc -> INDENT collection DEDENT .)
-    DOC_START_INDICATOR reduce using rule 8 (doc -> INDENT collection DEDENT .)
-    INDENT          reduce using rule 8 (doc -> INDENT collection DEDENT .)
-    CAST_TYPE       reduce using rule 8 (doc -> INDENT collection DEDENT .)
-    SCALAR          reduce using rule 8 (doc -> INDENT collection DEDENT .)
-    SEQUENCE_INDICATOR reduce using rule 8 (doc -> INDENT collection DEDENT .)
-
+    scalar                         shift and go to state 28
 
 state 24
 
-    (10) doc -> INDENT scalar DEDENT .
+    (8) doc -> INDENT collection DEDENT .
 
-    $end            reduce using rule 10 (doc -> INDENT scalar DEDENT .)
-    DOC_END_INDICATOR reduce using rule 10 (doc -> INDENT scalar DEDENT .)
-    DOC_START_INDICATOR reduce using rule 10 (doc -> INDENT scalar DEDENT .)
-    INDENT          reduce using rule 10 (doc -> INDENT scalar DEDENT .)
-    CAST_TYPE       reduce using rule 10 (doc -> INDENT scalar DEDENT .)
-    SCALAR          reduce using rule 10 (doc -> INDENT scalar DEDENT .)
-    SEQUENCE_INDICATOR reduce using rule 10 (doc -> INDENT scalar DEDENT .)
+    DOC_START_INDICATOR reduce using rule 8 (doc -> INDENT collection DEDENT .)
+    $end            reduce using rule 8 (doc -> INDENT collection DEDENT .)
+    DOC_END_INDICATOR reduce using rule 8 (doc -> INDENT collection DEDENT .)
 
 
 state 25
 
-    (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR . docs
-    (3) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .
-    (1) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR docs
-    (2) docs -> . DOC_START_INDICATOR doc docs
-    (3) docs -> . DOC_START_INDICATOR doc DOC_END_INDICATOR
-    (4) docs -> . DOC_START_INDICATOR doc
-    (5) docs -> . doc
-    (6) doc -> . collection
-    (7) doc -> . scalar
-    (8) doc -> . INDENT collection DEDENT
-    (9) doc -> . INDENT collection
-    (10) doc -> . INDENT scalar DEDENT
-    (11) doc -> . INDENT scalar
-    (12) collection -> . sequence
-    (13) collection -> . map
-    (20) scalar -> . CAST_TYPE scalar
-    (21) scalar -> . SCALAR
-    (17) sequence -> . sequence_item sequence
-    (18) sequence -> . sequence_item
-    (14) map -> . map_item map
-    (15) map -> . map_item
-    (19) sequence_item -> . SEQUENCE_INDICATOR scalar
-    (16) map_item -> . scalar MAP_INDICATOR scalar
+    (10) doc -> INDENT scalar DEDENT .
 
-    $end            reduce using rule 3 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
-    DOC_START_INDICATOR shift and go to state 3
-    INDENT          shift and go to state 2
-    CAST_TYPE       shift and go to state 9
-    SCALAR          shift and go to state 7
-    SEQUENCE_INDICATOR shift and go to state 5
+    DOC_START_INDICATOR reduce using rule 10 (doc -> INDENT scalar DEDENT .)
+    $end            reduce using rule 10 (doc -> INDENT scalar DEDENT .)
+    DOC_END_INDICATOR reduce using rule 10 (doc -> INDENT scalar DEDENT .)
 
-    map                            shift and go to state 1
-    sequence                       shift and go to state 4
-    doc                            shift and go to state 11
-    collection                     shift and go to state 8
-    scalar                         shift and go to state 10
-    docs                           shift and go to state 28
-    sequence_item                  shift and go to state 12
-    map_item                       shift and go to state 13
 
 state 26
 
-    (2) docs -> DOC_START_INDICATOR doc docs .
+    (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .
 
-    $end            reduce using rule 2 (docs -> DOC_START_INDICATOR doc docs .)
+    DOC_START_INDICATOR reduce using rule 1 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
+    $end            reduce using rule 1 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR .)
 
 
 state 27
+
+    (3) docs -> docs DOC_START_INDICATOR doc . DOC_END_INDICATOR
+    (4) docs -> docs DOC_START_INDICATOR doc .
+
+    DOC_END_INDICATOR shift and go to state 29
+    DOC_START_INDICATOR reduce using rule 4 (docs -> docs DOC_START_INDICATOR doc .)
+    $end            reduce using rule 4 (docs -> docs DOC_START_INDICATOR doc .)
+
+
+state 28
 
     (16) map_item -> scalar MAP_INDICATOR scalar .
 
     CAST_TYPE       reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
     SCALAR          reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
-    $end            reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
     DOC_END_INDICATOR reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
     DOC_START_INDICATOR reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
-    INDENT          reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
-    SEQUENCE_INDICATOR reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
+    $end            reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
     DEDENT          reduce using rule 16 (map_item -> scalar MAP_INDICATOR scalar .)
 
 
-state 28
+state 29
 
-    (1) docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .
+    (3) docs -> docs DOC_START_INDICATOR doc DOC_END_INDICATOR .
 
-    $end            reduce using rule 1 (docs -> DOC_START_INDICATOR doc DOC_END_INDICATOR docs .)
+    DOC_START_INDICATOR reduce using rule 3 (docs -> docs DOC_START_INDICATOR doc DOC_END_INDICATOR .)
+    $end            reduce using rule 3 (docs -> docs DOC_START_INDICATOR doc DOC_END_INDICATOR .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for SEQUENCE_INDICATOR in state 12 resolved as shift
-WARNING: shift/reduce conflict for CAST_TYPE in state 13 resolved as shift
-WARNING: shift/reduce conflict for SCALAR in state 13 resolved as shift

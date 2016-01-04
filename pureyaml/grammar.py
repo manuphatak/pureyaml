@@ -81,7 +81,6 @@ class YAMLTokens(TokenList):
 
     # state: doublequote
     # -------------------------------------------------------------------
-
     t_doublequote_SCALAR = r'(?:\\"|[^"])+'
 
     def t_begin_doublequote(self, t):
@@ -169,18 +168,6 @@ class YAMLTokens(TokenList):
 class YAMLProductions(TokenList):
     # PARSER
     # ===================================================================
-    def p_docs_init(self, p):
-        """
-        docs    : DOC_START_INDICATOR doc DOC_END_INDICATOR docs
-                | DOC_START_INDICATOR doc docs
-        """
-
-        if len(p) == 5:
-            docs = p[4]
-        else:
-            docs = p[3]
-
-        p[0] = Docs(p[2]) + docs
 
     def p_docs_last(self, p):
         """
@@ -189,7 +176,14 @@ class YAMLProductions(TokenList):
         """
         p[0] = Docs(p[2])
 
-    def p_docs_implicit(self, p):
+    def p_docs_init(self, p):
+        """
+        docs    : docs DOC_START_INDICATOR doc DOC_END_INDICATOR
+                | docs DOC_START_INDICATOR doc
+        """
+        p[0] = p[1] + Docs(p[3])
+
+    def p_docs_implicit_single(self, p):
         """
         docs    : doc
         """
@@ -218,17 +212,17 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1]
 
-    def p_map_init(self, p):
-        """
-        map : map_item map
-        """
-        p[0] = Map(p[1]) + p[2]
-
     def p_map_last(self, p):
         """
         map : map_item
         """
         p[0] = Map(p[1])
+
+    def p_map_init(self, p):
+        """
+        map : map map_item
+        """
+        p[0] = p[1] + Map(p[2])
 
     def p_map_item(self, p):
         """
@@ -236,17 +230,17 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1], p[3]
 
-    def p_sequence_init(self, p):
-        """
-        sequence    : sequence_item sequence
-        """
-        p[0] = Sequence(p[1]) + p[2]
-
     def p_sequence_last(self, p):
         """
         sequence    : sequence_item
         """
         p[0] = Sequence(p[1])
+
+    def p_sequence_init(self, p):
+        """
+        sequence    : sequence sequence_item
+        """
+        p[0] = p[1] + Sequence(p[2])
 
     def p_sequence_item(self, p):
         """
