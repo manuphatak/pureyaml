@@ -189,6 +189,12 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1]
 
+    def p_doc_indent(self, p):
+        """
+        doc : INDENT doc DEDENT
+        """
+        p[0] = p[2]
+
     def p_doc(self, p):
         """
         doc : collection
@@ -196,14 +202,6 @@ class YAMLProductions(TokenList):
         """
         p[0] = Doc(p[1])
 
-    def p_doc_indent(self, p):
-        """
-        doc : INDENT collection DEDENT
-            | INDENT collection
-            | INDENT scalar DEDENT
-            | INDENT scalar
-        """
-        p[0] = Doc(p[2])
 
     def p_collection(self, p):
         """
@@ -211,6 +209,9 @@ class YAMLProductions(TokenList):
                     | map
         """
         p[0] = p[1]
+
+        if not isinstance(p[0], Collection):
+            raise TypeError
 
     def p_map_last(self, p):
         """

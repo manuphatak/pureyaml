@@ -23,7 +23,7 @@ def test_basic_single_doc():
         ---
         Hello World
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
@@ -35,7 +35,7 @@ def test_doc_with_no_end_of_doc_indicator():
     text = dedent("""
         ---
         Hello World
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
@@ -51,7 +51,7 @@ def test_2_docs():
         ---
         Foo Bar
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')), Doc(Str('Foo Bar')))
@@ -70,7 +70,7 @@ def test_3_docs():
         ---
         More Docs
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(  # :off
@@ -90,7 +90,7 @@ def test_3_docs_no_end_of_doc_indicators():
         Foo Bar
         ---
         More Docs
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(  # :off
@@ -105,7 +105,7 @@ def test_3_docs_no_end_of_doc_indicators():
 def test_implicit_doc():
     text = dedent("""
         Hello World
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('Hello World'))
@@ -118,7 +118,7 @@ def test_scalar_int():
         ---
         123
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Int(123)))
@@ -130,7 +130,7 @@ def test_1_item_sequence():
         ---
         - Hello World
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(Str('Hello World', ))))
@@ -144,7 +144,7 @@ def test_2_item_sequence():
         - Hello World
         - Foo Bar
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -162,7 +162,7 @@ def test_3_item_sequence():
         - Foo Bar
         - More Sequence Items
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -179,7 +179,7 @@ def test_1_item_map():
         ---
         Hello: World
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -195,7 +195,7 @@ def test_2_item_map():
         Hello: World
         Foo: Bar
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -213,7 +213,7 @@ def test_3_item_map():
         Foo: Bar
         More: Map Items
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -228,7 +228,7 @@ def test_3_item_map():
 def test_casting_implicit_int():
     text = dedent("""
         123
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Int(123))
@@ -239,7 +239,7 @@ def test_casting_implicit_int():
 def test_casting_doublequoted_string():
     text = dedent("""
         "123"
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('123'))
@@ -250,7 +250,7 @@ def test_casting_doublequoted_string():
 def test_casting_doublequoted_string_with_escaped_char():
     text = dedent(r"""
         "She said, \"I Like turtles\" and she meant it!"
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('She said, \\"I Like turtles\\" and she meant it!'))
@@ -261,7 +261,7 @@ def test_casting_doublequoted_string_with_escaped_char():
 def test_casting_singlequoted_string():
     text = dedent("""
         '123'
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('123'))
@@ -272,7 +272,7 @@ def test_casting_singlequoted_string():
 def test_casting_singlequoted_string_with_escaped_char():
     text = dedent(r"""
         'She said, \'I Like turtles\' and she meant it!'
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str("She said, \\'I Like turtles\\' and she meant it!"))
@@ -283,7 +283,7 @@ def test_casting_singlequoted_string_with_escaped_char():
 def test_casting_implicit_float():
     text = dedent("""
         123.0
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Float(123.0))
@@ -294,7 +294,7 @@ def test_casting_implicit_float():
 def test_casting_implicit_float_no_leading_digit():
     text = dedent("""
         .123
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Float(.123))
@@ -305,7 +305,7 @@ def test_casting_implicit_float_no_leading_digit():
 def test_casting_explicit_float():
     text = dedent("""
         !!float 123
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Float(123))
@@ -316,7 +316,7 @@ def test_casting_explicit_float():
 def test_casting_explicit_str():
     text = dedent("""
         !!str 123
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str(123))
@@ -327,7 +327,7 @@ def test_casting_explicit_str():
 def test_casting_implicit_bool_true():
     text = dedent("""
         Yes
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Bool(True))
@@ -338,7 +338,7 @@ def test_casting_implicit_bool_true():
 def test_casting_implicit_bool_false():
     text = dedent("""
         No
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Bool(False))
@@ -349,7 +349,7 @@ def test_casting_implicit_bool_false():
 def test_casting_explicit_str_from_bool():
     text = dedent("""
         !!str Yes
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('Yes'))
@@ -361,7 +361,7 @@ def test_uses_context_for_disambiguated_str():
     # TODO make this work
     text = dedent("""
         Yes we have No bananas
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('Yes we have No bananas'))
@@ -372,7 +372,7 @@ def test_uses_context_for_disambiguated_str():
 def test_ignore_comment():
     text = dedent("""
         123 # an integer
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Int(123))
@@ -386,7 +386,7 @@ def test_map_with_scalars_and_comments():
         a: 123                     # an integer
         b: "123"                   # a string, disambiguated by quotes
         c: 123.0                   # a float
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -403,7 +403,7 @@ def test_different_map_with_bools_and_comments():
         ---
         f: !!str Yes               # a string via explicit type
         g: Yes                     # a boolean True (yaml1.1), string "Yes" (yaml1.2)
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -425,7 +425,7 @@ def test_longer_map_with_scalars_and_comments():
         f: !!str Yes               # a string via explicit type
         g: Yes                     # a boolean True (yaml1.1), string "Yes" (yaml1.2)
         h: Yes we have No bananas  # a string, "Yes" and "No" disambiguated by context.
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -448,7 +448,7 @@ def test_unnecessary_indent_scalar_item():
         ---
             123
         ...
-    """)[1:-1]
+    """)[1:]
     nodes = parser.parse(text)
     expected = Docs(Doc(Int('123')))
 
@@ -460,7 +460,7 @@ def test_unnecessary_indent_1_item():
         ---
             - Casablanca
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -474,7 +474,7 @@ def test_unnecessary_indent_1_item_with_comment():
         --- # Favorite movies
             - Casablanca
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -488,7 +488,7 @@ def test_unnecessary_indent_2_items():
         --- # Favorite movies
             - Casablanca
             - South by Southwest
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -505,7 +505,7 @@ def test_unnecessary_indent_3_items():
             - Casablanca
             - South by Southwest
             - The Man Who Wasnt There
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -524,7 +524,7 @@ def test_unnecessary_indent_3_items_with_dedent():
             - South by Southwest
             - The Man Who Wasnt There
         ...
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -564,7 +564,7 @@ def test_scalar_types():
         # Also floats b: -.Inf
         Also floats c: +.INF
         Also floats d: .NAN
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
@@ -619,7 +619,7 @@ def test_unnecessary_indent_3_with_edge_items():
             - se7en
             - North by Northwest
             - The Man Who Wasn't There
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
@@ -636,7 +636,7 @@ def test_scalar_literal_1_line():
     text = dedent("""
         |
           literal
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Doc(Str('literal'))
@@ -650,7 +650,7 @@ def test_scalar_literal_ascii_art():
         --- |
           \//||\/||
           // ||  ||__
-    """)[1:-1]
+    """)[1:]
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
