@@ -202,7 +202,6 @@ class YAMLProductions(TokenList):
         """
         p[0] = Doc(p[1])
 
-
     def p_collection(self, p):
         """
         collection  : sequence
