@@ -19,9 +19,9 @@ class TokenList(object):
         'SEQUENCE_INDICATOR',
         'MAP_INDICATOR',
         'CAST_TYPE',
-        'FLOAT',
-        'INT',
-        'BOOL',
+        # 'FLOAT',
+        # 'INT',
+        # 'BOOL',
         'SCALAR',
         'LITERAL_LINE',
         'INDENT',
@@ -127,7 +127,7 @@ class YAMLLexer(TokenList):
     t_commentstate_ignore_COMMENT = r'[^\n]+'
 
     def t_begin_commentstate(self, t):
-        r'\s*[\#]\ ?'
+        r'\s*\#\ ?'
         t.lexer.begin('commentstate')
 
     def t_commentstate_end(self, t):
@@ -188,20 +188,20 @@ class YAMLLexer(TokenList):
 
     t_ignore_EOL = r'\s*\n'
 
-    def t_FLOAT(self, t):
-        r'\d*\.\d+'
-        return t
-
-    def t_INT(self, t):
-        r'\d+'
-        return t
-
-    def t_BOOL(self, t):
-        r'Yes|No'
-        return t
+    # def t_FLOAT(self, t):
+    #     r'\d*\.\d+'
+    #     return t
+    #
+    # def t_INT(self, t):
+    #     r'\d+'
+    #     return t
+    #
+    # def t_BOOL(self, t):
+    #     r'Yes|No'
+    #     return t
 
     def t_SCALAR(self, t):
-        r'(?:\\.)|[\w\ ,!\\]+'
+        r'(?:\\.)|[^\n\#\:\-]+'
         return t
 
 
@@ -334,27 +334,27 @@ class YAMLParser(TokenList):
         """
         scalar  : CAST_TYPE scalar
         """
-        p[0] = ScalarDispatch(p[2].value, cast=p[1])
+        p[0] = ScalarDispatch(p[2].raw_value, cast=p[1])
 
-    def p_scalar_float(self, p):
-        """
-        scalar  : FLOAT
-        """
-
-        p[0] = ScalarDispatch(p[1], cast='float')
-
-    def p_scalar_int(self, p):
-        """
-        scalar  : INT
-        """
-
-        p[0] = ScalarDispatch(p[1], cast='int')
-
-    def p_scalar_bool(self, p):
-        """
-        scalar  : BOOL
-        """
-        p[0] = ScalarDispatch(p[1], cast='bool')
+    # def p_scalar_float(self, p):
+    #     """
+    #     scalar  : FLOAT
+    #     """
+    #
+    #     p[0] = ScalarDispatch(p[1], cast='float')
+    #
+    # def p_scalar_int(self, p):
+    #     """
+    #     scalar  : INT
+    #     """
+    #
+    #     p[0] = ScalarDispatch(p[1], cast='int')
+    #
+    # def p_scalar_bool(self, p):
+    #     """
+    #     scalar  : BOOL
+    #     """
+    #     p[0] = ScalarDispatch(p[1], cast='bool')
 
     #
     # def p_scalar_literal(self, p):
