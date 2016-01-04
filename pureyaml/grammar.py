@@ -334,7 +334,6 @@ class YAMLParser(TokenList):
         """
         scalar  : CAST_TYPE scalar
         """
-        type_nodes = {'int': Int, 'str': Str, 'float': Float}
         p[0] = ScalarDispatch(p[2].value, cast=p[1])
 
     def p_scalar_float(self, p):
@@ -356,6 +355,7 @@ class YAMLParser(TokenList):
         scalar  : BOOL
         """
         p[0] = ScalarDispatch(p[1], cast='bool')
+
     #
     # def p_scalar_literal(self, p):
     #     """
