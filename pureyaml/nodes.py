@@ -8,8 +8,10 @@ from __future__ import absolute_import
 import re
 from functools import partial
 
-
 # __all__ = ['Docs', 'Doc', 'Sequence', 'Map', 'Str', 'Int', 'Float', 'Bool']
+from math import isnan
+
+
 class Node(object):
     def __init__(self, value, **kwargs):
         self.raw_value = value
@@ -111,6 +113,24 @@ class Int(Scalar):
 class Float(Scalar):
     type = float
 
+    def init_value(self, value, *args, **kwargs):
+        # Guard, inf and nan
+        if isinstance(value, str):
+            value_lower = value.lower().replace('.', '')
+            if value_lower.endswith('inf'):
+                return self.type(value_lower)
+            if value_lower.endswith('nan'):
+                return self.type(value_lower)
+
+        return self.type(value)
+
+    def __eq__(self, other):
+        # Guard, we're not doing math.
+        if isnan(self.value) and isnan(other.value):
+            return True
+
+        return super(Float, self).__eq__(other)
+
 
 class Bool(Scalar):
     type = bool
@@ -147,8 +167,11 @@ class ScalarDispatch(object):
         | (?P<int10> [-+]? [0-9]+ $)
         | (?P<int8> 0o [0-7]+ $)
         | (?P<int16> 0x [0-9a-fA-F]+ $)
-        | (?P<float>[-+]? (?: [0-9]* \. [0-9]+ (?: [eE] [-+]? [0-9]+ )? $|
-                              [0-9]* \.? [0-9]* [eE] [-+]? [0-9]+ ) $)
+        | (?P<float>[-+]? (?:
+            (?: [0-9]* \. [0-9]+ |  [0-9]+ \. [0-9]* )
+                (?: [eE] [-+]? [0-9]+ )? $|
+            [0-9]* \.? [0-9]* [eE] [-+]? [0-9]+ ) $
+          )
         | (?P<infinity> [-+]? (?: \.inf | \.Inf | \.INF) $)
         | (?P<nan> [-+]? (?: \.nan | \.NaN | \.NAN) $)
         | (?P<str> .+ $)

@@ -11,8 +11,8 @@ from textwrap import dedent
 
 from pytest import mark
 
-from pureyaml.pureyaml import YAMLParser
 from pureyaml.nodes import *  # noqa
+from pureyaml.pureyaml import YAMLParser
 
 skipif = mark.skipif
 parser = YAMLParser(debug=True)
@@ -415,7 +415,6 @@ def test_different_map_with_bools_and_comments():
 
 
 def test_longer_map_with_scalars_and_comments():
-    # TODO uncomment H
     text = dedent("""
         ---
         a: 123                     # an integer
@@ -425,7 +424,7 @@ def test_longer_map_with_scalars_and_comments():
         e: !!str 123               # a string, disambiguated by explicit type
         f: !!str Yes               # a string via explicit type
         g: Yes                     # a boolean True (yaml1.1), string "Yes" (yaml1.2)
-        # h: Yes we have No bananas  # a string, "Yes" and "No" disambiguated by context.
+        h: Yes we have No bananas  # a string, "Yes" and "No" disambiguated by context.
     """)[1:-1]
 
     nodes = parser.parse(text)
@@ -437,6 +436,7 @@ def test_longer_map_with_scalars_and_comments():
         (Str('e'), Str(123)),
         (Str('f'), Str('Yes')),
         (Str('g'), Bool('Yes')),
+        (Str('h'), Str('Yes we have No bananas')),
 
     )))  # :on
 
@@ -466,7 +466,6 @@ def test_unnecessary_indent_1_item():
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
-    print(parser.tokenize(text))
     assert nodes == expected
 
 
@@ -535,6 +534,80 @@ def test_unnecessary_indent_3_items_with_dedent():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_scalar_types():
+    # TODO uncomment lines
+    text = dedent("""
+        ---
+        A null: null
+        # Also a null: # Empty
+        # Not a null: ""
+        Booleans a: true
+        Booleans b: True
+        Booleans c: false
+        Booleans d: FALSE
+        Booleans e: Yes
+        Booleans f: YES
+        Booleans g: No
+        Booleans h: no
+        Integers a: 0
+        Integers b: 0o7
+        Integers c: 0x3A
+        # Integers d: -19
+        Floats a: 0.
+        # Floats b: -0.0
+        Floats c: .5
+        Floats d: +12e03
+        # Floats d: -2E+05
+        Also floats a: .inf
+        # Also floats b: -.Inf
+        Also floats c: +.INF
+        Also floats d: .NAN
+    """)[1:-1]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('A null'), Null('null')),
+        # (Str('Also a null'), Null(None)),
+        # (Str('Not a null'), Str('')),
+        (Str('Booleans a'), Bool('true')),
+        (Str('Booleans b'), Bool('True')),
+        (Str('Booleans c'), Bool('false')),
+        (Str('Booleans d'), Bool('False')),
+        (Str('Booleans e'), Bool('Yes')),
+        (Str('Booleans f'), Bool('YES')),
+        (Str('Booleans g'), Bool('No')),
+        (Str('Booleans h'), Bool('no')),
+        (Str('Integers a'), Int(0)),
+        (Str('Integers b'), Int(0o7)),
+        (Str('Integers c'), Int(0x3A)),
+        # (Str('Integers d'), Int(-19)),
+        (Str('Floats a'), Float(0.)),
+        # (Str('Floats b'), Float(-0.0)),
+        (Str('Floats c'), Float(.5)),
+        (Str('Floats d'), Float(+12e03)),
+        # (Str('Floats e'), Float(-2E+05)),
+        (Str('Also floats a'), Float('.inf')),
+        # (Str('Also floats b'), Float('-.Inf')),
+        (Str('Also floats c'), Float('+.INF')),
+        (Str('Also floats d'), Float('.nan')),
+    )))  # :on
+
+    def diff():
+        actual_map, expected_map = nodes.value[0].value[0].value, expected.value[0].value[0].value
+        for (a_k, a_v), (e_k, e_v) in zip(actual_map, expected_map):
+
+            if a_k.value != e_k.value:
+                print('Keys mismatched')
+                print('%s:%s' % (a_k, e_k))
+                print('%s:%s' % (a_k.value, e_k.value))
+            if a_v.value != e_v.value:
+                print('Values mismatched')
+                print('%s:%s' % (a_v, e_v))
+                print('%s:%s' % (a_v.value, e_v.value))
+
+    assert nodes == expected, diff()
 
 
 @skipif
