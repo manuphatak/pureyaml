@@ -30,7 +30,7 @@ class YAMLLexer(YAMLTokens):
             yield token
 
     def t_ANY_error(self, t):
-        raise SyntaxError(show_error(t, t.value[0]))
+        raise YAMLSyntaxError(t, t.value[0])
 
 
 class YAMLParser(YAMLProductions):
@@ -62,31 +62,32 @@ class YAMLParser(YAMLProductions):
         if p is None:
             raise SyntaxError('Unknown origin %s' % p)
 
-        raise SyntaxError(show_error(p, p.value))
+        raise YAMLSyntaxError(p)
 
 
 class YAMLSyntaxError(SyntaxError):
-    pass
+    def __init__(self, p, value=None):
+        if value is None:
+            value = p.value
 
+        self.value = repr(value)[1:-1]
+        self.token = p
+        self.offset = p.lexpos
+        self.input = repr(p.lexer.lexdata)[1:-1]
 
-def show_error(p, value):
-    # setup
-    show_chars = 30
-    preview_start = max(0, p.lexpos - show_chars)
-    preview_end = min(len(p.lexer.lexdata), p.lexpos + show_chars + 1)
-    error_length = max(1, len(repr(value)[1:-1]))
-    error_end = p.lexpos + error_length
-    # line 3
-    pre_error_text = p.lexer.lexdata[preview_start:p.lexpos]
-    cur_error_text = p.lexer.lexdata[p.lexpos:error_end]
-    suf_error_text = p.lexer.lexdata[error_end + 1:preview_end]
+    def msg_lines(self):
+        yield 'unexpected: %r\n' % self.token
 
-    # line 4
-    width = len(repr(pre_error_text + cur_error_text)[1:-1])
-    error_lines = [  # :off
-        '\n',
-        'Unexpected value: %r:%r' % (p.type, value),
-        repr(pre_error_text + cur_error_text + suf_error_text)[1:-1],
-        ('^' * error_length).rjust(width, ' '),
-    ]  # :on
-    return '\n'.join(error_lines)
+        show_chars = 30
+        preview_start = max(0, self.offset - show_chars)
+        preview_end = min(len(self.input), len(self.input) + show_chars + 1)
+
+        yield self.input[preview_start:preview_end]
+
+        error_length = max(1, len(self.value))
+        pointer = '^' * error_length
+        width = self.offset + len(self.value)
+        yield pointer.rjust(width)
+
+    def __str__(self):
+        return '\n'.join(self.msg_lines())

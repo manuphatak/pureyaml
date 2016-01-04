@@ -4,7 +4,19 @@ pureyaml
 """
 from __future__ import absolute_import
 
+from functools import wraps
+
 from .nodes import *  # noqa
+
+def strict(*types):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, p):
+            return self.func( p)
+
+        return wrapper
+
+    return decorator
 
 
 class TokenList(object):
@@ -202,6 +214,7 @@ class YAMLProductions(TokenList):
         """
         p[0] = Doc(p[1])
 
+    # @strict(Collection)
     def p_collection(self, p):
         """
         collection  : sequence
@@ -271,3 +284,4 @@ class YAMLProductions(TokenList):
         #     literal_lines   : LITERAL_LINE
         #     """
         #     p[0] = p[1]
+
