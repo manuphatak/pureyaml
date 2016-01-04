@@ -11,10 +11,11 @@ from textwrap import dedent
 
 from pytest import mark
 
+from pureyaml.grammar import YAMLParser
 from pureyaml.nodes import *  # noqa
-from pureyaml.pureyaml import parser
 
-skip = mark.skipif
+skipif = mark.skipif
+parser = YAMLParser(debug=True)
 
 
 def test_basic_single_doc():
@@ -356,7 +357,7 @@ def test_casting_explicit_str_from_bool():
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_uses_context_for_disambiguated_str():
     # TODO make this work
     text = dedent("""
@@ -389,11 +390,11 @@ def test_map_with_scalars_and_comments():
     """)[1:-1]
 
     nodes = parser.parse(text)
-    expected = Doc(Map(  # :off
+    expected = Docs(Doc(Map(  # :off
         (Str('a'), Int(123)),
         (Str('b'), Str(123)),
         (Str('c'), Float(123))
-    ))  # :on
+    )))  # :on
 
     assert nodes == expected
 
@@ -406,10 +407,10 @@ def test_different_map_with_bools_and_comments():
     """)[1:-1]
 
     nodes = parser.parse(text)
-    expected = Doc(Map(  # :off
+    expected = Docs(Doc(Map(  # :off
         (Str('f'), Str('Yes')),
         (Str('g'), Bool('Yes')),
-    ))  # :on
+    )))  # :on
 
     assert nodes == expected
 
@@ -429,7 +430,7 @@ def test_longer_map_with_scalars_and_comments():
     """)[1:-1]
 
     nodes = parser.parse(text)
-    expected = Doc(Map(  # :off
+    expected = Docs(Doc(Map(  # :off
         (Str('a'), Int(123)),
         (Str('b'), Str(123)),
         (Str('c'), Float(123)),
@@ -438,7 +439,7 @@ def test_longer_map_with_scalars_and_comments():
         (Str('f'), Str('Yes')),
         (Str('g'), Bool('Yes')),
 
-    ))  # :on
+    )))  # :on
 
     assert nodes == expected
 
@@ -449,7 +450,6 @@ def test_unnecessary_indent_scalar_item():
             123
         ...
     """)[1:-1]
-    parser.restart()
     nodes = parser.parse(text)
     expected = Docs(Doc(Int('123')))
 
@@ -467,11 +467,11 @@ def test_unnecessary_indent_1_item():
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
-
+    print(parser.tokenize(text))
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_unnecessary_indent_2_items():
     text = dedent("""
         --- # Favorite movies
@@ -488,7 +488,7 @@ def test_unnecessary_indent_2_items():
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_unnecessary_indent_3_items():
     text = dedent("""
         --- # Favorite movies
@@ -507,7 +507,7 @@ def test_unnecessary_indent_3_items():
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_unnecessary_indent_1_item_no_dedent():
     text = dedent("""
         --- # Favorite movies
@@ -522,7 +522,7 @@ def test_unnecessary_indent_1_item_no_dedent():
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_unnecessary_indent_3_with_edge_items():
     text = dedent("""
         --- # Favorite movies
@@ -541,7 +541,7 @@ def test_unnecessary_indent_3_with_edge_items():
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_scalar_literal_one_line():
     text = dedent("""
         |
@@ -554,7 +554,7 @@ def test_scalar_literal_one_line():
     assert nodes == expected
 
 
-@skip
+@skipif
 def test_scalar_literal_ascii_art():
     text = dedent("""
         --- |
