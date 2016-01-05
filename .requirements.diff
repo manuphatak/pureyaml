@@ -1,41 +1,36 @@
 diff --git i/requirements.txt w/requirements.txt
-index 2d64d74..5028f4e 100644
+index 5028f4e..09634f2 100644
 --- i/requirements.txt
 +++ w/requirements.txt
-@@ -4,5 +4,6 @@
+@@ -4,6 +4,6 @@
  #
  #    pip-compile requirements.in
  #
-+future==0.15.2
-+ply==3.8
++-e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply
+ future==0.15.2
+-ply==3.8
  pyyaml==3.11
--six==1.10.0
 diff --git i/requirements_dev.txt w/requirements_dev.txt
-index 851411c..e81338b 100644
+index e81338b..9f6ad1d 100644
 --- i/requirements_dev.txt
 +++ w/requirements_dev.txt
-@@ -17,6 +17,7 @@ enum34==1.1.2             # via cryptography
- first==2.0.1              # via pip-tools
- flake8==2.5.1
- funcsigs==0.4             # via mock
-+future==0.15.2
- idna==2.0                 # via cryptography
- ipaddress==1.0.16         # via cryptography
- ipdb==0.8.1
-@@ -34,6 +35,7 @@ pexpect==4.0.1            # via ipython
+@@ -4,9 +4,10 @@
+ #
+ #    pip-compile requirements_dev.in
+ #
++-e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply
+ alabaster==0.7.7          # via sphinx
+ argh==0.26.1              # via watchdog
+-babel==2.1.1              # via sphinx
++babel==2.2.0              # via sphinx
+ bumpversion==0.5.3
+ click==6.2                # via pip-tools
+ coverage==4.0.3
+@@ -35,7 +36,6 @@ pexpect==4.0.1            # via ipython
  pickleshare==0.5          # via ipython
  pip-tools==1.4.2
  pluggy==0.3.1             # via tox
-+ply==3.8
+-ply==3.8
  ptyprocess==0.5           # via pexpect
  py==1.4.31                # via pytest, tox
  pyasn1==0.1.9             # via cryptography
-@@ -44,7 +46,7 @@ pytz==2015.7              # via babel
- pyyaml==3.11
- restructuredtext-lint==0.14.0
- simplegeneric==0.8.1      # via ipython
--six==1.10.0
-+six==1.10.0               # via cryptography, mock, pip-tools, sphinx
- snowballstemmer==1.2.1    # via sphinx
- sphinx-rtd-theme==0.1.9   # via sphinx
- sphinx==1.3.3

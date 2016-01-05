@@ -2,4 +2,4 @@
 # -------------------------------------
 future
 PyYAML
-ply
+-e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply

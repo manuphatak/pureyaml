@@ -4,20 +4,10 @@ pureyaml
 """
 from __future__ import absolute_import
 
-from functools import wraps
+import weakref
+from functools import wraps, update_wrapper
 
 from .nodes import *  # noqa
-
-
-def strict(*types):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(self, p):
-            return self.func(p)
-
-        return wrapper
-
-    return decorator
 
 
 class TokenList(object):
@@ -178,6 +168,23 @@ class YAMLTokens(TokenList):
         return t
 
 
+from functools import wraps
+
+
+def strict(*types):
+    def decorate(func):
+        @wraps(func)
+        def wrapper(self, p):
+            func(self, p)
+            if not isinstance(p[0], types):
+                raise TypeError
+
+        wrapper.co_firstlineno = func.__code__.co_firstlineno
+        return wrapper
+
+    return decorate
+
+
 class YAMLProductions(TokenList):
     # PARSER
     # ===================================================================
@@ -215,16 +222,13 @@ class YAMLProductions(TokenList):
         """
         p[0] = Doc(p[1])
 
-    # @strict(Collection)
+    @strict(Collection)
     def p_collection(self, p):
         """
         collection  : sequence
                     | map
         """
         p[0] = p[1]
-
-        if not isinstance(p[0], Collection):
-            raise TypeError
 
     def p_map_last(self, p):
         """

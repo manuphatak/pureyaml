@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parse(text)
+    nodes = parser.parsedebug(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected

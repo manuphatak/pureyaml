@@ -4,9 +4,10 @@
 #
 #    pip-compile requirements_dev.in
 #
+-e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply
 alabaster==0.7.7          # via sphinx
 argh==0.26.1              # via watchdog
-babel==2.1.1              # via sphinx
+babel==2.2.0              # via sphinx
 bumpversion==0.5.3
 click==6.2                # via pip-tools
 coverage==4.0.3
@@ -35,7 +36,6 @@ pexpect==4.0.1            # via ipython
 pickleshare==0.5          # via ipython
 pip-tools==1.4.2
 pluggy==0.3.1             # via tox
-ply==3.8
 ptyprocess==0.5           # via pexpect
 py==1.4.31                # via pytest, tox
 pyasn1==0.1.9             # via cryptography
