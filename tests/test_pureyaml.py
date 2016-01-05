@@ -608,7 +608,6 @@ def test_scalar_types():
     assert nodes == expected, diff()
 
 
-@skipif
 def test_unnecessary_indent_3_with_edge_items():
     # edges: numbers and text, bool 'No' and text, single quote
     text = dedent("""
@@ -621,7 +620,8 @@ def test_unnecessary_indent_3_with_edge_items():
 
     nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
-        Str('Casablanca'),
+        Str('21 Jump Street'),
+        Str('se7en'),
         Str('North by Northwest'),
         Str('The Man Who Wasn\'t There'),
     )))  # :on
