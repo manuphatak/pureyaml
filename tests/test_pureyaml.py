@@ -663,7 +663,6 @@ def test_unnecessary_indent_3_with_edge_items():
     assert nodes == expected
 
 
-# @skipif
 def test_scalar_literal_1_line():
     text = dedent("""
         |
@@ -676,7 +675,6 @@ def test_scalar_literal_1_line():
     assert nodes == expected
 
 
-# @skipif
 def test_scalar_literal_ascii_art():
     text = dedent("""
         --- |
