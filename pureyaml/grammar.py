@@ -308,7 +308,7 @@ class YAMLProductions(TokenList):
         p[0] = ScalarDispatch(p[3], cast='str')
 
     @strict(str)
-    def p_scalar_group(self,p):
+    def p_scalar_group(self, p):
         """
         scalar_group    : SCALAR
                         | scalar_group SCALAR
