@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -108,7 +108,7 @@ def test_implicit_doc():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str('Hello World'))
+    expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
 
@@ -231,7 +231,7 @@ def test_casting_implicit_int():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Int(123))
+    expected = Docs(Doc(Int(123)))
 
     assert nodes == expected
 
@@ -242,8 +242,7 @@ def test_casting_doublequoted_string():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str('123'))
-
+    expected = Docs(Doc(Str('123')))
     assert nodes == expected
 
 
@@ -253,7 +252,7 @@ def test_casting_doublequoted_string_with_escaped_char():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str('She said, \\"I Like turtles\\" and she meant it!'))
+    expected = Docs(Doc(Str('She said, \\"I Like turtles\\" and she meant it!')))
 
     assert nodes == expected
 
@@ -264,7 +263,7 @@ def test_casting_singlequoted_string():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str('123'))
+    expected = Docs(Doc(Str('123')))
 
     assert nodes == expected
 
@@ -275,7 +274,7 @@ def test_casting_singlequoted_string_with_escaped_char():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str("She said, \\'I Like turtles\\' and she meant it!"))
+    expected = Docs(Doc(Str("She said, \\'I Like turtles\\' and she meant it!")))
 
     assert nodes == expected
 
@@ -286,7 +285,7 @@ def test_casting_implicit_float():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Float(123.0))
+    expected = Docs(Doc(Float(123.0)))
 
     assert nodes == expected
 
@@ -297,7 +296,7 @@ def test_casting_implicit_float_no_leading_digit():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Float(.123))
+    expected = Docs(Doc(Float(.123)))
 
     assert nodes == expected
 
@@ -308,7 +307,7 @@ def test_casting_explicit_float():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Float(123))
+    expected = Docs(Doc(Float(123)))
 
     assert nodes == expected
 
@@ -319,7 +318,7 @@ def test_casting_explicit_str():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str(123))
+    expected = Docs(Doc(Str(123)))
 
     assert nodes == expected
 
@@ -330,7 +329,7 @@ def test_casting_implicit_bool_true():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Bool(True))
+    expected = Docs(Doc(Bool(True)))
 
     assert nodes == expected
 
@@ -341,7 +340,7 @@ def test_casting_implicit_bool_false():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Bool(False))
+    expected = Docs(Doc(Bool(False)))
 
     assert nodes == expected
 
@@ -352,19 +351,18 @@ def test_casting_explicit_str_from_bool():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str('Yes'))
+    expected = Docs(Doc(Str('Yes')))
 
     assert nodes == expected
 
 
 def test_uses_context_for_disambiguated_str():
-    # TODO make this work
     text = dedent("""
         Yes we have No bananas
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Str('Yes we have No bananas'))
+    expected = Docs(Doc(Str('Yes we have No bananas')))
 
     assert nodes == expected
 
@@ -375,7 +373,7 @@ def test_ignore_comment():
     """)[1:]
 
     nodes = parser.parse(text)
-    expected = Doc(Int(123))
+    expected = Docs(Doc(Int(123)))
 
     assert nodes == expected
 

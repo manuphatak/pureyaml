@@ -38,4 +38,17 @@ class YAMLSyntaxError(SyntaxError, YAMLException):
 
 
 class YAMLStrictTypeError(TypeError, YAMLException):
-    pass
+    def __init__(self, token, types, func):
+        func_lineno = getattr(func, 'co_firstlineno', func.__code__.co_firstlineno)
+        qualname = '%s.%s:%d' % (func.__module__, func.__name__, func_lineno)
+        link = '%s:%i' % (func.__code__.co_filename, func_lineno)
+        token_type = type(token).__name__
+        expected_types = ', '.join(type_.__name__ for type_ in types)
+        msg = ('\nunexpected type: %r'
+               '\nexpected:        %r'
+               '\n                 %r'
+               '\nlocation:        %r'
+               '\nlink:            %s'
+
+               ) % (token_type, expected_types, token, qualname, link)
+        super(YAMLStrictTypeError, self).__init__(msg)

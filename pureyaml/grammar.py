@@ -176,7 +176,7 @@ def strict(*types):
                 return func(self, p)
             finally:
                 if not isinstance(p[0], types):
-                    raise YAMLStrictTypeError
+                    raise YAMLStrictTypeError(p[0], types, func)
 
         wrapper.co_firstlineno = func.__code__.co_firstlineno
         return wrapper
@@ -188,6 +188,7 @@ class YAMLProductions(TokenList):
     # PARSER
     # ===================================================================
 
+    @strict(Docs)
     def p_docs_last(self, p):
         """
         docs    : DOC_START_INDICATOR doc DOC_END_INDICATOR
@@ -195,6 +196,7 @@ class YAMLProductions(TokenList):
         """
         p[0] = Docs(p[2])
 
+    @strict(Docs)
     def p_docs_init(self, p):
         """
         docs    : docs DOC_START_INDICATOR doc DOC_END_INDICATOR
@@ -202,18 +204,21 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1] + Docs(p[3])
 
+    @strict(Docs)
     def p_docs_implicit_single(self, p):
         """
         docs    : doc
         """
-        p[0] = p[1]
+        p[0] = Docs(p[1])
 
+    @strict(Doc)
     def p_doc_indent(self, p):
         """
         doc : INDENT doc DEDENT
         """
         p[0] = p[2]
 
+    @strict(Doc)
     def p_doc(self, p):
         """
         doc : collection
@@ -229,12 +234,14 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1]
 
+    @strict(Map)
     def p_map_last(self, p):
         """
         map : map_item
         """
         p[0] = Map(p[1])
 
+    @strict(Map)
     def p_map_init(self, p):
         """
         map : map map_item
@@ -247,12 +254,14 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1], p[3]
 
+    @strict(Sequence)
     def p_sequence_last(self, p):
         """
         sequence    : sequence_item
         """
         p[0] = Sequence(p[1])
 
+    @strict(Sequence)
     def p_sequence_init(self, p):
         """
         sequence    : sequence sequence_item
@@ -265,13 +274,15 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[2]
 
+    @strict(Scalar)
     def p_scalar_explicit_cast(self, p):
         """
         scalar  : CAST_TYPE scalar
         """
         p[0] = ScalarDispatch(p[2].raw_value, cast=p[1])
 
-    def p_scalar_string(self, p):
+    @strict(Scalar)
+    def p_scalar(self, p):
         """
         scalar  : SCALAR
         """
