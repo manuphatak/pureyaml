@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -636,7 +636,7 @@ def test_scalar_literal_1_line():
           literal
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('literal')))
 
     assert nodes == expected
@@ -650,7 +650,7 @@ def test_scalar_literal_ascii_art():
           // ||  ||__
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('\//||\/||\n// ||  ||__')))
 
     assert nodes == expected
