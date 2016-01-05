@@ -6,6 +6,7 @@ from __future__ import absolute_import
 
 from functools import wraps
 
+from pureyaml.exceptions import YAMLStrictTypeError
 from .nodes import *  # noqa
 
 
@@ -171,9 +172,11 @@ def strict(*types):
     def decorate(func):
         @wraps(func)
         def wrapper(self, p):
-            func(self, p)
-            if not isinstance(p[0], types):
-                raise TypeError
+            try:
+                return func(self, p)
+            finally:
+                if not isinstance(p[0], types):
+                    raise YAMLStrictTypeError
 
         wrapper.co_firstlineno = func.__code__.co_firstlineno
         return wrapper
