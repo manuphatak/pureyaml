@@ -4,8 +4,7 @@ pureyaml
 """
 from __future__ import absolute_import
 
-import weakref
-from functools import wraps, update_wrapper
+from functools import wraps
 
 from .nodes import *  # noqa
 
@@ -166,9 +165,6 @@ class YAMLTokens(TokenList):
     def t_SCALAR(self, t):
         r'(?:\\.)|[^\n\#\:\-]+'
         return t
-
-
-from functools import wraps
 
 
 def strict(*types):
