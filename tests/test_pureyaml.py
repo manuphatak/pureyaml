@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parse(text)
+    nodes = parser.parsedebug(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -629,20 +629,20 @@ def test_unnecessary_indent_3_with_edge_items():
     assert nodes == expected
 
 
-@skipif
+# @skipif
 def test_scalar_literal_1_line():
     text = dedent("""
         |
           literal
     """)[1:]
 
-    nodes = parser.parse(text)
-    expected = Doc(Str('literal'))
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Str('literal')))
 
     assert nodes == expected
 
 
-@skipif
+# @skipif
 def test_scalar_literal_ascii_art():
     text = dedent("""
         --- |
@@ -650,7 +650,7 @@ def test_scalar_literal_ascii_art():
           // ||  ||__
     """)[1:]
 
-    nodes = parser.parse(text)
-    expected = Docs(Doc(Str('Hello World')))
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Str('\//||\/||\n// ||  ||__')))
 
     assert nodes == expected

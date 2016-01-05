@@ -16,12 +16,12 @@ class TokenList(object):
         'DOC_END_INDICATOR',
         'SEQUENCE_INDICATOR',
         'MAP_INDICATOR',
+        'LITERAL_INDICATOR',
         'CAST_TYPE',
         'SCALAR',
-        'LITERAL_LINE',
+        # 'LITERAL_LINE',
         'INDENT',
         'DEDENT',
-        'NODENT',
     ]  # :on
 
 
@@ -34,15 +34,15 @@ class YAMLTokens(TokenList):
     states = (  # :off
         ('tag', 'inclusive'),
         ('doublequote', 'exclusive'),
-        ('commentstate', 'exclusive'),
+        ('comment', 'exclusive'),
         ('singlequote', 'exclusive'),
-        # ('literal', 'exclusive'),
+        ('literal', 'exclusive'),
 
     )  # :on
 
     # state: multiple
     # -------------------------------------------------------------------
-    def t_ignore_INDENT(self, t):
+    def t_INITIAL_literal_ignore_INDENT(self, t):
         r'\n\ *'
         # strip newline
         t.value = t.value[1:]
@@ -72,11 +72,10 @@ class YAMLTokens(TokenList):
     def t_begin_tag(self, t):
         r'(?<!\\)!'
         t.lexer.push_state('tag')
-        t.lexer.begin('tag')
 
     def t_tag_end(self, t):
         r'\ '
-        t.lexer.begin('INITIAL')
+        t.lexer.pop_state()
 
     def t_tag_CAST_TYPE(self, t):
         r'(?<=\!)[a-z]+'
@@ -88,26 +87,34 @@ class YAMLTokens(TokenList):
 
     def t_begin_doublequote(self, t):
         r'(?<!\\)"'
-        t.lexer.begin('doublequote')
+
+        t.lexer.push_state('doublequote')
+        # t.lexer.begin('doublequote')
         t.type = 'CAST_TYPE'
         t.value = 'str'
         return t
 
     def t_doublequote_end(self, t):
         r'(?<!\\)"'
-        t.lexer.begin('INITIAL')
+        t.lexer.pop_state()
 
-    # state: commentstate
+        # t.lexer.begin('INITIAL')
+
+    # state: comment
     # -------------------------------------------------------------------
-    t_commentstate_ignore_COMMENT = r'[^\n]+'
+    t_comment_ignore_COMMENT = r'[^\n]+'
 
-    def t_begin_commentstate(self, t):
+    def t_begin_comment(self, t):
         r'\s*\#\ ?'
-        t.lexer.begin('commentstate')
+        t.lexer.push_state('comment')
 
-    def t_commentstate_end(self, t):
+        # t.lexer.begin('comment')
+
+    def t_comment_end(self, t):
         r'(?=\n)'
-        t.lexer.begin('INITIAL')
+        t.lexer.pop_state()
+
+        # t.lexer.begin('INITIAL')
 
     # state: singlequote
     # -------------------------------------------------------------------
@@ -116,14 +123,17 @@ class YAMLTokens(TokenList):
 
     def t_begin_singlequote(self, t):
         r"(?<!\\)'"
-        t.lexer.begin('singlequote')
+        t.lexer.push_state('singlequote')
+        # t.lexer.begin('singlequote')
         t.type = 'CAST_TYPE'
         t.value = 'str'
         return t
 
     def t_singlequote_end(self, t):
         r"(?<!\\)'"
-        t.lexer.begin('INITIAL')
+        t.lexer.pop_state()
+
+        # t.lexer.begin('INITIAL')
 
     #
     # # state: literal
@@ -133,15 +143,17 @@ class YAMLTokens(TokenList):
     #     r'[\w\s]+'
     #     return t
     #
-    #
-    # def t_begin_literal(self, t):
-    #     r'(?<!\\)\|'
-    #     t.lexer.push_state('literal')
-    #
-    #
-    # def t_literal_end(self, t):
-    #     r'\n\n'
-    #     t.lexer.pop_state()
+    t_literal_SCALAR = r'[^(?:\n\n)]+'
+
+    def t_begin_literal(self, t):
+        r'\ *(?<!\\)\|'
+        t.lexer.push_state('literal')
+        t.type = 'LITERAL_INDICATOR'
+        return t
+
+    def t_literal_end(self, t):
+        r'\n\n'
+        t.lexer.pop_state()
 
     # state: INITIAL
     # -------------------------------------------------------------------
@@ -164,7 +176,7 @@ class YAMLTokens(TokenList):
         return t
 
     def t_SCALAR(self, t):
-        r'(?:\\.)|[^\n\#\:\-]+'
+        r'(?:\\.)|[^\n\#\:\-\|]+'
         return t
 
 
@@ -288,14 +300,20 @@ class YAMLProductions(TokenList):
         """
         p[0] = ScalarDispatch(p[1])
 
-        # def p_scalar_literal(self, p):
-        #     """
-        #     scalar  : literal_lines
-        #     """
-        #     p[0] = p[1]
+    @strict(Str)
+    def p_scalar_literal(self, p):
+        """
+        scalar  : LITERAL_INDICATOR INDENT scalar_group DEDENT
+        """
+        p[0] = ScalarDispatch(p[3], cast='str')
 
-        # def p_literal_lines(self, p):
-        #     """
-        #     literal_lines   : LITERAL_LINE
-        #     """
-        #     p[0] = p[1]
+    @strict(str)
+    def p_scalar_group(self,p):
+        """
+        scalar_group    : SCALAR
+                        | scalar_group SCALAR
+        """
+        if len(p) == 2:
+            p[0] = str(p[1])
+        if len(p) == 3:
+            p[0] = p[1] + '\n' + p[2]
