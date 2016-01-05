@@ -534,6 +534,30 @@ def test_unnecessary_indent_3_items_with_dedent():
     assert nodes == expected
 
 
+def test_empty_scalar():
+    text = dedent("""
+        ---
+        Also a null: # Empty
+    """)[1:]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map((Str('Also a null'), Null(None)))))
+
+    assert nodes == expected
+
+
+def test_empty_scalar_double_quote():
+    text = dedent("""
+        ---
+        Not a null: ""
+    """)[1:]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map((Str('Not a null'), Str('')))))
+
+    assert nodes == expected
+
+
 def test_scalar_types():
     # TODO uncomment lines
     text = dedent("""
@@ -552,14 +576,14 @@ def test_scalar_types():
         Integers a: 0
         Integers b: 0o7
         Integers c: 0x3A
-        # Integers d: -19
+        Integers d: -19
         Floats a: 0.
-        # Floats b: -0.0
+        Floats b: -0.0
         Floats c: .5
         Floats d: +12e03
-        # Floats d: -2E+05
+        Floats e: -2E+05
         Also floats a: .inf
-        # Also floats b: -.Inf
+        Also floats b: -.Inf
         Also floats c: +.INF
         Also floats d: .NAN
     """)[1:]
@@ -580,14 +604,14 @@ def test_scalar_types():
         (Str('Integers a'), Int(0)),
         (Str('Integers b'), Int(0o7)),
         (Str('Integers c'), Int(0x3A)),
-        # (Str('Integers d'), Int(-19)),
+        (Str('Integers d'), Int(-19)),
         (Str('Floats a'), Float(0.)),
-        # (Str('Floats b'), Float(-0.0)),
+        (Str('Floats b'), Float(-0.0)),
         (Str('Floats c'), Float(.5)),
         (Str('Floats d'), Float(+12e03)),
-        # (Str('Floats e'), Float(-2E+05)),
+        (Str('Floats e'), Float(-2E+05)),
         (Str('Also floats a'), Float('.inf')),
-        # (Str('Also floats b'), Float('-.Inf')),
+        (Str('Also floats b'), Float('-.Inf')),
         (Str('Also floats c'), Float('+.INF')),
         (Str('Also floats d'), Float('.nan')),
     )))  # :on
@@ -597,13 +621,23 @@ def test_scalar_types():
         for (a_k, a_v), (e_k, e_v) in zip(actual_map, expected_map):
 
             if a_k.value != e_k.value:
+                left_length, right_length = len(str(a_k)), len(str(e_k))
                 print('Keys mismatched')
-                print('%s:%s' % (a_k, e_k))
-                print('%s:%s' % (a_k.value, e_k.value))
+                print('    | %s != %s' % (a_k, e_k))
+                print('    | %s  != %s' % (  # :off
+                    str(a_k.value).rjust(left_length - 1),
+                    str(e_k.value).rjust(right_length-1)
+                ))  # :on
             if a_v.value != e_v.value:
+                left_length, right_length = len(str(a_v)), len(str(e_v))
                 print('Values mismatched')
-                print('%s:%s' % (a_v, e_v))
-                print('%s:%s' % (a_v.value, e_v.value))
+                print('    | %s != %s' % (a_v, e_v))
+                print('    | %s  != %s' % (  # :off
+                    str(a_v.value).rjust(left_length - 1),
+                    str(e_v.value).rjust(right_length-1)
+                ))  # :on
+            if a_k.value != e_k.value:
+                break
 
     assert nodes == expected, diff()
 

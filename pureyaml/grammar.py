@@ -176,7 +176,7 @@ class YAMLTokens(TokenList):
         return t
 
     def t_SCALAR(self, t):
-        r'(?:\\.)|[^\n\#\:\-\|]+'
+        r'(?:\\.|-(?!\ +)|[^\n\#\:\-\|])+'
         return t
 
 
@@ -307,6 +307,13 @@ class YAMLProductions(TokenList):
         """
         p[0] = ScalarDispatch(p[3], cast='str')
 
+    @strict(Null)
+    def p_scalar_empty(self, p):
+        """
+        scalar  : empty
+        """
+        p[0] = ScalarDispatch(None, cast='null')
+
     @strict(str)
     def p_scalar_group(self, p):
         """
@@ -317,3 +324,9 @@ class YAMLProductions(TokenList):
             p[0] = str(p[1])
         if len(p) == 3:
             p[0] = p[1] + '\n' + p[2]
+
+    def p_empty(self, p):
+        """
+        empty   :
+        """
+        pass

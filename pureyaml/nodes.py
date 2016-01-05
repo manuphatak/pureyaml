@@ -99,6 +99,11 @@ class Null(Scalar):
 class Str(Scalar):
     type = str
 
+    def init_value(self, value, *args, **kwargs):
+        if value is None:
+            return ''
+        return super(Str, self).init_value(value, *args, **kwargs)
+
 
 class Int(Scalar):
     type = int
