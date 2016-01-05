@@ -558,7 +558,7 @@ def test_empty_scalar_double_quote():
     assert nodes == expected
 
 
-def test_scalar_types():
+def test_scalar_types():  # noqa
     # TODO uncomment lines
     text = dedent("""
         ---

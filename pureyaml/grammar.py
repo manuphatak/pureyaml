@@ -280,6 +280,7 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1] + Sequence(p[2])
 
+    @strict(Scalar)
     def p_sequence_item(self, p):
         """
         sequence_item   : SEQUENCE_INDICATOR scalar
@@ -312,7 +313,7 @@ class YAMLProductions(TokenList):
         """
         scalar  : empty
         """
-        p[0] = ScalarDispatch(None, cast='null')
+        p[0] = ScalarDispatch('', cast='null')
 
     @strict(str)
     def p_scalar_group(self, p):

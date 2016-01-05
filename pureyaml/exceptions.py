@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+
 class YAMLException(Exception):
     pass
 
@@ -41,15 +42,26 @@ class YAMLSyntaxError(SyntaxError, YAMLException):
 class YAMLStrictTypeError(TypeError, YAMLException):
     def __init__(self, token, types, func):
         func_lineno = getattr(func, 'co_firstlineno', func.__code__.co_firstlineno)
-        qualname = '%s.%s:%d' % (func.__module__, func.__name__, func_lineno)
-        link = "file:///%s:%s" % (func.__code__.co_filename, func_lineno)
-        token_type = type(token).__name__
-        expected_types = ', '.join(type_.__name__ for type_ in types)
-        msg = ('\nunexpected type: %r'
-               '\nexpected:        %r'
-               '\n                 %r'
-               '\nlocation:        %r'
-               '\nlink:            %s'
+        self.module = func.__module__
+        self.function = func.__name__
+        self.lineno = func_lineno
+        self.token_type = type(token).__name__
+        self.expected_types = ', '.join(type_.__name__ for type_ in types)
+        self.token = token
 
-               ) % (token_type, expected_types, token, qualname, link.replace("\\", "/"))
-        super(YAMLStrictTypeError, self).__init__(msg)
+    def __str__(self):
+        template = ('\nexpected:            %s'
+                    '\nunexpected type:     %s'
+                    '\n    |      value:    %r'
+                    '\nline:                %i'
+                    '\nmodule:              %s'
+                    '\nfunction:            %s')
+
+        args = (self.expected_types,  # :off
+                self.token_type,
+                self.token,
+                self.lineno,
+                self.module,
+                self.function)  # :on
+
+        return template % args
