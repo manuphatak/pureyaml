@@ -4,6 +4,7 @@ pureyaml
 """
 from __future__ import absolute_import
 
+import logging
 from pprint import pformat
 
 from ply.lex import lex
@@ -11,6 +12,8 @@ from ply.yacc import yacc
 
 from .exceptions import YAMLSyntaxError, YAMLUnknownSyntaxError
 from .grammar import YAMLTokens, YAMLProductions
+
+logger = logging.getLogger(__name__)
 
 
 class YAMLLexer(YAMLTokens):
@@ -47,8 +50,7 @@ class YAMLParser(YAMLProductions):
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
-        print('')
-        print(self.tokenize(data))
+        logger.info(self.tokenize(data))
         kwargs.setdefault('lexer', YAMLLexer.build(debug=True))
         kwargs.setdefault('debug', True)
 

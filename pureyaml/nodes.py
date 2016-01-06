@@ -7,9 +7,9 @@ from __future__ import absolute_import
 
 import re
 from functools import partial
-
-# __all__ = ['Docs', 'Doc', 'Sequence', 'Map', 'Str', 'Int', 'Float', 'Bool']
 from math import isnan
+
+from ._compat import collections_abc as abc
 
 
 class Node(object):
@@ -34,7 +34,23 @@ class Node(object):
             return '<%s:%s>' % (cls_name, self.raw_value)
 
 
-class Collection(Node):
+class SequenceMixin(abc.Sequence):
+    value = NotImplemented
+
+    def __getitem__(self, index):
+        return self.value[index]
+
+    def __len__(self):
+        return len(self.value)
+
+    def __contains__(self, x):
+        return x in self.value
+
+    def __iter__(self):
+        return iter(self.value)
+
+
+class Collection(SequenceMixin, Node):
     def __init__(self, *values, **kwargs):
         self.raw_value = values
         self.value = self.init_value(*values, **kwargs)
@@ -65,7 +81,28 @@ class Sequence(Collection):
     pass
 
 
-class Map(Collection):
+class MappingMixin(abc.Mapping):
+    value = NotImplemented
+
+    def __getitem__(self, key):
+        for k, v in self.value:
+            if k == key:
+                return v
+
+        raise KeyError('key %s not found in %r' % (key, self))
+
+    def __len__(self):
+        return len(self.value)
+
+    def __iter__(self):
+        for key, _ in self.value:
+            yield key
+
+    def __eq__(self, other):
+        return Node.__eq__(self, other)
+
+
+class Map(MappingMixin, Collection):
     def init_value(self, *values, **kwargs):
         for value in values:
             if len(value) == 2:
@@ -199,3 +236,4 @@ class ScalarDispatch(object):
 
         match = cls.re_dispatch.match(value)
         return cls.map[match.lastgroup](value)
+        # __all__ = ['Docs', 'Doc', 'Sequence', 'Map', 'Str', 'Int', 'Float', 'Bool']

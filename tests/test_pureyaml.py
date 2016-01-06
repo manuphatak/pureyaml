@@ -591,8 +591,8 @@ def test_scalar_types():  # noqa
     nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('A null'), Null('null')),
-        # (Str('Also a null'), Null(None)),
-        # (Str('Not a null'), Str('')),
+        (Str('Also a null'), Null(None)),
+        (Str('Not a null'), Str('')),
         (Str('Booleans a'), Bool('true')),
         (Str('Booleans b'), Bool('True')),
         (Str('Booleans c'), Bool('false')),
@@ -616,30 +616,7 @@ def test_scalar_types():  # noqa
         (Str('Also floats d'), Float('.nan')),
     )))  # :on
 
-    def diff():
-        actual_map, expected_map = nodes.value[0].value[0].value, expected.value[0].value[0].value
-        for (a_k, a_v), (e_k, e_v) in zip(actual_map, expected_map):
-
-            if a_k.value != e_k.value:
-                left_length, right_length = len(str(a_k)), len(str(e_k))
-                print('Keys mismatched')
-                print('    | %s != %s' % (a_k, e_k))
-                print('    | %s  != %s' % (  # :off
-                    str(a_k.value).rjust(left_length - 1),
-                    str(e_k.value).rjust(right_length-1)
-                ))  # :on
-            if a_v.value != e_v.value:
-                left_length, right_length = len(str(a_v)), len(str(e_v))
-                print('Values mismatched')
-                print('    | %s != %s' % (a_v, e_v))
-                print('    | %s  != %s' % (  # :off
-                    str(a_v.value).rjust(left_length - 1),
-                    str(e_v.value).rjust(right_length-1)
-                ))  # :on
-            if a_k.value != e_k.value:
-                break
-
-    assert nodes == expected, diff()
+    assert nodes == expected
 
 
 def test_unnecessary_indent_3_with_edge_items():
