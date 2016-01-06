@@ -1,41 +1,43 @@
 #!/usr/bin/env python
 # coding=utf-8
 from collections import Mapping
-from difflib import *
+from difflib import unified_diff
 
 from pureyaml.nodes import Scalar, Collection, Node
 
 
-def pformat_node(node, depth=0):
-    indent = lambda depth: '  ' * depth
+def pformat_node(node, depth=0):  # noqa
+    def indent():
+        return '  ' * depth
+
     if isinstance(node, Scalar):
-        yield indent(depth) + str(Scalar)
+        yield indent() + str(Scalar)
 
     elif isinstance(node, Mapping):
-        yield indent(depth) + '<%s:(' % node.__class__.__name__
+        yield indent() + '<%s:(' % node.__class__.__name__
         depth += 1
 
         for k, v in node.items():
             depth += 1
 
             if isinstance(k, Scalar) and isinstance(v, Scalar):
-                yield indent(depth) + '%s, %s' % (k, v)
+                yield indent() + '%s, %s' % (k, v)
             else:
-                yield indent(depth) + ':'
+                yield indent() + ':'
                 for line in pformat_node(k, depth=depth):
                     yield line
 
-                yield indent(depth) + '?'
+                yield indent() + '?'
                 for line in pformat_node(v, depth=depth):
                     yield line
 
             depth -= 1
 
         depth -= 1
-        yield indent(depth) + ')>'
+        yield indent() + ')>'
 
     elif isinstance(node, Collection):
-        yield indent(depth) + '<%s:(' % node.__class__.__name__
+        yield indent() + '<%s:(' % node.__class__.__name__
         depth += 1
         for value in node.value:
             if not isinstance(value, Node) or not value.value:
@@ -43,11 +45,11 @@ def pformat_node(node, depth=0):
             for line in pformat_node(value, depth=depth):
                 yield line
         depth -= 1
-        yield indent(depth) + ')>'
+        yield indent() + ')>'
 
 
-def get_node_diff(a, b, root=True):
-    if root == True:
+def get_node_diff(a, b, root=True):  # noqa
+    if root is True:
         str_a = list(pformat_node(a))
         str_b = list(pformat_node(b))
         for line in unified_diff(str_a, str_b, n=2, lineterm=''):

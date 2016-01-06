@@ -14,11 +14,10 @@ except ImportError:  # pragma: no cover
 try:
     from collections import abc as collections_abc
 except ImportError:
-    import collections
+    import collections  # :off
 
-
-    class collections_abc:
-        Hashable = collections.Hashable
+    class collections_abc:  # nowa
+        Hashable = collections.Hashable  # :on
         Iterable = collections.Iterable
         Iterator = collections.Iterator
         Sized = collections.Sized
