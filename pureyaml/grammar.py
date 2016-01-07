@@ -14,8 +14,8 @@ from .utils import fold
 
 class TokenList(object):
     tokens = [  # :off
-        'DOC_START_INDICATOR',
-        'DOC_END_INDICATOR',
+        'DOC_INDICATOR_START',
+        'DOC_INDICATOR_END',
         'SEQUENCE_INDICATOR',
         'MAP_INDICATOR',
         'LITERAL_INDICATOR_START',
@@ -202,11 +202,11 @@ class YAMLTokens(TokenList):
     # -------------------------------------------------------------------
     t_ignore_EOL = r'\s*\n'
 
-    def t_DOC_START_INDICATOR(self, t):
+    def t_DOC_INDICATOR_START(self, t):
         r'\-\-\-'
         return t
 
-    def t_DOC_END_INDICATOR(self, t):
+    def t_DOC_INDICATOR_END(self, t):
         r'\.\.\.'
         return t
 
@@ -245,16 +245,16 @@ class YAMLProductions(TokenList):
     @strict(Docs)
     def p_docs_last(self, p):
         """
-        docs    : DOC_START_INDICATOR doc DOC_END_INDICATOR
-                | DOC_START_INDICATOR doc
+        docs    : DOC_INDICATOR_START doc DOC_INDICATOR_END
+                | DOC_INDICATOR_START doc
         """
         p[0] = Docs(p[2])
 
     @strict(Docs)
     def p_docs_init(self, p):
         """
-        docs    : docs DOC_START_INDICATOR doc DOC_END_INDICATOR
-                | docs DOC_START_INDICATOR doc
+        docs    : docs DOC_INDICATOR_START doc DOC_INDICATOR_END
+                | docs DOC_INDICATOR_START doc
         """
         p[0] = p[1] + Docs(p[3])
 
