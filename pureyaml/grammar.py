@@ -58,14 +58,13 @@ class YAMLTokens(TokenList):
 
     # state: multiple
     # -------------------------------------------------------------------
-    def t_eof(self, t):
-        if self.doc_context_stack:
-            self.doc_context_stack.pop()
-            t.type = 'DOC_END_INDICATOR'
-            return t
+    # def t_eof(self, t):
+    #     a = t
+    #     # return t
+
 
     def t_ignore_INDENT(self, t):
-        r'\n\s*(?=\S)|\n(?=$)'
+        r'\n\s*'
 
         indent_stack = self.indent_stack
         column = find_column(t)
@@ -205,18 +204,10 @@ class YAMLTokens(TokenList):
 
     def t_DOC_START_INDICATOR(self, t):
         r'\-\-\-'
-        stack_length = len(self.doc_context_stack)
-        if stack_length == 1:
-            t.lexer.input('...' + t.lexer.lexdata[t.lexpos:])
-            return t.lexer.token()
-        elif stack_length == 0:
-
-            self.doc_context_stack.append({})
-            return t
+        return t
 
     def t_DOC_END_INDICATOR(self, t):
         r'\.\.\.'
-        self.doc_context_stack.pop()
         return t
 
     def t_SEQUENCE_INDICATOR(self, t):
