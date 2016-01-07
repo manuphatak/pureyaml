@@ -62,7 +62,6 @@ class YAMLTokens(TokenList):
     #     a = t
     #     # return t
 
-
     def t_ignore_INDENT(self, t):
         r'\n\s*'
 
