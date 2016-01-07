@@ -92,7 +92,8 @@ def test_3_docs_no_end_of_doc_indicators():
         More Docs
     """)[1:]
 
-    nodes = parser.parse(text)
+    print(parser.tokenize(text))
+    nodes = parser.parsedebug(text)
     expected = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),

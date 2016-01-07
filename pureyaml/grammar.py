@@ -7,27 +7,9 @@ from __future__ import absolute_import
 from functools import wraps
 from textwrap import dedent
 
-from pureyaml.exceptions import YAMLStrictTypeError
+from .exceptions import YAMLStrictTypeError
 from .nodes import *  # noqa
-
-
-class fold(object):
-    re_folded_repl = re.compile(r"""
-          (?P<PARAGRAPH>\n\n)
-        | (?P<SPACE>\n)
-    """, re.X)
-
-    @classmethod
-    def folded_repl(cls, match):
-        if match.group('PARAGRAPH') is not None:
-            return '\n'
-        elif match.group('SPACE') is not None:
-            return ' '
-        else:
-            return match
-
-    def __new__(cls, text):
-        return cls.re_folded_repl.sub(cls.folded_repl, text)
+from .utils import fold
 
 
 class TokenList(object):
@@ -42,7 +24,6 @@ class TokenList(object):
         'FOLD_INDICATOR_END',
         'CAST_TYPE',
         'SCALAR',
-        # 'LITERAL_LINE',
         'INDENT',
         'DEDENT',
     ]  # :on
@@ -61,6 +42,7 @@ def find_column(t):
 class YAMLTokens(TokenList):
     def __init__(self):
         self.indent_stack = [1]
+        self.doc_context_stack = []
 
     # LEXER
     # ===================================================================
@@ -70,14 +52,14 @@ class YAMLTokens(TokenList):
         ('comment', 'exclusive'),
         ('singlequote', 'exclusive'),
         ('literal', 'exclusive'),
-        ('fold', 'exclusive'),
+        ('fold', 'exclusive')
 
     )  # :on
 
     # state: multiple
     # -------------------------------------------------------------------
     def t_ignore_INDENT(self, t):
-        r'\n\s*(?=\S)'
+        r'\n\s*(?=\S)|\n$'
 
         indent_stack = self.indent_stack
         column = find_column(t)
@@ -89,7 +71,7 @@ class YAMLTokens(TokenList):
             return t
 
         elif next_indent_length == curr_indent_length:
-            # t.type = 'NODENT'
+            # NODENT
             pass
         else:
             indent_delta = curr_indent_length - indent_stack.pop()
@@ -128,7 +110,6 @@ class YAMLTokens(TokenList):
     def t_doublequote_end(self, t):
         r'(?<!\\)"'
         t.lexer.pop_state()
-
         # t.lexer.begin('INITIAL')
 
     # state: comment
@@ -138,18 +119,15 @@ class YAMLTokens(TokenList):
     def t_begin_comment(self, t):
         r'\s*\#\ ?'
         t.lexer.push_state('comment')
-
         # t.lexer.begin('comment')
 
     def t_comment_end(self, t):
         r'(?=\n)'
-        t.lexer.pop_state()
-
         # t.lexer.begin('INITIAL')
+        t.lexer.pop_state()
 
     # state: singlequote
     # -------------------------------------------------------------------
-
     t_singlequote_SCALAR = r"(?:\\'|[^'])+"
 
     def t_begin_singlequote(self, t):
@@ -162,13 +140,11 @@ class YAMLTokens(TokenList):
 
     def t_singlequote_end(self, t):
         r"(?<!\\)'"
-        t.lexer.pop_state()
-
         # t.lexer.begin('INITIAL')
+        t.lexer.pop_state()
 
     # state: literal
     # -------------------------------------------------------------------
-
     t_literal_SCALAR = r'.+'
 
     def t_begin_literal(self, t):
@@ -194,7 +170,6 @@ class YAMLTokens(TokenList):
 
     # state: fold
     # -------------------------------------------------------------------
-
     t_fold_SCALAR = r'.+'
 
     def t_begin_fold(self, t):
@@ -224,10 +199,22 @@ class YAMLTokens(TokenList):
 
     def t_DOC_START_INDICATOR(self, t):
         r'\-\-\-'
-        return t
+        stack_length = len(self.doc_context_stack)
+        if stack_length > 1:
+            # TODO, be more specific
+            raise Exception('Something went wrong')
+
+        elif stack_length == 1:
+            t.lexer.input('...' + t.lexer.lexdata[t.lexpos:])
+            return t.lexer.token()
+        elif stack_length == 0:
+
+            self.doc_context_stack.append({})
+            return t
 
     def t_DOC_END_INDICATOR(self, t):
         r'\.\.\.'
+        self.doc_context_stack.pop()
         return t
 
     def t_SEQUENCE_INDICATOR(self, t):
@@ -262,7 +249,6 @@ def strict(*types):
 class YAMLProductions(TokenList):
     # PARSER
     # ===================================================================
-
     @strict(Docs)
     def p_docs_last(self, p):
         """
@@ -290,7 +276,6 @@ class YAMLProductions(TokenList):
     def p_doc_indent(self, p):
         """
         doc : INDENT doc DEDENT
-            | INDENT doc
         """
         p[0] = p[2]
 
