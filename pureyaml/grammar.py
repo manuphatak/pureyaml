@@ -244,30 +244,23 @@ class YAMLProductions(TokenList):
     @strict(Docs)
     def p_docs_last(self, p):
         """
-        docs    : DOC_INDICATOR_START doc DOC_INDICATOR_END
-                | DOC_INDICATOR_START doc
-        """
-        p[0] = Docs(p[2])
-
-    @strict(Docs)
-    def p_docs_init(self, p):
-        """
-        docs    : docs DOC_INDICATOR_START doc DOC_INDICATOR_END
-                | docs DOC_INDICATOR_START doc
-        """
-        p[0] = p[1] + Docs(p[3])
-
-    @strict(Docs)
-    def p_docs_implicit_single(self, p):
-        """
         docs    : doc
         """
         p[0] = Docs(p[1])
 
+    @strict(Docs)
+    def p_docs_init(self, p):
+        """
+        docs    : docs doc
+        """
+        p[0] = p[1] + Docs(p[2])
+
     @strict(Doc)
     def p_doc_indent(self, p):
         """
-        doc : INDENT doc DEDENT
+        doc : DOC_INDICATOR_START doc DOC_INDICATOR_END
+            | DOC_INDICATOR_START doc
+            | INDENT doc DEDENT
         """
         p[0] = p[2]
 
