@@ -55,8 +55,8 @@ class Collection(SequenceMixin, Node):
         self.raw_value = values
         self.value = self.init_value(*values, **kwargs)
 
-    def init_value(self, *values, **kwargs):
-        return values
+    def init_value(self, *value, **kwargs):
+        return value
 
     def __add__(self, other):
         _Collection = self.__class__

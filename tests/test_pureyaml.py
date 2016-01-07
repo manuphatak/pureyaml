@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parse(text)
+    nodes = parser.parsedebug(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -488,7 +488,7 @@ def test_unnecessary_indent_2_items():
             - South by Southwest
     """)[1:]
 
-    nodes = parser.parse(text)
+    nodes = parser.parsedebug(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -534,6 +534,7 @@ def test_unnecessary_indent_3_items_with_dedent():
     assert nodes == expected
 
 
+@skipif
 def test_empty_scalar():
     text = dedent("""
         ---
@@ -546,6 +547,7 @@ def test_empty_scalar():
     assert nodes == expected
 
 
+@skipif
 def test_empty_scalar_double_quote():
     text = dedent("""
         ---
@@ -646,6 +648,7 @@ def test_scalar_literal_1_line():
           literal
     """)[1:]
 
+    print(parser.tokenize(text))
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('literal')))
 
@@ -659,7 +662,52 @@ def test_scalar_literal_ascii_art():
           // ||  ||__
     """)[1:]
 
+    print(parser.tokenize(text))
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('\//||\/||\n// ||  ||__')))
+
+    assert nodes == expected
+
+
+def test_longer_scalar_literal_with_indents():
+    text = dedent("""
+        |
+            There once was a short man from Ealing
+            Who got on a bus to Darjeeling
+               It said on the door
+               "Please don't spit on the floor"
+            So he carefully spat on the ceiling
+    """)[1:]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Str(dedent("""
+            There once was a short man from Ealing
+            Who got on a bus to Darjeeling
+               It said on the door
+               "Please don't spit on the floor"
+            So he carefully spat on the ceiling
+        """)[1:-1])))
+
+    assert nodes == expected
+
+
+def test_map_with_literal_block():
+    text = dedent("""
+        data: |
+          There once was a short man from Ealing
+          Who got on a bus to Darjeeling
+            It said on the door
+            "Please don't spit on the floor"
+          So he carefully spat on the ceiling
+    """)[1:]
+
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map((Str('data'), Str(dedent("""
+            There once was a short man from Ealing
+            Who got on a bus to Darjeeling
+              It said on the door
+              "Please don't spit on the floor"
+            So he carefully spat on the ceiling
+        """)[1:-1])))))
 
     assert nodes == expected

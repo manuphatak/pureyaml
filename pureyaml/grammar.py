@@ -5,6 +5,7 @@ pureyaml
 from __future__ import absolute_import
 
 from functools import wraps
+from textwrap import dedent
 
 from pureyaml.exceptions import YAMLStrictTypeError
 from .nodes import *  # noqa
@@ -16,7 +17,8 @@ class TokenList(object):
         'DOC_END_INDICATOR',
         'SEQUENCE_INDICATOR',
         'MAP_INDICATOR',
-        'LITERAL_INDICATOR',
+        'LITERAL_INDICATOR_START',
+        'LITERAL_INDICATOR_END',
         'CAST_TYPE',
         'SCALAR',
         # 'LITERAL_LINE',
@@ -25,9 +27,19 @@ class TokenList(object):
     ]  # :on
 
 
+def find_column(t):
+    pos = t.lexpos + len(t.value)
+    data = t.lexer.lexdata
+    last_cr = data.rfind('\n', 0, pos)
+    if last_cr < 0:
+        last_cr = 0
+    column = pos - last_cr
+    return column
+
+
 class YAMLTokens(TokenList):
     def __init__(self):
-        self.indent_stack = [0]
+        self.indent_stack = [1]
 
     # LEXER
     # ===================================================================
@@ -42,16 +54,13 @@ class YAMLTokens(TokenList):
 
     # state: multiple
     # -------------------------------------------------------------------
-    def t_INITIAL_literal_ignore_INDENT(self, t):
-        r'\n\ *'
-        # strip newline
-        t.value = t.value[1:]
+    def t_ignore_INDENT(self, t):
+        r'\n\s*(?=\S)'
 
         indent_stack = self.indent_stack
-
+        column = find_column(t)
         assert indent_stack == sorted(indent_stack)
-
-        next_indent_length, curr_indent_length = len(t.value), self.indent_stack[-1]
+        next_indent_length, curr_indent_length = column, self.indent_stack[-1]
         if next_indent_length > curr_indent_length:
             indent_stack.append(next_indent_length)
             t.type = 'INDENT'
@@ -61,8 +70,8 @@ class YAMLTokens(TokenList):
             # t.type = 'NODENT'
             pass
         else:
-            prev_indent_length = indent_stack.pop()
-            t.lexer.lexpos -= curr_indent_length - prev_indent_length
+            indent_delta = curr_indent_length - indent_stack.pop()
+            t.lexer.lexpos -= indent_delta
 
             t.type = 'DEDENT'
             return t
@@ -143,17 +152,19 @@ class YAMLTokens(TokenList):
     #     r'[\w\s]+'
     #     return t
     #
-    t_literal_SCALAR = r'[^(?:\n\n)]+'
+    t_literal_SCALAR = r'\n(?!\n)|.+'
 
     def t_begin_literal(self, t):
-        r'\ *(?<!\\)\|'
+        r'\ *(?<!\\)\|\ ?\n'
         t.lexer.push_state('literal')
-        t.type = 'LITERAL_INDICATOR'
+        t.type = 'LITERAL_INDICATOR_START'
         return t
 
     def t_literal_end(self, t):
-        r'\n\n'
+        r'\n\n|\n$'
         t.lexer.pop_state()
+        t.type = 'LITERAL_INDICATOR_END'
+        return t
 
     # state: INITIAL
     # -------------------------------------------------------------------
@@ -227,6 +238,7 @@ class YAMLProductions(TokenList):
     def p_doc_indent(self, p):
         """
         doc : INDENT doc DEDENT
+            | INDENT doc
         """
         p[0] = p[2]
 
@@ -304,16 +316,16 @@ class YAMLProductions(TokenList):
     @strict(Str)
     def p_scalar_literal(self, p):
         """
-        scalar  : LITERAL_INDICATOR INDENT scalar_group DEDENT
+        scalar  : LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
         """
-        p[0] = ScalarDispatch(p[3], cast='str')
+        p[0] = ScalarDispatch(dedent(p[2]).rstrip('\n'), cast='str')
 
-    @strict(Null)
-    def p_scalar_empty(self, p):
-        """
-        scalar  : empty
-        """
-        p[0] = ScalarDispatch('', cast='null')
+    # @strict(Null)
+    # def p_scalar_empty(self, p):
+    #     """
+    #     scalar  : empty
+    #     """
+    #     p[0] = ScalarDispatch('', cast='null')
 
     @strict(str)
     def p_scalar_group(self, p):
@@ -323,11 +335,12 @@ class YAMLProductions(TokenList):
         """
         if len(p) == 2:
             p[0] = str(p[1])
-        if len(p) == 3:
-            p[0] = p[1] + '\n' + p[2]
 
-    def p_empty(self, p):
-        """
-        empty   :
-        """
-        pass
+        if len(p) == 3:
+            p[0] = p[1] + p[2]
+
+    # def p_empty(self, p):
+    #     """
+    #     empty   :
+    #     """
+    #     pass

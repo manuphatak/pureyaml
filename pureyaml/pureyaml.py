@@ -16,11 +16,16 @@ from .grammar import YAMLTokens, YAMLProductions
 logger = logging.getLogger(__name__)
 
 
+# lex_logger = logging.getLogger('ply.lex')
+# yacc_logger = logging.getLogger('ply.yacc')
+
+
 class YAMLLexer(YAMLTokens):
     @classmethod
     def build(cls, **kwargs):
         self = cls()
         kwargs.setdefault('module', self)
+        # kwargs.setdefault('debuglog', lex_logger)
         return lex(**kwargs)
 
     @classmethod
@@ -42,6 +47,8 @@ class YAMLParser(YAMLProductions):
         kwargs.setdefault('module', self)
         kwargs.setdefault('tabmodule', '_parsetab')
         kwargs.setdefault('debugfile', '_parser.out')
+        # kwargs.setdefault('debuglog', yacc_logger)
+
         self.debug = kwargs.get('debug')
         self.parser = yacc(**kwargs)
 

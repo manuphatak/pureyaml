@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 # coding=utf-8
+import os
 from collections import Mapping
-from difflib import unified_diff
+from difflib import *
 
 from pureyaml.nodes import Scalar, Collection, Node
+
+
+def test_dir(*paths):
+    dirname = os.path.dirname(__file__)
+    return os.path.abspath(os.path.join(dirname, *paths))
 
 
 def pformat_node(node, depth=0):  # noqa
@@ -49,11 +55,15 @@ def pformat_node(node, depth=0):  # noqa
 
 
 def get_node_diff(a, b, root=True):  # noqa
+
+    d = Differ()
     if root is True:
         str_a = list(pformat_node(a))
         str_b = list(pformat_node(b))
         for line in unified_diff(str_a, str_b, n=2, lineterm=''):
             yield line
+        yield ''
+        yield '%s != %s' % (a, b)
         yield ''
 
     if isinstance(a, Collection) and isinstance(b, Collection):
@@ -65,11 +75,14 @@ def get_node_diff(a, b, root=True):  # noqa
                 yield line
             break
     elif isinstance(a, tuple) and isinstance(b, tuple):
-        (ak, av), (bk, bv) = a, b
+        # (ak, av), (bk, bv) = a, b
         if not a == b:
-            yield '(%s, %s) != (%s, %s)' % (ak, av, bk, bv)
+            for line in d.compare([repr(a)], [repr(b)]):
+                yield line.rstrip('\n')
+                # yield '(%s, %s) != (%s, %s)' % (ak, av, bk, bv)
 
     elif isinstance(a, (Node, tuple)) and isinstance(b, (Node, tuple)):
-        yield '%s != %s' % (a, b)
+        for line in d.compare([repr(a)], [repr(b)]):
+            yield line.rstrip('\n')
     else:
         raise ValueError('%s != %s' % (a, b))
