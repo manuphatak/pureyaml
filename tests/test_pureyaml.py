@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -92,8 +92,7 @@ def test_3_docs_no_end_of_doc_indicators():
         More Docs
     """)[1:]
 
-    print(parser.tokenize(text))
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -489,7 +488,7 @@ def test_unnecessary_indent_2_items():
             - South by Southwest
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -724,7 +723,6 @@ def test_map_with_folded_block():
             paragraph breaks
     """)[1:]
 
-    print(parser.tokenize(text))
     nodes = parser.parse(text)
     expected = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
