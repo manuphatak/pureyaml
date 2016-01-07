@@ -648,7 +648,6 @@ def test_scalar_literal_1_line():
           literal
     """)[1:]
 
-    print(parser.tokenize(text))
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('literal')))
 
@@ -662,7 +661,6 @@ def test_scalar_literal_ascii_art():
           // ||  ||__
     """)[1:]
 
-    print(parser.tokenize(text))
     nodes = parser.parse(text)
     expected = Docs(Doc(Str('\//||\/||\n// ||  ||__')))
 
@@ -708,6 +706,28 @@ def test_map_with_literal_block():
               It said on the door
               "Please don't spit on the floor"
             So he carefully spat on the ceiling
+        """)[1:-1])))))
+
+    assert nodes == expected
+
+
+def test_map_with_folded_block():
+    text = dedent("""
+        data: >
+            Wrapped text
+            will be folded
+            into a single
+            paragraph
+
+            Blank lines denote
+            paragraph breaks
+    """)[1:]
+
+    print(parser.tokenize(text))
+    nodes = parser.parse(text)
+    expected = Docs(Doc(Map((Str('data'), Str(dedent("""
+            Wrapped text will be folded into a single paragraph
+            Blank lines denote paragraph breaks
         """)[1:-1])))))
 
     assert nodes == expected

@@ -11,6 +11,25 @@ from pureyaml.exceptions import YAMLStrictTypeError
 from .nodes import *  # noqa
 
 
+class fold(object):
+    re_folded_repl = re.compile(r"""
+          (?P<PARAGRAPH>\n\n)
+        | (?P<SPACE>\n)
+    """, re.X)
+
+    @classmethod
+    def folded_repl(cls, match):
+        if match.group('PARAGRAPH') is not None:
+            return '\n'
+        elif match.group('SPACE') is not None:
+            return ' '
+        else:
+            return match
+
+    def __new__(cls, text):
+        return cls.re_folded_repl.sub(cls.folded_repl, text)
+
+
 class TokenList(object):
     tokens = [  # :off
         'DOC_START_INDICATOR',
@@ -19,6 +38,8 @@ class TokenList(object):
         'MAP_INDICATOR',
         'LITERAL_INDICATOR_START',
         'LITERAL_INDICATOR_END',
+        'FOLD_INDICATOR_START',
+        'FOLD_INDICATOR_END',
         'CAST_TYPE',
         'SCALAR',
         # 'LITERAL_LINE',
@@ -49,6 +70,7 @@ class YAMLTokens(TokenList):
         ('comment', 'exclusive'),
         ('singlequote', 'exclusive'),
         ('literal', 'exclusive'),
+        ('fold', 'exclusive'),
 
     )  # :on
 
@@ -144,14 +166,9 @@ class YAMLTokens(TokenList):
 
         # t.lexer.begin('INITIAL')
 
-    #
-    # # state: literal
-    # # -------------------------------------------------------------------
-    #
-    # def t_literal_LITERAL_LINE(self, t):
-    #     r'[\w\s]+'
-    #     return t
-    #
+    # state: literal
+    # -------------------------------------------------------------------
+
     t_literal_SCALAR = r'.+'
 
     def t_begin_literal(self, t):
@@ -161,7 +178,7 @@ class YAMLTokens(TokenList):
         return t
 
     def t_literal_end(self, t):
-        r'\n\ *'
+        r'\n+\ *'
         column = find_column(t)
         indent = self.indent_stack[-1]
         if column < indent:
@@ -170,6 +187,32 @@ class YAMLTokens(TokenList):
         elif column == indent:
             t.lexer.pop_state()
             t.type = 'LITERAL_INDICATOR_END'
+            return t
+        else:
+            t.type = 'SCALAR'
+            return t
+
+    # state: fold
+    # -------------------------------------------------------------------
+
+    t_fold_SCALAR = r'.+'
+
+    def t_begin_fold(self, t):
+        r'\ *(?<!\\)\>\ ?\n'
+        t.lexer.push_state('fold')
+        t.type = 'FOLD_INDICATOR_START'
+        return t
+
+    def t_fold_end(self, t):
+        r'\n+\ *'
+        column = find_column(t)
+        indent = self.indent_stack[-1]
+        if column < indent:
+            # TODO rollback and dedent
+            raise Exception('TODO, dedent')
+        elif column == indent:
+            t.lexer.pop_state()
+            t.type = 'FOLD_INDICATOR_END'
             return t
         else:
             t.type = 'SCALAR'
@@ -329,12 +372,14 @@ class YAMLProductions(TokenList):
         """
         p[0] = ScalarDispatch(dedent(p[2]).rstrip('\n'), cast='str')
 
-    # @strict(Null)
-    # def p_scalar_empty(self, p):
-    #     """
-    #     scalar  : empty
-    #     """
-    #     p[0] = ScalarDispatch('', cast='null')
+    @strict(Str)
+    def p_scalar_folded(self, p):
+        """
+        scalar  : FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+        """
+
+        cleaned_scalar = fold(dedent(p[2]).rstrip('\n'))
+        p[0] = ScalarDispatch(cleaned_scalar, cast='str')
 
     @strict(str)
     def p_scalar_group(self, p):
@@ -348,8 +393,16 @@ class YAMLProductions(TokenList):
         if len(p) == 3:
             p[0] = p[1] + p[2]
 
-    # def p_empty(self, p):
-    #     """
-    #     empty   :
-    #     """
-    #     pass
+            #
+            #   @strict(Null)
+            #   def p_scalar_empty(self, p):
+            #       """
+            #       scalar  : empty
+            #       """
+            #       p[0] = ScalarDispatch('', cast='null')
+            #
+            #   def p_empty(self, p):
+            #       """
+            #       empty   :
+            #       """
+            #       pass
