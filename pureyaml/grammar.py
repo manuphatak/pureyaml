@@ -152,7 +152,7 @@ class YAMLTokens(TokenList):
     #     r'[\w\s]+'
     #     return t
     #
-    t_literal_SCALAR = r'\n(?!\n)|.+'
+    t_literal_SCALAR = r'.+'
 
     def t_begin_literal(self, t):
         r'\ *(?<!\\)\|\ ?\n'
@@ -161,10 +161,19 @@ class YAMLTokens(TokenList):
         return t
 
     def t_literal_end(self, t):
-        r'\n\n|\n$'
-        t.lexer.pop_state()
-        t.type = 'LITERAL_INDICATOR_END'
-        return t
+        r'\n\ *'
+        column = find_column(t)
+        indent = self.indent_stack[-1]
+        if column < indent:
+            # TODO rollback and dedent
+            raise Exception('TODO, dedent')
+        elif column == indent:
+            t.lexer.pop_state()
+            t.type = 'LITERAL_INDICATOR_END'
+            return t
+        else:
+            t.type = 'SCALAR'
+            return t
 
     # state: INITIAL
     # -------------------------------------------------------------------
