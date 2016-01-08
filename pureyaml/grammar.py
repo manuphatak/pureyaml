@@ -321,7 +321,7 @@ class YAMLTokens(TokenList):
 
 
     def t_SCALAR(self, t):
-        r'(?:\\.|[^\n\#\:\|]|\:\S|-\S)+'
+        r'(?:\\.|[^\n\#\:\-\|]|[\:\-\|]\S)+'
         return t
 
 
