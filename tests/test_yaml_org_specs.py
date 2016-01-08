@@ -8,8 +8,6 @@ from pureyaml.nodes import *  # noqa
 from pureyaml.pureyaml import YAMLParser
 from tests.utils import serialize_nodes
 
-skipif = mark.skipif
-xfail = mark.xfail
 parser = YAMLParser(debug=True)
 
 
@@ -235,7 +233,7 @@ def test_ex_2_07_two_docs_in_a_stream():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_08_play_by_play_feed():
     text = dedent("""
         ---
@@ -310,7 +308,7 @@ def test_ex_2_09_single_doc_with_two_comments():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_10_node_appears_twice():
     text = dedent("""
         ---
@@ -349,7 +347,7 @@ def test_ex_2_10_node_appears_twice():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_11_mapping_between_sequences():
     text = dedent("""
         ? - Detroit Tigers
@@ -519,7 +517,7 @@ def test_ex_2_16_indentation_determines_scope():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_17_quoated_scalars():
     text = dedent("""
         unicode: "Sosa did fine.\u263A"
@@ -549,7 +547,7 @@ def test_ex_2_17_quoated_scalars():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_18_multi_line_flow_scalars():
     text = dedent("""
         plain:
@@ -652,7 +650,7 @@ def test_ex_2_21_miscellaneous():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_22_timestamps():
     text = dedent("""
         canonical: 2001-12-15T02:59:43.1Z
@@ -674,7 +672,7 @@ def test_ex_2_22_timestamps():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_23_various_explicit_tags():
     text = dedent("""
         ---
@@ -705,7 +703,7 @@ def test_ex_2_23_various_explicit_tags():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_24_global_tags():
     text = dedent("""
         %TAG ! tag:clarkevans.com,2002:
@@ -738,7 +736,7 @@ def test_ex_2_24_global_tags():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_25_unordered_sets():
     text = dedent("""
         # Sets are represented as a
@@ -764,7 +762,7 @@ def test_ex_2_25_unordered_sets():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_26_unordered_mappings():
     text = dedent("""
         # Ordered maps are represented as
@@ -790,7 +788,7 @@ def test_ex_2_26_unordered_mappings():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_27_invoice():
     text = dedent("""
         --- !<tag:clarkevans.com,2002:invoice>
@@ -838,7 +836,7 @@ def test_ex_2_27_invoice():
     assert nodes == expected
 
 
-@xfail
+@mark.xfail
 def test_ex_2_28_invoice():
     text = dedent("""
         ---

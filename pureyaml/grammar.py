@@ -166,7 +166,7 @@ class YAMLTokens(TokenList):
 
     # state: singlequote
     # -------------------------------------------------------------------
-    t_singlequote_SCALAR = r"(?:\\'|[^'])+"
+    t_singlequote_SCALAR = r"(?:\\'|[^']|'')+"
 
     def t_begin_singlequote(self, t):
         r"(?<!\\)'"

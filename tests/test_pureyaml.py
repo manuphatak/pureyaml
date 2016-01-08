@@ -14,7 +14,6 @@ from pytest import mark
 from pureyaml.nodes import *  # noqa
 from pureyaml.pureyaml import YAMLParser
 
-skipif = mark.skipif
 parser = YAMLParser(debug=True)
 
 
@@ -534,7 +533,7 @@ def test_unnecessary_indent_3_items_with_dedent():
     assert nodes == expected
 
 
-@skipif
+@mark.skipif
 def test_empty_scalar():
     text = dedent("""
         ---
