@@ -269,6 +269,7 @@ def test_can_read_values_from_casted_data__str_from_context():
     assert data['h'] == 'Yes we have No bananas'
 
 
+# noinspection SpellCheckingInspection
 specified_data_types__binary = """
 ---
 picture: !!binary |
@@ -281,6 +282,7 @@ picture: !!binary |
 
 def test_can_read_specified_data_types__binary():
     result = pureyaml.load(specified_data_types__binary)
+    # noinspection SpellCheckingInspection
     picture = standard_b64decode(dedent("""
         R0lGODlhDAAMAIQAAP//9/X
         17unp5WZmZgAAAOfn515eXv

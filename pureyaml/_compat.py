@@ -16,7 +16,8 @@ try:
 except ImportError:
     import collections  # :off
 
-    class collections_abc:  # nowa
+    # noinspection PyClassHasNoInit,PyPep8Naming
+    class collections_abc:  # noqa
         Hashable = collections.Hashable  # :on
         Iterable = collections.Iterable
         Iterator = collections.Iterator

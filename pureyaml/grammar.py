@@ -63,6 +63,7 @@ class TokenList(object):
     ]  # :on
 
 
+# noinspection PyMethodMayBeStatic,PyIncorrectDocstring,PySingleQuotedDocstring
 class YAMLTokens(TokenList):
     def __init__(self):
         self.indent_stack = [1]
@@ -97,7 +98,6 @@ class YAMLTokens(TokenList):
 
     # state: multiple
     # -------------------------------------------------------------------
-
     def t_ignore_INDENT(self, t):
         r'\n\s*'
 
@@ -319,6 +319,7 @@ class YAMLTokens(TokenList):
         return t
 
 
+# noinspection PyIncorrectDocstring
 class YAMLProductions(TokenList):
     # PARSER
     # ===================================================================

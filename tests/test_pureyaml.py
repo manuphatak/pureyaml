@@ -396,7 +396,7 @@ def test_map_with_scalars_and_comments():
     assert nodes == expected
 
 
-def test_different_map_with_bools_and_comments():
+def test_different_map_with_bool_and_comments():
     text = dedent("""
         ---
         f: !!str Yes               # a string via explicit type
@@ -778,7 +778,7 @@ def test_sequence_of_map_3_item():
     assert nodes == expected
 
 
-def test_sequence_of_sequencs_1_item():
+def test_sequence_of_sequences_1_item():
     text = dedent("""
         - - John Smith
     """)[1:]
@@ -793,7 +793,7 @@ def test_sequence_of_sequencs_1_item():
     assert nodes == expected
 
 
-def test_sequence_of_sequencs_3_items():
+def test_sequence_of_sequences_3_items():
     text = dedent("""
         - - John Smith
           - Joe Sixpack
@@ -842,7 +842,7 @@ def test_sequence_of_mixed_items():
     assert nodes == expected
 
 
-def test_map_of_sequencs_1_item():
+def test_map_of_sequences_1_item():
     text = dedent("""
         people:
           - John Smith
@@ -858,7 +858,7 @@ def test_map_of_sequencs_1_item():
     assert nodes == expected
 
 
-def test_map_of_sequencs_many_items():
+def test_map_of_sequences_many_items():
     text = dedent("""
         people:
           - John Smith
