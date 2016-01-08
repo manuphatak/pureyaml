@@ -42,7 +42,19 @@ def find_column(t):
 class YAMLTokens(TokenList):
     def __init__(self):
         self.indent_stack = [1]
-        self.doc_context_stack = []
+
+    def get_indent_status(self, t):
+        column = find_column(t)
+        curr_depth, next_depth = self.indent_stack[-1], column
+
+        if next_depth > curr_depth:
+            status = 'INDENT'
+        elif next_depth < curr_depth:
+            status = 'DEDENT'
+        else:
+            status = 'NODENT'
+
+        return status, curr_depth, next_depth
 
     # LEXER
     # ===================================================================
@@ -58,31 +70,23 @@ class YAMLTokens(TokenList):
 
     # state: multiple
     # -------------------------------------------------------------------
-    # def t_eof(self, t):
-    #     a = t
-    #     # return t
 
     def t_ignore_INDENT(self, t):
         r'\n\s*'
 
-        indent_stack = self.indent_stack
-        column = find_column(t)
-        assert indent_stack == sorted(indent_stack)
-        next_indent_length, curr_indent_length = column, self.indent_stack[-1]
-        if next_indent_length > curr_indent_length:
-            indent_stack.append(next_indent_length)
-            t.type = 'INDENT'
-            return t
+        indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
-        elif next_indent_length == curr_indent_length:
-            # NODENT
-            pass
-        else:
-            indent_delta = curr_indent_length - indent_stack.pop()
+        if indent_status == 'NODENT':
+            return
+
+        if indent_status == 'INDENT':
+            self.indent_stack.append(next_depth)
+        else:  # DEDENT
+            indent_delta = curr_depth - self.indent_stack.pop()
             t.lexer.lexpos -= indent_delta
 
-            t.type = 'DEDENT'
-            return t
+        t.type = indent_status
+        return t
 
     # state: tag
     # -------------------------------------------------------------------
@@ -272,7 +276,7 @@ class YAMLProductions(TokenList):
         """
         p[0] = Doc(p[1])
 
-    @strict(Collection)
+    @strict(Sequence, Map)
     def p_collection(self, p):
         """
         collection  : sequence
@@ -294,11 +298,26 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1] + Map(p[2])
 
+    @strict(tuple)
     def p_map_item(self, p):
         """
-        map_item    : scalar MAP_INDICATOR scalar
+        map_item    : map_item_key map_item_value
         """
-        p[0] = p[1], p[3]
+        p[0] = p[1], p[2]
+
+    @strict(Scalar)
+    def p_map_item_key(self, p):
+        """
+        map_item_key    : scalar MAP_INDICATOR
+        """
+        p[0] = p[1]
+
+    @strict(Scalar)
+    def p_map_item_value(self, p):
+        """
+        map_item_value  : scalar
+        """
+        p[0] = p[1]
 
     @strict(Sequence)
     def p_sequence_last(self, p):
@@ -362,17 +381,3 @@ class YAMLProductions(TokenList):
 
         if len(p) == 3:
             p[0] = p[1] + p[2]
-
-            #
-            #   @strict(Null)
-            #   def p_scalar_empty(self, p):
-            #       """
-            #       scalar  : empty
-            #       """
-            #       p[0] = ScalarDispatch('', cast='null')
-            #
-            #   def p_empty(self, p):
-            #       """
-            #       empty   :
-            #       """
-            #       pass

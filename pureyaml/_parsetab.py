@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '3FDDB538612AB4BA5C3D04E00346F1BD'
+_lr_signature = '0B151EC1BF2A4F1AAFE7B4903ACF2820'
     
-_lr_action_items = {'DEDENT':([1,4,6,7,9,14,15,17,20,21,23,25,26,29,30,31,32,33,],[-9,-8,-17,-6,-7,-13,-10,-11,30,-14,-16,-15,-4,-19,-5,-12,-3,-18,]),'LITERAL_INDICATOR_START':([0,1,3,4,5,6,7,8,9,10,11,12,14,15,17,21,22,23,24,25,26,29,30,31,32,33,],[13,13,13,-8,13,-17,-6,13,-7,13,13,-1,-13,-10,-11,-14,-2,-16,13,-15,-4,-19,-5,-12,-3,-18,]),'FOLD_INDICATOR_START':([0,1,3,4,5,6,7,8,9,10,11,12,14,15,17,21,22,23,24,25,26,29,30,31,32,33,],[2,2,2,-8,2,-17,-6,2,-7,2,2,-1,-13,-10,-11,-14,-2,-16,2,-15,-4,-19,-5,-12,-3,-18,]),'INDENT':([0,1,3,4,5,6,7,9,11,12,14,15,17,21,22,23,25,26,29,30,31,32,33,],[3,-9,3,-8,3,-17,-6,-7,3,-1,-13,-10,-11,-14,-2,-16,-15,-4,-19,-5,-12,-3,-18,]),'LITERAL_INDICATOR_END':([19,27,28,],[-20,33,-21,]),'MAP_INDICATOR':([6,9,16,23,29,33,],[-17,24,24,-16,-19,-18,]),'FOLD_INDICATOR_END':([18,19,28,],[29,-20,-21,]),'CAST_TYPE':([0,1,3,4,5,6,7,8,9,10,11,12,14,15,17,21,22,23,24,25,26,29,30,31,32,33,],[8,8,8,-8,8,-17,-6,8,-7,8,8,-1,-13,-10,-11,-14,-2,-16,8,-15,-4,-19,-5,-12,-3,-18,]),'SCALAR':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19,21,22,23,24,25,26,27,28,29,30,31,32,33,],[6,6,19,6,-8,6,-17,-6,6,-7,6,6,-1,19,-13,-10,-11,28,-20,-14,-2,-16,6,-15,-4,28,-21,-19,-5,-12,-3,-18,]),'SEQUENCE_INDICATOR':([0,1,3,4,5,6,7,9,11,12,14,15,17,21,22,23,25,26,29,30,31,32,33,],[10,-9,10,10,10,-17,-6,-7,10,-1,-13,-10,-11,-14,-2,-16,-15,-4,-19,-5,-12,-3,-18,]),'DOC_INDICATOR_START':([0,1,3,4,5,6,7,9,11,12,14,15,17,21,22,23,25,26,29,30,31,32,33,],[11,-9,11,-8,11,-17,-6,-7,11,-1,-13,-10,-11,-14,-2,-16,-15,-4,-19,-5,-12,-3,-18,]),'$end':([1,4,5,6,7,9,12,14,15,17,21,22,23,25,26,29,30,31,32,33,],[-9,-8,0,-17,-6,-7,-1,-13,-10,-11,-14,-2,-16,-15,-4,-19,-5,-12,-3,-18,]),'DOC_INDICATOR_END':([1,4,6,7,9,14,15,17,21,23,25,26,29,30,31,32,33,],[-9,-8,-17,-6,-7,-13,-10,-11,-14,-16,-15,32,-19,-5,-12,-3,-18,]),}
+_lr_action_items = {'DEDENT':([2,3,6,8,9,11,12,19,21,22,23,24,25,28,30,32,33,34,35,],[-8,-7,-15,-10,-9,-6,-19,-16,-17,-4,-14,-12,-11,34,-18,-21,-3,-5,-20,]),'LITERAL_INDICATOR_START':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,22,23,24,25,27,30,32,33,34,35,],[15,-8,-7,15,15,-15,15,-10,15,15,-6,-19,15,-1,15,-16,-13,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),'FOLD_INDICATOR_START':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,22,23,24,25,27,30,32,33,34,35,],[1,-8,-7,1,1,-15,1,-10,1,1,-6,-19,1,-1,1,-16,-13,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),'INDENT':([0,2,3,5,6,8,9,10,11,12,13,14,19,21,22,23,24,25,27,30,32,33,34,35,],[13,-8,-7,13,-15,-10,-9,13,-6,-19,13,-1,-16,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),'LITERAL_INDICATOR_END':([18,29,31,],[-22,35,-23,]),'MAP_INDICATOR':([3,12,26,30,32,35,],[20,-19,20,-18,-21,-20,]),'FOLD_INDICATOR_END':([17,18,31,],[32,-22,-23,]),'CAST_TYPE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,16,19,20,21,22,23,24,25,27,30,32,33,34,35,],[16,-8,-7,16,16,-15,16,-10,16,16,-6,-19,16,-1,16,-16,-13,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),'SCALAR':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,29,30,31,32,33,34,35,],[12,18,-8,-7,12,12,-15,12,-10,12,12,-6,-19,12,-1,18,12,31,-22,-16,-13,-17,-4,-14,-12,-11,-2,31,-18,-23,-21,-3,-5,-20,]),'SEQUENCE_INDICATOR':([0,2,3,5,6,8,9,10,11,12,13,14,19,21,22,23,24,25,27,30,32,33,34,35,],[4,4,-7,4,-15,-10,-9,4,-6,-19,4,-1,-16,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),'DOC_INDICATOR_START':([0,2,3,5,6,8,9,10,11,12,13,14,19,21,22,23,24,25,27,30,32,33,34,35,],[5,-8,-7,5,-15,-10,-9,5,-6,-19,5,-1,-16,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),'DOC_INDICATOR_END':([2,3,6,8,9,11,12,19,21,22,23,24,25,30,32,33,34,35,],[-8,-7,-15,-10,-9,-6,-19,-16,-17,33,-14,-12,-11,-18,-21,-3,-5,-20,]),'$end':([2,3,6,8,9,10,11,12,14,19,21,22,23,24,25,27,30,32,33,34,35,],[-8,-7,-15,-10,-9,0,-6,-19,-1,-16,-17,-4,-14,-12,-11,-2,-18,-21,-3,-5,-20,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'map':([0,3,5,11,],[1,1,1,1,]),'sequence':([0,3,5,11,],[4,4,4,4,]),'doc':([0,3,5,11,],[12,20,22,26,]),'collection':([0,3,5,11,],[7,7,7,7,]),'scalar':([0,1,3,5,8,10,11,24,],[9,16,9,9,23,25,9,31,]),'docs':([0,],[5,]),'sequence_item':([0,3,4,5,11,],[14,14,21,14,14,]),'map_item':([0,1,3,5,11,],[15,17,15,15,15,]),'scalar_group':([2,13,],[18,27,]),}
+_lr_goto_items = {'map':([0,5,10,13,],[9,9,9,9,]),'sequence':([0,5,10,13,],[2,2,2,2,]),'doc':([0,5,10,13,],[14,22,27,28,]),'collection':([0,5,10,13,],[11,11,11,11,]),'map_item_value':([7,],[24,]),'scalar':([0,4,5,7,9,10,13,16,],[3,21,3,23,26,3,3,30,]),'docs':([0,],[10,]),'sequence_item':([0,2,5,10,13,],[6,19,6,6,6,]),'map_item_key':([0,5,9,10,13,],[7,7,7,7,7,]),'scalar_group':([1,15,],[17,29,]),'map_item':([0,5,9,10,13,],[8,8,25,8,8,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,25 +26,27 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> docs","S'",1,None,None,None),
-  ('docs -> doc','docs',1,'p_docs_last','grammar.py',246),
-  ('docs -> docs doc','docs',2,'p_docs_init','grammar.py',253),
-  ('doc -> DOC_INDICATOR_START doc DOC_INDICATOR_END','doc',3,'p_doc_indent','grammar.py',260),
-  ('doc -> DOC_INDICATOR_START doc','doc',2,'p_doc_indent','grammar.py',261),
-  ('doc -> INDENT doc DEDENT','doc',3,'p_doc_indent','grammar.py',262),
-  ('doc -> collection','doc',1,'p_doc','grammar.py',269),
-  ('doc -> scalar','doc',1,'p_doc','grammar.py',270),
-  ('collection -> sequence','collection',1,'p_collection','grammar.py',277),
-  ('collection -> map','collection',1,'p_collection','grammar.py',278),
-  ('map -> map_item','map',1,'p_map_last','grammar.py',285),
-  ('map -> map map_item','map',2,'p_map_init','grammar.py',292),
-  ('map_item -> scalar MAP_INDICATOR scalar','map_item',3,'p_map_item','grammar.py',299),
-  ('sequence -> sequence_item','sequence',1,'p_sequence_last','grammar.py',305),
-  ('sequence -> sequence sequence_item','sequence',2,'p_sequence_init','grammar.py',312),
-  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','grammar.py',319),
-  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar_explicit_cast','grammar.py',326),
-  ('scalar -> SCALAR','scalar',1,'p_scalar','grammar.py',333),
-  ('scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END','scalar',3,'p_scalar_literal','grammar.py',340),
-  ('scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END','scalar',3,'p_scalar_folded','grammar.py',347),
-  ('scalar_group -> SCALAR','scalar_group',1,'p_scalar_group','grammar.py',356),
-  ('scalar_group -> scalar_group SCALAR','scalar_group',2,'p_scalar_group','grammar.py',357),
+  ('docs -> doc','docs',1,'p_docs_last','grammar.py',250),
+  ('docs -> docs doc','docs',2,'p_docs_init','grammar.py',257),
+  ('doc -> DOC_INDICATOR_START doc DOC_INDICATOR_END','doc',3,'p_doc_indent','grammar.py',264),
+  ('doc -> DOC_INDICATOR_START doc','doc',2,'p_doc_indent','grammar.py',265),
+  ('doc -> INDENT doc DEDENT','doc',3,'p_doc_indent','grammar.py',266),
+  ('doc -> collection','doc',1,'p_doc','grammar.py',273),
+  ('doc -> scalar','doc',1,'p_doc','grammar.py',274),
+  ('collection -> sequence','collection',1,'p_collection','grammar.py',281),
+  ('collection -> map','collection',1,'p_collection','grammar.py',282),
+  ('map -> map_item','map',1,'p_map_last','grammar.py',289),
+  ('map -> map map_item','map',2,'p_map_init','grammar.py',296),
+  ('map_item -> map_item_key map_item_value','map_item',2,'p_map_item','grammar.py',303),
+  ('map_item_key -> scalar MAP_INDICATOR','map_item_key',2,'p_map_item_key','grammar.py',310),
+  ('map_item_value -> scalar','map_item_value',1,'p_map_item_value','grammar.py',317),
+  ('sequence -> sequence_item','sequence',1,'p_sequence_last','grammar.py',324),
+  ('sequence -> sequence sequence_item','sequence',2,'p_sequence_init','grammar.py',331),
+  ('sequence_item -> SEQUENCE_INDICATOR scalar','sequence_item',2,'p_sequence_item','grammar.py',338),
+  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar_explicit_cast','grammar.py',345),
+  ('scalar -> SCALAR','scalar',1,'p_scalar','grammar.py',352),
+  ('scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END','scalar',3,'p_scalar_literal','grammar.py',359),
+  ('scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END','scalar',3,'p_scalar_folded','grammar.py',366),
+  ('scalar_group -> SCALAR','scalar_group',1,'p_scalar_group','grammar.py',375),
+  ('scalar_group -> scalar_group SCALAR','scalar_group',2,'p_scalar_group','grammar.py',376),
 ]
