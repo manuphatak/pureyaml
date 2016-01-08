@@ -1028,6 +1028,7 @@ def test_2_item_flow_map():
 
     assert nodes == expected
 
+
 def test_mixed_sequence_of_maps():
     text = dedent("""
         - {name: John Smith, age: 33}
@@ -1049,6 +1050,8 @@ def test_mixed_sequence_of_maps():
     )))  # :on
 
     assert nodes == expected
+
+
 def test_mixed_map_of_sequences():
     text = dedent("""
         men: [John Smith, Bill Jones]
