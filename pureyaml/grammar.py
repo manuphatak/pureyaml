@@ -313,8 +313,15 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1]
 
+    @strict(Map, Sequence)
+    def p_map_item_value_collection(self, p):
+        """
+        map_item_value  : INDENT collection DEDENT
+        """
+        p[0] = p[2]
+
     @strict(Scalar)
-    def p_map_item_value(self, p):
+    def p_map_item_value_scalar(self, p):
         """
         map_item_value  : scalar
         """

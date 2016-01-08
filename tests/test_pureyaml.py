@@ -847,3 +847,123 @@ def test_sequence_of_mixed_items():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_map_of_sequencs_1_item():
+    text = dedent("""
+        people:
+          - John Smith
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('people'), Sequence(
+            Str('John Smith'),
+        )),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_map_of_sequencs_many_items():
+    text = dedent("""
+        people:
+          - John Smith
+          - Joe Sixpack
+          - Jane Doe
+        places:
+          - London
+          - Australia
+          - US
+
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Str('people'),
+            Sequence(
+                Str('John Smith'),
+                Str('Joe Sixpack'),
+                Str('Jane Doe'),
+            )
+        ),
+        (
+            Str('places'),
+            Sequence(
+                Str('London'),
+                Str('Australia'),
+                Str('US'),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_map_of_map_1_item():
+    text = dedent("""
+        customer:
+            first_name:   Dorothy
+            family_name:  Gale
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Str('customer'),
+            Map(
+                (Str('first_name'), Str('Dorothy')),
+                (Str('family_name'), Str('Gale')),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_map_of_map_many_items():
+    text = dedent("""
+        customer:
+            first_name:   Dorothy
+            family_name:  Gale
+        cashier:
+            first_name:   Joe
+            family_name:  Sixpack
+        total: 20
+        items:
+            - doritos
+            - soda
+            - candy
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Str('customer'),
+            Map(
+                (Str('first_name'), Str('Dorothy')),
+                (Str('family_name'), Str('Gale')),
+            )
+        ),
+        (
+            Str('cashier'),
+            Map(
+                (Str('first_name'), Str('Joe')),
+                (Str('family_name'), Str('Sixpack')),
+            )
+        ),
+        (
+            Str('total'), Int(20)
+        ),
+        (
+            Str('items'),
+            Sequence(
+                Str('doritos'),
+                Str('soda'),
+                Str('candy'),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
