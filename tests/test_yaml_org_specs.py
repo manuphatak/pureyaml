@@ -647,7 +647,6 @@ def test_ex_2_21_miscellaneous():
     assert nodes == expected
 
 
-@mark.xfail
 def test_ex_2_22_timestamps():
     text = dedent("""
         canonical: 2001-12-15T02:59:43.1Z
@@ -661,8 +660,11 @@ def test_ex_2_22_timestamps():
     expected = Docs(  # :off
         Doc(
             Map(
-                (Str('plain'), Str('This unquoted scalar spans many lines.')),
-            )
+                (Str('canonical'), Str('2001-12-15T02:59:43.1Z')),
+                (Str('iso8601'), Str('2001-12-14t21:59:43.10-05:00')),
+                (Str('spaced'), Str('2001-12-14 21:59:43.10 -5')),
+                (Str('date'), Str('2002-12-14')),
+            ),
         ),
     )  # :on
 
