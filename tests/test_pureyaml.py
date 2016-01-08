@@ -547,7 +547,6 @@ def test_empty_scalar():
     assert nodes == expected
 
 
-@skipif
 def test_empty_scalar_double_quote():
     text = dedent("""
         ---

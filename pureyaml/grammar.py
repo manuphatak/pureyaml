@@ -49,6 +49,8 @@ class TokenList(object):
         'B_LITERAL_END',
         'B_FOLD_START',
         'B_FOLD_END',
+        'DOUBLEQUOTE_START',
+        'DOUBLEQUOTE_END',
         'CAST_TYPE',
         'SCALAR',
         'INDENT',
@@ -92,9 +94,9 @@ class YAMLTokens(TokenList):
         ('fold', 'exclusive'),
         ('flowsequence', 'exclusive'),
         ('flowmap', 'exclusive'),
-
-
     )  # :on
+
+    literals = '"'
 
     # state: multiple
     # -------------------------------------------------------------------
@@ -139,15 +141,14 @@ class YAMLTokens(TokenList):
         r'(?<!\\)"'
 
         t.lexer.push_state('doublequote')
-        # t.lexer.begin('doublequote')
-        t.type = 'CAST_TYPE'
-        t.value = 'str'
+        t.type = 'DOUBLEQUOTE_START'
         return t
 
     def t_doublequote_end(self, t):
         r'(?<!\\)"'
         t.lexer.pop_state()
-        # t.lexer.begin('INITIAL')
+        t.type = 'DOUBLEQUOTE_END'
+        return t
 
     # state: comment
     # -------------------------------------------------------------------
@@ -286,7 +287,11 @@ class YAMLTokens(TokenList):
         return t
 
     def t_B_SEQUENCE_COMPACT_START(self, t):
-        r'-\ +(?=-)|-\ +(?![\{\[])(?=[^:\n]*:)'
+        r"""
+          -\ +(?=-)                     # + sequence indicator
+        | -\ +(?![\{\[])                # - flow indicator
+            (?=[^:\n]*:\ )              # + map indicator
+        """
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
         if indent_status != 'INDENT':
@@ -313,6 +318,7 @@ class YAMLTokens(TokenList):
     def t_B_MAP_VALUE(self, t):
         r':\ *'
         return t
+
 
     def t_SCALAR(self, t):
         r'(?:\\.|-(?!\ +)|[^\n\#\:\-\|])+'
@@ -412,6 +418,13 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[2]
 
+    # @strict(Null)
+    # def p_map_item_value_empty(self, p):
+    #     """
+    #     map_item_value  : B_MAP_VALUE empty
+    #     """
+    #     p[0] = Null(None)
+
     @strict(Sequence)
     def p_sequence_last(self, p):
         """
@@ -433,6 +446,13 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[2]
 
+    # @strict(Null)
+    # def p_sequence_item_scalar_empty(self, p):
+    #     """
+    #     sequence_item   : B_SEQUENCE_START empty
+    #     """
+    #     p[0] = Null(None)
+
     @strict(Map, Sequence)
     def p_sequence_item_collection(self, p):
         """
@@ -453,6 +473,20 @@ class YAMLProductions(TokenList):
         sequence_item   : B_SEQUENCE_START flow_collection
         """
         p[0] = p[2]
+
+    @strict(Str)
+    def p_scalar_double_quote(self, p):
+        """
+        scalar  : DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END
+        """
+        p[0] = Str(p[2])
+
+    @strict(Str)
+    def p_scalar_double_quote_empty(self, p):
+        """
+        scalar  : DOUBLEQUOTE_START DOUBLEQUOTE_END
+        """
+        p[0] = Str('')
 
     @strict(Scalar)
     def p_scalar_explicit_cast(self, p):
@@ -559,3 +593,7 @@ class YAMLProductions(TokenList):
         flow_map_item_value    : scalar
         """
         p[0] = p[1]
+
+    def p_empty(self, p):
+        """empty    :"""
+        pass

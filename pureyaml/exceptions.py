@@ -32,7 +32,7 @@ class YAMLSyntaxError(SyntaxError, YAMLException):
 
         error_length = max(1, len(self.value))
         pointer = '^' * error_length
-        width = self.offset + len(self.value)
+        width = len(self.input[preview_start:self.offset-1]+self.value)
         yield pointer.rjust(width)
 
     def __str__(self):
