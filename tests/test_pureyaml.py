@@ -967,3 +967,34 @@ def test_map_of_map_many_items():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_1_item_flow_sequence():
+    text = dedent("""
+        --- # Shopping list
+        [milk]
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('milk'),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_many_item_flow_sequence():
+    text = dedent("""
+        --- # Shopping list
+        [milk, pumpkin pie, eggs, juice]
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Str('milk'),
+        Str('pumpkin pie'),
+        Str('eggs'),
+        Str('juice'),
+    )))  # :on
+
+    assert nodes == expected

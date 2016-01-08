@@ -28,6 +28,16 @@ def strict(*types):
     return decorate
 
 
+def find_column(t):
+    pos = t.lexpos + len(t.value)
+    data = t.lexer.lexdata
+    last_cr = data.rfind('\n', 0, pos)
+    if last_cr < 0:
+        last_cr = 0
+    column = pos - last_cr
+    return column
+
+
 class TokenList(object):
     tokens = [  # :off
         'DOC_INDICATOR_START',
@@ -42,17 +52,13 @@ class TokenList(object):
         'SCALAR',
         'INDENT',
         'DEDENT',
+        'FLOW_SEQUENCE_START',
+        'FLOW_SEQUENCE_END',
+        'FLOW_MAP_INDICATOR_START',
+        'FLOW_MAP_INDICATOR_END',
+        'FLOW_SEP',
+
     ]  # :on
-
-
-def find_column(t):
-    pos = t.lexpos + len(t.value)
-    data = t.lexer.lexdata
-    last_cr = data.rfind('\n', 0, pos)
-    if last_cr < 0:
-        last_cr = 0
-    column = pos - last_cr
-    return column
 
 
 class YAMLTokens(TokenList):
@@ -80,7 +86,10 @@ class YAMLTokens(TokenList):
         ('comment', 'exclusive'),
         ('singlequote', 'exclusive'),
         ('literal', 'exclusive'),
-        ('fold', 'exclusive')
+        ('fold', 'exclusive'),
+        ('flowsequence', 'exclusive'),
+        ('flowmap', 'exclusive'),
+
 
     )  # :on
 
@@ -217,6 +226,40 @@ class YAMLTokens(TokenList):
         else:
             t.type = 'SCALAR'
             return t
+
+    # state: flowsequence
+    # -------------------------------------------------------------------
+    def t_flowsequence_FLOW_SEP(self, t):
+        r','
+        return t
+
+    # state: flowsequence
+    # -------------------------------------------------------------------
+    t_flowsequence_SCALAR = r'[^\[\],]+'
+
+    def t_begin_flowsequence(self, t):
+        r'\['
+        t.lexer.push_state('flowsequence')
+        t.type = 'FLOW_SEQUENCE_START'
+        return t
+
+    def t_flowsequence_end(self, t):
+        r'\]'
+        t.lexer.pop_state()
+        t.type = 'FLOW_SEQUENCE_END'
+        return t
+
+    # state: flowmap
+    # -------------------------------------------------------------------
+    t_flowmap_SCALAR = r'[^\{]+'
+
+    def t_begin_flowmap(self, t):
+        r'\{'
+        t.lexer.push_state('flowmap')
+
+    def t_flowmap_end(self, t):
+        r'\}'
+        t.lexer.pop_state()
 
     # state: INITIAL
     # -------------------------------------------------------------------
@@ -396,3 +439,31 @@ class YAMLProductions(TokenList):
 
         if len(p) == 3:
             p[0] = p[1] + p[2]
+
+    @strict(Sequence)
+    def p_flow_sequence_(self, p):
+        """
+        sequence    : FLOW_SEQUENCE_START flow_sequence FLOW_SEQUENCE_END
+        """
+        p[0] = p[2]
+
+    @strict(Sequence)
+    def p_flow_sequence_last(self, p):
+        """
+        flow_sequence   : flow_sequence_item
+        """
+        p[0] = Sequence(p[1])
+
+    @strict(Sequence)
+    def p_flow_sequence_init(self, p):
+        """
+        flow_sequence   : flow_sequence FLOW_SEP flow_sequence_item
+        """
+        p[0] = p[1] + Sequence(p[3])
+
+    @strict(Scalar)
+    def p_flow_sequence_item(self, p):
+        """
+        flow_sequence_item  : scalar
+        """
+        p[0] = p[1]
