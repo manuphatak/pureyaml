@@ -7,7 +7,7 @@ from __future__ import absolute_import
 from functools import wraps
 from textwrap import dedent
 
-from .exceptions import YAMLStrictTypeError
+from .exceptions import YAMLStrictTypeError, YAMLUnknownSyntaxError
 from .nodes import *  # noqa
 from .utils import fold
 
@@ -33,7 +33,7 @@ def find_column(t):
     data = t.lexer.lexdata
     last_cr = data.rfind('\n', 0, pos)
     if last_cr < 0:
-        last_cr = 0
+        last_cr = -1
     column = pos - last_cr
     return column
 
@@ -42,6 +42,7 @@ class TokenList(object):
     tokens = [  # :off
         'DOC_START',
         'DOC_END',
+        'B_SEQUENCE_COMPACT_START',
         'B_SEQUENCE_START',
         'B_MAP_KEY',
         'B_LITERAL_START',
@@ -106,6 +107,7 @@ class YAMLTokens(TokenList):
             return
 
         if indent_status == 'INDENT':
+            # note: also set by t_B_SEQUENCE_COMPACT_START
             self.indent_stack.append(next_depth)
 
         if indent_status == 'DEDENT':
@@ -283,6 +285,27 @@ class YAMLTokens(TokenList):
         r'\.\.\.'
         return t
 
+    def t_B_SEQUENCE_COMPACT_START(self, t):
+        r'-\ +(?=-)|-\ +(?![\{\[])(?=[^:\n]*:)'
+        indent_status, curr_depth, next_depth = self.get_indent_status(t)
+
+        if indent_status != 'INDENT':
+            msg = dedent("""
+                expected 'INDENT', got %r
+                current_depth:      %s
+                next_depth:         %s
+                token:              %s
+            """)
+            raise YAMLUnknownSyntaxError(msg % (  # :off
+                indent_status,
+                curr_depth,
+                next_depth,
+                t
+            ))  # :on
+
+        self.indent_stack.append(next_depth)
+        return t
+
     def t_B_SEQUENCE_START(self, t):
         r'-\ |-(?=\n)'
         return t
@@ -415,6 +438,13 @@ class YAMLProductions(TokenList):
         sequence_item   : B_SEQUENCE_START INDENT collection DEDENT
         """
         p[0] = p[3]
+
+    @strict(Map, Sequence)
+    def p_sequence_item_compact_collection(self, p):
+        """
+        sequence_item   : B_SEQUENCE_COMPACT_START collection DEDENT
+        """
+        p[0] = p[2]
 
     @strict(Map, Sequence)
     def p_sequence_item_flow_collection(self, p):

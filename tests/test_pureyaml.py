@@ -734,8 +734,7 @@ def test_map_with_folded_block():
 
 def test_sequence_of_map_1_item():
     text = dedent("""
-        -
-          first_name: John
+        - first_name: John
           last_name: Smith
     """)[1:]
 
@@ -752,14 +751,11 @@ def test_sequence_of_map_1_item():
 
 def test_sequence_of_map_3_item():
     text = dedent("""
-        -
-          first_name: John
+        - first_name: John
           last_name: Smith
-        -
-          first_name: Joe
+        - first_name: Joe
           last_name: Sixpack
-        -
-          first_name: Jane
+        - first_name: Jane
           last_name: Doe
     """)[1:]
 
@@ -784,8 +780,7 @@ def test_sequence_of_map_3_item():
 
 def test_sequence_of_sequencs_1_item():
     text = dedent("""
-        -
-          - John Smith
+        - - John Smith
     """)[1:]
 
     nodes = parser.parsedebug(text)
@@ -800,8 +795,7 @@ def test_sequence_of_sequencs_1_item():
 
 def test_sequence_of_sequencs_3_items():
     text = dedent("""
-        -
-          - John Smith
+        - - John Smith
           - Joe Sixpack
           - Jane Doe
     """)[1:]
@@ -820,8 +814,7 @@ def test_sequence_of_sequencs_3_items():
 
 def test_sequence_of_mixed_items():
     text = dedent("""
-        -
-          - John Smith
+        - - John Smith
           - Joe Sixpack
           - Jane Doe
         - Casablanca
@@ -1032,8 +1025,7 @@ def test_2_item_flow_map():
 def test_mixed_sequence_of_maps():
     text = dedent("""
         - {name: John Smith, age: 33}
-        -
-          name: Mary Smith
+        - name: Mary Smith
           age: 27
     """)[1:]
 

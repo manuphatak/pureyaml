@@ -24,64 +24,66 @@ Rule 18    sequence -> sequence_item
 Rule 19    sequence -> sequence sequence_item
 Rule 20    sequence_item -> B_SEQUENCE_START scalar
 Rule 21    sequence_item -> B_SEQUENCE_START INDENT collection DEDENT
-Rule 22    sequence_item -> B_SEQUENCE_START flow_collection
-Rule 23    scalar -> CAST_TYPE scalar
-Rule 24    scalar -> SCALAR
-Rule 25    scalar -> B_LITERAL_START scalar_group B_LITERAL_END
-Rule 26    scalar -> B_FOLD_START scalar_group B_FOLD_END
-Rule 27    scalar_group -> SCALAR
-Rule 28    scalar_group -> scalar_group SCALAR
-Rule 29    flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-Rule 30    flow_collection -> F_MAP_START flow_map F_MAP_END
-Rule 31    flow_sequence -> flow_sequence_item
-Rule 32    flow_sequence -> flow_sequence F_SEP flow_sequence_item
-Rule 33    flow_sequence_item -> scalar
-Rule 34    flow_map -> flow_map_item
-Rule 35    flow_map -> flow_map F_SEP flow_map_item
-Rule 36    flow_map_item -> flow_map_item_key flow_map_item_value
-Rule 37    flow_map_item_key -> scalar F_MAP_KEY
-Rule 38    flow_map_item_value -> scalar
+Rule 22    sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT
+Rule 23    sequence_item -> B_SEQUENCE_START flow_collection
+Rule 24    scalar -> CAST_TYPE scalar
+Rule 25    scalar -> SCALAR
+Rule 26    scalar -> B_LITERAL_START scalar_group B_LITERAL_END
+Rule 27    scalar -> B_FOLD_START scalar_group B_FOLD_END
+Rule 28    scalar_group -> SCALAR
+Rule 29    scalar_group -> scalar_group SCALAR
+Rule 30    flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+Rule 31    flow_collection -> F_MAP_START flow_map F_MAP_END
+Rule 32    flow_sequence -> flow_sequence_item
+Rule 33    flow_sequence -> flow_sequence F_SEP flow_sequence_item
+Rule 34    flow_sequence_item -> scalar
+Rule 35    flow_map -> flow_map_item
+Rule 36    flow_map -> flow_map F_SEP flow_map_item
+Rule 37    flow_map_item -> flow_map_item_key flow_map_item_value
+Rule 38    flow_map_item_key -> scalar F_MAP_KEY
+Rule 39    flow_map_item_value -> scalar
 
 Terminals, with rules where they appear
 
-B_FOLD_END           : 26
-B_FOLD_START         : 26
-B_LITERAL_END        : 25
-B_LITERAL_START      : 25
+B_FOLD_END           : 27
+B_FOLD_START         : 27
+B_LITERAL_END        : 26
+B_LITERAL_START      : 26
 B_MAP_KEY            : 14
-B_SEQUENCE_START     : 20 21 22
-CAST_TYPE            : 23
-DEDENT               : 5 15 21
+B_SEQUENCE_COMPACT_START : 22
+B_SEQUENCE_START     : 20 21 23
+CAST_TYPE            : 24
+DEDENT               : 5 15 21 22
 DOC_END              : 3
 DOC_START            : 3 4
-F_MAP_END            : 30
-F_MAP_KEY            : 37
-F_MAP_START          : 30
-F_SEP                : 32 35
-F_SEQUENCE_END       : 29
-F_SEQUENCE_START     : 29
+F_MAP_END            : 31
+F_MAP_KEY            : 38
+F_MAP_START          : 31
+F_SEP                : 33 36
+F_SEQUENCE_END       : 30
+F_SEQUENCE_START     : 30
 INDENT               : 5 15 21
-SCALAR               : 24 27 28
+SCALAR               : 25 28 29
 error                : 
 
 Nonterminals, with rules where they appear
 
-collection           : 6 15 21
+collection           : 6 15 21 22
 doc                  : 1 2 3 4 5
 docs                 : 2 0
-flow_collection      : 10 16 22
-flow_map             : 30 35
-flow_map_item        : 34 35
-flow_map_item_key    : 36
-flow_map_item_value  : 36
-flow_sequence        : 29 32
-flow_sequence_item   : 31 32
+flow_collection      : 10 16 23
+flow_map             : 31 36
+flow_map_item        : 35 36
+flow_map_item_key    : 37
+flow_map_item_value  : 37
+flow_sequence        : 30 33
+flow_sequence_item   : 32 33
 map                  : 9 12
 map_item             : 11 12
 map_item_key         : 13
 map_item_value       : 13
-scalar               : 7 14 17 20 23 33 37 38
-scalar_group         : 25 26 28
+scalar               : 7 14 17 20 24 34 38 39
+scalar_group         : 26 27 29
 sequence             : 8 19
 sequence_item        : 18 19
 
@@ -100,31 +102,33 @@ state 0
     (8) collection -> . sequence
     (9) collection -> . map
     (10) collection -> . flow_collection
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
     (18) sequence -> . sequence_item
     (19) sequence -> . sequence sequence_item
     (11) map -> . map_item
     (12) map -> . map map_item
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
 
     DOC_START       shift and go to state 6
     INDENT          shift and go to state 14
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
     B_SEQUENCE_START shift and go to state 10
+    B_SEQUENCE_COMPACT_START shift and go to state 17
 
     map                            shift and go to state 8
     sequence                       shift and go to state 1
@@ -143,9 +147,11 @@ state 1
     (19) sequence -> sequence . sequence_item
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
 
   ! shift/reduce conflict for B_SEQUENCE_START resolved as shift
+  ! shift/reduce conflict for B_SEQUENCE_COMPACT_START resolved as shift
     DOC_START       reduce using rule 8 (collection -> sequence .)
     INDENT          reduce using rule 8 (collection -> sequence .)
     CAST_TYPE       reduce using rule 8 (collection -> sequence .)
@@ -158,20 +164,22 @@ state 1
     DEDENT          reduce using rule 8 (collection -> sequence .)
     DOC_END         reduce using rule 8 (collection -> sequence .)
     B_SEQUENCE_START shift and go to state 10
+    B_SEQUENCE_COMPACT_START shift and go to state 17
 
   ! B_SEQUENCE_START [ reduce using rule 8 (collection -> sequence .) ]
+  ! B_SEQUENCE_COMPACT_START [ reduce using rule 8 (collection -> sequence .) ]
 
-    sequence_item                  shift and go to state 20
+    sequence_item                  shift and go to state 21
 
 state 2
 
-    (26) scalar -> B_FOLD_START . scalar_group B_FOLD_END
-    (27) scalar_group -> . SCALAR
-    (28) scalar_group -> . scalar_group SCALAR
+    (27) scalar -> B_FOLD_START . scalar_group B_FOLD_END
+    (28) scalar_group -> . SCALAR
+    (29) scalar_group -> . scalar_group SCALAR
 
-    SCALAR          shift and go to state 21
+    SCALAR          shift and go to state 22
 
-    scalar_group                   shift and go to state 22
+    scalar_group                   shift and go to state 23
 
 state 3
 
@@ -187,10 +195,11 @@ state 3
     F_SEQUENCE_START reduce using rule 7 (doc -> scalar .)
     F_MAP_START     reduce using rule 7 (doc -> scalar .)
     B_SEQUENCE_START reduce using rule 7 (doc -> scalar .)
+    B_SEQUENCE_COMPACT_START reduce using rule 7 (doc -> scalar .)
     $end            reduce using rule 7 (doc -> scalar .)
-    DOC_END         reduce using rule 7 (doc -> scalar .)
     DEDENT          reduce using rule 7 (doc -> scalar .)
-    B_MAP_KEY       shift and go to state 23
+    DOC_END         reduce using rule 7 (doc -> scalar .)
+    B_MAP_KEY       shift and go to state 24
 
 
 state 4
@@ -198,6 +207,8 @@ state 4
     (18) sequence -> sequence_item .
 
     B_SEQUENCE_START reduce using rule 18 (sequence -> sequence_item .)
+    B_SEQUENCE_COMPACT_START reduce using rule 18 (sequence -> sequence_item .)
+    DEDENT          reduce using rule 18 (sequence -> sequence_item .)
     DOC_START       reduce using rule 18 (sequence -> sequence_item .)
     INDENT          reduce using rule 18 (sequence -> sequence_item .)
     CAST_TYPE       reduce using rule 18 (sequence -> sequence_item .)
@@ -208,7 +219,6 @@ state 4
     F_MAP_START     reduce using rule 18 (sequence -> sequence_item .)
     $end            reduce using rule 18 (sequence -> sequence_item .)
     DOC_END         reduce using rule 18 (sequence -> sequence_item .)
-    DEDENT          reduce using rule 18 (sequence -> sequence_item .)
 
 
 state 5
@@ -219,14 +229,15 @@ state 5
     SCALAR          reduce using rule 11 (map -> map_item .)
     B_LITERAL_START reduce using rule 11 (map -> map_item .)
     B_FOLD_START    reduce using rule 11 (map -> map_item .)
+    DEDENT          reduce using rule 11 (map -> map_item .)
+    DOC_END         reduce using rule 11 (map -> map_item .)
     DOC_START       reduce using rule 11 (map -> map_item .)
     INDENT          reduce using rule 11 (map -> map_item .)
     F_SEQUENCE_START reduce using rule 11 (map -> map_item .)
     F_MAP_START     reduce using rule 11 (map -> map_item .)
     B_SEQUENCE_START reduce using rule 11 (map -> map_item .)
+    B_SEQUENCE_COMPACT_START reduce using rule 11 (map -> map_item .)
     $end            reduce using rule 11 (map -> map_item .)
-    DOC_END         reduce using rule 11 (map -> map_item .)
-    DEDENT          reduce using rule 11 (map -> map_item .)
 
 
 state 6
@@ -241,35 +252,37 @@ state 6
     (8) collection -> . sequence
     (9) collection -> . map
     (10) collection -> . flow_collection
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
     (18) sequence -> . sequence_item
     (19) sequence -> . sequence sequence_item
     (11) map -> . map_item
     (12) map -> . map map_item
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
 
     DOC_START       shift and go to state 6
     INDENT          shift and go to state 14
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
     B_SEQUENCE_START shift and go to state 10
+    B_SEQUENCE_COMPACT_START shift and go to state 17
 
     map                            shift and go to state 8
     sequence                       shift and go to state 1
-    doc                            shift and go to state 24
+    doc                            shift and go to state 25
     map_item_key                   shift and go to state 7
     collection                     shift and go to state 11
     scalar                         shift and go to state 3
@@ -283,24 +296,24 @@ state 7
     (15) map_item_value -> . INDENT collection DEDENT
     (16) map_item_value -> . flow_collection
     (17) map_item_value -> . scalar
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    INDENT          shift and go to state 25
+    INDENT          shift and go to state 26
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
-    CAST_TYPE       shift and go to state 17
+    F_MAP_START     shift and go to state 19
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
-    scalar                         shift and go to state 26
-    flow_collection                shift and go to state 27
-    map_item_value                 shift and go to state 28
+    scalar                         shift and go to state 27
+    flow_collection                shift and go to state 28
+    map_item_value                 shift and go to state 29
 
 state 8
 
@@ -308,10 +321,10 @@ state 8
     (12) map -> map . map_item
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
   ! shift/reduce conflict for CAST_TYPE resolved as shift
   ! shift/reduce conflict for SCALAR resolved as shift
@@ -322,12 +335,13 @@ state 8
     F_SEQUENCE_START reduce using rule 9 (collection -> map .)
     F_MAP_START     reduce using rule 9 (collection -> map .)
     B_SEQUENCE_START reduce using rule 9 (collection -> map .)
+    B_SEQUENCE_COMPACT_START reduce using rule 9 (collection -> map .)
     $end            reduce using rule 9 (collection -> map .)
     DEDENT          reduce using rule 9 (collection -> map .)
     DOC_END         reduce using rule 9 (collection -> map .)
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
   ! CAST_TYPE       [ reduce using rule 9 (collection -> map .) ]
@@ -335,8 +349,8 @@ state 8
   ! B_LITERAL_START [ reduce using rule 9 (collection -> map .) ]
   ! B_FOLD_START    [ reduce using rule 9 (collection -> map .) ]
 
-    map_item                       shift and go to state 29
-    scalar                         shift and go to state 30
+    map_item                       shift and go to state 30
+    scalar                         shift and go to state 31
     map_item_key                   shift and go to state 7
 
 state 9
@@ -351,31 +365,33 @@ state 9
     (8) collection -> . sequence
     (9) collection -> . map
     (10) collection -> . flow_collection
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
     (18) sequence -> . sequence_item
     (19) sequence -> . sequence sequence_item
     (11) map -> . map_item
     (12) map -> . map map_item
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
 
     DOC_START       shift and go to state 6
     INDENT          shift and go to state 14
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
     B_SEQUENCE_START shift and go to state 10
+    B_SEQUENCE_COMPACT_START shift and go to state 17
 
     map                            shift and go to state 8
     sequence                       shift and go to state 1
@@ -383,7 +399,7 @@ state 9
     collection                     shift and go to state 11
     scalar                         shift and go to state 3
     flow_collection                shift and go to state 13
-    doc                            shift and go to state 31
+    doc                            shift and go to state 32
     sequence_item                  shift and go to state 4
     map_item                       shift and go to state 5
 
@@ -391,24 +407,24 @@ state 10
 
     (20) sequence_item -> B_SEQUENCE_START . scalar
     (21) sequence_item -> B_SEQUENCE_START . INDENT collection DEDENT
-    (22) sequence_item -> B_SEQUENCE_START . flow_collection
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (23) sequence_item -> B_SEQUENCE_START . flow_collection
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
 
-    INDENT          shift and go to state 32
-    CAST_TYPE       shift and go to state 17
+    INDENT          shift and go to state 33
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
 
-    scalar                         shift and go to state 33
-    flow_collection                shift and go to state 34
+    scalar                         shift and go to state 34
+    flow_collection                shift and go to state 35
 
 state 11
 
@@ -423,32 +439,34 @@ state 11
     F_SEQUENCE_START reduce using rule 6 (doc -> collection .)
     F_MAP_START     reduce using rule 6 (doc -> collection .)
     B_SEQUENCE_START reduce using rule 6 (doc -> collection .)
+    B_SEQUENCE_COMPACT_START reduce using rule 6 (doc -> collection .)
     $end            reduce using rule 6 (doc -> collection .)
-    DOC_END         reduce using rule 6 (doc -> collection .)
     DEDENT          reduce using rule 6 (doc -> collection .)
+    DOC_END         reduce using rule 6 (doc -> collection .)
 
 
 state 12
 
-    (24) scalar -> SCALAR .
+    (25) scalar -> SCALAR .
 
-    B_MAP_KEY       reduce using rule 24 (scalar -> SCALAR .)
-    DOC_START       reduce using rule 24 (scalar -> SCALAR .)
-    INDENT          reduce using rule 24 (scalar -> SCALAR .)
-    CAST_TYPE       reduce using rule 24 (scalar -> SCALAR .)
-    SCALAR          reduce using rule 24 (scalar -> SCALAR .)
-    B_LITERAL_START reduce using rule 24 (scalar -> SCALAR .)
-    B_FOLD_START    reduce using rule 24 (scalar -> SCALAR .)
-    F_SEQUENCE_START reduce using rule 24 (scalar -> SCALAR .)
-    F_MAP_START     reduce using rule 24 (scalar -> SCALAR .)
-    B_SEQUENCE_START reduce using rule 24 (scalar -> SCALAR .)
-    $end            reduce using rule 24 (scalar -> SCALAR .)
-    F_MAP_END       reduce using rule 24 (scalar -> SCALAR .)
-    F_SEP           reduce using rule 24 (scalar -> SCALAR .)
-    DEDENT          reduce using rule 24 (scalar -> SCALAR .)
-    DOC_END         reduce using rule 24 (scalar -> SCALAR .)
-    F_SEQUENCE_END  reduce using rule 24 (scalar -> SCALAR .)
-    F_MAP_KEY       reduce using rule 24 (scalar -> SCALAR .)
+    B_MAP_KEY       reduce using rule 25 (scalar -> SCALAR .)
+    DEDENT          reduce using rule 25 (scalar -> SCALAR .)
+    B_SEQUENCE_START reduce using rule 25 (scalar -> SCALAR .)
+    B_SEQUENCE_COMPACT_START reduce using rule 25 (scalar -> SCALAR .)
+    DOC_START       reduce using rule 25 (scalar -> SCALAR .)
+    INDENT          reduce using rule 25 (scalar -> SCALAR .)
+    CAST_TYPE       reduce using rule 25 (scalar -> SCALAR .)
+    SCALAR          reduce using rule 25 (scalar -> SCALAR .)
+    B_LITERAL_START reduce using rule 25 (scalar -> SCALAR .)
+    B_FOLD_START    reduce using rule 25 (scalar -> SCALAR .)
+    F_SEQUENCE_START reduce using rule 25 (scalar -> SCALAR .)
+    F_MAP_START     reduce using rule 25 (scalar -> SCALAR .)
+    $end            reduce using rule 25 (scalar -> SCALAR .)
+    DOC_END         reduce using rule 25 (scalar -> SCALAR .)
+    F_MAP_KEY       reduce using rule 25 (scalar -> SCALAR .)
+    F_SEQUENCE_END  reduce using rule 25 (scalar -> SCALAR .)
+    F_SEP           reduce using rule 25 (scalar -> SCALAR .)
+    F_MAP_END       reduce using rule 25 (scalar -> SCALAR .)
 
 
 state 13
@@ -464,6 +482,7 @@ state 13
     F_SEQUENCE_START reduce using rule 10 (collection -> flow_collection .)
     F_MAP_START     reduce using rule 10 (collection -> flow_collection .)
     B_SEQUENCE_START reduce using rule 10 (collection -> flow_collection .)
+    B_SEQUENCE_COMPACT_START reduce using rule 10 (collection -> flow_collection .)
     $end            reduce using rule 10 (collection -> flow_collection .)
     DEDENT          reduce using rule 10 (collection -> flow_collection .)
     DOC_END         reduce using rule 10 (collection -> flow_collection .)
@@ -480,35 +499,37 @@ state 14
     (8) collection -> . sequence
     (9) collection -> . map
     (10) collection -> . flow_collection
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
     (18) sequence -> . sequence_item
     (19) sequence -> . sequence sequence_item
     (11) map -> . map_item
     (12) map -> . map map_item
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
 
     DOC_START       shift and go to state 6
     INDENT          shift and go to state 14
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
     B_SEQUENCE_START shift and go to state 10
+    B_SEQUENCE_COMPACT_START shift and go to state 17
 
     map                            shift and go to state 8
     sequence                       shift and go to state 1
-    doc                            shift and go to state 35
+    doc                            shift and go to state 36
     map_item_key                   shift and go to state 7
     collection                     shift and go to state 11
     scalar                         shift and go to state 3
@@ -529,81 +550,125 @@ state 15
     F_SEQUENCE_START reduce using rule 1 (docs -> doc .)
     F_MAP_START     reduce using rule 1 (docs -> doc .)
     B_SEQUENCE_START reduce using rule 1 (docs -> doc .)
+    B_SEQUENCE_COMPACT_START reduce using rule 1 (docs -> doc .)
     $end            reduce using rule 1 (docs -> doc .)
 
 
 state 16
 
-    (29) flow_collection -> F_SEQUENCE_START . flow_sequence F_SEQUENCE_END
-    (31) flow_sequence -> . flow_sequence_item
-    (32) flow_sequence -> . flow_sequence F_SEP flow_sequence_item
-    (33) flow_sequence_item -> . scalar
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (30) flow_collection -> F_SEQUENCE_START . flow_sequence F_SEQUENCE_END
+    (32) flow_sequence -> . flow_sequence_item
+    (33) flow_sequence -> . flow_sequence F_SEP flow_sequence_item
+    (34) flow_sequence_item -> . scalar
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
-    flow_sequence_item             shift and go to state 36
-    scalar                         shift and go to state 37
-    flow_sequence                  shift and go to state 38
+    flow_sequence_item             shift and go to state 37
+    scalar                         shift and go to state 38
+    flow_sequence                  shift and go to state 39
 
 state 17
 
-    (23) scalar -> CAST_TYPE . scalar
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (22) sequence_item -> B_SEQUENCE_COMPACT_START . collection DEDENT
+    (8) collection -> . sequence
+    (9) collection -> . map
+    (10) collection -> . flow_collection
+    (18) sequence -> . sequence_item
+    (19) sequence -> . sequence sequence_item
+    (11) map -> . map_item
+    (12) map -> . map map_item
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (20) sequence_item -> . B_SEQUENCE_START scalar
+    (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
+    (13) map_item -> . map_item_key map_item_value
+    (14) map_item_key -> . scalar B_MAP_KEY
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    CAST_TYPE       shift and go to state 17
+    F_SEQUENCE_START shift and go to state 16
+    F_MAP_START     shift and go to state 19
+    B_SEQUENCE_START shift and go to state 10
+    B_SEQUENCE_COMPACT_START shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
-    scalar                         shift and go to state 39
+    map                            shift and go to state 8
+    sequence                       shift and go to state 1
+    map_item_key                   shift and go to state 7
+    collection                     shift and go to state 40
+    scalar                         shift and go to state 31
+    flow_collection                shift and go to state 13
+    sequence_item                  shift and go to state 4
+    map_item                       shift and go to state 5
 
 state 18
 
-    (30) flow_collection -> F_MAP_START . flow_map F_MAP_END
-    (34) flow_map -> . flow_map_item
-    (35) flow_map -> . flow_map F_SEP flow_map_item
-    (36) flow_map_item -> . flow_map_item_key flow_map_item_value
-    (37) flow_map_item_key -> . scalar F_MAP_KEY
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> CAST_TYPE . scalar
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
-    flow_map                       shift and go to state 40
-    flow_map_item                  shift and go to state 41
-    flow_map_item_key              shift and go to state 42
-    scalar                         shift and go to state 43
+    scalar                         shift and go to state 41
 
 state 19
 
-    (25) scalar -> B_LITERAL_START . scalar_group B_LITERAL_END
-    (27) scalar_group -> . SCALAR
-    (28) scalar_group -> . scalar_group SCALAR
+    (31) flow_collection -> F_MAP_START . flow_map F_MAP_END
+    (35) flow_map -> . flow_map_item
+    (36) flow_map -> . flow_map F_SEP flow_map_item
+    (37) flow_map_item -> . flow_map_item_key flow_map_item_value
+    (38) flow_map_item_key -> . scalar F_MAP_KEY
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    SCALAR          shift and go to state 21
+    CAST_TYPE       shift and go to state 18
+    SCALAR          shift and go to state 12
+    B_LITERAL_START shift and go to state 20
+    B_FOLD_START    shift and go to state 2
 
-    scalar_group                   shift and go to state 44
+    flow_map                       shift and go to state 42
+    flow_map_item                  shift and go to state 43
+    flow_map_item_key              shift and go to state 44
+    scalar                         shift and go to state 45
 
 state 20
+
+    (26) scalar -> B_LITERAL_START . scalar_group B_LITERAL_END
+    (28) scalar_group -> . SCALAR
+    (29) scalar_group -> . scalar_group SCALAR
+
+    SCALAR          shift and go to state 22
+
+    scalar_group                   shift and go to state 46
+
+state 21
 
     (19) sequence -> sequence sequence_item .
 
     B_SEQUENCE_START reduce using rule 19 (sequence -> sequence sequence_item .)
+    B_SEQUENCE_COMPACT_START reduce using rule 19 (sequence -> sequence sequence_item .)
+    DEDENT          reduce using rule 19 (sequence -> sequence sequence_item .)
     DOC_START       reduce using rule 19 (sequence -> sequence sequence_item .)
     INDENT          reduce using rule 19 (sequence -> sequence sequence_item .)
     CAST_TYPE       reduce using rule 19 (sequence -> sequence sequence_item .)
@@ -614,28 +679,27 @@ state 20
     F_MAP_START     reduce using rule 19 (sequence -> sequence sequence_item .)
     $end            reduce using rule 19 (sequence -> sequence sequence_item .)
     DOC_END         reduce using rule 19 (sequence -> sequence sequence_item .)
-    DEDENT          reduce using rule 19 (sequence -> sequence sequence_item .)
-
-
-state 21
-
-    (27) scalar_group -> SCALAR .
-
-    B_FOLD_END      reduce using rule 27 (scalar_group -> SCALAR .)
-    SCALAR          reduce using rule 27 (scalar_group -> SCALAR .)
-    B_LITERAL_END   reduce using rule 27 (scalar_group -> SCALAR .)
 
 
 state 22
 
-    (26) scalar -> B_FOLD_START scalar_group . B_FOLD_END
-    (28) scalar_group -> scalar_group . SCALAR
+    (28) scalar_group -> SCALAR .
 
-    B_FOLD_END      shift and go to state 46
-    SCALAR          shift and go to state 45
+    B_FOLD_END      reduce using rule 28 (scalar_group -> SCALAR .)
+    SCALAR          reduce using rule 28 (scalar_group -> SCALAR .)
+    B_LITERAL_END   reduce using rule 28 (scalar_group -> SCALAR .)
 
 
 state 23
+
+    (27) scalar -> B_FOLD_START scalar_group . B_FOLD_END
+    (29) scalar_group -> scalar_group . SCALAR
+
+    B_FOLD_END      shift and go to state 48
+    SCALAR          shift and go to state 47
+
+
+state 24
 
     (14) map_item_key -> scalar B_MAP_KEY .
 
@@ -648,13 +712,13 @@ state 23
     B_FOLD_START    reduce using rule 14 (map_item_key -> scalar B_MAP_KEY .)
 
 
-state 24
+state 25
 
     (3) doc -> DOC_START doc . DOC_END
     (4) doc -> DOC_START doc .
 
   ! shift/reduce conflict for DOC_END resolved as shift
-    DOC_END         shift and go to state 47
+    DOC_END         shift and go to state 49
     DOC_START       reduce using rule 4 (doc -> DOC_START doc .)
     INDENT          reduce using rule 4 (doc -> DOC_START doc .)
     CAST_TYPE       reduce using rule 4 (doc -> DOC_START doc .)
@@ -664,13 +728,14 @@ state 24
     F_SEQUENCE_START reduce using rule 4 (doc -> DOC_START doc .)
     F_MAP_START     reduce using rule 4 (doc -> DOC_START doc .)
     B_SEQUENCE_START reduce using rule 4 (doc -> DOC_START doc .)
+    B_SEQUENCE_COMPACT_START reduce using rule 4 (doc -> DOC_START doc .)
     $end            reduce using rule 4 (doc -> DOC_START doc .)
     DEDENT          reduce using rule 4 (doc -> DOC_START doc .)
 
   ! DOC_END         [ reduce using rule 4 (doc -> DOC_START doc .) ]
 
 
-state 25
+state 26
 
     (15) map_item_value -> INDENT . collection DEDENT
     (8) collection -> . sequence
@@ -680,36 +745,38 @@ state 25
     (19) sequence -> . sequence sequence_item
     (11) map -> . map_item
     (12) map -> . map map_item
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
     B_SEQUENCE_START shift and go to state 10
-    CAST_TYPE       shift and go to state 17
+    B_SEQUENCE_COMPACT_START shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
     map                            shift and go to state 8
     sequence                       shift and go to state 1
     map_item_key                   shift and go to state 7
-    collection                     shift and go to state 48
-    scalar                         shift and go to state 30
+    collection                     shift and go to state 50
+    scalar                         shift and go to state 31
     flow_collection                shift and go to state 13
     sequence_item                  shift and go to state 4
     map_item                       shift and go to state 5
 
-state 26
+state 27
 
     (17) map_item_value -> scalar .
 
@@ -722,12 +789,13 @@ state 26
     F_SEQUENCE_START reduce using rule 17 (map_item_value -> scalar .)
     F_MAP_START     reduce using rule 17 (map_item_value -> scalar .)
     B_SEQUENCE_START reduce using rule 17 (map_item_value -> scalar .)
+    B_SEQUENCE_COMPACT_START reduce using rule 17 (map_item_value -> scalar .)
     $end            reduce using rule 17 (map_item_value -> scalar .)
     DOC_END         reduce using rule 17 (map_item_value -> scalar .)
     DEDENT          reduce using rule 17 (map_item_value -> scalar .)
 
 
-state 27
+state 28
 
     (16) map_item_value -> flow_collection .
 
@@ -740,12 +808,13 @@ state 27
     F_SEQUENCE_START reduce using rule 16 (map_item_value -> flow_collection .)
     F_MAP_START     reduce using rule 16 (map_item_value -> flow_collection .)
     B_SEQUENCE_START reduce using rule 16 (map_item_value -> flow_collection .)
+    B_SEQUENCE_COMPACT_START reduce using rule 16 (map_item_value -> flow_collection .)
     $end            reduce using rule 16 (map_item_value -> flow_collection .)
     DOC_END         reduce using rule 16 (map_item_value -> flow_collection .)
     DEDENT          reduce using rule 16 (map_item_value -> flow_collection .)
 
 
-state 28
+state 29
 
     (13) map_item -> map_item_key map_item_value .
 
@@ -753,17 +822,18 @@ state 28
     SCALAR          reduce using rule 13 (map_item -> map_item_key map_item_value .)
     B_LITERAL_START reduce using rule 13 (map_item -> map_item_key map_item_value .)
     B_FOLD_START    reduce using rule 13 (map_item -> map_item_key map_item_value .)
+    DOC_END         reduce using rule 13 (map_item -> map_item_key map_item_value .)
     DOC_START       reduce using rule 13 (map_item -> map_item_key map_item_value .)
     INDENT          reduce using rule 13 (map_item -> map_item_key map_item_value .)
     F_SEQUENCE_START reduce using rule 13 (map_item -> map_item_key map_item_value .)
     F_MAP_START     reduce using rule 13 (map_item -> map_item_key map_item_value .)
     B_SEQUENCE_START reduce using rule 13 (map_item -> map_item_key map_item_value .)
+    B_SEQUENCE_COMPACT_START reduce using rule 13 (map_item -> map_item_key map_item_value .)
     $end            reduce using rule 13 (map_item -> map_item_key map_item_value .)
-    DOC_END         reduce using rule 13 (map_item -> map_item_key map_item_value .)
     DEDENT          reduce using rule 13 (map_item -> map_item_key map_item_value .)
 
 
-state 29
+state 30
 
     (12) map -> map map_item .
 
@@ -771,24 +841,25 @@ state 29
     SCALAR          reduce using rule 12 (map -> map map_item .)
     B_LITERAL_START reduce using rule 12 (map -> map map_item .)
     B_FOLD_START    reduce using rule 12 (map -> map map_item .)
+    DEDENT          reduce using rule 12 (map -> map map_item .)
+    DOC_END         reduce using rule 12 (map -> map map_item .)
     DOC_START       reduce using rule 12 (map -> map map_item .)
     INDENT          reduce using rule 12 (map -> map map_item .)
     F_SEQUENCE_START reduce using rule 12 (map -> map map_item .)
     F_MAP_START     reduce using rule 12 (map -> map map_item .)
     B_SEQUENCE_START reduce using rule 12 (map -> map map_item .)
+    B_SEQUENCE_COMPACT_START reduce using rule 12 (map -> map map_item .)
     $end            reduce using rule 12 (map -> map map_item .)
-    DOC_END         reduce using rule 12 (map -> map map_item .)
-    DEDENT          reduce using rule 12 (map -> map map_item .)
-
-
-state 30
-
-    (14) map_item_key -> scalar . B_MAP_KEY
-
-    B_MAP_KEY       shift and go to state 23
 
 
 state 31
+
+    (14) map_item_key -> scalar . B_MAP_KEY
+
+    B_MAP_KEY       shift and go to state 24
+
+
+state 32
 
     (2) docs -> docs doc .
 
@@ -801,10 +872,11 @@ state 31
     F_SEQUENCE_START reduce using rule 2 (docs -> docs doc .)
     F_MAP_START     reduce using rule 2 (docs -> docs doc .)
     B_SEQUENCE_START reduce using rule 2 (docs -> docs doc .)
+    B_SEQUENCE_COMPACT_START reduce using rule 2 (docs -> docs doc .)
     $end            reduce using rule 2 (docs -> docs doc .)
 
 
-state 32
+state 33
 
     (21) sequence_item -> B_SEQUENCE_START INDENT . collection DEDENT
     (8) collection -> . sequence
@@ -814,40 +886,43 @@ state 32
     (19) sequence -> . sequence sequence_item
     (11) map -> . map_item
     (12) map -> . map map_item
-    (29) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
-    (30) flow_collection -> . F_MAP_START flow_map F_MAP_END
+    (30) flow_collection -> . F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    (31) flow_collection -> . F_MAP_START flow_map F_MAP_END
     (20) sequence_item -> . B_SEQUENCE_START scalar
     (21) sequence_item -> . B_SEQUENCE_START INDENT collection DEDENT
-    (22) sequence_item -> . B_SEQUENCE_START flow_collection
+    (22) sequence_item -> . B_SEQUENCE_COMPACT_START collection DEDENT
+    (23) sequence_item -> . B_SEQUENCE_START flow_collection
     (13) map_item -> . map_item_key map_item_value
     (14) map_item_key -> . scalar B_MAP_KEY
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
     F_SEQUENCE_START shift and go to state 16
-    F_MAP_START     shift and go to state 18
+    F_MAP_START     shift and go to state 19
     B_SEQUENCE_START shift and go to state 10
-    CAST_TYPE       shift and go to state 17
+    B_SEQUENCE_COMPACT_START shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
     map                            shift and go to state 8
     sequence                       shift and go to state 1
     map_item_key                   shift and go to state 7
-    collection                     shift and go to state 49
-    scalar                         shift and go to state 30
+    collection                     shift and go to state 51
+    scalar                         shift and go to state 31
     flow_collection                shift and go to state 13
     sequence_item                  shift and go to state 4
     map_item                       shift and go to state 5
 
-state 33
+state 34
 
     (20) sequence_item -> B_SEQUENCE_START scalar .
 
     B_SEQUENCE_START reduce using rule 20 (sequence_item -> B_SEQUENCE_START scalar .)
+    B_SEQUENCE_COMPACT_START reduce using rule 20 (sequence_item -> B_SEQUENCE_START scalar .)
     DOC_START       reduce using rule 20 (sequence_item -> B_SEQUENCE_START scalar .)
     INDENT          reduce using rule 20 (sequence_item -> B_SEQUENCE_START scalar .)
     CAST_TYPE       reduce using rule 20 (sequence_item -> B_SEQUENCE_START scalar .)
@@ -861,162 +936,172 @@ state 33
     DEDENT          reduce using rule 20 (sequence_item -> B_SEQUENCE_START scalar .)
 
 
-state 34
-
-    (22) sequence_item -> B_SEQUENCE_START flow_collection .
-
-    B_SEQUENCE_START reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    DOC_START       reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    INDENT          reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    CAST_TYPE       reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    SCALAR          reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    B_LITERAL_START reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    B_FOLD_START    reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    F_SEQUENCE_START reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    F_MAP_START     reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    $end            reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    DOC_END         reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-    DEDENT          reduce using rule 22 (sequence_item -> B_SEQUENCE_START flow_collection .)
-
-
 state 35
 
-    (5) doc -> INDENT doc . DEDENT
+    (23) sequence_item -> B_SEQUENCE_START flow_collection .
 
-    DEDENT          shift and go to state 50
+    B_SEQUENCE_START reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    B_SEQUENCE_COMPACT_START reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    DOC_START       reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    INDENT          reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    CAST_TYPE       reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    SCALAR          reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    B_LITERAL_START reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    B_FOLD_START    reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    F_SEQUENCE_START reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    F_MAP_START     reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    $end            reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    DOC_END         reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
+    DEDENT          reduce using rule 23 (sequence_item -> B_SEQUENCE_START flow_collection .)
 
 
 state 36
 
-    (31) flow_sequence -> flow_sequence_item .
+    (5) doc -> INDENT doc . DEDENT
 
-    F_SEQUENCE_END  reduce using rule 31 (flow_sequence -> flow_sequence_item .)
-    F_SEP           reduce using rule 31 (flow_sequence -> flow_sequence_item .)
+    DEDENT          shift and go to state 52
 
 
 state 37
 
-    (33) flow_sequence_item -> scalar .
+    (32) flow_sequence -> flow_sequence_item .
 
-    F_SEQUENCE_END  reduce using rule 33 (flow_sequence_item -> scalar .)
-    F_SEP           reduce using rule 33 (flow_sequence_item -> scalar .)
+    F_SEQUENCE_END  reduce using rule 32 (flow_sequence -> flow_sequence_item .)
+    F_SEP           reduce using rule 32 (flow_sequence -> flow_sequence_item .)
 
 
 state 38
 
-    (29) flow_collection -> F_SEQUENCE_START flow_sequence . F_SEQUENCE_END
-    (32) flow_sequence -> flow_sequence . F_SEP flow_sequence_item
+    (34) flow_sequence_item -> scalar .
 
-    F_SEQUENCE_END  shift and go to state 52
-    F_SEP           shift and go to state 51
+    F_SEQUENCE_END  reduce using rule 34 (flow_sequence_item -> scalar .)
+    F_SEP           reduce using rule 34 (flow_sequence_item -> scalar .)
 
 
 state 39
 
-    (23) scalar -> CAST_TYPE scalar .
+    (30) flow_collection -> F_SEQUENCE_START flow_sequence . F_SEQUENCE_END
+    (33) flow_sequence -> flow_sequence . F_SEP flow_sequence_item
 
-    B_MAP_KEY       reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    DOC_START       reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    INDENT          reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    CAST_TYPE       reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    SCALAR          reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    B_LITERAL_START reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    B_FOLD_START    reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    F_SEQUENCE_START reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    F_MAP_START     reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    B_SEQUENCE_START reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    $end            reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    F_MAP_END       reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    F_SEP           reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    DEDENT          reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    DOC_END         reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    F_SEQUENCE_END  reduce using rule 23 (scalar -> CAST_TYPE scalar .)
-    F_MAP_KEY       reduce using rule 23 (scalar -> CAST_TYPE scalar .)
+    F_SEQUENCE_END  shift and go to state 54
+    F_SEP           shift and go to state 53
 
 
 state 40
 
-    (30) flow_collection -> F_MAP_START flow_map . F_MAP_END
-    (35) flow_map -> flow_map . F_SEP flow_map_item
+    (22) sequence_item -> B_SEQUENCE_COMPACT_START collection . DEDENT
 
-    F_MAP_END       shift and go to state 54
-    F_SEP           shift and go to state 53
+    DEDENT          shift and go to state 55
 
 
 state 41
 
-    (34) flow_map -> flow_map_item .
+    (24) scalar -> CAST_TYPE scalar .
 
-    F_MAP_END       reduce using rule 34 (flow_map -> flow_map_item .)
-    F_SEP           reduce using rule 34 (flow_map -> flow_map_item .)
+    B_MAP_KEY       reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    DEDENT          reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    B_SEQUENCE_START reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    B_SEQUENCE_COMPACT_START reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    DOC_START       reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    INDENT          reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    CAST_TYPE       reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    SCALAR          reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    B_LITERAL_START reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    B_FOLD_START    reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    F_SEQUENCE_START reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    F_MAP_START     reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    $end            reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    DOC_END         reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    F_MAP_KEY       reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    F_SEQUENCE_END  reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    F_SEP           reduce using rule 24 (scalar -> CAST_TYPE scalar .)
+    F_MAP_END       reduce using rule 24 (scalar -> CAST_TYPE scalar .)
 
 
 state 42
 
-    (36) flow_map_item -> flow_map_item_key . flow_map_item_value
-    (38) flow_map_item_value -> . scalar
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (31) flow_collection -> F_MAP_START flow_map . F_MAP_END
+    (36) flow_map -> flow_map . F_SEP flow_map_item
 
-    CAST_TYPE       shift and go to state 17
-    SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
-    B_FOLD_START    shift and go to state 2
+    F_MAP_END       shift and go to state 57
+    F_SEP           shift and go to state 56
 
-    flow_map_item_value            shift and go to state 55
-    scalar                         shift and go to state 56
 
 state 43
 
-    (37) flow_map_item_key -> scalar . F_MAP_KEY
+    (35) flow_map -> flow_map_item .
 
-    F_MAP_KEY       shift and go to state 57
+    F_MAP_END       reduce using rule 35 (flow_map -> flow_map_item .)
+    F_SEP           reduce using rule 35 (flow_map -> flow_map_item .)
 
 
 state 44
 
-    (25) scalar -> B_LITERAL_START scalar_group . B_LITERAL_END
-    (28) scalar_group -> scalar_group . SCALAR
+    (37) flow_map_item -> flow_map_item_key . flow_map_item_value
+    (39) flow_map_item_value -> . scalar
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    B_LITERAL_END   shift and go to state 58
-    SCALAR          shift and go to state 45
+    CAST_TYPE       shift and go to state 18
+    SCALAR          shift and go to state 12
+    B_LITERAL_START shift and go to state 20
+    B_FOLD_START    shift and go to state 2
 
+    flow_map_item_value            shift and go to state 58
+    scalar                         shift and go to state 59
 
 state 45
 
-    (28) scalar_group -> scalar_group SCALAR .
+    (38) flow_map_item_key -> scalar . F_MAP_KEY
 
-    B_FOLD_END      reduce using rule 28 (scalar_group -> scalar_group SCALAR .)
-    SCALAR          reduce using rule 28 (scalar_group -> scalar_group SCALAR .)
-    B_LITERAL_END   reduce using rule 28 (scalar_group -> scalar_group SCALAR .)
+    F_MAP_KEY       shift and go to state 60
 
 
 state 46
 
-    (26) scalar -> B_FOLD_START scalar_group B_FOLD_END .
+    (26) scalar -> B_LITERAL_START scalar_group . B_LITERAL_END
+    (29) scalar_group -> scalar_group . SCALAR
 
-    B_MAP_KEY       reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    DOC_START       reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    INDENT          reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    CAST_TYPE       reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    SCALAR          reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    B_LITERAL_START reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    B_FOLD_START    reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    F_SEQUENCE_START reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    F_MAP_START     reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    B_SEQUENCE_START reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    $end            reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    F_MAP_END       reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    F_SEP           reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    DEDENT          reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    DOC_END         reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    F_SEQUENCE_END  reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
-    F_MAP_KEY       reduce using rule 26 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    B_LITERAL_END   shift and go to state 61
+    SCALAR          shift and go to state 47
 
 
 state 47
+
+    (29) scalar_group -> scalar_group SCALAR .
+
+    B_FOLD_END      reduce using rule 29 (scalar_group -> scalar_group SCALAR .)
+    SCALAR          reduce using rule 29 (scalar_group -> scalar_group SCALAR .)
+    B_LITERAL_END   reduce using rule 29 (scalar_group -> scalar_group SCALAR .)
+
+
+state 48
+
+    (27) scalar -> B_FOLD_START scalar_group B_FOLD_END .
+
+    B_MAP_KEY       reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    DEDENT          reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    B_SEQUENCE_START reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    B_SEQUENCE_COMPACT_START reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    DOC_START       reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    INDENT          reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    CAST_TYPE       reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    SCALAR          reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    B_LITERAL_START reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    B_FOLD_START    reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    F_SEQUENCE_START reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    F_MAP_START     reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    $end            reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    DOC_END         reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    F_MAP_KEY       reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    F_SEQUENCE_END  reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    F_SEP           reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+    F_MAP_END       reduce using rule 27 (scalar -> B_FOLD_START scalar_group B_FOLD_END .)
+
+
+state 49
 
     (3) doc -> DOC_START doc DOC_END .
 
@@ -1029,26 +1114,27 @@ state 47
     F_SEQUENCE_START reduce using rule 3 (doc -> DOC_START doc DOC_END .)
     F_MAP_START     reduce using rule 3 (doc -> DOC_START doc DOC_END .)
     B_SEQUENCE_START reduce using rule 3 (doc -> DOC_START doc DOC_END .)
+    B_SEQUENCE_COMPACT_START reduce using rule 3 (doc -> DOC_START doc DOC_END .)
     $end            reduce using rule 3 (doc -> DOC_START doc DOC_END .)
-    DOC_END         reduce using rule 3 (doc -> DOC_START doc DOC_END .)
     DEDENT          reduce using rule 3 (doc -> DOC_START doc DOC_END .)
-
-
-state 48
-
-    (15) map_item_value -> INDENT collection . DEDENT
-
-    DEDENT          shift and go to state 59
-
-
-state 49
-
-    (21) sequence_item -> B_SEQUENCE_START INDENT collection . DEDENT
-
-    DEDENT          shift and go to state 60
+    DOC_END         reduce using rule 3 (doc -> DOC_START doc DOC_END .)
 
 
 state 50
+
+    (15) map_item_value -> INDENT collection . DEDENT
+
+    DEDENT          shift and go to state 62
+
+
+state 51
+
+    (21) sequence_item -> B_SEQUENCE_START INDENT collection . DEDENT
+
+    DEDENT          shift and go to state 63
+
+
+state 52
 
     (5) doc -> INDENT doc DEDENT .
 
@@ -1061,133 +1147,156 @@ state 50
     F_SEQUENCE_START reduce using rule 5 (doc -> INDENT doc DEDENT .)
     F_MAP_START     reduce using rule 5 (doc -> INDENT doc DEDENT .)
     B_SEQUENCE_START reduce using rule 5 (doc -> INDENT doc DEDENT .)
+    B_SEQUENCE_COMPACT_START reduce using rule 5 (doc -> INDENT doc DEDENT .)
     $end            reduce using rule 5 (doc -> INDENT doc DEDENT .)
-    DOC_END         reduce using rule 5 (doc -> INDENT doc DEDENT .)
     DEDENT          reduce using rule 5 (doc -> INDENT doc DEDENT .)
-
-
-state 51
-
-    (32) flow_sequence -> flow_sequence F_SEP . flow_sequence_item
-    (33) flow_sequence_item -> . scalar
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
-
-    CAST_TYPE       shift and go to state 17
-    SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
-    B_FOLD_START    shift and go to state 2
-
-    flow_sequence_item             shift and go to state 61
-    scalar                         shift and go to state 37
-
-state 52
-
-    (29) flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .
-
-    DOC_START       reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    INDENT          reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    CAST_TYPE       reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    SCALAR          reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    B_LITERAL_START reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    B_FOLD_START    reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    F_SEQUENCE_START reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    F_MAP_START     reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    B_SEQUENCE_START reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    $end            reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    DEDENT          reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
-    DOC_END         reduce using rule 29 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    DOC_END         reduce using rule 5 (doc -> INDENT doc DEDENT .)
 
 
 state 53
 
-    (35) flow_map -> flow_map F_SEP . flow_map_item
-    (36) flow_map_item -> . flow_map_item_key flow_map_item_value
-    (37) flow_map_item_key -> . scalar F_MAP_KEY
-    (23) scalar -> . CAST_TYPE scalar
-    (24) scalar -> . SCALAR
-    (25) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
-    (26) scalar -> . B_FOLD_START scalar_group B_FOLD_END
+    (33) flow_sequence -> flow_sequence F_SEP . flow_sequence_item
+    (34) flow_sequence_item -> . scalar
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    CAST_TYPE       shift and go to state 17
+    CAST_TYPE       shift and go to state 18
     SCALAR          shift and go to state 12
-    B_LITERAL_START shift and go to state 19
+    B_LITERAL_START shift and go to state 20
     B_FOLD_START    shift and go to state 2
 
-    flow_map_item                  shift and go to state 62
-    flow_map_item_key              shift and go to state 42
-    scalar                         shift and go to state 43
+    flow_sequence_item             shift and go to state 64
+    scalar                         shift and go to state 38
 
 state 54
 
-    (30) flow_collection -> F_MAP_START flow_map F_MAP_END .
+    (30) flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .
 
-    DOC_START       reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    INDENT          reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    CAST_TYPE       reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    SCALAR          reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    B_LITERAL_START reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    B_FOLD_START    reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    F_SEQUENCE_START reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    F_MAP_START     reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    B_SEQUENCE_START reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    $end            reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    DEDENT          reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
-    DOC_END         reduce using rule 30 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    DOC_END         reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    DOC_START       reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    INDENT          reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    CAST_TYPE       reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    SCALAR          reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    B_LITERAL_START reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    B_FOLD_START    reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    F_SEQUENCE_START reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    F_MAP_START     reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    B_SEQUENCE_START reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    B_SEQUENCE_COMPACT_START reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    $end            reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
+    DEDENT          reduce using rule 30 (flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END .)
 
 
 state 55
 
-    (36) flow_map_item -> flow_map_item_key flow_map_item_value .
+    (22) sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .
 
-    F_MAP_END       reduce using rule 36 (flow_map_item -> flow_map_item_key flow_map_item_value .)
-    F_SEP           reduce using rule 36 (flow_map_item -> flow_map_item_key flow_map_item_value .)
+    B_SEQUENCE_START reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    B_SEQUENCE_COMPACT_START reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    DOC_START       reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    INDENT          reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    CAST_TYPE       reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    SCALAR          reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    B_LITERAL_START reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    B_FOLD_START    reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    F_SEQUENCE_START reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    F_MAP_START     reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    $end            reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    DOC_END         reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
+    DEDENT          reduce using rule 22 (sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT .)
 
 
 state 56
 
-    (38) flow_map_item_value -> scalar .
+    (36) flow_map -> flow_map F_SEP . flow_map_item
+    (37) flow_map_item -> . flow_map_item_key flow_map_item_value
+    (38) flow_map_item_key -> . scalar F_MAP_KEY
+    (24) scalar -> . CAST_TYPE scalar
+    (25) scalar -> . SCALAR
+    (26) scalar -> . B_LITERAL_START scalar_group B_LITERAL_END
+    (27) scalar -> . B_FOLD_START scalar_group B_FOLD_END
 
-    F_MAP_END       reduce using rule 38 (flow_map_item_value -> scalar .)
-    F_SEP           reduce using rule 38 (flow_map_item_value -> scalar .)
+    CAST_TYPE       shift and go to state 18
+    SCALAR          shift and go to state 12
+    B_LITERAL_START shift and go to state 20
+    B_FOLD_START    shift and go to state 2
 
+    flow_map_item                  shift and go to state 65
+    flow_map_item_key              shift and go to state 44
+    scalar                         shift and go to state 45
 
 state 57
 
-    (37) flow_map_item_key -> scalar F_MAP_KEY .
+    (31) flow_collection -> F_MAP_START flow_map F_MAP_END .
 
-    CAST_TYPE       reduce using rule 37 (flow_map_item_key -> scalar F_MAP_KEY .)
-    SCALAR          reduce using rule 37 (flow_map_item_key -> scalar F_MAP_KEY .)
-    B_LITERAL_START reduce using rule 37 (flow_map_item_key -> scalar F_MAP_KEY .)
-    B_FOLD_START    reduce using rule 37 (flow_map_item_key -> scalar F_MAP_KEY .)
+    DOC_END         reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    DOC_START       reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    INDENT          reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    CAST_TYPE       reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    SCALAR          reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    B_LITERAL_START reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    B_FOLD_START    reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    F_SEQUENCE_START reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    F_MAP_START     reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    B_SEQUENCE_START reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    B_SEQUENCE_COMPACT_START reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    $end            reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
+    DEDENT          reduce using rule 31 (flow_collection -> F_MAP_START flow_map F_MAP_END .)
 
 
 state 58
 
-    (25) scalar -> B_LITERAL_START scalar_group B_LITERAL_END .
+    (37) flow_map_item -> flow_map_item_key flow_map_item_value .
 
-    B_MAP_KEY       reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    DOC_START       reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    INDENT          reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    CAST_TYPE       reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    SCALAR          reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    B_LITERAL_START reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    B_FOLD_START    reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    F_SEQUENCE_START reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    F_MAP_START     reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    B_SEQUENCE_START reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    $end            reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    F_MAP_END       reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    F_SEP           reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    DEDENT          reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    DOC_END         reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    F_SEQUENCE_END  reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
-    F_MAP_KEY       reduce using rule 25 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_MAP_END       reduce using rule 37 (flow_map_item -> flow_map_item_key flow_map_item_value .)
+    F_SEP           reduce using rule 37 (flow_map_item -> flow_map_item_key flow_map_item_value .)
 
 
 state 59
+
+    (39) flow_map_item_value -> scalar .
+
+    F_MAP_END       reduce using rule 39 (flow_map_item_value -> scalar .)
+    F_SEP           reduce using rule 39 (flow_map_item_value -> scalar .)
+
+
+state 60
+
+    (38) flow_map_item_key -> scalar F_MAP_KEY .
+
+    CAST_TYPE       reduce using rule 38 (flow_map_item_key -> scalar F_MAP_KEY .)
+    SCALAR          reduce using rule 38 (flow_map_item_key -> scalar F_MAP_KEY .)
+    B_LITERAL_START reduce using rule 38 (flow_map_item_key -> scalar F_MAP_KEY .)
+    B_FOLD_START    reduce using rule 38 (flow_map_item_key -> scalar F_MAP_KEY .)
+
+
+state 61
+
+    (26) scalar -> B_LITERAL_START scalar_group B_LITERAL_END .
+
+    B_MAP_KEY       reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    DEDENT          reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    B_SEQUENCE_START reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    B_SEQUENCE_COMPACT_START reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    DOC_START       reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    INDENT          reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    CAST_TYPE       reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    SCALAR          reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    B_LITERAL_START reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    B_FOLD_START    reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_SEQUENCE_START reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_MAP_START     reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    $end            reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    DOC_END         reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_MAP_KEY       reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_SEQUENCE_END  reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_SEP           reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+    F_MAP_END       reduce using rule 26 (scalar -> B_LITERAL_START scalar_group B_LITERAL_END .)
+
+
+state 62
 
     (15) map_item_value -> INDENT collection DEDENT .
 
@@ -1200,16 +1309,18 @@ state 59
     F_SEQUENCE_START reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
     F_MAP_START     reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
     B_SEQUENCE_START reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
+    B_SEQUENCE_COMPACT_START reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
     $end            reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
     DOC_END         reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
     DEDENT          reduce using rule 15 (map_item_value -> INDENT collection DEDENT .)
 
 
-state 60
+state 63
 
     (21) sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .
 
     B_SEQUENCE_START reduce using rule 21 (sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .)
+    B_SEQUENCE_COMPACT_START reduce using rule 21 (sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .)
     DOC_START       reduce using rule 21 (sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .)
     INDENT          reduce using rule 21 (sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .)
     CAST_TYPE       reduce using rule 21 (sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .)
@@ -1223,27 +1334,28 @@ state 60
     DEDENT          reduce using rule 21 (sequence_item -> B_SEQUENCE_START INDENT collection DEDENT .)
 
 
-state 61
+state 64
 
-    (32) flow_sequence -> flow_sequence F_SEP flow_sequence_item .
+    (33) flow_sequence -> flow_sequence F_SEP flow_sequence_item .
 
-    F_SEQUENCE_END  reduce using rule 32 (flow_sequence -> flow_sequence F_SEP flow_sequence_item .)
-    F_SEP           reduce using rule 32 (flow_sequence -> flow_sequence F_SEP flow_sequence_item .)
+    F_SEQUENCE_END  reduce using rule 33 (flow_sequence -> flow_sequence F_SEP flow_sequence_item .)
+    F_SEP           reduce using rule 33 (flow_sequence -> flow_sequence F_SEP flow_sequence_item .)
 
 
-state 62
+state 65
 
-    (35) flow_map -> flow_map F_SEP flow_map_item .
+    (36) flow_map -> flow_map F_SEP flow_map_item .
 
-    F_MAP_END       reduce using rule 35 (flow_map -> flow_map F_SEP flow_map_item .)
-    F_SEP           reduce using rule 35 (flow_map -> flow_map F_SEP flow_map_item .)
+    F_MAP_END       reduce using rule 36 (flow_map -> flow_map F_SEP flow_map_item .)
+    F_SEP           reduce using rule 36 (flow_map -> flow_map F_SEP flow_map_item .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for B_SEQUENCE_START in state 1 resolved as shift
+WARNING: shift/reduce conflict for B_SEQUENCE_COMPACT_START in state 1 resolved as shift
 WARNING: shift/reduce conflict for CAST_TYPE in state 8 resolved as shift
 WARNING: shift/reduce conflict for SCALAR in state 8 resolved as shift
 WARNING: shift/reduce conflict for B_LITERAL_START in state 8 resolved as shift
 WARNING: shift/reduce conflict for B_FOLD_START in state 8 resolved as shift
-WARNING: shift/reduce conflict for DOC_END in state 24 resolved as shift
+WARNING: shift/reduce conflict for DOC_END in state 25 resolved as shift
