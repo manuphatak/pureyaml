@@ -40,23 +40,23 @@ def find_column(t):
 
 class TokenList(object):
     tokens = [  # :off
-        'DOC_INDICATOR_START',
-        'DOC_INDICATOR_END',
-        'SEQUENCE_INDICATOR',
-        'MAP_INDICATOR',
-        'LITERAL_INDICATOR_START',
-        'LITERAL_INDICATOR_END',
-        'FOLD_INDICATOR_START',
-        'FOLD_INDICATOR_END',
+        'DOC_START',
+        'DOC_END',
+        'B_SEQUENCE_START',
+        'B_MAP_START',
+        'B_LITERAL_START',
+        'B_LITERAL_END',
+        'B_FOLD_START',
+        'B_FOLD_END',
         'CAST_TYPE',
         'SCALAR',
         'INDENT',
         'DEDENT',
-        'FLOW_SEQUENCE_START',
-        'FLOW_SEQUENCE_END',
-        'FLOW_MAP_INDICATOR_START',
-        'FLOW_MAP_INDICATOR_END',
-        'FLOW_SEP',
+        'F_SEQUENCE_START',
+        'F_SEQUENCE_END',
+        'F_MAP_START',
+        'F_MAP_END',
+        'F_SEP',
 
     ]  # :on
 
@@ -184,7 +184,7 @@ class YAMLTokens(TokenList):
     def t_begin_literal(self, t):
         r'\ *(?<!\\)\|\ ?\n'
         t.lexer.push_state('literal')
-        t.type = 'LITERAL_INDICATOR_START'
+        t.type = 'B_LITERAL_START'
         return t
 
     def t_literal_end(self, t):
@@ -196,7 +196,7 @@ class YAMLTokens(TokenList):
             raise Exception('TODO, dedent')
         elif column == indent:
             t.lexer.pop_state()
-            t.type = 'LITERAL_INDICATOR_END'
+            t.type = 'B_LITERAL_END'
             return t
         else:
             t.type = 'SCALAR'
@@ -209,7 +209,7 @@ class YAMLTokens(TokenList):
     def t_begin_fold(self, t):
         r'\ *(?<!\\)\>\ ?\n'
         t.lexer.push_state('fold')
-        t.type = 'FOLD_INDICATOR_START'
+        t.type = 'B_FOLD_START'
         return t
 
     def t_fold_end(self, t):
@@ -221,7 +221,7 @@ class YAMLTokens(TokenList):
             raise Exception('TODO, dedent')
         elif column == indent:
             t.lexer.pop_state()
-            t.type = 'FOLD_INDICATOR_END'
+            t.type = 'B_FOLD_END'
             return t
         else:
             t.type = 'SCALAR'
@@ -229,7 +229,7 @@ class YAMLTokens(TokenList):
 
     # state: flowsequence
     # -------------------------------------------------------------------
-    def t_flowsequence_FLOW_SEP(self, t):
+    def t_flowsequence_F_SEP(self, t):
         r','
         return t
 
@@ -240,13 +240,13 @@ class YAMLTokens(TokenList):
     def t_begin_flowsequence(self, t):
         r'\['
         t.lexer.push_state('flowsequence')
-        t.type = 'FLOW_SEQUENCE_START'
+        t.type = 'F_SEQUENCE_START'
         return t
 
     def t_flowsequence_end(self, t):
         r'\]'
         t.lexer.pop_state()
-        t.type = 'FLOW_SEQUENCE_END'
+        t.type = 'F_SEQUENCE_END'
         return t
 
     # state: flowmap
@@ -265,19 +265,19 @@ class YAMLTokens(TokenList):
     # -------------------------------------------------------------------
     t_ignore_EOL = r'\s*\n'
 
-    def t_DOC_INDICATOR_START(self, t):
+    def t_DOC_START(self, t):
         r'\-\-\-'
         return t
 
-    def t_DOC_INDICATOR_END(self, t):
+    def t_DOC_END(self, t):
         r'\.\.\.'
         return t
 
-    def t_SEQUENCE_INDICATOR(self, t):
+    def t_B_SEQUENCE_START(self, t):
         r'-\ |-(?=\n)'
         return t
 
-    def t_MAP_INDICATOR(self, t):
+    def t_B_MAP_START(self, t):
         r':\ *'
         return t
 
@@ -306,8 +306,8 @@ class YAMLProductions(TokenList):
     @strict(Doc)
     def p_doc_indent(self, p):
         """
-        doc : DOC_INDICATOR_START doc DOC_INDICATOR_END
-            | DOC_INDICATOR_START doc
+        doc : DOC_START doc DOC_END
+            | DOC_START doc
             | INDENT doc DEDENT
         """
         p[0] = p[2]
@@ -352,7 +352,7 @@ class YAMLProductions(TokenList):
     @strict(Scalar)
     def p_map_item_key(self, p):
         """
-        map_item_key    : scalar MAP_INDICATOR
+        map_item_key    : scalar B_MAP_START
         """
         p[0] = p[1]
 
@@ -387,14 +387,14 @@ class YAMLProductions(TokenList):
     @strict(Scalar)
     def p_sequence_item_scalar(self, p):
         """
-        sequence_item   : SEQUENCE_INDICATOR scalar
+        sequence_item   : B_SEQUENCE_START scalar
         """
         p[0] = p[2]
 
     @strict(Map, Sequence)
     def p_sequence_item_collection(self, p):
         """
-        sequence_item   : SEQUENCE_INDICATOR INDENT collection DEDENT
+        sequence_item   : B_SEQUENCE_START INDENT collection DEDENT
         """
         p[0] = p[3]
 
@@ -415,14 +415,14 @@ class YAMLProductions(TokenList):
     @strict(Str)
     def p_scalar_literal(self, p):
         """
-        scalar  : LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+        scalar  : B_LITERAL_START scalar_group B_LITERAL_END
         """
         p[0] = ScalarDispatch(dedent(p[2]).rstrip('\n'), cast='str')
 
     @strict(Str)
     def p_scalar_folded(self, p):
         """
-        scalar  : FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+        scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
 
         cleaned_scalar = fold(dedent(p[2]).rstrip('\n'))
@@ -443,7 +443,7 @@ class YAMLProductions(TokenList):
     @strict(Sequence)
     def p_flow_sequence_(self, p):
         """
-        sequence    : FLOW_SEQUENCE_START flow_sequence FLOW_SEQUENCE_END
+        sequence    : F_SEQUENCE_START flow_sequence F_SEQUENCE_END
         """
         p[0] = p[2]
 
@@ -457,7 +457,7 @@ class YAMLProductions(TokenList):
     @strict(Sequence)
     def p_flow_sequence_init(self, p):
         """
-        flow_sequence   : flow_sequence FLOW_SEP flow_sequence_item
+        flow_sequence   : flow_sequence F_SEP flow_sequence_item
         """
         p[0] = p[1] + Sequence(p[3])
 
