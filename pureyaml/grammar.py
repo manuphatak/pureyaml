@@ -231,7 +231,7 @@ class YAMLTokens(TokenList):
         return t
 
     def t_SEQUENCE_INDICATOR(self, t):
-        r'-\ '
+        r'-\ |-(?=\n)'
         return t
 
     def t_MAP_INDICATOR(self, t):
@@ -335,11 +335,18 @@ class YAMLProductions(TokenList):
         p[0] = p[1] + Sequence(p[2])
 
     @strict(Scalar)
-    def p_sequence_item(self, p):
+    def p_sequence_item_scalar(self, p):
         """
         sequence_item   : SEQUENCE_INDICATOR scalar
         """
         p[0] = p[2]
+
+    @strict(Map, Sequence)
+    def p_sequence_item_collection(self, p):
+        """
+        sequence_item   : SEQUENCE_INDICATOR INDENT collection DEDENT
+        """
+        p[0] = p[3]
 
     @strict(Scalar)
     def p_scalar_explicit_cast(self, p):

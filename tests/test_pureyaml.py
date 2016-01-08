@@ -730,3 +730,89 @@ def test_map_with_folded_block():
         """)[1:-1])))))
 
     assert nodes == expected
+
+
+def test_sequence_of_map_1_item():
+    text = dedent("""
+        -
+          first_name: John
+          last_name: Smith
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Map(
+            (Str('first_name'), Str('John')),
+            (Str('last_name'), Str('Smith')),
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_sequence_of_map_3_item():
+    text = dedent("""
+        -
+          first_name: John
+          last_name: Smith
+        -
+          first_name: Joe
+          last_name: Sixpack
+        -
+          first_name: Jane
+          last_name: Doe
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Map(
+            (Str('first_name'), Str('John')),
+            (Str('last_name'), Str('Smith')),
+        ),
+        Map(
+            (Str('first_name'), Str('Joe')),
+            (Str('last_name'), Str('Sixpack')),
+        ),
+        Map(
+            (Str('first_name'), Str('Jane')),
+            (Str('last_name'), Str('Doe')),
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_sequence_of_sequencs_1_item():
+    text = dedent("""
+        -
+          - John Smith
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Sequence(
+            Str('John Smith'),
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_sequence_of_sequencs_3_items():
+    text = dedent("""
+        -
+          - John Smith
+          - Joe Sixpack
+          - Jane Doe
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Sequence(
+            Str('John Smith'),
+            Str('Joe Sixpack'),
+            Str('Jane Doe'),
+        ),
+    )))  # :on
+
+    assert nodes == expected

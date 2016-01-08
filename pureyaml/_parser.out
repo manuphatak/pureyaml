@@ -20,40 +20,41 @@ Rule 14    map_item_value -> scalar
 Rule 15    sequence -> sequence_item
 Rule 16    sequence -> sequence sequence_item
 Rule 17    sequence_item -> SEQUENCE_INDICATOR scalar
-Rule 18    scalar -> CAST_TYPE scalar
-Rule 19    scalar -> SCALAR
-Rule 20    scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-Rule 21    scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
-Rule 22    scalar_group -> SCALAR
-Rule 23    scalar_group -> scalar_group SCALAR
+Rule 18    sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT
+Rule 19    scalar -> CAST_TYPE scalar
+Rule 20    scalar -> SCALAR
+Rule 21    scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+Rule 22    scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+Rule 23    scalar_group -> SCALAR
+Rule 24    scalar_group -> scalar_group SCALAR
 
 Terminals, with rules where they appear
 
-CAST_TYPE            : 18
-DEDENT               : 5
+CAST_TYPE            : 19
+DEDENT               : 5 18
 DOC_INDICATOR_END    : 3
 DOC_INDICATOR_START  : 3 4
-FOLD_INDICATOR_END   : 21
-FOLD_INDICATOR_START : 21
-INDENT               : 5
-LITERAL_INDICATOR_END : 20
-LITERAL_INDICATOR_START : 20
+FOLD_INDICATOR_END   : 22
+FOLD_INDICATOR_START : 22
+INDENT               : 5 18
+LITERAL_INDICATOR_END : 21
+LITERAL_INDICATOR_START : 21
 MAP_INDICATOR        : 13
-SCALAR               : 19 22 23
-SEQUENCE_INDICATOR   : 17
+SCALAR               : 20 23 24
+SEQUENCE_INDICATOR   : 17 18
 error                : 
 
 Nonterminals, with rules where they appear
 
-collection           : 6
+collection           : 6 18
 doc                  : 1 2 3 4 5
 docs                 : 2 0
 map                  : 9 11
 map_item             : 10 11
 map_item_key         : 12
 map_item_value       : 12
-scalar               : 7 13 14 17 18
-scalar_group         : 20 21 23
+scalar               : 7 13 14 17 19
+scalar_group         : 21 22 24
 sequence             : 8 16
 sequence_item        : 15 16
 
@@ -71,15 +72,16 @@ state 0
     (7) doc -> . scalar
     (8) collection -> . sequence
     (9) collection -> . map
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
     (15) sequence -> . sequence_item
     (16) sequence -> . sequence sequence_item
     (10) map -> . map_item
     (11) map -> . map map_item
     (17) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence_item -> . SEQUENCE_INDICATOR INDENT collection DEDENT
     (12) map_item -> . map_item_key map_item_value
     (13) map_item_key -> . scalar MAP_INDICATOR
 
@@ -103,9 +105,9 @@ state 0
 
 state 1
 
-    (21) scalar -> FOLD_INDICATOR_START . scalar_group FOLD_INDICATOR_END
-    (22) scalar_group -> . SCALAR
-    (23) scalar_group -> . scalar_group SCALAR
+    (22) scalar -> FOLD_INDICATOR_START . scalar_group FOLD_INDICATOR_END
+    (23) scalar_group -> . SCALAR
+    (24) scalar_group -> . scalar_group SCALAR
 
     SCALAR          shift and go to state 18
 
@@ -116,6 +118,7 @@ state 2
     (8) collection -> sequence .
     (16) sequence -> sequence . sequence_item
     (17) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence_item -> . SEQUENCE_INDICATOR INDENT collection DEDENT
 
   ! shift/reduce conflict for SEQUENCE_INDICATOR resolved as shift
     DOC_INDICATOR_END reduce using rule 8 (collection -> sequence .)
@@ -154,17 +157,19 @@ state 3
 state 4
 
     (17) sequence_item -> SEQUENCE_INDICATOR . scalar
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (18) sequence_item -> SEQUENCE_INDICATOR . INDENT collection DEDENT
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
 
+    INDENT          shift and go to state 21
     CAST_TYPE       shift and go to state 16
     SCALAR          shift and go to state 12
     LITERAL_INDICATOR_START shift and go to state 15
     FOLD_INDICATOR_START shift and go to state 1
 
-    scalar                         shift and go to state 21
+    scalar                         shift and go to state 22
 
 state 5
 
@@ -177,15 +182,16 @@ state 5
     (7) doc -> . scalar
     (8) collection -> . sequence
     (9) collection -> . map
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
     (15) sequence -> . sequence_item
     (16) sequence -> . sequence sequence_item
     (10) map -> . map_item
     (11) map -> . map map_item
     (17) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence_item -> . SEQUENCE_INDICATOR INDENT collection DEDENT
     (12) map_item -> . map_item_key map_item_value
     (13) map_item_key -> . scalar MAP_INDICATOR
 
@@ -199,7 +205,7 @@ state 5
 
     map                            shift and go to state 9
     sequence                       shift and go to state 2
-    doc                            shift and go to state 22
+    doc                            shift and go to state 23
     collection                     shift and go to state 11
     scalar                         shift and go to state 3
     map_item_key                   shift and go to state 7
@@ -226,18 +232,18 @@ state 7
 
     (12) map_item -> map_item_key . map_item_value
     (14) map_item_value -> . scalar
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
 
     CAST_TYPE       shift and go to state 16
     SCALAR          shift and go to state 12
     LITERAL_INDICATOR_START shift and go to state 15
     FOLD_INDICATOR_START shift and go to state 1
 
-    map_item_value                 shift and go to state 24
-    scalar                         shift and go to state 23
+    map_item_value                 shift and go to state 25
+    scalar                         shift and go to state 24
 
 state 8
 
@@ -261,10 +267,10 @@ state 9
     (11) map -> map . map_item
     (12) map_item -> . map_item_key map_item_value
     (13) map_item_key -> . scalar MAP_INDICATOR
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
 
   ! shift/reduce conflict for CAST_TYPE resolved as shift
   ! shift/reduce conflict for SCALAR resolved as shift
@@ -286,8 +292,8 @@ state 9
   ! LITERAL_INDICATOR_START [ reduce using rule 9 (collection -> map .) ]
   ! FOLD_INDICATOR_START [ reduce using rule 9 (collection -> map .) ]
 
-    map_item                       shift and go to state 25
-    scalar                         shift and go to state 26
+    map_item                       shift and go to state 26
+    scalar                         shift and go to state 27
     map_item_key                   shift and go to state 7
 
 state 10
@@ -301,15 +307,16 @@ state 10
     (7) doc -> . scalar
     (8) collection -> . sequence
     (9) collection -> . map
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
     (15) sequence -> . sequence_item
     (16) sequence -> . sequence sequence_item
     (10) map -> . map_item
     (11) map -> . map map_item
     (17) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence_item -> . SEQUENCE_INDICATOR INDENT collection DEDENT
     (12) map_item -> . map_item_key map_item_value
     (13) map_item_key -> . scalar MAP_INDICATOR
 
@@ -326,7 +333,7 @@ state 10
     collection                     shift and go to state 11
     scalar                         shift and go to state 3
     map_item_key                   shift and go to state 7
-    doc                            shift and go to state 27
+    doc                            shift and go to state 28
     sequence_item                  shift and go to state 6
     map_item                       shift and go to state 8
 
@@ -348,19 +355,19 @@ state 11
 
 state 12
 
-    (19) scalar -> SCALAR .
+    (20) scalar -> SCALAR .
 
-    SEQUENCE_INDICATOR reduce using rule 19 (scalar -> SCALAR .)
-    DOC_INDICATOR_START reduce using rule 19 (scalar -> SCALAR .)
-    INDENT          reduce using rule 19 (scalar -> SCALAR .)
-    CAST_TYPE       reduce using rule 19 (scalar -> SCALAR .)
-    SCALAR          reduce using rule 19 (scalar -> SCALAR .)
-    LITERAL_INDICATOR_START reduce using rule 19 (scalar -> SCALAR .)
-    FOLD_INDICATOR_START reduce using rule 19 (scalar -> SCALAR .)
-    $end            reduce using rule 19 (scalar -> SCALAR .)
-    DOC_INDICATOR_END reduce using rule 19 (scalar -> SCALAR .)
-    DEDENT          reduce using rule 19 (scalar -> SCALAR .)
-    MAP_INDICATOR   reduce using rule 19 (scalar -> SCALAR .)
+    SEQUENCE_INDICATOR reduce using rule 20 (scalar -> SCALAR .)
+    DOC_INDICATOR_START reduce using rule 20 (scalar -> SCALAR .)
+    INDENT          reduce using rule 20 (scalar -> SCALAR .)
+    CAST_TYPE       reduce using rule 20 (scalar -> SCALAR .)
+    SCALAR          reduce using rule 20 (scalar -> SCALAR .)
+    LITERAL_INDICATOR_START reduce using rule 20 (scalar -> SCALAR .)
+    FOLD_INDICATOR_START reduce using rule 20 (scalar -> SCALAR .)
+    $end            reduce using rule 20 (scalar -> SCALAR .)
+    DOC_INDICATOR_END reduce using rule 20 (scalar -> SCALAR .)
+    DEDENT          reduce using rule 20 (scalar -> SCALAR .)
+    MAP_INDICATOR   reduce using rule 20 (scalar -> SCALAR .)
 
 
 state 13
@@ -373,15 +380,16 @@ state 13
     (7) doc -> . scalar
     (8) collection -> . sequence
     (9) collection -> . map
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
     (15) sequence -> . sequence_item
     (16) sequence -> . sequence sequence_item
     (10) map -> . map_item
     (11) map -> . map map_item
     (17) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence_item -> . SEQUENCE_INDICATOR INDENT collection DEDENT
     (12) map_item -> . map_item_key map_item_value
     (13) map_item_key -> . scalar MAP_INDICATOR
 
@@ -395,7 +403,7 @@ state 13
 
     map                            shift and go to state 9
     sequence                       shift and go to state 2
-    doc                            shift and go to state 28
+    doc                            shift and go to state 29
     collection                     shift and go to state 11
     scalar                         shift and go to state 3
     map_item_key                   shift and go to state 7
@@ -418,45 +426,45 @@ state 14
 
 state 15
 
-    (20) scalar -> LITERAL_INDICATOR_START . scalar_group LITERAL_INDICATOR_END
-    (22) scalar_group -> . SCALAR
-    (23) scalar_group -> . scalar_group SCALAR
+    (21) scalar -> LITERAL_INDICATOR_START . scalar_group LITERAL_INDICATOR_END
+    (23) scalar_group -> . SCALAR
+    (24) scalar_group -> . scalar_group SCALAR
 
     SCALAR          shift and go to state 18
 
-    scalar_group                   shift and go to state 29
+    scalar_group                   shift and go to state 30
 
 state 16
 
-    (18) scalar -> CAST_TYPE . scalar
-    (18) scalar -> . CAST_TYPE scalar
-    (19) scalar -> . SCALAR
-    (20) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
-    (21) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+    (19) scalar -> CAST_TYPE . scalar
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
 
     CAST_TYPE       shift and go to state 16
     SCALAR          shift and go to state 12
     LITERAL_INDICATOR_START shift and go to state 15
     FOLD_INDICATOR_START shift and go to state 1
 
-    scalar                         shift and go to state 30
+    scalar                         shift and go to state 31
 
 state 17
 
-    (21) scalar -> FOLD_INDICATOR_START scalar_group . FOLD_INDICATOR_END
-    (23) scalar_group -> scalar_group . SCALAR
+    (22) scalar -> FOLD_INDICATOR_START scalar_group . FOLD_INDICATOR_END
+    (24) scalar_group -> scalar_group . SCALAR
 
-    FOLD_INDICATOR_END shift and go to state 32
-    SCALAR          shift and go to state 31
+    FOLD_INDICATOR_END shift and go to state 33
+    SCALAR          shift and go to state 32
 
 
 state 18
 
-    (22) scalar_group -> SCALAR .
+    (23) scalar_group -> SCALAR .
 
-    LITERAL_INDICATOR_END reduce using rule 22 (scalar_group -> SCALAR .)
-    SCALAR          reduce using rule 22 (scalar_group -> SCALAR .)
-    FOLD_INDICATOR_END reduce using rule 22 (scalar_group -> SCALAR .)
+    LITERAL_INDICATOR_END reduce using rule 23 (scalar_group -> SCALAR .)
+    SCALAR          reduce using rule 23 (scalar_group -> SCALAR .)
+    FOLD_INDICATOR_END reduce using rule 23 (scalar_group -> SCALAR .)
 
 
 state 19
@@ -487,6 +495,38 @@ state 20
 
 state 21
 
+    (18) sequence_item -> SEQUENCE_INDICATOR INDENT . collection DEDENT
+    (8) collection -> . sequence
+    (9) collection -> . map
+    (15) sequence -> . sequence_item
+    (16) sequence -> . sequence sequence_item
+    (10) map -> . map_item
+    (11) map -> . map map_item
+    (17) sequence_item -> . SEQUENCE_INDICATOR scalar
+    (18) sequence_item -> . SEQUENCE_INDICATOR INDENT collection DEDENT
+    (12) map_item -> . map_item_key map_item_value
+    (13) map_item_key -> . scalar MAP_INDICATOR
+    (19) scalar -> . CAST_TYPE scalar
+    (20) scalar -> . SCALAR
+    (21) scalar -> . LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END
+    (22) scalar -> . FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END
+
+    SEQUENCE_INDICATOR shift and go to state 4
+    CAST_TYPE       shift and go to state 16
+    SCALAR          shift and go to state 12
+    LITERAL_INDICATOR_START shift and go to state 15
+    FOLD_INDICATOR_START shift and go to state 1
+
+    map                            shift and go to state 9
+    sequence                       shift and go to state 2
+    map_item_key                   shift and go to state 7
+    collection                     shift and go to state 34
+    scalar                         shift and go to state 27
+    sequence_item                  shift and go to state 6
+    map_item                       shift and go to state 8
+
+state 22
+
     (17) sequence_item -> SEQUENCE_INDICATOR scalar .
 
     SEQUENCE_INDICATOR reduce using rule 17 (sequence_item -> SEQUENCE_INDICATOR scalar .)
@@ -501,13 +541,13 @@ state 21
     $end            reduce using rule 17 (sequence_item -> SEQUENCE_INDICATOR scalar .)
 
 
-state 22
+state 23
 
     (3) doc -> DOC_INDICATOR_START doc . DOC_INDICATOR_END
     (4) doc -> DOC_INDICATOR_START doc .
 
   ! shift/reduce conflict for DOC_INDICATOR_END resolved as shift
-    DOC_INDICATOR_END shift and go to state 33
+    DOC_INDICATOR_END shift and go to state 35
     DEDENT          reduce using rule 4 (doc -> DOC_INDICATOR_START doc .)
     DOC_INDICATOR_START reduce using rule 4 (doc -> DOC_INDICATOR_START doc .)
     INDENT          reduce using rule 4 (doc -> DOC_INDICATOR_START doc .)
@@ -521,7 +561,7 @@ state 22
   ! DOC_INDICATOR_END [ reduce using rule 4 (doc -> DOC_INDICATOR_START doc .) ]
 
 
-state 23
+state 24
 
     (14) map_item_value -> scalar .
 
@@ -537,7 +577,7 @@ state 23
     DEDENT          reduce using rule 14 (map_item_value -> scalar .)
 
 
-state 24
+state 25
 
     (12) map_item -> map_item_key map_item_value .
 
@@ -545,15 +585,15 @@ state 24
     SCALAR          reduce using rule 12 (map_item -> map_item_key map_item_value .)
     LITERAL_INDICATOR_START reduce using rule 12 (map_item -> map_item_key map_item_value .)
     FOLD_INDICATOR_START reduce using rule 12 (map_item -> map_item_key map_item_value .)
+    DEDENT          reduce using rule 12 (map_item -> map_item_key map_item_value .)
     DOC_INDICATOR_START reduce using rule 12 (map_item -> map_item_key map_item_value .)
     INDENT          reduce using rule 12 (map_item -> map_item_key map_item_value .)
     SEQUENCE_INDICATOR reduce using rule 12 (map_item -> map_item_key map_item_value .)
     $end            reduce using rule 12 (map_item -> map_item_key map_item_value .)
     DOC_INDICATOR_END reduce using rule 12 (map_item -> map_item_key map_item_value .)
-    DEDENT          reduce using rule 12 (map_item -> map_item_key map_item_value .)
 
 
-state 25
+state 26
 
     (11) map -> map map_item .
 
@@ -569,14 +609,14 @@ state 25
     DOC_INDICATOR_END reduce using rule 11 (map -> map map_item .)
 
 
-state 26
+state 27
 
     (13) map_item_key -> scalar . MAP_INDICATOR
 
     MAP_INDICATOR   shift and go to state 20
 
 
-state 27
+state 28
 
     (2) docs -> docs doc .
 
@@ -590,66 +630,73 @@ state 27
     $end            reduce using rule 2 (docs -> docs doc .)
 
 
-state 28
+state 29
 
     (5) doc -> INDENT doc . DEDENT
 
-    DEDENT          shift and go to state 34
-
-
-state 29
-
-    (20) scalar -> LITERAL_INDICATOR_START scalar_group . LITERAL_INDICATOR_END
-    (23) scalar_group -> scalar_group . SCALAR
-
-    LITERAL_INDICATOR_END shift and go to state 35
-    SCALAR          shift and go to state 31
+    DEDENT          shift and go to state 36
 
 
 state 30
 
-    (18) scalar -> CAST_TYPE scalar .
+    (21) scalar -> LITERAL_INDICATOR_START scalar_group . LITERAL_INDICATOR_END
+    (24) scalar_group -> scalar_group . SCALAR
 
-    SEQUENCE_INDICATOR reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    DOC_INDICATOR_START reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    INDENT          reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    CAST_TYPE       reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    SCALAR          reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    LITERAL_INDICATOR_START reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    FOLD_INDICATOR_START reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    $end            reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    DOC_INDICATOR_END reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    DEDENT          reduce using rule 18 (scalar -> CAST_TYPE scalar .)
-    MAP_INDICATOR   reduce using rule 18 (scalar -> CAST_TYPE scalar .)
+    LITERAL_INDICATOR_END shift and go to state 37
+    SCALAR          shift and go to state 32
 
 
 state 31
 
-    (23) scalar_group -> scalar_group SCALAR .
+    (19) scalar -> CAST_TYPE scalar .
 
-    LITERAL_INDICATOR_END reduce using rule 23 (scalar_group -> scalar_group SCALAR .)
-    SCALAR          reduce using rule 23 (scalar_group -> scalar_group SCALAR .)
-    FOLD_INDICATOR_END reduce using rule 23 (scalar_group -> scalar_group SCALAR .)
+    SEQUENCE_INDICATOR reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    DOC_INDICATOR_START reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    INDENT          reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    CAST_TYPE       reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    SCALAR          reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    LITERAL_INDICATOR_START reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    FOLD_INDICATOR_START reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    $end            reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    DOC_INDICATOR_END reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    DEDENT          reduce using rule 19 (scalar -> CAST_TYPE scalar .)
+    MAP_INDICATOR   reduce using rule 19 (scalar -> CAST_TYPE scalar .)
 
 
 state 32
 
-    (21) scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .
+    (24) scalar_group -> scalar_group SCALAR .
 
-    SEQUENCE_INDICATOR reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    DOC_INDICATOR_START reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    INDENT          reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    CAST_TYPE       reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    SCALAR          reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    LITERAL_INDICATOR_START reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    FOLD_INDICATOR_START reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    $end            reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    DOC_INDICATOR_END reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    DEDENT          reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
-    MAP_INDICATOR   reduce using rule 21 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    LITERAL_INDICATOR_END reduce using rule 24 (scalar_group -> scalar_group SCALAR .)
+    SCALAR          reduce using rule 24 (scalar_group -> scalar_group SCALAR .)
+    FOLD_INDICATOR_END reduce using rule 24 (scalar_group -> scalar_group SCALAR .)
 
 
 state 33
+
+    (22) scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .
+
+    SEQUENCE_INDICATOR reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    DOC_INDICATOR_START reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    INDENT          reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    CAST_TYPE       reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    SCALAR          reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    LITERAL_INDICATOR_START reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    FOLD_INDICATOR_START reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    $end            reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    DOC_INDICATOR_END reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    DEDENT          reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+    MAP_INDICATOR   reduce using rule 22 (scalar -> FOLD_INDICATOR_START scalar_group FOLD_INDICATOR_END .)
+
+
+state 34
+
+    (18) sequence_item -> SEQUENCE_INDICATOR INDENT collection . DEDENT
+
+    DEDENT          shift and go to state 38
+
+
+state 35
 
     (3) doc -> DOC_INDICATOR_START doc DOC_INDICATOR_END .
 
@@ -665,7 +712,7 @@ state 33
     DOC_INDICATOR_END reduce using rule 3 (doc -> DOC_INDICATOR_START doc DOC_INDICATOR_END .)
 
 
-state 34
+state 36
 
     (5) doc -> INDENT doc DEDENT .
 
@@ -681,21 +728,37 @@ state 34
     DOC_INDICATOR_END reduce using rule 5 (doc -> INDENT doc DEDENT .)
 
 
-state 35
+state 37
 
-    (20) scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .
+    (21) scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .
 
-    SEQUENCE_INDICATOR reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    DOC_INDICATOR_START reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    INDENT          reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    CAST_TYPE       reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    SCALAR          reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    LITERAL_INDICATOR_START reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    FOLD_INDICATOR_START reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    $end            reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    DOC_INDICATOR_END reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    DEDENT          reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
-    MAP_INDICATOR   reduce using rule 20 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    SEQUENCE_INDICATOR reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    DOC_INDICATOR_START reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    INDENT          reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    CAST_TYPE       reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    SCALAR          reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    LITERAL_INDICATOR_START reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    FOLD_INDICATOR_START reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    $end            reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    DOC_INDICATOR_END reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    DEDENT          reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+    MAP_INDICATOR   reduce using rule 21 (scalar -> LITERAL_INDICATOR_START scalar_group LITERAL_INDICATOR_END .)
+
+
+state 38
+
+    (18) sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .
+
+    SEQUENCE_INDICATOR reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    DEDENT          reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    DOC_INDICATOR_END reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    DOC_INDICATOR_START reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    INDENT          reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    CAST_TYPE       reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    SCALAR          reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    LITERAL_INDICATOR_START reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    FOLD_INDICATOR_START reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
+    $end            reduce using rule 18 (sequence_item -> SEQUENCE_INDICATOR INDENT collection DEDENT .)
 
 WARNING: 
 WARNING: Conflicts:
@@ -705,4 +768,4 @@ WARNING: shift/reduce conflict for CAST_TYPE in state 9 resolved as shift
 WARNING: shift/reduce conflict for SCALAR in state 9 resolved as shift
 WARNING: shift/reduce conflict for LITERAL_INDICATOR_START in state 9 resolved as shift
 WARNING: shift/reduce conflict for FOLD_INDICATOR_START in state 9 resolved as shift
-WARNING: shift/reduce conflict for DOC_INDICATOR_END in state 22 resolved as shift
+WARNING: shift/reduce conflict for DOC_INDICATOR_END in state 23 resolved as shift
