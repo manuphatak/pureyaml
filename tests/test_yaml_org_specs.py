@@ -836,7 +836,7 @@ def test_ex_2_27_invoice():
 
 
 @mark.xfail
-def test_ex_2_28_invoice():
+def test_ex_2_28_log_file():
     text = dedent("""
         ---
         Time: 2001-11-23 15:01:42 -5
