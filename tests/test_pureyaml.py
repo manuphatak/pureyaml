@@ -1049,3 +1049,30 @@ def test_mixed_sequence_of_maps():
     )))  # :on
 
     assert nodes == expected
+def test_mixed_map_of_sequences():
+    text = dedent("""
+        men: [John Smith, Bill Jones]
+        women:
+          - Mary Smith
+          - Susan Williams
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Str('men'),
+            Sequence(
+                Str('John Smith'),
+                Str('Bill Jones'),
+            )
+        ),
+        (
+            Str('women'),
+            Sequence(
+                Str('Mary Smith'),
+                Str('Susan Williams'),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
