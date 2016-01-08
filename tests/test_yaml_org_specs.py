@@ -545,7 +545,6 @@ def test_ex_2_17_quoated_scalars():
     assert nodes == expected
 
 
-@mark.xfail
 def test_ex_2_18_multi_line_flow_scalars():
     text = dedent("""
         plain:
@@ -556,7 +555,7 @@ def test_ex_2_18_multi_line_flow_scalars():
           quoted scalar.\n"
     """)[1:]
 
-    nodes = parser.parse(text)
+    nodes = parser.parsedebug(text)
     print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(

@@ -51,6 +51,7 @@ class TokenList(object):
         'B_FOLD_END',
         'DOUBLEQUOTE_START',
         'DOUBLEQUOTE_END',
+        'DOUBLEQUOTE_NL',
         'SINGLEQUOTE_START',
         'SINGLEQUOTE_END',
         'CAST_TYPE',
@@ -478,14 +479,15 @@ class YAMLProductions(TokenList):
         p[0] = p[2]
 
     @strict(Str)
-    def p_scalar_double_quote(self, p):
+    def p_scalar_doublequote(self, p):
         """
         scalar  : DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END
         """
-        p[0] = Str(p[2])
+        scalar = re.sub('\n\s+', ' ', str(p[2]))
+        p[0] = Str(scalar)
 
     @strict(Str)
-    def p_scalar_single_quote(self, p):
+    def p_scalar_singlequote(self, p):
         """
         scalar  : SINGLEQUOTE_START SCALAR SINGLEQUOTE_END
         """
@@ -518,28 +520,38 @@ class YAMLProductions(TokenList):
         """
         scalar  : B_LITERAL_START scalar_group B_LITERAL_END
         """
-        p[0] = ScalarDispatch(dedent(p[2]).rstrip('\n'), cast='str')
+        scalar_group = ''.join(p[2])
+        p[0] = ScalarDispatch(dedent(scalar_group).rstrip('\n').replace('\n\n\n', '\n'), cast='str')
 
     @strict(Str)
     def p_scalar_folded(self, p):
         """
         scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
-
-        cleaned_scalar = fold(dedent(p[2]).rstrip('\n'))
+        scalar_group = ''.join(p[2])
+        cleaned_scalar = fold(dedent(scalar_group).rstrip('\n'))
         p[0] = ScalarDispatch(cleaned_scalar, cast='str')
 
-    @strict(str)
+    @strict(Str)
+    def p_scalar_indented_flow(self, p):
+        """
+        scalar  : INDENT scalar_group DEDENT
+        """
+        scalar_group = '\n'.join(p[2])
+        cleaned_scalar = fold(dedent(scalar_group).rstrip('\n'))
+        p[0] = ScalarDispatch(cleaned_scalar, cast='str')
+
+    @strict(tuple)
     def p_scalar_group(self, p):
         """
         scalar_group    : SCALAR
                         | scalar_group SCALAR
         """
         if len(p) == 2:
-            p[0] = str(p[1])
+            p[0] = (str(p[1]),)
 
         if len(p) == 3:
-            p[0] = p[1] + p[2]
+            p[0] = p[1] + (str(p[2]),)
 
     @strict(Sequence, Map)
     def p_flow_collection(self, p):
