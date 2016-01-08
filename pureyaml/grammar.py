@@ -29,7 +29,7 @@ def strict(*types):
 
 
 def find_column(t):
-    pos = t.lexpos + len(t.value)
+    pos = t.lexer.lexpos
     data = t.lexer.lexdata
     last_cr = data.rfind('\n', 0, pos)
     if last_cr < 0:
@@ -51,6 +51,8 @@ class TokenList(object):
         'B_FOLD_END',
         'DOUBLEQUOTE_START',
         'DOUBLEQUOTE_END',
+        'SINGLEQUOTE_START',
+        'SINGLEQUOTE_END',
         'CAST_TYPE',
         'SCALAR',
         'INDENT',
@@ -100,6 +102,7 @@ class YAMLTokens(TokenList):
 
     # state: multiple
     # -------------------------------------------------------------------
+
     def t_ignore_INDENT(self, t):
         r'\n\s*'
 
@@ -173,13 +176,14 @@ class YAMLTokens(TokenList):
         t.lexer.push_state('singlequote')
         # t.lexer.begin('singlequote')
         t.type = 'CAST_TYPE'
-        t.value = 'str'
+        t.type = 'SINGLEQUOTE_START'
         return t
 
     def t_singlequote_end(self, t):
         r"(?<!\\)'"
-        # t.lexer.begin('INITIAL')
         t.lexer.pop_state()
+        t.type = 'SINGLEQUOTE_END'
+        return t
 
     # state: literal
     # -------------------------------------------------------------------
@@ -481,9 +485,17 @@ class YAMLProductions(TokenList):
         p[0] = Str(p[2])
 
     @strict(Str)
-    def p_scalar_double_quote_empty(self, p):
+    def p_scalar_single_quote(self, p):
+        """
+        scalar  : SINGLEQUOTE_START SCALAR SINGLEQUOTE_END
+        """
+        p[0] = Str(str(p[2]).replace("''", "'"))
+
+    @strict(Str)
+    def p_scalar_quote_empty(self, p):
         """
         scalar  : DOUBLEQUOTE_START DOUBLEQUOTE_END
+                | SINGLEQUOTE_START SINGLEQUOTE_END
         """
         p[0] = Str('')
 

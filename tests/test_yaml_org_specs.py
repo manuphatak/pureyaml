@@ -233,7 +233,6 @@ def test_ex_2_07_two_docs_in_a_stream():
     assert nodes == expected
 
 
-@mark.xfail
 def test_ex_2_08_play_by_play_feed():
     text = dedent("""
         ---
@@ -517,9 +516,8 @@ def test_ex_2_16_indentation_determines_scope():
     assert nodes == expected
 
 
-@mark.xfail
 def test_ex_2_17_quoated_scalars():
-    text = dedent("""
+    text = dedent(r"""
         unicode: "Sosa did fine.\u263A"
         control: "\b1998\t1999\t2000\n"
         hex esc: "\x0d\x0a is \r\n"
@@ -535,11 +533,11 @@ def test_ex_2_17_quoated_scalars():
         Doc(
             Map(
                 (Str('unicode'), Str('Sosa did fine.\u263A')),
-                (Str('control'), Str('\b1998\t1999\t2000\n')),
-                (Str('hex esc'), Str('\x0d\x0a is \r\n')),
+                (Str('control'), Str(r'\b1998\t1999\t2000\n')),
+                (Str('hex esc'), Str(r'\x0d\x0a is \r\n')),
                 (Str('single'), Str('"Howdy!" he cried.')),
-                (Str('quoted'), Str(' # Not a ''comment''.')),
-                (Str('tie-fighter'), Str('|\-*-/|')),
+                (Str('quoted'), Str(" # Not a 'comment'.")),
+                (Str('tie-fighter'), Str(r'|\-*-/|')),
             )
         ),
     )  # :on
