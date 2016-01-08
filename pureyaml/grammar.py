@@ -12,6 +12,22 @@ from .nodes import *  # noqa
 from .utils import fold
 
 
+def strict(*types):
+    def decorate(func):
+        @wraps(func)
+        def wrapper(self, p):
+            try:
+                return func(self, p)
+            finally:
+                if not isinstance(p[0], types):
+                    raise YAMLStrictTypeError(p[0], types, func)
+
+        wrapper.co_firstlineno = func.__code__.co_firstlineno
+        return wrapper
+
+    return decorate
+
+
 class TokenList(object):
     tokens = [  # :off
         'DOC_INDICATOR_START',
@@ -81,7 +97,8 @@ class YAMLTokens(TokenList):
 
         if indent_status == 'INDENT':
             self.indent_stack.append(next_depth)
-        else:  # DEDENT
+
+        if indent_status == 'DEDENT':
             indent_delta = curr_depth - self.indent_stack.pop()
             t.lexer.lexpos -= indent_delta
 
@@ -224,22 +241,6 @@ class YAMLTokens(TokenList):
     def t_SCALAR(self, t):
         r'(?:\\.|-(?!\ +)|[^\n\#\:\-\|])+'
         return t
-
-
-def strict(*types):
-    def decorate(func):
-        @wraps(func)
-        def wrapper(self, p):
-            try:
-                return func(self, p)
-            finally:
-                if not isinstance(p[0], types):
-                    raise YAMLStrictTypeError(p[0], types, func)
-
-        wrapper.co_firstlineno = func.__code__.co_firstlineno
-        return wrapper
-
-    return decorate
 
 
 class YAMLProductions(TokenList):
