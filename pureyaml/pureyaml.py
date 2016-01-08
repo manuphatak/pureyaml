@@ -57,7 +57,8 @@ class YAMLParser(YAMLProductions):
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
-        logger.info(self.tokenize(data))
+        # TODO use logger
+        print(self.tokenize(data))
         kwargs.setdefault('lexer', YAMLLexer.build(debug=True))
         kwargs.setdefault('debug', True)
 
