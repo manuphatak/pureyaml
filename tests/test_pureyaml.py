@@ -1027,3 +1027,25 @@ def test_2_item_flow_map():
     )))  # :on
 
     assert nodes == expected
+
+def test_mixed_sequence_of_maps():
+    text = dedent("""
+        - {name: John Smith, age: 33}
+        -
+          name: Mary Smith
+          age: 27
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Map(
+            (Str('name'), Str('John Smith')),
+            (Str('age'), Int(33)),
+        ),
+        Map(
+            (Str('name'), Str('Mary Smith')),
+            (Str('age'), Int(27)),
+        ),
+    )))  # :on
+
+    assert nodes == expected

@@ -335,6 +335,7 @@ class YAMLProductions(TokenList):
         """
         collection  : sequence
                     | map
+                    | flow_collection
         """
         p[0] = p[1]
 
@@ -408,6 +409,13 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[3]
 
+    @strict(Map, Sequence)
+    def p_sequence_item_flow_collection(self, p):
+        """
+        sequence_item   : B_SEQUENCE_START flow_collection
+        """
+        p[0] = p[2]
+
     @strict(Scalar)
     def p_scalar_explicit_cast(self, p):
         """
@@ -450,12 +458,19 @@ class YAMLProductions(TokenList):
         if len(p) == 3:
             p[0] = p[1] + p[2]
 
-    @strict(Sequence)
-    def p_flow_sequence_(self, p):
+    def p_flow_collection(self, p):
         """
-        sequence    : F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+        flow_collection : F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+                        | F_MAP_START flow_map F_MAP_END
         """
         p[0] = p[2]
+
+    # @strict(Sequence)
+    # def p_flow_sequence_(self, p):
+    #     """
+    #     sequence    : F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+    #     """
+    #     p[0] = p[2]
 
     @strict(Sequence)
     def p_flow_sequence_last(self, p):
@@ -478,12 +493,12 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1]
 
-    @strict(Map)
-    def p_flow_map_(self, p):
-        """
-        map : F_MAP_START flow_map F_MAP_END
-        """
-        p[0] = p[2]
+    # @strict(Map)
+    # def p_flow_map_(self, p):
+    #     """
+    #     map : F_MAP_START flow_map F_MAP_END
+    #     """
+    #     p[0] = p[2]
 
     @strict(Map)
     def p_flow_map_last(self, p):
