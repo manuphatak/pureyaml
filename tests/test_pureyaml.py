@@ -816,3 +816,34 @@ def test_sequence_of_sequencs_3_items():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_sequence_of_mixed_items():
+    text = dedent("""
+        -
+          - John Smith
+          - Joe Sixpack
+          - Jane Doe
+        - Casablanca
+        -
+          hello: world
+          foo: bar
+          1 edge case: success
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Sequence(  # :off
+        Sequence(
+            Str('John Smith'),
+            Str('Joe Sixpack'),
+            Str('Jane Doe'),
+        ),
+        Str('Casablanca'),
+        Map(
+            (Str('hello'), Str('world')),
+            (Str('foo'), Str('bar')),
+            (Str('1 edge case'), Str('success')),
+        )
+    )))  # :on
+
+    assert nodes == expected
