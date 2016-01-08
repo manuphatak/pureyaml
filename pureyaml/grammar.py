@@ -319,7 +319,6 @@ class YAMLTokens(TokenList):
         r':\ +|:(?=\n)'
         return t
 
-
     def t_SCALAR(self, t):
         r'(?:\\.|[^\n\#\:\-\|]|[\:\-\|]\S)+'
         return t
