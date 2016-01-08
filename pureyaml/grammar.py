@@ -44,7 +44,7 @@ class TokenList(object):
         'DOC_END',
         'B_SEQUENCE_COMPACT_START',
         'B_SEQUENCE_START',
-        'B_MAP_KEY',
+        'B_MAP_VALUE',
         'B_LITERAL_START',
         'B_LITERAL_END',
         'B_FOLD_START',
@@ -310,7 +310,7 @@ class YAMLTokens(TokenList):
         r'-\ |-(?=\n)'
         return t
 
-    def t_B_MAP_KEY(self, t):
+    def t_B_MAP_VALUE(self, t):
         r':\ *'
         return t
 
@@ -387,30 +387,30 @@ class YAMLProductions(TokenList):
     @strict(Scalar)
     def p_map_item_key(self, p):
         """
-        map_item_key    : scalar B_MAP_KEY
+        map_item_key    : scalar
         """
         p[0] = p[1]
 
     @strict(Map, Sequence)
     def p_map_item_value_collection(self, p):
         """
-        map_item_value  : INDENT collection DEDENT
+        map_item_value  :  B_MAP_VALUE INDENT collection DEDENT
         """
-        p[0] = p[2]
+        p[0] = p[3]
 
     @strict(Map, Sequence)
     def p_map_item_value_flow_collection(self, p):
         """
-        map_item_value  : flow_collection
+        map_item_value  :  B_MAP_VALUE flow_collection
         """
-        p[0] = p[1]
+        p[0] = p[2]
 
     @strict(Scalar)
     def p_map_item_value_scalar(self, p):
         """
-        map_item_value  : scalar
+        map_item_value  : B_MAP_VALUE scalar
         """
-        p[0] = p[1]
+        p[0] = p[2]
 
     @strict(Sequence)
     def p_sequence_last(self, p):
