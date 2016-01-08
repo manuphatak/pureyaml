@@ -312,16 +312,16 @@ class YAMLTokens(TokenList):
         return t
 
     def t_B_SEQUENCE_START(self, t):
-        r'-\ |-(?=\n)'
+        r'-\ +|-(?=\n)'
         return t
 
     def t_B_MAP_VALUE(self, t):
-        r':\ *'
+        r':\ +|:(?=\n)'
         return t
 
 
     def t_SCALAR(self, t):
-        r'(?:\\.|-(?!\ +)|[^\n\#\:\-\|])+'
+        r'(?:\\.|[^\n\#\:\|]|\:\S|-\S)+'
         return t
 
 
