@@ -651,6 +651,7 @@ def test_ex_2_21_miscellaneous():
 
     assert nodes == expected
 
+
 @xfail
 def test_ex_2_22_timestamps():
     text = dedent("""
@@ -671,6 +672,7 @@ def test_ex_2_22_timestamps():
     )  # :on
 
     assert nodes == expected
+
 
 @xfail
 def test_ex_2_23_various_explicit_tags():
@@ -701,6 +703,7 @@ def test_ex_2_23_various_explicit_tags():
         ),
     )  # :on
     assert nodes == expected
+
 
 @xfail
 def test_ex_2_24_global_tags():
@@ -734,6 +737,7 @@ def test_ex_2_24_global_tags():
 
     assert nodes == expected
 
+
 @xfail
 def test_ex_2_25_unordered_sets():
     text = dedent("""
@@ -759,6 +763,7 @@ def test_ex_2_25_unordered_sets():
 
     assert nodes == expected
 
+
 @xfail
 def test_ex_2_26_unordered_mappings():
     text = dedent("""
@@ -783,6 +788,7 @@ def test_ex_2_26_unordered_mappings():
     )  # :on
 
     assert nodes == expected
+
 
 @xfail
 def test_ex_2_27_invoice():
@@ -830,6 +836,7 @@ def test_ex_2_27_invoice():
     )  # :on
 
     assert nodes == expected
+
 
 @xfail
 def test_ex_2_28_invoice():
