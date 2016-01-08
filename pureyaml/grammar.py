@@ -43,7 +43,7 @@ class TokenList(object):
         'DOC_START',
         'DOC_END',
         'B_SEQUENCE_START',
-        'B_MAP_START',
+        'B_MAP_KEY',
         'B_LITERAL_START',
         'B_LITERAL_END',
         'B_FOLD_START',
@@ -56,6 +56,7 @@ class TokenList(object):
         'F_SEQUENCE_END',
         'F_MAP_START',
         'F_MAP_END',
+        'F_MAP_KEY',
         'F_SEP',
 
     ]  # :on
@@ -229,7 +230,7 @@ class YAMLTokens(TokenList):
 
     # state: flowsequence
     # -------------------------------------------------------------------
-    def t_flowsequence_F_SEP(self, t):
+    def t_flowsequence_flowmap_F_SEP(self, t):
         r','
         return t
 
@@ -251,15 +252,24 @@ class YAMLTokens(TokenList):
 
     # state: flowmap
     # -------------------------------------------------------------------
-    t_flowmap_SCALAR = r'[^\{]+'
+    t_flowmap_SCALAR = r'[^\{\}\:,]+'
+
+    def t_flowmap_F_MAP_KEY(self, t):
+        r'\:\ ?'
+        return t
 
     def t_begin_flowmap(self, t):
         r'\{'
         t.lexer.push_state('flowmap')
+        t.type = 'F_MAP_START'
+        return t
 
     def t_flowmap_end(self, t):
         r'\}'
         t.lexer.pop_state()
+        t.type = 'F_MAP_END'
+
+        return t
 
     # state: INITIAL
     # -------------------------------------------------------------------
@@ -277,7 +287,7 @@ class YAMLTokens(TokenList):
         r'-\ |-(?=\n)'
         return t
 
-    def t_B_MAP_START(self, t):
+    def t_B_MAP_KEY(self, t):
         r':\ *'
         return t
 
@@ -352,7 +362,7 @@ class YAMLProductions(TokenList):
     @strict(Scalar)
     def p_map_item_key(self, p):
         """
-        map_item_key    : scalar B_MAP_START
+        map_item_key    : scalar B_MAP_KEY
         """
         p[0] = p[1]
 
@@ -465,5 +475,47 @@ class YAMLProductions(TokenList):
     def p_flow_sequence_item(self, p):
         """
         flow_sequence_item  : scalar
+        """
+        p[0] = p[1]
+
+    @strict(Map)
+    def p_flow_map_(self, p):
+        """
+        map : F_MAP_START flow_map F_MAP_END
+        """
+        p[0] = p[2]
+
+    @strict(Map)
+    def p_flow_map_last(self, p):
+        """
+        flow_map   : flow_map_item
+        """
+        p[0] = Map(p[1])
+
+    @strict(Map)
+    def p_flow_map_init(self, p):
+        """
+        flow_map   : flow_map F_SEP flow_map_item
+        """
+        p[0] = p[1] + Map(p[3])
+
+    @strict(tuple)
+    def p_flow_map_item(self, p):
+        """
+        flow_map_item  : flow_map_item_key flow_map_item_value
+        """
+        p[0] = p[1], p[2]
+
+    @strict(Scalar)
+    def p_flow_map_item_key(self, p):
+        """
+        flow_map_item_key   : scalar F_MAP_KEY
+        """
+        p[0] = p[1]
+
+    @strict(Scalar)
+    def p_flow_map_item_value(self, p):
+        """
+        flow_map_item_value    : scalar
         """
         p[0] = p[1]

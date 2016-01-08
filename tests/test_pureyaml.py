@@ -998,3 +998,32 @@ def test_many_item_flow_sequence():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_1_item_flow_map():
+    text = dedent("""
+        --- # Inline Block
+        {name: John Smith}
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('name'), Str('John Smith')),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_2_item_flow_map():
+    text = dedent("""
+        --- # Inline Block
+        {name: John Smith, age: 33}
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('name'), Str('John Smith')),
+        (Str('age'), Int(33)),
+    )))  # :on
+
+    assert nodes == expected
