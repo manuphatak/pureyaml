@@ -770,7 +770,7 @@ def test_ex_2_25_unordered_sets():
 
 
 @mark.xfail
-def test_ex_2_26_unordered_mappings():
+def test_ex_2_26_ordered_mappings():
     text = dedent("""
         # Ordered maps are represented as
         # A sequence of mappings, with
