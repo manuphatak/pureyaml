@@ -31,10 +31,3 @@ restructuredtext_lint
 # required by `travis_pypi_setup.py`
 cryptography
 PyYAML
-
-
-# DEV UTILITIES (Your stuff here)
-# -------------------------------------
-ipdb
-PyYAML
-
