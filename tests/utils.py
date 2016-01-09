@@ -2,7 +2,7 @@
 # coding=utf-8
 import os
 from collections import Mapping
-from difflib import *
+from difflib import Differ, unified_diff
 
 from pureyaml.nodes import Scalar, Collection, Node, Docs
 
