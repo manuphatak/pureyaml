@@ -33,7 +33,7 @@ with open('HISTORY.rst') as history_file:
 
 # TODO: put package requirements here
 requirements = ['ply']
-
+dependency_links = ['git+git://github.com/bionikspoon/ply.git@1.0.0#egg=ply']
 # TODO: put package test requirements here
 test_requirements = ['pytest']
 
@@ -74,6 +74,7 @@ setup(  # :off
     ],
     test_suite='tests',
     install_requires=requirements,
+    dependency_links=dependency_links,
     tests_require=test_requirements,
     setup_requires=setup_requirements,
 )  # :on
