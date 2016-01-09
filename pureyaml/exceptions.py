@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+
 class YAMLException(Exception):
     def __init__(self, message):
         self.message = message
