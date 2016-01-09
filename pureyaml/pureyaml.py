@@ -11,7 +11,8 @@ from ply.lex import lex
 from ply.yacc import yacc
 
 from .exceptions import YAMLSyntaxError, YAMLUnknownSyntaxError
-from .grammar import YAMLTokens, YAMLProductions
+from .grammar.productions import YAMLProductions
+from .grammar.tokens import YAMLTokens
 
 logger = logging.getLogger(__name__)
 
@@ -45,8 +46,8 @@ class YAMLLexer(YAMLTokens):
 class YAMLParser(YAMLProductions):
     def __init__(self, **kwargs):
         kwargs.setdefault('module', self)
-        kwargs.setdefault('tabmodule', '_parsetab')
-        kwargs.setdefault('debugfile', '_parser.out')
+        kwargs.setdefault('tabmodule', 'pureyaml.grammar._parsetab')
+        kwargs.setdefault('debugfile', 'grammar/_parser.out')
         # kwargs.setdefault('debuglog', yacc_logger)
 
         self.debug = kwargs.get('debug')

@@ -1,5 +1,6 @@
 # coding=utf-8
 """Python 2to3 compatibility handling."""
+from __future__ import absolute_import
 
 try:
     from logging import NullHandler

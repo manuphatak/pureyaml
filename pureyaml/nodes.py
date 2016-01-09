@@ -10,8 +10,8 @@ from base64 import standard_b64decode
 from functools import partial
 from math import isnan
 
-from pureyaml.exceptions import YAMLCastTypeError
 from ._compat import collections_abc as abc
+from .exceptions import YAMLCastTypeError
 
 
 class Node(object):
