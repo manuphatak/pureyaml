@@ -220,16 +220,16 @@ class YAMLProductions(YAMLTokens):
         scalar  : B_LITERAL_START scalar_group B_LITERAL_END
         """
         scalar_group = ''.join(p[2])
-        p[0] = ScalarDispatch(dedent(scalar_group).rstrip('\n').replace('\n\n\n', '\n'), cast='str')
+        p[0] = ScalarDispatch(dedent(scalar_group).replace('\n\n\n', '\n')+'\n', cast='str')
 
     @strict(Str)
     def p_scalar__folded(self, p):
         """
         scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
-        scalar_group = ''.join(p[2])
-        cleaned_scalar = fold(dedent(scalar_group).rstrip('\n'))
-        p[0] = ScalarDispatch(cleaned_scalar, cast='str')
+        scalar_group = ''.join(p[2]+('\n',))
+        cleaned_scalar = fold(dedent(scalar_group)).rstrip()
+        p[0] = ScalarDispatch(cleaned_scalar+'\n', cast='str')
 
     @strict(Str)
     def p_scalar__indented_flow(self, p):
@@ -237,7 +237,7 @@ class YAMLProductions(YAMLTokens):
         scalar  : INDENT scalar_group DEDENT
         """
         scalar_group = '\n'.join(p[2])
-        cleaned_scalar = fold(dedent(scalar_group).rstrip('\n'))
+        cleaned_scalar = fold(dedent(scalar_group))
         p[0] = ScalarDispatch(cleaned_scalar, cast='str')
 
     @strict(tuple)

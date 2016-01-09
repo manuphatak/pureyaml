@@ -5,7 +5,7 @@ from textwrap import dedent
 from pytest import mark
 
 from pureyaml.nodes import *  # noqa
-from pureyaml.pureyaml import YAMLParser
+from pureyaml.parser import YAMLParser
 from tests.utils import serialize_nodes
 
 parser = YAMLParser(debug=True)
@@ -439,7 +439,7 @@ def test_ex_2_13_literal_newlines_are_preserved():
     print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
-            Str('\\//||\\/||\n// ||  ||__'),
+            Str('\\//||\\/||\n// ||  ||__\n'),
         ),
     )  # :on
 
@@ -458,7 +458,7 @@ def test_ex_2_14_folded_newlines_become_spaces():
     print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
-            Str("Mark McGwire's year was crippled by a knee injury."),
+            Str("Mark McGwire's year was crippled by a knee injury.\n"),
         ),
     )  # :on
 
@@ -482,7 +482,7 @@ def test_ex_2_15_folded_indents_and_blank_lines_preserved():
     expected = Docs(  # :off
         Doc(
             Str('Sammy Sosa completed another fine season with great stats.\n  63 Home Runs   0.288 Batting '
-                'Average\nWhat a year!'),
+                'Average\nWhat a year!\n'),
         ),
     )  # :on
 
@@ -506,8 +506,8 @@ def test_ex_2_16_indentation_determines_scope():
         Doc(
             Map(
                 (Str('name'), Str('Mark McGwire')),
-                (Str('accomplishment'), Str('Mark set a major league home run record in 1998.')),
-                (Str('stats'), Str('65 Home Runs\n0.278 Batting Average')),
+                (Str('accomplishment'), Str('Mark set a major league home run record in 1998.\n')),
+                (Str('stats'), Str('65 Home Runs\n0.278 Batting Average\n')),
             ),
         ),
     )  # :on

@@ -12,7 +12,7 @@ from textwrap import dedent
 from pytest import mark
 
 from pureyaml.nodes import *  # noqa
-from pureyaml.pureyaml import YAMLParser
+from pureyaml.parser import YAMLParser
 
 parser = YAMLParser(debug=True)
 
@@ -647,7 +647,7 @@ def test_scalar_literal_1_line():
     """)[1:]
 
     nodes = parser.parsedebug(text)
-    expected = Docs(Doc(Str('literal')))
+    expected = Docs(Doc(Str('literal\n')))
 
     assert nodes == expected
 
@@ -660,7 +660,7 @@ def test_scalar_literal_ascii_art():
     """)[1:]
 
     nodes = parser.parsedebug(text)
-    expected = Docs(Doc(Str('\//||\/||\n// ||  ||__')))
+    expected = Docs(Doc(Str('\//||\/||\n// ||  ||__\n')))
 
     assert nodes == expected
 
@@ -682,7 +682,7 @@ def test_longer_scalar_literal_with_indents():
                It said on the door
                "Please don't spit on the floor"
             So he carefully spat on the ceiling
-        """)[1:-1])))
+        """)[1:])))
 
     assert nodes == expected
 
@@ -704,7 +704,7 @@ def test_map_with_literal_block():
               It said on the door
               "Please don't spit on the floor"
             So he carefully spat on the ceiling
-        """)[1:-1])))))
+        """)[1:])))))
 
     assert nodes == expected
 
@@ -725,7 +725,7 @@ def test_map_with_folded_block():
     expected = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
             Blank lines denote paragraph breaks
-        """)[1:-1])))))
+        """)[1:])))))
 
     assert nodes == expected
 

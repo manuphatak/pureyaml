@@ -18,7 +18,6 @@ list_block = """
 """
 
 
-@mark.skipif
 def test_can_read_list_block():
     result = pureyaml.load(list_block)
 
@@ -31,7 +30,6 @@ list_inline = """
 """
 
 
-@mark.skipif
 def test_can_read_list_inline():
     result = pureyaml.load(list_inline)
 
@@ -45,7 +43,6 @@ dict_block = """
 """
 
 
-@mark.skipif
 def test_can_read_dict_block():
     result = pureyaml.load(dict_block)
     expected = {'name': 'John Smith', 'age': 33}
@@ -58,7 +55,6 @@ dict_inline = """
 """
 
 
-@mark.skipif
 def test_can_read_dict_inline():
     result = pureyaml.load(dict_inline)
     expected = {'name': 'John Smith', 'age': 33}
@@ -76,7 +72,6 @@ data: |
 """
 
 
-@mark.skipif
 def test_can_read_str_literal():
     result = pureyaml.load(str_literal)
     data = dedent("""
@@ -104,7 +99,6 @@ data: >
 """
 
 
-@mark.skipif
 def test_can_read_str_folded():
     result = pureyaml.load(str_folded)
     data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks\n"
@@ -120,7 +114,6 @@ lists_of_dicts = """
 """
 
 
-@mark.skipif
 def test_can_read_lists_of_dicts():
     result = pureyaml.load(lists_of_dicts)
     expected = [  # :off
@@ -139,7 +132,6 @@ women:
 """
 
 
-@mark.skipif
 def test_can_read_dicts_of_lists():
     result = pureyaml.load(dicts_of_lists)
     expected = {  # :off
@@ -175,7 +167,6 @@ node_anchors_and_references = """
 """
 
 
-@mark.skipif
 @mark.xfail(reason='References not supported')
 def test_can_read_node_anchors_and_references():
     result = pureyaml.load(node_anchors_and_references)
@@ -252,32 +243,27 @@ casted_data_type_args = [  # :off
 ]  # :on
 
 
-@mark.skipif
 @mark.parametrize('key,type_', casted_data_type_args)
 def test_can_read_casted_data_types(key, type_):
     data = pureyaml.load(casted_data_types)
     assert isinstance(data[key], type_)
 
 
-@mark.skipif
 def test_can_read_values_from_casted_data__str_from_int():
     data = pureyaml.load(casted_data_types)
     assert data['e'] == '123'
 
 
-@mark.skipif
 def test_can_read_values_from_casted_data__str_from_keyword():
     data = pureyaml.load(casted_data_types)
     assert data['f'] == 'Yes'
 
 
-@mark.skipif
 def test_can_read_values_from_casted_data__bool():
     data = pureyaml.load(casted_data_types)
     assert data['g'] is True
 
 
-@mark.skipif
 def test_can_read_values_from_casted_data__str_from_context():
     data = pureyaml.load(casted_data_types)
     assert data['h'] == 'Yes we have No bananas'
@@ -294,7 +280,6 @@ picture: !!binary |
 """
 
 
-@mark.skipif
 def test_can_read_specified_data_types__binary():
     result = pureyaml.load(specified_data_types__binary)
     # noinspection SpellCheckingInspection

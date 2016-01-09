@@ -6,6 +6,7 @@ nodes
 from __future__ import absolute_import
 
 import re
+import types
 from base64 import standard_b64decode
 from functools import partial
 from math import isnan
@@ -252,3 +253,33 @@ class ScalarDispatch(object):
 
         match = cls.re_dispatch.match(value)
         return cls.map[match.lastgroup](value)
+
+
+class NodeVisitor(object):
+    def visit(self, node):
+        stack = [node]
+        last_result = None
+        while stack:
+            try:
+                last = stack[-1]
+                if isinstance(last, types.GeneratorType):
+                    stack.append(last.send(last_result))
+                    last_result = None
+                elif isinstance(last, Node):
+                    stack.append(self._visit(stack.pop()))
+                else:
+                    last_result = stack.pop()
+            except StopIteration:
+                stack.pop()
+        return last_result
+
+    def _visit(self, node):
+        method_name = 'visit_%s' % type(node).__name__
+        method = getattr(self, method_name, None)
+
+        if method is None:
+            method = self.generic_visit
+        return method(node)
+
+    def generic_visit(self, node):
+        raise RuntimeError('No visit_%s method' % type(node).__name__)
