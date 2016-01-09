@@ -26,7 +26,6 @@ class TokenList(object):
         'B_FOLD_END',
         'DOUBLEQUOTE_START',
         'DOUBLEQUOTE_END',
-        'DOUBLEQUOTE_NL',
         'SINGLEQUOTE_START',
         'SINGLEQUOTE_END',
         'CAST_TYPE',
