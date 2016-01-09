@@ -25,9 +25,3 @@ mock
 sphinx
 watchdog
 restructuredtext_lint
-
-# DIST UTILITIES
-# -------------------------------------
-# required by `travis_pypi_setup.py`
-cryptography
-PyYAML

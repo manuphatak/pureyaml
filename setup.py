@@ -32,10 +32,10 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 # TODO: put package requirements here
-requirements = ['six', 'pyyaml']
+requirements = ['ply']
 
 # TODO: put package test requirements here
-test_requirements = ['pytest', 'mock']
+test_requirements = ['pytest']
 
 # TODO: put package setup requirements here
 setup_requirements = ['flake8']
