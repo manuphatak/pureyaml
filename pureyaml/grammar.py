@@ -395,21 +395,21 @@ class YAMLProductions(TokenList):
     # PARSER
     # ===================================================================
     @strict(Docs)
-    def p_docs_last(self, p):
+    def p_docs__last(self, p):
         """
         docs    : doc
         """
         p[0] = Docs(p[1])
 
     @strict(Docs)
-    def p_docs_init(self, p):
+    def p_docs__init(self, p):
         """
         docs    : docs doc
         """
         p[0] = p[1] + Docs(p[2])
 
     @strict(Doc)
-    def p_doc_indent(self, p):
+    def p_doc__indent(self, p):
         """
         doc : DOC_START doc DOC_END
             | DOC_START doc
@@ -435,14 +435,14 @@ class YAMLProductions(TokenList):
         p[0] = p[1]
 
     @strict(Map)
-    def p_map_last(self, p):
+    def p_map__last(self, p):
         """
         map : map_item
         """
         p[0] = Map(p[1])
 
     @strict(Map)
-    def p_map_init(self, p):
+    def p_map__init(self, p):
         """
         map : map map_item
         """
@@ -456,14 +456,14 @@ class YAMLProductions(TokenList):
         p[0] = p[1], p[2]
 
     @strict(tuple)
-    def p_map_item_compact_scalar(self, p):
+    def p_map_item__compact_scalar(self, p):
         """
         map_item    : B_MAP_COMPACT_KEY scalar B_MAP_VALUE scalar DEDENT
         """
         p[0] = p[2], p[4]
 
     @strict(Scalar)
-    def p_map_item_complex_key_scalar(self, p):
+    def p_map_item_key__complex_key_scalar(self, p):
         """
         map_item_key    : B_MAP_KEY         scalar
         """
@@ -477,7 +477,7 @@ class YAMLProductions(TokenList):
         p[0] = p[1]
 
     @strict(Map, Sequence)
-    def p_map_item_value_collection(self, p):
+    def p_map_item___key_value__collection(self, p):
         """
         map_item_key    :  B_MAP_KEY    INDENT collection DEDENT
         map_item_value  :  B_MAP_VALUE  INDENT collection DEDENT
@@ -485,14 +485,14 @@ class YAMLProductions(TokenList):
         p[0] = p[3]
 
     @strict(Map, Sequence)
-    def p_map_item_value_flow_collection(self, p):
+    def p_map_item_value__flow_collection(self, p):
         """
         map_item_value  :  B_MAP_VALUE flow_collection
         """
         p[0] = p[2]
 
     @strict(Scalar)
-    def p_map_item_value_scalar(self, p):
+    def p_map_item_value__scalar(self, p):
         """
         map_item_value  : B_MAP_VALUE scalar
         """
@@ -506,21 +506,21 @@ class YAMLProductions(TokenList):
     #     p[0] = Null(None)
 
     @strict(Sequence)
-    def p_sequence_last(self, p):
+    def p_sequence__last(self, p):
         """
         sequence    : sequence_item
         """
         p[0] = Sequence(p[1])
 
     @strict(Sequence)
-    def p_sequence_init(self, p):
+    def p_sequence__init(self, p):
         """
         sequence    : sequence sequence_item
         """
         p[0] = p[1] + Sequence(p[2])
 
     @strict(Scalar)
-    def p_sequence_item_scalar(self, p):
+    def p_sequence_item__scalar(self, p):
         """
         sequence_item   : B_SEQUENCE_START scalar
         """
@@ -534,14 +534,14 @@ class YAMLProductions(TokenList):
     #     p[0] = Null(None)
 
     @strict(Map, Sequence)
-    def p_sequence_item_collection(self, p):
+    def p_sequence_item__collection(self, p):
         """
         sequence_item   : B_SEQUENCE_START INDENT collection DEDENT
         """
         p[0] = p[3]
 
     @strict(Map, Sequence)
-    def p_collection_compact_collection(self, p):
+    def p_map_item__key__map_item_value__sequence_item__compact_collection(self, p):
         """
         map_item_key    : B_MAP_COMPACT_KEY         collection DEDENT
         map_item_value  : B_MAP_COMPACT_VALUE       collection DEDENT
@@ -550,14 +550,14 @@ class YAMLProductions(TokenList):
         p[0] = p[2]
 
     @strict(Map, Sequence)
-    def p_sequence_item_flow_collection(self, p):
+    def p_sequence_item__flow_collection(self, p):
         """
         sequence_item   : B_SEQUENCE_START flow_collection
         """
         p[0] = p[2]
 
     @strict(Str)
-    def p_scalar_doublequote(self, p):
+    def p_scalar__doublequote(self, p):
         """
         scalar  : DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END
         """
@@ -565,14 +565,14 @@ class YAMLProductions(TokenList):
         p[0] = Str(scalar)
 
     @strict(Str)
-    def p_scalar_singlequote(self, p):
+    def p_scalar__singlequote(self, p):
         """
         scalar  : SINGLEQUOTE_START SCALAR SINGLEQUOTE_END
         """
         p[0] = Str(str(p[2]).replace("''", "'"))
 
     @strict(Str)
-    def p_scalar_quote_empty(self, p):
+    def p_scalar__quote_empty(self, p):
         """
         scalar  : DOUBLEQUOTE_START DOUBLEQUOTE_END
                 | SINGLEQUOTE_START SINGLEQUOTE_END
@@ -580,7 +580,7 @@ class YAMLProductions(TokenList):
         p[0] = Str('')
 
     @strict(Scalar)
-    def p_scalar_explicit_cast(self, p):
+    def p_scalar__explicit_cast(self, p):
         """
         scalar  : CAST_TYPE scalar
         """
@@ -594,7 +594,7 @@ class YAMLProductions(TokenList):
         p[0] = ScalarDispatch(p[1])
 
     @strict(Str)
-    def p_scalar_literal(self, p):
+    def p_scalar__literal(self, p):
         """
         scalar  : B_LITERAL_START scalar_group B_LITERAL_END
         """
@@ -602,7 +602,7 @@ class YAMLProductions(TokenList):
         p[0] = ScalarDispatch(dedent(scalar_group).rstrip('\n').replace('\n\n\n', '\n'), cast='str')
 
     @strict(Str)
-    def p_scalar_folded(self, p):
+    def p_scalar__folded(self, p):
         """
         scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
@@ -611,7 +611,7 @@ class YAMLProductions(TokenList):
         p[0] = ScalarDispatch(cleaned_scalar, cast='str')
 
     @strict(Str)
-    def p_scalar_indented_flow(self, p):
+    def p_scalar__indented_flow(self, p):
         """
         scalar  : INDENT scalar_group DEDENT
         """
@@ -640,14 +640,14 @@ class YAMLProductions(TokenList):
         p[0] = p[2]
 
     @strict(Sequence)
-    def p_flow_sequence_last(self, p):
+    def p_flow_sequence__last(self, p):
         """
         flow_sequence   : flow_sequence_item
         """
         p[0] = Sequence(p[1])
 
     @strict(Sequence)
-    def p_flow_sequence_init(self, p):
+    def p_flow_sequence__init(self, p):
         """
         flow_sequence   : flow_sequence F_SEP flow_sequence_item
         """
@@ -661,14 +661,14 @@ class YAMLProductions(TokenList):
         p[0] = p[1]
 
     @strict(Map)
-    def p_flow_map_last(self, p):
+    def p_flow_map__last(self, p):
         """
         flow_map   : flow_map_item
         """
         p[0] = Map(p[1])
 
     @strict(Map)
-    def p_flow_map_init(self, p):
+    def p_flow_map__init(self, p):
         """
         flow_map   : flow_map F_SEP flow_map_item
         """
@@ -695,6 +695,6 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1]
 
-    def p_empty(self, p):
-        """empty    :"""
-        pass
+    # def p_empty(self, p):
+    #     """empty    :"""
+    #     pass
