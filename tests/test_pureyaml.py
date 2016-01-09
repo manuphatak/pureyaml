@@ -1069,6 +1069,8 @@ def test_mixed_map_of_sequences():
     )))  # :on
 
     assert nodes == expected
+
+
 def test_cast_type_binary():
     text = dedent(u"""
         ---
@@ -1080,14 +1082,14 @@ def test_cast_type_binary():
     """)[1:]
 
     nodes = parser.parsedebug(text)
-    expected = Docs(Doc(Map(
+    expected = Docs(Doc(Map(  # :off
         (
             Str('picture'),
             Binary("GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee"
                    "\xe9\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e"
                    "\x8e\x8e\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7"
                    "\x9e\x9e\x9ei^\x10' \x82\n\x01\x00;")
-         ),
-    )))
+        ),
+    )))  # :on
 
     assert nodes == expected
