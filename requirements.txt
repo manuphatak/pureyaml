@@ -6,4 +6,3 @@
 #
 -e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply
 future==0.15.2
-pyyaml==3.11
