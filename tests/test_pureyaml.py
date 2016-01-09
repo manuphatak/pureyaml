@@ -1192,6 +1192,7 @@ def test_map_complex_key__key_sequence_compact():
 
     assert nodes == expected
 
+
 def test_map_complex_key__flow_sequence():
     text = dedent("""
         ? [ New York Yankees,
