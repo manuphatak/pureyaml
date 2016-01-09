@@ -17,6 +17,7 @@ list_block = """
     - The Man Who Wasn't There
 """
 
+
 @mark.skipif
 def test_can_read_list_block():
     result = pureyaml.load(list_block)
@@ -28,6 +29,7 @@ list_inline = """
 --- # Shopping list
 [milk, pumpkin pie, eggs, juice]
 """
+
 
 @mark.skipif
 def test_can_read_list_inline():
@@ -42,6 +44,7 @@ dict_block = """
     age: 33
 """
 
+
 @mark.skipif
 def test_can_read_dict_block():
     result = pureyaml.load(dict_block)
@@ -53,6 +56,7 @@ def test_can_read_dict_block():
 dict_inline = """
 {name: John Smith, age: 33}
 """
+
 
 @mark.skipif
 def test_can_read_dict_inline():
@@ -70,6 +74,7 @@ data: |
         "Please don't spit on the floor"
     So he carefully spat on the ceiling
 """
+
 
 @mark.skipif
 def test_can_read_str_literal():
@@ -98,6 +103,7 @@ data: >
     paragraph breaks
 """
 
+
 @mark.skipif
 def test_can_read_str_folded():
     result = pureyaml.load(str_folded)
@@ -112,6 +118,7 @@ lists_of_dicts = """
 - name: Mary Smith
   age: 27
 """
+
 
 @mark.skipif
 def test_can_read_lists_of_dicts():
@@ -130,6 +137,7 @@ women:
     - Mary Smith
     - Susan Williams
 """
+
 
 @mark.skipif
 def test_can_read_dicts_of_lists():
@@ -165,6 +173,7 @@ node_anchors_and_references = """
     spotSize: 2mm                # redefines just this key, refers rest from &id001
 - step: *id002
 """
+
 
 @mark.skipif
 @mark.xfail(reason='References not supported')
@@ -242,26 +251,31 @@ casted_data_type_args = [  # :off
     ('h', str)
 ]  # :on
 
+
 @mark.skipif
 @mark.parametrize('key,type_', casted_data_type_args)
 def test_can_read_casted_data_types(key, type_):
     data = pureyaml.load(casted_data_types)
     assert isinstance(data[key], type_)
 
+
 @mark.skipif
 def test_can_read_values_from_casted_data__str_from_int():
     data = pureyaml.load(casted_data_types)
     assert data['e'] == '123'
+
 
 @mark.skipif
 def test_can_read_values_from_casted_data__str_from_keyword():
     data = pureyaml.load(casted_data_types)
     assert data['f'] == 'Yes'
 
+
 @mark.skipif
 def test_can_read_values_from_casted_data__bool():
     data = pureyaml.load(casted_data_types)
     assert data['g'] is True
+
 
 @mark.skipif
 def test_can_read_values_from_casted_data__str_from_context():
@@ -278,6 +292,7 @@ picture: !!binary |
     Pz7Y6OjuDg4J+fn5OTk6enp
     56enmleECcgggoBADs=mZmE
 """
+
 
 @mark.skipif
 def test_can_read_specified_data_types__binary():
@@ -308,6 +323,7 @@ sanity_args = [  # :off
     casted_data_types,
     specified_data_types__binary
 ]  # :on
+
 
 @mark.skipif
 @mark.parametrize('sample', sanity_args)
