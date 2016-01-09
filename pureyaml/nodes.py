@@ -6,7 +6,7 @@ nodes
 from __future__ import absolute_import
 
 import re
-from base64 import standard_b64decode, standard_b64encode
+from base64 import standard_b64decode
 from functools import partial
 from math import isnan
 
@@ -198,13 +198,7 @@ class Binary(Scalar):
     type = 'binary'
 
     def init_value(self, value, *args, **kwargs):
-        try:
-            return standard_b64decode(value)
-        except TypeError as e:
-            try:
-                return standard_b64decode(standard_b64encode(value))
-            except TypeError:
-                raise e
+        return standard_b64decode(value)
 
 
 class ScalarDispatch(object):
@@ -238,7 +232,7 @@ class ScalarDispatch(object):
         | (?P<str> .+ $)
     """, re.X)
 
-    def __new__(cls, value, cast=None):
+    def __new__(cls, value, cast=None):  # noqa
         # Guard, explicit casting
         if cast is not None:
             try:

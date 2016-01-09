@@ -1,5 +1,5 @@
 Welcome to pureyaml's documentation!
-======================================
+====================================
 
 Contents:
 =========
@@ -13,7 +13,7 @@ Contents:
    Contributing <contributing>
    Authors <authors>
    History <history>
-   API Docs <modules>
+   API Docs <pureyaml>
 
 Feedback
 ========

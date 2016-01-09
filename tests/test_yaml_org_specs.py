@@ -346,7 +346,6 @@ def test_ex_2_10_node_appears_twice():
     assert nodes == expected
 
 
-@mark.xfail
 def test_ex_2_11_mapping_between_sequences():
     text = dedent("""
         ? - Detroit Tigers
@@ -532,7 +531,7 @@ def test_ex_2_17_quoated_scalars():
     expected = Docs(  # :off
         Doc(
             Map(
-                (Str('unicode'), Str('Sosa did fine.\u263A')),
+                (Str('unicode'), Str(r'Sosa did fine.\u263A')),
                 (Str('control'), Str(r'\b1998\t1999\t2000\n')),
                 (Str('hex esc'), Str(r'\x0d\x0a is \r\n')),
                 (Str('single'), Str('"Howdy!" he cried.')),
@@ -671,7 +670,6 @@ def test_ex_2_22_timestamps():
     assert nodes == expected
 
 
-@mark.xfail
 def test_ex_2_23_various_explicit_tags():
     # TODO, remove comments
     text = dedent("""
@@ -698,11 +696,12 @@ def test_ex_2_23_various_explicit_tags():
                 (Str('not-date'), Str('2002-04-28')),
                 (
                     Str('picture'),
-                    Binary("GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5"
-                           "\xf5\xee\xe9\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^"
-                           "\xf3\xf3\xed\x8e\x8e\x8e\xe0\xe0\xe0\x9f\x9f\x9f"
-                           "\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei^\x10' \x82\n"
-                           "\x01\x00;")
+                    Binary(dedent("""
+                        R0lGODlhDAAMAIQAAP//9/X
+                        17unp5WZmZgAAAOfn515eXv
+                        Pz7Y6OjuDg4J+fn5OTk6enp
+                        56enmleECcgggoBADs=
+                    """)[1:-1])
                 ),
             ),
         ),

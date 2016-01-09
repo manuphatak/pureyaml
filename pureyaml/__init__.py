@@ -20,6 +20,4 @@ __author__ = 'Manu Phatak'
 __email__ = 'bionikspoon@gmail.com'
 __version__ = '0.1.0'
 
-from yaml import load, dump
-
 __all__ = ['load', 'dump']

@@ -1,5 +1,4 @@
 # PROJECT REQUIREMENTS (Your stuff here)
 # -------------------------------------
 future
-PyYAML
 -e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply
