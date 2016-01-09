@@ -24,20 +24,26 @@ def pformat_node(node, depth=0):  # noqa
         depth += 1
 
         for k, v in node.items():
-            depth += 1
+
 
             if isinstance(k, Scalar) and isinstance(v, Scalar):
+                depth += 1
                 yield indent() + '%s, %s' % (k, v)
+                depth -= 1
             else:
-                yield indent() + ':'
-                for line in pformat_node(k, depth=depth):
+
+                lines = pformat_node(k, depth=depth+1)
+                yield indent() + '? ' + next(lines).strip(' ')
+
+                for line in lines:
                     yield line
 
-                yield indent() + '?'
-                for line in pformat_node(v, depth=depth):
+                lines = pformat_node(v, depth=depth+1)
+                yield indent() + ': ' + next(lines).strip(' ')
+                for line in lines:
                     yield line
 
-            depth -= 1
+
 
         depth -= 1
         yield indent() + ')>'

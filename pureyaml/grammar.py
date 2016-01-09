@@ -42,6 +42,8 @@ class TokenList(object):
         'DOC_END',
         'B_SEQUENCE_COMPACT_START',
         'B_SEQUENCE_START',
+        'B_MAP_COMPACT_KEY',
+        'B_MAP_COMPACT_VALUE',
         'B_MAP_KEY',
         'B_MAP_VALUE',
         'B_LITERAL_START',
@@ -292,9 +294,11 @@ class YAMLTokens(TokenList):
 
     def t_B_SEQUENCE_COMPACT_START(self, t):
         r"""
-          -\ +(?=-)                     # + sequence indicator
-        | -\ +(?![\{\[])                # - flow indicator
-            (?=[^:\n]*:\ )              # + map indicator
+          \-\ + (?=  -\   )
+        #            ^ + sequence indicator
+        | \-\ + (?=  [\{\[]\   |  [^:\n]*:\   )
+        #            ^            ^ + map indicator
+        #            ^ + flow indicator
         """
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
@@ -317,6 +321,60 @@ class YAMLTokens(TokenList):
 
     def t_B_SEQUENCE_START(self, t):
         r'-\ +|-(?=\n)'
+        return t
+
+    def t_B_MAP_COMPACT_KEY(self, t):
+        r"""
+          \?\ + (?=  -\   )
+        #            ^ + sequence indicator
+        | \?\ + (?=  [\{\[]\   |  [^:\n]*:\   )
+        #            ^            ^ + map indicator
+        #            ^ + flow indicator
+        """
+        indent_status, curr_depth, next_depth = self.get_indent_status(t)
+
+        if indent_status != 'INDENT':
+            msg = dedent("""
+                expected 'INDENT', got %r
+                current_depth:      %s
+                next_depth:         %s
+                token:              %s
+            """)
+            raise YAMLUnknownSyntaxError(msg % (  # :off
+                indent_status,
+                curr_depth,
+                next_depth,
+                t
+            ))  # :on
+
+        self.indent_stack.append(next_depth)
+        return t
+
+    def t_B_MAP_COMPACT_VALUE(self, t):
+        r"""
+          \:\ + (?=  -\   )
+        #            ^ + sequence indicator
+        | \:\ + (?=  [\{\[]\   |  [^:\n]*:\   )
+        #            ^            ^ + map indicator
+        #            ^ + flow indicator
+        """
+        indent_status, curr_depth, next_depth = self.get_indent_status(t)
+
+        if indent_status != 'INDENT':
+            msg = dedent("""
+                expected 'INDENT', got %r
+                current_depth:      %s
+                next_depth:         %s
+                token:              %s
+            """)
+            raise YAMLUnknownSyntaxError(msg % (  # :off
+                indent_status,
+                curr_depth,
+                next_depth,
+                t
+            ))  # :on
+
+        self.indent_stack.append(next_depth)
         return t
 
     def t_B_MAP_KEY(self, t):
@@ -397,10 +455,17 @@ class YAMLProductions(TokenList):
         """
         p[0] = p[1], p[2]
 
+    @strict(tuple)
+    def p_map_item_compact_scalar(self, p):
+        """
+        map_item    : B_MAP_COMPACT_KEY scalar B_MAP_VALUE scalar DEDENT
+        """
+        p[0] = p[2], p[4]
+
     @strict(Scalar)
     def p_map_item_complex_key_scalar(self, p):
         """
-        map_item_key    : B_MAP_KEY scalar
+        map_item_key    : B_MAP_KEY         scalar
         """
         p[0] = p[2]
 
@@ -414,7 +479,8 @@ class YAMLProductions(TokenList):
     @strict(Map, Sequence)
     def p_map_item_value_collection(self, p):
         """
-        map_item_value  :  B_MAP_VALUE INDENT collection DEDENT
+        map_item_key    :  B_MAP_KEY    INDENT collection DEDENT
+        map_item_value  :  B_MAP_VALUE  INDENT collection DEDENT
         """
         p[0] = p[3]
 
@@ -475,9 +541,11 @@ class YAMLProductions(TokenList):
         p[0] = p[3]
 
     @strict(Map, Sequence)
-    def p_sequence_item_compact_collection(self, p):
+    def p_collection_compact_collection(self, p):
         """
-        sequence_item   : B_SEQUENCE_COMPACT_START collection DEDENT
+        map_item_key    : B_MAP_COMPACT_KEY         collection DEDENT
+        map_item_value  : B_MAP_COMPACT_VALUE       collection DEDENT
+        sequence_item   : B_SEQUENCE_COMPACT_START  collection DEDENT
         """
         p[0] = p[2]
 

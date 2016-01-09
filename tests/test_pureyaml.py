@@ -1143,3 +1143,76 @@ def test_3_item_map_explicit_key():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_map_complex_key__key_sequence():
+    text = dedent("""
+        ?
+          - Detroit Tigers
+          - Chicago Cubs
+        :
+          - 2001-07-23
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Sequence(
+                Str('Detroit Tigers'),
+                Str('Chicago Cubs'),
+            ),
+            Sequence(
+                Str('2001-07-23'),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_map_complex_key__key_sequence_compact():
+    text = dedent("""
+        ? - Detroit Tigers
+          - Chicago Cubs
+        : - 2001-07-23
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Sequence(
+                Str('Detroit Tigers'),
+                Str('Chicago Cubs'),
+            ),
+            Sequence(
+                Str('2001-07-23'),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
+
+def test_map_complex_key__flow_sequence():
+    text = dedent("""
+        ? [ New York Yankees,
+            Atlanta Braves ]
+        : [ 2001-07-02, 2001-08-12,
+            2001-08-14 ]
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (
+            Sequence(
+                Str('New York Yankees'),
+                Str('Atlanta Braves'),
+            ),
+            Sequence(
+                Str('2001-07-02'),
+                Str('2001-08-12'),
+                Str('2001-08-14'),
+            )
+        ),
+    )))  # :on
+
+    assert nodes == expected
