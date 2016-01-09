@@ -6,9 +6,11 @@ nodes
 from __future__ import absolute_import
 
 import re
+from base64 import standard_b64decode, standard_b64encode
 from functools import partial
 from math import isnan
 
+from pureyaml.exceptions import YAMLCastTypeError
 from ._compat import collections_abc as abc
 
 
@@ -26,12 +28,15 @@ class Node(object):
         except AttributeError:
             return False
 
+    def repr_value(self):
+        try:
+            return repr(self.value)[1:-1]
+        except AttributeError:
+            return repr(self.raw_value)[1:-1]
+
     def __repr__(self):
         cls_name = self.__class__.__name__
-        try:
-            return '<%s:%s>' % (cls_name, self.value)
-        except AttributeError:
-            return '<%s:%s>' % (cls_name, self.raw_value)
+        return '<%s:%s>' % (cls_name, self.repr_value())
 
 
 class SequenceMixin(abc.Sequence):
@@ -189,6 +194,19 @@ class Bool(Scalar):
         return str_value in self.TRUE_VALUES
 
 
+class Binary(Scalar):
+    type = 'binary'
+
+    def init_value(self, value, *args, **kwargs):
+        try:
+            return standard_b64decode(value)
+        except TypeError as e:
+            try:
+                return standard_b64decode(standard_b64encode(value))
+            except TypeError:
+                raise e
+
+
 class ScalarDispatch(object):
     map = {  # :off
         'null': Null,
@@ -201,6 +219,7 @@ class ScalarDispatch(object):
         'infinity': Float,
         'nan': Float,
         'str': Str,
+        'binary': Binary,
     }  # :on
 
     re_dispatch = re.compile(r"""
@@ -222,7 +241,10 @@ class ScalarDispatch(object):
     def __new__(cls, value, cast=None):
         # Guard, explicit casting
         if cast is not None:
-            return cls.map[cast](value)
+            try:
+                return cls.map[cast](value)
+            except KeyError:
+                raise YAMLCastTypeError(cast=cast)
 
         # Guard, already casted
         type_name = type(value).__name__
@@ -236,4 +258,3 @@ class ScalarDispatch(object):
 
         match = cls.re_dispatch.match(value)
         return cls.map[match.lastgroup](value)
-        # __all__ = ['Docs', 'Doc', 'Sequence', 'Map', 'Str', 'Int', 'Float', 'Bool']

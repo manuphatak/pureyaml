@@ -16,11 +16,9 @@ def strict(*types):
     def decorate(func):
         @wraps(func)
         def wrapper(self, p):
-            try:
-                return func(self, p)
-            finally:
-                if not isinstance(p[0], types):
-                    raise YAMLStrictTypeError(p[0], types, func)
+            func(self, p)
+            if not isinstance(p[0], types):
+                raise YAMLStrictTypeError(p[0], types, func)
 
         wrapper.co_firstlineno = func.__code__.co_firstlineno
         return wrapper

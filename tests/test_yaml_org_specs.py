@@ -673,6 +673,7 @@ def test_ex_2_22_timestamps():
 
 @mark.xfail
 def test_ex_2_23_various_explicit_tags():
+    # TODO, remove comments
     text = dedent("""
         ---
         not-date: !!str 2002-04-28
@@ -683,10 +684,10 @@ def test_ex_2_23_various_explicit_tags():
          Pz7Y6OjuDg4J+fn5OTk6enp
          56enmleECcgggoBADs=
 
-        application specific tag: !something |
-         The semantics of the tag
-         above may be different for
-         different documents.
+        # application specific tag: !something |
+        #  The semantics of the tag
+        #  above may be different for
+        #  different documents.
     """)[1:]
 
     nodes = parser.parse(text)
@@ -694,9 +695,16 @@ def test_ex_2_23_various_explicit_tags():
     expected = Docs(  # :off
         Doc(
             Map(
-                (Str('plain'), Str('This unquoted scalar spans many lines.')),
-                (Str('quoted'), Str('So does this quoted scalar.\n')),
-            )
+                (Str('not-date'), Str('2002-04-28')),
+                (
+                    Str('picture'),
+                    Binary("GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5"
+                           "\xf5\xee\xe9\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^"
+                           "\xf3\xf3\xed\x8e\x8e\x8e\xe0\xe0\xe0\x9f\x9f\x9f"
+                           "\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei^\x10' \x82\n"
+                           "\x01\x00;")
+                ),
+            ),
         ),
     )  # :on
     assert nodes == expected

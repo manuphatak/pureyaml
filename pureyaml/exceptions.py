@@ -3,7 +3,12 @@
 
 
 class YAMLException(Exception):
-    pass
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        if self.message:
+            return str(self.message)
 
 
 class YAMLUnknownSyntaxError(SyntaxError, YAMLException):
@@ -32,7 +37,7 @@ class YAMLSyntaxError(SyntaxError, YAMLException):
 
         error_length = max(1, len(self.value))
         pointer = '^' * error_length
-        width = len(self.input[preview_start:self.offset-1]+self.value)
+        width = len(self.input[preview_start:self.offset - 1] + self.value)
         yield pointer.rjust(width)
 
     def __str__(self):
@@ -65,3 +70,10 @@ class YAMLStrictTypeError(TypeError, YAMLException):
                 self.function)  # :on
 
         return template % args
+
+
+class YAMLCastTypeError(TypeError, YAMLException):
+    def __init__(self, message=None, cast=None):
+        msg = 'Unexpected cast type: %r.  Type not defined' % cast
+        if message or cast:
+            self.message = message or msg
