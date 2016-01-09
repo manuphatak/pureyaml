@@ -42,6 +42,7 @@ class TokenList(object):
         'DOC_END',
         'B_SEQUENCE_COMPACT_START',
         'B_SEQUENCE_START',
+        'B_MAP_KEY',
         'B_MAP_VALUE',
         'B_LITERAL_START',
         'B_LITERAL_END',
@@ -318,6 +319,10 @@ class YAMLTokens(TokenList):
         r'-\ +|-(?=\n)'
         return t
 
+    def t_B_MAP_KEY(self, t):
+        r'\?\ +|\?(?=\n)'
+        return t
+
     def t_B_MAP_VALUE(self, t):
         r':\ +|:(?=\n)'
         return t
@@ -391,6 +396,13 @@ class YAMLProductions(TokenList):
         map_item    : map_item_key map_item_value
         """
         p[0] = p[1], p[2]
+
+    @strict(Scalar)
+    def p_map_item_complex_key_scalar(self, p):
+        """
+        map_item_key    : B_MAP_KEY scalar
+        """
+        p[0] = p[2]
 
     @strict(Scalar)
     def p_map_item_key(self, p):

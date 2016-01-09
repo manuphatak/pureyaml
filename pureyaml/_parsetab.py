@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '727E0A28130AD4FAD4233FD099445E59'
+_lr_signature = '2652E7FE543BC8519BCE5B4A5753E4A4'
     
-_lr_action_items = {'DEDENT':([1,3,4,5,9,12,13,14,23,24,26,28,29,31,35,36,38,39,40,41,46,47,53,54,55,56,57,59,60,61,62,63,65,66,71,72,73,74,77,],[-8,-7,-18,-11,-9,-6,-29,-10,-19,-33,-4,-13,-27,-12,-20,-23,-29,61,62,-26,66,-28,-34,-31,-3,-17,-16,-25,74,-5,-32,-24,-35,-22,-36,-30,77,-21,-15,]),'SINGLEQUOTE_END':([8,30,],[29,59,]),'B_FOLD_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,18,19,20,21,23,26,27,28,29,31,34,35,36,37,41,47,48,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[2,-8,-7,-18,-11,2,2,2,2,-6,-29,-10,2,-1,2,2,2,2,-19,-4,2,-13,-27,-12,-2,-20,-23,2,-26,-28,2,-31,-3,-17,-16,2,-25,-5,-32,-24,2,-35,-22,-43,2,-36,-30,-21,-15,]),'B_MAP_VALUE':([3,7,13,29,32,38,41,47,54,59,62,63,72,],[-14,27,-29,-27,-14,-29,-26,-28,-31,-25,-32,-24,-30,]),'DOC_END':([1,3,4,5,9,12,13,14,23,26,28,29,31,35,36,41,47,54,55,56,57,59,61,62,63,65,66,71,72,74,77,],[-8,-7,-18,-11,-9,-6,-29,-10,-19,55,-13,-27,-12,-20,-23,-26,-28,-31,-3,-17,-16,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'F_SEP':([13,29,41,43,44,45,47,50,51,54,59,62,63,67,68,72,75,76,],[-29,-27,-26,-37,-39,64,-28,70,-40,-31,-25,-32,-24,-42,-44,-30,-38,-41,]),'DOC_START':([0,1,3,4,5,6,9,10,12,13,14,15,17,23,26,28,29,31,34,35,36,41,47,54,55,56,57,59,61,62,63,65,66,71,72,74,77,],[6,-8,-7,-18,-11,6,-9,6,-6,-29,-10,6,-1,-19,-4,-13,-27,-12,-2,-20,-23,-26,-28,-31,-3,-17,-16,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'SINGLEQUOTE_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,18,19,20,21,23,26,27,28,29,31,34,35,36,37,41,47,48,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[8,-8,-7,-18,-11,8,8,8,8,-6,-29,-10,8,-1,8,8,8,8,-19,-4,8,-13,-27,-12,-2,-20,-23,8,-26,-28,8,-31,-3,-17,-16,8,-25,-5,-32,-24,8,-35,-22,-43,8,-36,-30,-21,-15,]),'B_SEQUENCE_START':([0,1,3,4,5,6,9,10,12,13,14,15,17,19,23,26,28,29,31,34,35,36,37,41,47,54,55,56,57,58,59,61,62,63,65,66,71,72,74,77,],[11,11,-7,-18,-11,11,-9,11,-6,-29,-10,11,-1,11,-19,-4,-13,-27,-12,-2,-20,-23,11,-26,-28,-31,-3,-17,-16,11,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'$end':([1,3,4,5,9,10,12,13,14,17,23,26,28,29,31,34,35,36,41,47,54,55,56,57,59,61,62,63,65,66,71,72,74,77,],[-8,-7,-18,-11,-9,0,-6,-29,-10,-1,-19,-4,-13,-27,-12,-2,-20,-23,-26,-28,-31,-3,-17,-16,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'B_LITERAL_END':([24,52,53,],[-33,72,-34,]),'SCALAR':([0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31,33,34,35,36,37,38,40,41,47,48,52,53,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[13,-8,24,-7,-18,-11,13,30,13,13,13,-6,-29,-10,38,42,-1,13,13,13,13,24,-19,-33,53,-4,13,-13,-27,-12,24,-2,-20,-23,38,-33,53,-26,-28,13,53,-34,-31,-3,-17,-16,38,-25,-5,-32,-24,13,-35,-22,-43,13,-36,-30,-21,-15,]),'B_FOLD_END':([24,25,53,],[-33,54,-34,]),'INDENT':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,18,19,20,21,23,26,27,28,29,31,34,35,36,37,41,47,48,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[15,-8,-7,-18,-11,15,33,15,37,-6,-29,-10,15,-1,33,33,33,33,-19,-4,58,-13,-27,-12,-2,-20,-23,33,-26,-28,33,-31,-3,-17,-16,33,-25,-5,-32,-24,33,-35,-22,-43,33,-36,-30,-21,-15,]),'DOUBLEQUOTE_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,18,19,20,21,23,26,27,28,29,31,34,35,36,37,41,47,48,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[16,-8,-7,-18,-11,16,16,16,16,-6,-29,-10,16,-1,16,16,16,16,-19,-4,16,-13,-27,-12,-2,-20,-23,16,-26,-28,16,-31,-3,-17,-16,16,-25,-5,-32,-24,16,-35,-22,-43,16,-36,-30,-21,-15,]),'DOUBLEQUOTE_END':([16,42,],[41,63,]),'F_SEQUENCE_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,19,23,26,27,28,29,31,34,35,36,37,41,47,54,55,56,57,58,59,61,62,63,65,66,71,72,74,77,],[18,-8,-7,-18,-11,18,-9,18,18,-6,-29,-10,18,-1,18,-19,-4,18,-13,-27,-12,-2,-20,-23,18,-26,-28,-31,-3,-17,-16,18,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'B_SEQUENCE_COMPACT_START':([0,1,3,4,5,6,9,10,12,13,14,15,17,19,23,26,28,29,31,34,35,36,37,41,47,54,55,56,57,58,59,61,62,63,65,66,71,72,74,77,],[19,19,-7,-18,-11,19,-9,19,-6,-29,-10,19,-1,19,-19,-4,-13,-27,-12,-2,-20,-23,19,-26,-28,-31,-3,-17,-16,19,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'F_SEQUENCE_END':([13,29,41,43,44,45,47,54,59,62,63,72,75,],[-29,-27,-26,-37,-39,65,-28,-31,-25,-32,-24,-30,-38,]),'CAST_TYPE':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,18,19,20,21,23,26,27,28,29,31,34,35,36,37,41,47,48,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[20,-8,-7,-18,-11,20,20,20,20,-6,-29,-10,20,-1,20,20,20,20,-19,-4,20,-13,-27,-12,-2,-20,-23,20,-26,-28,20,-31,-3,-17,-16,20,-25,-5,-32,-24,20,-35,-22,-43,20,-36,-30,-21,-15,]),'F_MAP_KEY':([13,29,41,47,49,54,59,62,63,72,],[-29,-27,-26,-28,69,-31,-25,-32,-24,-30,]),'F_MAP_END':([13,29,41,47,50,51,54,59,62,63,67,68,72,76,],[-29,-27,-26,-28,71,-40,-31,-25,-32,-24,-42,-44,-30,-41,]),'F_MAP_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,19,23,26,27,28,29,31,34,35,36,37,41,47,54,55,56,57,58,59,61,62,63,65,66,71,72,74,77,],[21,-8,-7,-18,-11,21,-9,21,21,-6,-29,-10,21,-1,21,-19,-4,21,-13,-27,-12,-2,-20,-23,21,-26,-28,-31,-3,-17,-16,21,-25,-5,-32,-24,-35,-22,-36,-30,-21,-15,]),'B_LITERAL_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,17,18,19,20,21,23,26,27,28,29,31,34,35,36,37,41,47,48,54,55,56,57,58,59,61,62,63,64,65,66,69,70,71,72,74,77,],[22,-8,-7,-18,-11,22,22,22,22,-6,-29,-10,22,-1,22,22,22,22,-19,-4,22,-13,-27,-12,-2,-20,-23,22,-26,-28,22,-31,-3,-17,-16,22,-25,-5,-32,-24,22,-35,-22,-43,22,-36,-30,-21,-15,]),}
+_lr_action_items = {'DEDENT':([1,3,4,5,10,13,14,15,24,25,27,29,30,34,37,38,40,41,42,43,48,49,55,56,57,58,59,61,62,63,64,65,67,68,73,74,75,76,79,],[-8,-7,-19,-11,-9,-6,-30,-10,-20,-34,-4,-13,-28,-12,-21,-24,-30,63,64,-27,68,-29,-35,-32,-3,-18,-17,-26,76,-5,-33,-25,-36,-23,-37,-31,79,-22,-16,]),'SINGLEQUOTE_END':([8,31,],[30,61,]),'B_FOLD_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,16,18,19,20,21,22,24,27,28,29,30,34,36,37,38,39,43,49,50,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[2,-8,-7,-19,-11,2,2,2,2,2,-6,-30,-10,2,-1,2,2,2,2,-20,-4,2,-13,-28,-12,-2,-21,-24,2,-27,-29,2,-32,-3,-18,-17,2,-26,-5,-33,-25,2,-36,-23,-44,2,-37,-31,-22,-16,]),'B_MAP_VALUE':([3,7,14,30,32,35,40,43,49,56,61,64,65,74,],[-15,28,-30,-28,-14,-15,-30,-27,-29,-32,-26,-33,-25,-31,]),'DOC_END':([1,3,4,5,10,13,14,15,24,27,29,30,34,37,38,43,49,56,57,58,59,61,63,64,65,67,68,73,74,76,79,],[-8,-7,-19,-11,-9,-6,-30,-10,-20,57,-13,-28,-12,-21,-24,-27,-29,-32,-3,-18,-17,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'F_SEP':([14,30,43,45,46,47,49,52,53,56,61,64,65,69,70,74,77,78,],[-30,-28,-27,-38,-40,66,-29,72,-41,-32,-26,-33,-25,-43,-45,-31,-39,-42,]),'DOC_START':([0,1,3,4,5,6,10,11,13,14,15,16,18,24,27,29,30,34,36,37,38,43,49,56,57,58,59,61,63,64,65,67,68,73,74,76,79,],[6,-8,-7,-19,-11,6,-9,6,-6,-30,-10,6,-1,-20,-4,-13,-28,-12,-2,-21,-24,-27,-29,-32,-3,-18,-17,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'SINGLEQUOTE_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,16,18,19,20,21,22,24,27,28,29,30,34,36,37,38,39,43,49,50,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[8,-8,-7,-19,-11,8,8,8,8,8,-6,-30,-10,8,-1,8,8,8,8,-20,-4,8,-13,-28,-12,-2,-21,-24,8,-27,-29,8,-32,-3,-18,-17,8,-26,-5,-33,-25,8,-36,-23,-44,8,-37,-31,-22,-16,]),'B_SEQUENCE_START':([0,1,3,4,5,6,10,11,13,14,15,16,18,20,24,27,29,30,34,36,37,38,39,43,49,56,57,58,59,60,61,63,64,65,67,68,73,74,76,79,],[12,12,-7,-19,-11,12,-9,12,-6,-30,-10,12,-1,12,-20,-4,-13,-28,-12,-2,-21,-24,12,-27,-29,-32,-3,-18,-17,12,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'$end':([1,3,4,5,10,11,13,14,15,18,24,27,29,30,34,36,37,38,43,49,56,57,58,59,61,63,64,65,67,68,73,74,76,79,],[-8,-7,-19,-11,-9,0,-6,-30,-10,-1,-20,-4,-13,-28,-12,-2,-21,-24,-27,-29,-32,-3,-18,-17,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'B_MAP_KEY':([0,1,3,4,5,6,10,11,13,14,15,16,18,20,24,27,29,30,34,36,37,38,39,43,49,56,57,58,59,60,61,63,64,65,67,68,73,74,76,79,],[9,-8,-7,-19,-11,9,9,9,-6,-30,-10,9,-1,9,-20,-4,-13,-28,-12,-2,-21,-24,9,-27,-29,-32,-3,-18,-17,9,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'B_LITERAL_END':([25,54,55,],[-34,74,-35,]),'SCALAR':([0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,33,34,36,37,38,39,40,42,43,49,50,54,55,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[14,-8,25,-7,-19,-11,14,31,14,14,14,14,-6,-30,-10,40,44,-1,14,14,14,14,25,-20,-34,55,-4,14,-13,-28,25,-12,-2,-21,-24,40,-34,55,-27,-29,14,55,-35,-32,-3,-18,-17,40,-26,-5,-33,-25,14,-36,-23,-44,14,-37,-31,-22,-16,]),'B_FOLD_END':([25,26,55,],[-34,56,-35,]),'INDENT':([0,1,3,4,5,6,9,10,11,12,13,14,15,16,18,19,20,21,22,24,27,28,29,30,34,36,37,38,39,43,49,50,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[16,-8,-7,-19,-11,16,33,33,16,39,-6,-30,-10,16,-1,33,33,33,33,-20,-4,60,-13,-28,-12,-2,-21,-24,33,-27,-29,33,-32,-3,-18,-17,33,-26,-5,-33,-25,33,-36,-23,-44,33,-37,-31,-22,-16,]),'DOUBLEQUOTE_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,16,18,19,20,21,22,24,27,28,29,30,34,36,37,38,39,43,49,50,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[17,-8,-7,-19,-11,17,17,17,17,17,-6,-30,-10,17,-1,17,17,17,17,-20,-4,17,-13,-28,-12,-2,-21,-24,17,-27,-29,17,-32,-3,-18,-17,17,-26,-5,-33,-25,17,-36,-23,-44,17,-37,-31,-22,-16,]),'DOUBLEQUOTE_END':([17,44,],[43,65,]),'F_SEQUENCE_START':([0,1,3,4,5,6,10,11,12,13,14,15,16,18,20,24,27,28,29,30,34,36,37,38,39,43,49,56,57,58,59,60,61,63,64,65,67,68,73,74,76,79,],[19,-8,-7,-19,-11,19,-9,19,19,-6,-30,-10,19,-1,19,-20,-4,19,-13,-28,-12,-2,-21,-24,19,-27,-29,-32,-3,-18,-17,19,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'B_SEQUENCE_COMPACT_START':([0,1,3,4,5,6,10,11,13,14,15,16,18,20,24,27,29,30,34,36,37,38,39,43,49,56,57,58,59,60,61,63,64,65,67,68,73,74,76,79,],[20,20,-7,-19,-11,20,-9,20,-6,-30,-10,20,-1,20,-20,-4,-13,-28,-12,-2,-21,-24,20,-27,-29,-32,-3,-18,-17,20,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'F_SEQUENCE_END':([14,30,43,45,46,47,49,56,61,64,65,74,77,],[-30,-28,-27,-38,-40,67,-29,-32,-26,-33,-25,-31,-39,]),'CAST_TYPE':([0,1,3,4,5,6,9,10,11,12,13,14,15,16,18,19,20,21,22,24,27,28,29,30,34,36,37,38,39,43,49,50,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[21,-8,-7,-19,-11,21,21,21,21,21,-6,-30,-10,21,-1,21,21,21,21,-20,-4,21,-13,-28,-12,-2,-21,-24,21,-27,-29,21,-32,-3,-18,-17,21,-26,-5,-33,-25,21,-36,-23,-44,21,-37,-31,-22,-16,]),'F_MAP_KEY':([14,30,43,49,51,56,61,64,65,74,],[-30,-28,-27,-29,71,-32,-26,-33,-25,-31,]),'F_MAP_END':([14,30,43,49,52,53,56,61,64,65,69,70,74,78,],[-30,-28,-27,-29,73,-41,-32,-26,-33,-25,-43,-45,-31,-42,]),'F_MAP_START':([0,1,3,4,5,6,10,11,12,13,14,15,16,18,20,24,27,28,29,30,34,36,37,38,39,43,49,56,57,58,59,60,61,63,64,65,67,68,73,74,76,79,],[22,-8,-7,-19,-11,22,-9,22,22,-6,-30,-10,22,-1,22,-20,-4,22,-13,-28,-12,-2,-21,-24,22,-27,-29,-32,-3,-18,-17,22,-26,-5,-33,-25,-36,-23,-37,-31,-22,-16,]),'B_LITERAL_START':([0,1,3,4,5,6,9,10,11,12,13,14,15,16,18,19,20,21,22,24,27,28,29,30,34,36,37,38,39,43,49,50,56,57,58,59,60,61,63,64,65,66,67,68,71,72,73,74,76,79,],[23,-8,-7,-19,-11,23,23,23,23,23,-6,-30,-10,23,-1,23,23,23,23,-20,-4,23,-13,-28,-12,-2,-21,-24,23,-27,-29,23,-32,-3,-18,-17,23,-26,-5,-33,-25,23,-36,-23,-44,23,-37,-31,-22,-16,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'flow_sequence_item':([18,64,],[43,75,]),'map':([0,6,10,15,19,37,58,],[9,9,9,9,9,9,9,]),'flow_map_item_value':([48,],[67,]),'flow_map':([21,],[50,]),'flow_map_item':([21,70,],[51,76,]),'sequence':([0,6,10,15,19,37,58,],[1,1,1,1,1,1,1,]),'docs':([0,],[10,]),'flow_map_item_key':([21,70,],[48,48,]),'collection':([0,6,10,15,19,37,58,],[12,12,12,12,46,60,73,]),'map_item_value':([7,],[28,]),'scalar':([0,6,9,10,11,15,18,19,20,21,27,37,48,58,64,70,],[3,3,32,3,35,3,44,32,47,49,56,32,68,32,44,49,]),'flow_collection':([0,6,10,11,15,19,27,37,58,],[14,14,14,36,14,14,57,14,14,]),'flow_sequence':([18,],[45,]),'doc':([0,6,10,15,],[17,26,34,39,]),'sequence_item':([0,1,6,10,15,19,37,58,],[4,23,4,4,4,4,4,4,]),'map_item_key':([0,6,9,10,15,19,37,58,],[7,7,7,7,7,7,7,7,]),'scalar_group':([2,15,22,33,37,58,],[25,40,52,40,40,40,]),'map_item':([0,6,9,10,15,19,37,58,],[5,5,31,5,5,5,5,5,]),}
+_lr_goto_items = {'flow_sequence_item':([19,66,],[45,77,]),'map':([0,6,11,16,20,39,60,],[10,10,10,10,10,10,10,]),'flow_map_item_value':([50,],[69,]),'flow_map':([22,],[52,]),'flow_map_item':([22,72,],[53,78,]),'sequence':([0,6,11,16,20,39,60,],[1,1,1,1,1,1,1,]),'docs':([0,],[11,]),'flow_map_item_key':([22,72,],[50,50,]),'collection':([0,6,11,16,20,39,60,],[13,13,13,13,48,62,75,]),'map_item_value':([7,],[29,]),'scalar':([0,6,9,10,11,12,16,19,20,21,22,28,39,50,60,66,72,],[3,3,32,35,3,37,3,46,35,49,51,58,35,70,35,46,51,]),'flow_collection':([0,6,11,12,16,20,28,39,60,],[15,15,15,38,15,15,59,15,15,]),'flow_sequence':([19,],[47,]),'doc':([0,6,11,16,],[18,27,36,41,]),'sequence_item':([0,1,6,11,16,20,39,60,],[4,24,4,4,4,4,4,4,]),'map_item_key':([0,6,10,11,16,20,39,60,],[7,7,7,7,7,7,7,7,]),'scalar_group':([2,16,23,33,39,60,],[26,42,54,42,42,42,]),'map_item':([0,6,10,11,16,20,39,60,],[5,5,34,5,5,5,5,5,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,49 +26,50 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> docs","S'",1,None,None,None),
-  ('docs -> doc','docs',1,'p_docs_last','grammar.py',336),
-  ('docs -> docs doc','docs',2,'p_docs_init','grammar.py',343),
-  ('doc -> DOC_START doc DOC_END','doc',3,'p_doc_indent','grammar.py',350),
-  ('doc -> DOC_START doc','doc',2,'p_doc_indent','grammar.py',351),
-  ('doc -> INDENT doc DEDENT','doc',3,'p_doc_indent','grammar.py',352),
-  ('doc -> collection','doc',1,'p_doc','grammar.py',359),
-  ('doc -> scalar','doc',1,'p_doc','grammar.py',360),
-  ('collection -> sequence','collection',1,'p_collection','grammar.py',367),
-  ('collection -> map','collection',1,'p_collection','grammar.py',368),
-  ('collection -> flow_collection','collection',1,'p_collection','grammar.py',369),
-  ('map -> map_item','map',1,'p_map_last','grammar.py',376),
-  ('map -> map map_item','map',2,'p_map_init','grammar.py',383),
-  ('map_item -> map_item_key map_item_value','map_item',2,'p_map_item','grammar.py',390),
-  ('map_item_key -> scalar','map_item_key',1,'p_map_item_key','grammar.py',397),
-  ('map_item_value -> B_MAP_VALUE INDENT collection DEDENT','map_item_value',4,'p_map_item_value_collection','grammar.py',404),
-  ('map_item_value -> B_MAP_VALUE flow_collection','map_item_value',2,'p_map_item_value_flow_collection','grammar.py',411),
-  ('map_item_value -> B_MAP_VALUE scalar','map_item_value',2,'p_map_item_value_scalar','grammar.py',418),
-  ('sequence -> sequence_item','sequence',1,'p_sequence_last','grammar.py',432),
-  ('sequence -> sequence sequence_item','sequence',2,'p_sequence_init','grammar.py',439),
-  ('sequence_item -> B_SEQUENCE_START scalar','sequence_item',2,'p_sequence_item_scalar','grammar.py',446),
-  ('sequence_item -> B_SEQUENCE_START INDENT collection DEDENT','sequence_item',4,'p_sequence_item_collection','grammar.py',460),
-  ('sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT','sequence_item',3,'p_sequence_item_compact_collection','grammar.py',467),
-  ('sequence_item -> B_SEQUENCE_START flow_collection','sequence_item',2,'p_sequence_item_flow_collection','grammar.py',474),
-  ('scalar -> DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END','scalar',3,'p_scalar_doublequote','grammar.py',481),
-  ('scalar -> SINGLEQUOTE_START SCALAR SINGLEQUOTE_END','scalar',3,'p_scalar_singlequote','grammar.py',489),
-  ('scalar -> DOUBLEQUOTE_START DOUBLEQUOTE_END','scalar',2,'p_scalar_quote_empty','grammar.py',496),
-  ('scalar -> SINGLEQUOTE_START SINGLEQUOTE_END','scalar',2,'p_scalar_quote_empty','grammar.py',497),
-  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar_explicit_cast','grammar.py',504),
-  ('scalar -> SCALAR','scalar',1,'p_scalar','grammar.py',511),
-  ('scalar -> B_LITERAL_START scalar_group B_LITERAL_END','scalar',3,'p_scalar_literal','grammar.py',518),
-  ('scalar -> B_FOLD_START scalar_group B_FOLD_END','scalar',3,'p_scalar_folded','grammar.py',526),
-  ('scalar -> INDENT scalar_group DEDENT','scalar',3,'p_scalar_indented_flow','grammar.py',535),
-  ('scalar_group -> SCALAR','scalar_group',1,'p_scalar_group','grammar.py',544),
-  ('scalar_group -> scalar_group SCALAR','scalar_group',2,'p_scalar_group','grammar.py',545),
-  ('flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END','flow_collection',3,'p_flow_collection','grammar.py',556),
-  ('flow_collection -> F_MAP_START flow_map F_MAP_END','flow_collection',3,'p_flow_collection','grammar.py',557),
-  ('flow_sequence -> flow_sequence_item','flow_sequence',1,'p_flow_sequence_last','grammar.py',564),
-  ('flow_sequence -> flow_sequence F_SEP flow_sequence_item','flow_sequence',3,'p_flow_sequence_init','grammar.py',571),
-  ('flow_sequence_item -> scalar','flow_sequence_item',1,'p_flow_sequence_item','grammar.py',578),
-  ('flow_map -> flow_map_item','flow_map',1,'p_flow_map_last','grammar.py',585),
-  ('flow_map -> flow_map F_SEP flow_map_item','flow_map',3,'p_flow_map_init','grammar.py',592),
-  ('flow_map_item -> flow_map_item_key flow_map_item_value','flow_map_item',2,'p_flow_map_item','grammar.py',599),
-  ('flow_map_item_key -> scalar F_MAP_KEY','flow_map_item_key',2,'p_flow_map_item_key','grammar.py',606),
-  ('flow_map_item_value -> scalar','flow_map_item_value',1,'p_flow_map_item_value','grammar.py',613),
-  ('empty -> <empty>','empty',0,'p_empty','grammar.py',619),
+  ('docs -> doc','docs',1,'p_docs_last','grammar.py',341),
+  ('docs -> docs doc','docs',2,'p_docs_init','grammar.py',348),
+  ('doc -> DOC_START doc DOC_END','doc',3,'p_doc_indent','grammar.py',355),
+  ('doc -> DOC_START doc','doc',2,'p_doc_indent','grammar.py',356),
+  ('doc -> INDENT doc DEDENT','doc',3,'p_doc_indent','grammar.py',357),
+  ('doc -> collection','doc',1,'p_doc','grammar.py',364),
+  ('doc -> scalar','doc',1,'p_doc','grammar.py',365),
+  ('collection -> sequence','collection',1,'p_collection','grammar.py',372),
+  ('collection -> map','collection',1,'p_collection','grammar.py',373),
+  ('collection -> flow_collection','collection',1,'p_collection','grammar.py',374),
+  ('map -> map_item','map',1,'p_map_last','grammar.py',381),
+  ('map -> map map_item','map',2,'p_map_init','grammar.py',388),
+  ('map_item -> map_item_key map_item_value','map_item',2,'p_map_item','grammar.py',395),
+  ('map_item_key -> B_MAP_KEY scalar','map_item_key',2,'p_map_item_complex_key_scalar','grammar.py',402),
+  ('map_item_key -> scalar','map_item_key',1,'p_map_item_key','grammar.py',409),
+  ('map_item_value -> B_MAP_VALUE INDENT collection DEDENT','map_item_value',4,'p_map_item_value_collection','grammar.py',416),
+  ('map_item_value -> B_MAP_VALUE flow_collection','map_item_value',2,'p_map_item_value_flow_collection','grammar.py',423),
+  ('map_item_value -> B_MAP_VALUE scalar','map_item_value',2,'p_map_item_value_scalar','grammar.py',430),
+  ('sequence -> sequence_item','sequence',1,'p_sequence_last','grammar.py',444),
+  ('sequence -> sequence sequence_item','sequence',2,'p_sequence_init','grammar.py',451),
+  ('sequence_item -> B_SEQUENCE_START scalar','sequence_item',2,'p_sequence_item_scalar','grammar.py',458),
+  ('sequence_item -> B_SEQUENCE_START INDENT collection DEDENT','sequence_item',4,'p_sequence_item_collection','grammar.py',472),
+  ('sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT','sequence_item',3,'p_sequence_item_compact_collection','grammar.py',479),
+  ('sequence_item -> B_SEQUENCE_START flow_collection','sequence_item',2,'p_sequence_item_flow_collection','grammar.py',486),
+  ('scalar -> DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END','scalar',3,'p_scalar_doublequote','grammar.py',493),
+  ('scalar -> SINGLEQUOTE_START SCALAR SINGLEQUOTE_END','scalar',3,'p_scalar_singlequote','grammar.py',501),
+  ('scalar -> DOUBLEQUOTE_START DOUBLEQUOTE_END','scalar',2,'p_scalar_quote_empty','grammar.py',508),
+  ('scalar -> SINGLEQUOTE_START SINGLEQUOTE_END','scalar',2,'p_scalar_quote_empty','grammar.py',509),
+  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar_explicit_cast','grammar.py',516),
+  ('scalar -> SCALAR','scalar',1,'p_scalar','grammar.py',523),
+  ('scalar -> B_LITERAL_START scalar_group B_LITERAL_END','scalar',3,'p_scalar_literal','grammar.py',530),
+  ('scalar -> B_FOLD_START scalar_group B_FOLD_END','scalar',3,'p_scalar_folded','grammar.py',538),
+  ('scalar -> INDENT scalar_group DEDENT','scalar',3,'p_scalar_indented_flow','grammar.py',547),
+  ('scalar_group -> SCALAR','scalar_group',1,'p_scalar_group','grammar.py',556),
+  ('scalar_group -> scalar_group SCALAR','scalar_group',2,'p_scalar_group','grammar.py',557),
+  ('flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END','flow_collection',3,'p_flow_collection','grammar.py',568),
+  ('flow_collection -> F_MAP_START flow_map F_MAP_END','flow_collection',3,'p_flow_collection','grammar.py',569),
+  ('flow_sequence -> flow_sequence_item','flow_sequence',1,'p_flow_sequence_last','grammar.py',576),
+  ('flow_sequence -> flow_sequence F_SEP flow_sequence_item','flow_sequence',3,'p_flow_sequence_init','grammar.py',583),
+  ('flow_sequence_item -> scalar','flow_sequence_item',1,'p_flow_sequence_item','grammar.py',590),
+  ('flow_map -> flow_map_item','flow_map',1,'p_flow_map_last','grammar.py',597),
+  ('flow_map -> flow_map F_SEP flow_map_item','flow_map',3,'p_flow_map_init','grammar.py',604),
+  ('flow_map_item -> flow_map_item_key flow_map_item_value','flow_map_item',2,'p_flow_map_item','grammar.py',611),
+  ('flow_map_item_key -> scalar F_MAP_KEY','flow_map_item_key',2,'p_flow_map_item_key','grammar.py',618),
+  ('flow_map_item_value -> scalar','flow_map_item_value',1,'p_flow_map_item_value','grammar.py',625),
+  ('empty -> <empty>','empty',0,'p_empty','grammar.py',631),
 ]

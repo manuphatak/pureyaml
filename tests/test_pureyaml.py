@@ -1093,3 +1093,53 @@ def test_cast_type_binary():
     )))  # :on
 
     assert nodes == expected
+
+
+def test_1_item_map_explicit_key():
+    text = dedent("""
+        ? Hello: World
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('Hello'), Str('World')),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_2_item_map_explicit_key():
+    text = dedent("""
+        ? Hello
+        : World
+        ? Foo
+        : Bar
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('Hello'), Str('World')),
+        (Str('Foo'), Str('Bar')),
+    )))  # :on
+
+    assert nodes == expected
+
+
+def test_3_item_map_explicit_key():
+    text = dedent("""
+        ? Hello
+        : World
+        ? Foo
+        : Bar
+        ? More
+        : Map Items
+    """)[1:]
+
+    nodes = parser.parsedebug(text)
+    expected = Docs(Doc(Map(  # :off
+        (Str('Hello'), Str('World')),
+        (Str('Foo'), Str('Bar')),
+        (Str('More'), Str('Map Items')),
+    )))  # :on
+
+    assert nodes == expected
