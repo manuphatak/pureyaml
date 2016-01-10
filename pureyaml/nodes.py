@@ -133,7 +133,6 @@ class Map(MappingMixin, Collection):
         return True
 
 
-
 class Scalar(Node):
     type = NotImplemented
 

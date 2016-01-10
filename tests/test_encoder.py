@@ -4,7 +4,7 @@
 from pytest import fixture
 
 from pureyaml.encoder import node_encoder
-from pureyaml.nodes import *
+from pureyaml.nodes import *  # noqa
 from tests.utils import ParametrizedTestData
 
 
@@ -29,12 +29,12 @@ class TestCase(ParametrizedTestData):
     test_dict__int = {'1': 1}, Map((Str(1), Int(1)))
 
     test_dict__dict_complex__data = {  # :off
-            '1': {'2': 3},
-            '4': {5: [
-                {'6': [7, 8]},
-                {'9': 10}
-            ]}
-        }  # :on
+        '1': {'2': 3},
+        '4': {5: [
+            {'6': [7, 8]},
+            {'9': 10}
+        ]}
+    }  # :on
     test_dict__dict_complex__expected = Map(  # :off
         (
             Str(1),

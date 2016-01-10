@@ -3,10 +3,10 @@
 
 from __future__ import absolute_import
 
-from pureyaml.nodes import *
+from pureyaml.nodes import *  # noqa
 
 
-def node_encoder(obj):
+def node_encoder(obj):  # noqa
     if isinstance(obj, dict):
         items = []
         for key, value in obj.items():
@@ -27,7 +27,6 @@ def node_encoder(obj):
         return Null(obj)
     if isinstance(obj, float):
         return Float(obj)
-
 
 
 class YAMLEncoder(NodeVisitor):

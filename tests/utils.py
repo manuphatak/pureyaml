@@ -154,7 +154,7 @@ def serialize_nodes(nodes):
 
 
 class OrderedTestMeta(type):
-    def __new__(cls, cls_name, bases, cls_dict):
+    def __new__(cls, cls_name, bases, cls_dict):  # noqa
         d = dict(cls_dict)
         _data = namedtuple(cls_name, ['data', 'expected'])
         order = []
