@@ -2,11 +2,9 @@
 # coding=utf-8
 from textwrap import dedent
 
-from pytest import mark
-
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import serialize_nodes
+from tests.utils import serialize_nodes, feature_not_supported
 
 parser = YAMLParser(debug=True)
 
@@ -307,7 +305,7 @@ def test_ex_2_09_single_doc_with_two_comments():
     assert nodes == expected
 
 
-@mark.xfail
+@feature_not_supported
 def test_ex_2_10_node_appears_twice():
     text = dedent("""
         ---
@@ -709,7 +707,7 @@ def test_ex_2_23_various_explicit_tags():
     assert nodes == expected
 
 
-@mark.xfail
+@feature_not_supported
 def test_ex_2_24_global_tags():
     text = dedent("""
         %TAG ! tag:clarkevans.com,2002:
@@ -742,7 +740,7 @@ def test_ex_2_24_global_tags():
     assert nodes == expected
 
 
-@mark.xfail
+@feature_not_supported
 def test_ex_2_25_unordered_sets():
     text = dedent("""
         # Sets are represented as a
@@ -768,7 +766,7 @@ def test_ex_2_25_unordered_sets():
     assert nodes == expected
 
 
-@mark.xfail
+@feature_not_supported
 def test_ex_2_26_ordered_mappings():
     text = dedent("""
         # Ordered maps are represented as
@@ -794,7 +792,7 @@ def test_ex_2_26_ordered_mappings():
     assert nodes == expected
 
 
-@mark.xfail
+@feature_not_supported
 def test_ex_2_27_invoice():
     text = dedent("""
         --- !<tag:clarkevans.com,2002:invoice>
@@ -842,7 +840,7 @@ def test_ex_2_27_invoice():
     assert nodes == expected
 
 
-@mark.xfail
+@feature_not_supported
 def test_ex_2_28_log_file():
     text = dedent("""
         ---

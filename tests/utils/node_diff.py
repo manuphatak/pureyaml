@@ -4,6 +4,8 @@
 from collections import Mapping
 from difflib import Differ, unified_diff
 
+from future.utils import iteritems
+
 from pureyaml.nodes import Scalar, Collection, Node
 
 
@@ -19,7 +21,7 @@ def pformat_node(node, depth=0):  # noqa
         yield indent() + '<%s:(' % node.__class__.__name__
         depth += 1
 
-        for k, v in node.items():
+        for k, v in iteritems(node):
 
             if isinstance(k, Scalar) and isinstance(v, Scalar):
                 depth += 1

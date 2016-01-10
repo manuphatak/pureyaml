@@ -11,6 +11,8 @@ from base64 import standard_b64decode
 from functools import partial
 from math import isnan
 
+from future.utils import implements_iterator, iteritems
+
 from ._compat import collections_abc as abc
 from .exceptions import YAMLCastTypeError
 
@@ -29,6 +31,9 @@ class Node(object):
         except AttributeError:
             return False
 
+    def __ne__(self, other):
+        return not (self == other)
+
     def repr_value(self, value):
         return repr(value)
 
@@ -43,8 +48,13 @@ class Node(object):
         return '<%s:%s>' % (cls_name, value)
 
 
+@implements_iterator
 class SequenceMixin(abc.Sequence):
     value = NotImplemented
+
+    def __init__(self, *args, **kwargs):
+        super(SequenceMixin, self).__init__(*args, **kwargs)
+        self._iter = iter(self.value)
 
     def __getitem__(self, index):
         return self.value[index]
@@ -55,8 +65,11 @@ class SequenceMixin(abc.Sequence):
     def __contains__(self, x):
         return x in self.value
 
+    def __next__(self):
+        return next(self._iter)
+
     def __iter__(self):
-        return iter(self.value)
+        return self
 
 
 class Collection(SequenceMixin, Node):
@@ -90,8 +103,13 @@ class Sequence(Collection):
     pass
 
 
+@implements_iterator
 class MappingMixin(abc.Mapping):
     value = NotImplemented
+
+    def __init__(self, *args, **kwargs):
+        super(MappingMixin, self).__init__(*args, **kwargs)
+        self._iter = iter(self.value)
 
     def __getitem__(self, key):
         for k, v in self.value:
@@ -103,9 +121,12 @@ class MappingMixin(abc.Mapping):
     def __len__(self):
         return len(self.value)
 
+    def __next__(self):
+        _next = next(self._iter)[0]
+        return _next
+
     def __iter__(self):
-        for key, _ in self.value:
-            yield key
+        return self
 
 
 class Map(MappingMixin, Collection):
@@ -123,8 +144,14 @@ class Map(MappingMixin, Collection):
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        for key in self.keys():
-            if self[key] != other[key]:
+
+        for key, self_value in iteritems(self):
+            try:
+                other_value = other[key]
+            except KeyError:
+                return False
+
+            if self_value != other_value:
                 return False
 
         if len(self) != len(other):

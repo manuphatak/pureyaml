@@ -9,6 +9,7 @@ from textwrap import dedent
 from pytest import mark
 
 import pureyaml
+from tests.utils import feature_not_supported
 
 list_block = """
 --- # Favorite movies
@@ -306,12 +307,26 @@ sanity_args = [  # :off
     dicts_of_lists,
     mark.xfail(node_anchors_and_references),
     casted_data_types,
-    specified_data_types__binary
+    specified_data_types__binary,
+]  # :on
+
+sanity_names = [  # :off
+    'list_block',
+    'list_inline',
+    'dict_block',
+    'dict_inline',
+    'str_literal',
+    'str_folded',
+    'lists_of_dicts',
+    'dicts_of_lists',
+    'node_anchors_and_references',
+    'casted_data_types',
+    'specified_data_types__binary',
 ]  # :on
 
 
-@mark.skipif
-@mark.parametrize('sample', sanity_args)
+@feature_not_supported
+@mark.parametrize('sample', sanity_args, False, sanity_names)
 def test__sanity(sample):
     load_result = pureyaml.load(sample)
     dump_result = pureyaml.dump(load_result)

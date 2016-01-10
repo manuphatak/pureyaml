@@ -9,10 +9,9 @@ Tests for `pureyaml` module.
 """
 from textwrap import dedent
 
-from pytest import mark
-
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
+from tests.utils import feature_not_supported
 
 parser = YAMLParser(debug=True)
 
@@ -179,8 +178,9 @@ def test_1_item_map():
         Hello: World
         ...
     """)[1:]
-
     nodes = parser.parsedebug(text)
+    # print(serialize_nodes(nodes))
+    print(nodes)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -533,7 +533,7 @@ def test_unnecessary_indent_3_items_with_dedent():
     assert nodes == expected
 
 
-@mark.skipif
+@feature_not_supported
 def test_empty_scalar():
     text = dedent("""
         ---
