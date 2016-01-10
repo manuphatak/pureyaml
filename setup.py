@@ -32,10 +32,10 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 # TODO: put package requirements here
-requirements = ['ply']
+requirements = ['ply', 'singledispatch']
 dependency_links = ['git+git://github.com/bionikspoon/ply.git@1.0.0#egg=ply']
 # TODO: put package test requirements here
-test_requirements = ['pytest']
+test_requirements = ['pytest', 'future']
 
 # TODO: put package setup requirements here
 setup_requirements = ['flake8']

@@ -1,4 +1,4 @@
 # PROJECT REQUIREMENTS (Your stuff here)
 # -------------------------------------
 future
--e git+git://github.com/bionikspoon/ply.git@patch-1#egg=ply
+singledispatch

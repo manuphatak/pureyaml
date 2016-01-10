@@ -3,13 +3,17 @@
 
 from __future__ import absolute_import
 
-from pureyaml.nodes import *  # noqa
+from future.utils import iteritems
+
+from ._compat import singledispatch
+from .nodes import *  # noqa
 
 
-def node_encoder(obj):  # noqa
+@singledispatch  # noqa
+def node_encoder(obj):
     if isinstance(obj, dict):
         items = []
-        for key, value in obj.items():
+        for key, value in iteritems(obj):
             items.append((node_encoder(key), node_encoder(value)))
         return Map(*items)
     if isinstance(obj, list):
