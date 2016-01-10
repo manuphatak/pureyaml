@@ -3,10 +3,11 @@
 
 from __future__ import absolute_import
 
-from .parser import YAMLParser
 from .nodes import NodeVisitor
+from .parser import YAMLParser
 
 
+# noinspection PyMethodMayBeStatic
 class YAMLDecoder(NodeVisitor):
     def decode(self, s):
         return self.visit(YAMLParser().parse(s))
@@ -14,10 +15,6 @@ class YAMLDecoder(NodeVisitor):
     def visit_Docs(self, node):
         for doc in node.value:
             yield (yield doc)
-
-    def visit_Doc(self, node):
-        for item in node.value:
-            yield (yield item)
 
     def visit_Sequence(self, node):
         sequence = []
@@ -34,6 +31,7 @@ class YAMLDecoder(NodeVisitor):
     def visit_Scalar(self, node):
         return node.type(node.value)
 
+    visit_Doc = visit_Docs
     visit_Null = visit_Scalar
     visit_Str = visit_Scalar
     visit_Int = visit_Scalar

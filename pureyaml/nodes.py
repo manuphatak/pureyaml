@@ -29,15 +29,18 @@ class Node(object):
         except AttributeError:
             return False
 
-    def repr_value(self):
-        try:
-            return repr(self.value)[1:-1]
-        except AttributeError:
-            return repr(self.raw_value)[1:-1]
+    def repr_value(self, value):
+        return repr(value)
 
     def __repr__(self):
         cls_name = self.__class__.__name__
-        return '<%s:%s>' % (cls_name, self.repr_value())
+
+        try:
+            value = self.repr_value(self.value)
+        except AttributeError:
+            value = self.repr_value(self.raw_value)
+
+        return '<%s:%s>' % (cls_name, value)
 
 
 class SequenceMixin(abc.Sequence):
@@ -104,9 +107,6 @@ class MappingMixin(abc.Mapping):
         for key, _ in self.value:
             yield key
 
-    def __eq__(self, other):
-        return Node.__eq__(self, other)
-
 
 class Map(MappingMixin, Collection):
     def init_value(self, *values, **kwargs):
@@ -119,6 +119,19 @@ class Map(MappingMixin, Collection):
             raise ValueError(msg % (value, cls_name))
 
         return values
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        for key in self.keys():
+            if self[key] != other[key]:
+                return False
+
+        if len(self) != len(other):
+            return False
+
+        return True
+
 
 
 class Scalar(Node):
