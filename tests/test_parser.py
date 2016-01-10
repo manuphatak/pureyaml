@@ -25,7 +25,7 @@ def test_basic_single_doc():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -37,7 +37,7 @@ def test_doc_with_no_end_of_doc_indicator():
         Hello World
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -53,7 +53,7 @@ def test_2_docs():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')), Doc(Str('Foo Bar')))
 
     assert nodes == expected
@@ -72,7 +72,7 @@ def test_3_docs():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -92,7 +92,7 @@ def test_3_docs_no_end_of_doc_indicators():
         More Docs
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -107,7 +107,7 @@ def test_implicit_doc():
         Hello World
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Hello World')))
 
     assert nodes == expected
@@ -120,7 +120,7 @@ def test_scalar_int():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Int(123)))
     assert nodes == expected
 
@@ -132,7 +132,7 @@ def test_1_item_sequence():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(Str('Hello World', ))))
 
     assert nodes == expected
@@ -146,7 +146,7 @@ def test_2_item_sequence():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Hello World'),
         Str('Foo Bar'),
@@ -164,7 +164,7 @@ def test_3_item_sequence():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Hello World'),
         Str('Foo Bar'),
@@ -180,9 +180,7 @@ def test_1_item_map():
         Hello: World
         ...
     """)[1:]
-    nodes = parser.parsedebug(text)
-    # print(serialize_nodes(nodes))
-    print(nodes)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -198,7 +196,7 @@ def test_2_item_map():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -216,7 +214,7 @@ def test_3_item_map():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -231,7 +229,7 @@ def test_casting_implicit_int():
         123
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Int(123)))
 
     assert nodes == expected
@@ -242,7 +240,7 @@ def test_casting_doublequoted_string():
         "123"
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('123')))
     assert nodes == expected
 
@@ -252,7 +250,7 @@ def test_casting_doublequoted_string_with_escaped_char():
         "She said, \"I Like turtles\" and she meant it!"
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('She said, \\"I Like turtles\\" and she meant it!')))
 
     assert nodes == expected
@@ -263,7 +261,7 @@ def test_casting_singlequoted_string():
         '123'
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('123')))
 
     assert nodes == expected
@@ -274,7 +272,7 @@ def test_casting_singlequoted_string_with_escaped_char():
         'She said, \'I Like turtles\' and she meant it!'
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str("She said, \\'I Like turtles\\' and she meant it!")))
 
     assert nodes == expected
@@ -285,7 +283,7 @@ def test_casting_implicit_float():
         123.0
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Float(123.0)))
 
     assert nodes == expected
@@ -296,7 +294,7 @@ def test_casting_implicit_float_no_leading_digit():
         .123
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Float(.123)))
 
     assert nodes == expected
@@ -307,7 +305,7 @@ def test_casting_explicit_float():
         !!float 123
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Float(123)))
 
     assert nodes == expected
@@ -318,7 +316,7 @@ def test_casting_explicit_str():
         !!str 123
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str(123)))
 
     assert nodes == expected
@@ -329,7 +327,7 @@ def test_casting_implicit_bool_true():
         Yes
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Bool(True)))
 
     assert nodes == expected
@@ -340,7 +338,7 @@ def test_casting_implicit_bool_false():
         No
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Bool(False)))
 
     assert nodes == expected
@@ -351,7 +349,7 @@ def test_casting_explicit_str_from_bool():
         !!str Yes
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Yes')))
 
     assert nodes == expected
@@ -362,7 +360,7 @@ def test_uses_context_for_disambiguated_str():
         Yes we have No bananas
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('Yes we have No bananas')))
 
     assert nodes == expected
@@ -373,7 +371,7 @@ def test_ignore_comment():
         123 # an integer
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Int(123)))
 
     assert nodes == expected
@@ -387,7 +385,7 @@ def test_map_with_scalars_and_comments():
         c: 123.0                   # a float
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('a'), Int(123)),
         (Str('b'), Str(123)),
@@ -404,7 +402,7 @@ def test_different_map_with_bool_and_comments():
         g: Yes                     # a boolean True (yaml1.1), string "Yes" (yaml1.2)
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('f'), Str('Yes')),
         (Str('g'), Bool('Yes')),
@@ -426,7 +424,7 @@ def test_longer_map_with_scalars_and_comments():
         h: Yes we have No bananas  # a string, "Yes" and "No" disambiguated by context.
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('a'), Int(123)),
         (Str('b'), Str(123)),
@@ -448,7 +446,7 @@ def test_unnecessary_indent_scalar_item():
             123
         ...
     """)[1:]
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Int('123')))
 
     assert nodes == expected
@@ -461,7 +459,7 @@ def test_unnecessary_indent_1_item():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
@@ -475,7 +473,7 @@ def test_unnecessary_indent_1_item_with_comment():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
@@ -489,7 +487,7 @@ def test_unnecessary_indent_2_items():
             - South by Southwest
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -506,7 +504,7 @@ def test_unnecessary_indent_3_items():
             - The Man Who Wasnt There
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -525,7 +523,7 @@ def test_unnecessary_indent_3_items_with_dedent():
         ...
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -542,7 +540,7 @@ def test_empty_scalar():
         Also a null: # Empty
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map((Str('Also a null'), Null(None)))))
 
     assert nodes == expected
@@ -554,7 +552,7 @@ def test_empty_scalar_double_quote():
         Not a null: ""
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map((Str('Not a null'), Str('')))))
 
     assert nodes == expected
@@ -590,7 +588,7 @@ def test_scalar_types():
         Also floats d: .NAN
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('A null'), Null('null')),
         # (Str('Also a null'), Null(None)),
@@ -631,7 +629,7 @@ def test_unnecessary_indent_3_with_edge_items():
             - The Man Who Wasn't There
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('21 Jump Street'),
         Str('se7en'),
@@ -648,7 +646,7 @@ def test_scalar_literal_1_line():
           literal
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('literal\n')))
 
     assert nodes == expected
@@ -661,7 +659,7 @@ def test_scalar_literal_ascii_art():
           // ||  ||__
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str('\//||\/||\n// ||  ||__\n')))
 
     assert nodes == expected
@@ -677,7 +675,7 @@ def test_longer_scalar_literal_with_indents():
             So he carefully spat on the ceiling
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Str(dedent("""
             There once was a short man from Ealing
             Who got on a bus to Darjeeling
@@ -699,7 +697,7 @@ def test_map_with_literal_block():
           So he carefully spat on the ceiling
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map((Str('data'), Str(dedent("""
             There once was a short man from Ealing
             Who got on a bus to Darjeeling
@@ -723,7 +721,7 @@ def test_map_with_folded_block():
             paragraph breaks
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
             Blank lines denote paragraph breaks
@@ -738,7 +736,7 @@ def test_sequence_of_map_1_item():
           last_name: Smith
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Map(
             (Str('first_name'), Str('John')),
@@ -759,7 +757,7 @@ def test_sequence_of_map_3_item():
           last_name: Doe
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Map(
             (Str('first_name'), Str('John')),
@@ -783,7 +781,7 @@ def test_sequence_of_sequences_1_item():
         - - John Smith
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Sequence(
             Str('John Smith'),
@@ -800,7 +798,7 @@ def test_sequence_of_sequences_3_items():
           - Jane Doe
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Sequence(
             Str('John Smith'),
@@ -824,7 +822,7 @@ def test_sequence_of_mixed_items():
           1 edge case: success
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Sequence(
             Str('John Smith'),
@@ -848,7 +846,7 @@ def test_map_of_sequences_1_item():
           - John Smith
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('people'), Sequence(
             Str('John Smith'),
@@ -871,7 +869,7 @@ def test_map_of_sequences_many_items():
 
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Str('people'),
@@ -901,7 +899,7 @@ def test_map_of_map_1_item():
             family_name:  Gale
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Str('customer'),
@@ -930,7 +928,7 @@ def test_map_of_map_many_items():
             - candy
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Str('customer'),
@@ -968,7 +966,7 @@ def test_1_item_flow_sequence():
         [milk]
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('milk'),
     )))  # :on
@@ -982,7 +980,7 @@ def test_many_item_flow_sequence():
         [milk, pumpkin pie, eggs, juice]
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Str('milk'),
         Str('pumpkin pie'),
@@ -999,7 +997,7 @@ def test_1_item_flow_map():
         {name: John Smith}
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('name'), Str('John Smith')),
     )))  # :on
@@ -1013,7 +1011,7 @@ def test_2_item_flow_map():
         {name: John Smith, age: 33}
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('name'), Str('John Smith')),
         (Str('age'), Int(33)),
@@ -1029,7 +1027,7 @@ def test_mixed_sequence_of_maps():
           age: 27
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Sequence(  # :off
         Map(
             (Str('name'), Str('John Smith')),
@@ -1052,7 +1050,7 @@ def test_mixed_map_of_sequences():
           - Susan Williams
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Str('men'),
@@ -1084,7 +1082,7 @@ def test_cast_type_binary():
             56enmleECcgggoBADs=mZmE
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Str('picture'),
@@ -1105,7 +1103,7 @@ def test_1_item_map_explicit_key():
         ? Hello: World
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -1121,7 +1119,7 @@ def test_2_item_map_explicit_key():
         : Bar
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -1140,7 +1138,7 @@ def test_3_item_map_explicit_key():
         : Map Items
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -1159,7 +1157,7 @@ def test_map_complex_key__key_sequence():
           - 2001-07-23
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1182,7 +1180,7 @@ def test_map_complex_key__key_sequence_compact():
         : - 2001-07-23
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1206,7 +1204,7 @@ def test_map_complex_key__flow_sequence():
             2001-08-14 ]
     """)[1:]
 
-    nodes = parser.parsedebug(text)
+    nodes = parser.parse(text)
     expected = Docs(Doc(Map(  # :off
         (
             Sequence(

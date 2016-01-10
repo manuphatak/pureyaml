@@ -9,7 +9,7 @@ from pureyaml.nodes import *  # noqa
 from tests.utils import ParametrizedTestData
 
 
-class TestCase(ParametrizedTestData):
+class NodeEncoderTestCase(ParametrizedTestData):
     test_int = 1, Int(1)
     test_str = '1', Str(1)
     test_null = None, Null(None)
@@ -68,9 +68,9 @@ class TestCase(ParametrizedTestData):
     )  # :on
 
 
-@fixture(params=TestCase.keys())
+@fixture(params=NodeEncoderTestCase.keys())
 def case(request):
-    return TestCase.get(request.param)
+    return NodeEncoderTestCase.get(request.param)
 
 
 def test_node_encoder(case):

@@ -19,7 +19,6 @@ def test_ex_2_01_sequence_of_scalars():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -41,7 +40,6 @@ def test_ex_2_02_mapping_scalars_to_scalars():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -68,7 +66,6 @@ def test_ex_2_03_mapping_scalars_to_sequences():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -108,7 +105,6 @@ def test_ex_2_04_sequence_of_mappings():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -137,7 +133,6 @@ def test_ex_2_05_sequence_of_sequnces():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -173,7 +168,6 @@ def test_ex_2_06_mapping_of_mappings():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -213,7 +207,6 @@ def test_ex_2_07_two_docs_in_a_stream():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -248,7 +241,6 @@ def test_ex_2_08_play_by_play_feed():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -282,7 +274,6 @@ def test_ex_2_09_single_doc_with_two_comments():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -321,7 +312,6 @@ def test_ex_2_10_node_appears_twice():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -360,7 +350,6 @@ def test_ex_2_11_mapping_between_sequences():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -404,7 +393,6 @@ def test_ex_2_12_compat_nested_mapping():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -436,7 +424,6 @@ def test_ex_2_13_literal_newlines_are_preserved():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Str('\\//||\\/||\n// ||  ||__\n'),
@@ -455,7 +442,6 @@ def test_ex_2_14_folded_newlines_become_spaces():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Str("Mark McGwire's year was crippled by a knee injury.\n"),
@@ -478,7 +464,6 @@ def test_ex_2_15_folded_indents_and_blank_lines_preserved():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Str('Sammy Sosa completed another fine season with great stats.\n  63 Home Runs   0.288 Batting '
@@ -501,7 +486,6 @@ def test_ex_2_16_indentation_determines_scope():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -527,7 +511,6 @@ def test_ex_2_17_quoated_scalars():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -554,8 +537,7 @@ def test_ex_2_18_multi_line_flow_scalars():
           quoted scalar.\n"
     """)[1:]
 
-    nodes = parser.parsedebug(text)
-    print(serialize_nodes(nodes))
+    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -577,7 +559,6 @@ def test_ex_2_19_integers():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -602,7 +583,6 @@ def test_ex_2_20_floating_point():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -627,7 +607,6 @@ def test_ex_2_21_miscellaneous():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -655,7 +634,6 @@ def test_ex_2_22_timestamps():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -689,7 +667,6 @@ def test_ex_2_23_various_explicit_tags():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -729,7 +706,6 @@ def test_ex_2_24_global_tags():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -755,7 +731,6 @@ def test_ex_2_25_unordered_sets():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -781,7 +756,6 @@ def test_ex_2_26_ordered_mappings():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -829,7 +803,6 @@ def test_ex_2_27_invoice():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
@@ -874,7 +847,6 @@ def test_ex_2_28_log_file():
     """)[1:]
 
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
     expected = Docs(  # :off
         Doc(
             Map(
