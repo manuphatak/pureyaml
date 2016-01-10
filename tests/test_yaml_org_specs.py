@@ -6,7 +6,7 @@ from textwrap import dedent
 
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import serialize_nodes, feature_not_supported
+from tests.utils import feature_not_supported
 
 parser = YAMLParser(debug=True)
 
