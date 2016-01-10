@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '2D7C679640313B45B05469235BE61DCE'
+_lr_signature = '83B837A4258FB92C74BE15C3EA5CDA2C'
     
-_lr_action_items = {'DEDENT':([1,5,7,11,13,14,22,23,26,29,30,32,33,37,38,39,44,45,51,52,55,56,57,59,60,61,62,63,64,66,67,72,73,74,75,76,77,81,82,],[-1,-46,-22,-2,-34,-3,-45,-43,54,-23,-41,-49,-48,-21,63,-40,67,-36,-44,-37,75,-33,-32,-42,77,-43,78,-38,-35,-11,-29,-12,-39,81,-28,82,-47,-26,-25,]),'SINGLEQUOTE_END':([8,31,],[30,59,]),'B_FOLD_START':([0,3,7,9,10,11,13,17,18,19,20,27,28,29,30,34,35,37,39,45,46,52,53,56,57,58,59,63,64,65,66,70,71,72,73,75,81,82,],[2,2,-22,2,2,2,-34,2,2,2,2,2,2,-23,-41,2,2,-21,-40,-36,2,-37,2,-33,-32,2,-42,-38,-35,2,-11,-16,2,-12,-39,-28,-26,-25,]),'B_MAP_COMPACT_KEY':([0,3,7,11,13,18,27,29,30,34,35,37,39,45,52,56,57,58,59,63,64,66,72,73,75,81,82,],[3,3,-22,3,-34,3,3,-23,-41,3,3,-21,-40,-36,-37,-33,-32,3,-42,-38,-35,-11,-12,-39,-28,-26,-25,]),'B_MAP_VALUE':([4,6,13,25,30,36,39,45,52,54,59,61,63,64,73,78,],[-30,28,-34,53,-41,-31,-40,-36,-37,-27,-42,-34,-38,-35,-39,-24,]),'F_SEP':([13,30,39,41,42,43,45,48,49,52,59,63,64,68,69,73,79,80,],[-34,-41,-40,-19,-20,65,-36,71,-14,-37,-42,-38,-35,-15,-17,-39,-18,-13,]),'SINGLEQUOTE_START':([0,3,7,9,10,11,13,17,18,19,20,27,28,29,30,34,35,37,39,45,46,52,53,56,57,58,59,63,64,65,66,70,71,72,73,75,81,82,],[8,8,-22,8,8,8,-34,8,8,8,8,8,8,-23,-41,8,8,-21,-40,-36,8,-37,8,-33,-32,8,-42,-38,-35,8,-11,-16,8,-12,-39,-28,-26,-25,]),'B_SEQUENCE_START':([0,1,3,5,13,18,22,27,30,32,33,34,35,39,45,52,58,59,63,64,66,67,72,73,77,],[9,9,9,-46,-34,9,-45,9,-41,-49,-48,9,9,-40,-36,-37,9,-42,-38,-35,-11,-29,-12,-39,-47,]),'$end':([1,5,7,11,12,13,14,22,29,30,32,33,37,39,45,52,56,57,59,63,64,66,67,72,73,75,77,81,82,],[-1,-46,-22,-2,0,-34,-3,-45,-23,-41,-49,-48,-21,-40,-36,-37,-33,-32,-42,-38,-35,-11,-29,-12,-39,-28,-47,-26,-25,]),'B_MAP_KEY':([0,3,7,11,13,18,27,29,30,34,35,37,39,45,52,56,57,58,59,63,64,66,72,73,75,81,82,],[10,10,-22,10,-34,10,10,-23,-41,10,10,-21,-40,-36,-37,-33,-32,10,-42,-38,-35,-11,-12,-39,-28,-26,-25,]),'B_MAP_COMPACT_VALUE':([4,6,13,25,30,36,39,45,52,54,59,61,63,64,73,78,],[-30,27,-34,-30,-41,-31,-40,-36,-37,-27,-42,-34,-38,-35,-39,-24,]),'B_LITERAL_END':([23,50,51,],[-43,73,-44,]),'SCALAR':([0,2,3,7,8,9,10,11,13,15,16,17,18,19,20,21,23,24,27,28,29,30,34,35,37,38,39,45,46,50,51,52,53,56,57,58,59,61,63,64,65,66,70,71,72,73,75,81,82,],[13,23,13,-22,31,13,13,13,-34,23,40,13,13,13,13,23,-43,51,13,13,-23,-41,61,61,-21,51,-40,-36,13,51,-44,-37,13,-33,-32,61,-42,-43,-38,-35,13,-11,-16,13,-12,-39,-28,-26,-25,]),'B_FOLD_END':([23,24,51,],[-43,52,-44,]),'INDENT':([0,3,7,9,10,11,13,17,18,19,20,27,28,29,30,34,35,37,39,45,46,52,53,56,57,58,59,63,64,65,66,70,71,72,73,75,81,82,],[15,15,-22,34,35,15,-34,15,15,15,15,15,58,-23,-41,15,15,-21,-40,-36,15,-37,15,-33,-32,15,-42,-38,-35,15,-11,-16,15,-12,-39,-28,-26,-25,]),'DOUBLEQUOTE_START':([0,3,7,9,10,11,13,17,18,19,20,27,28,29,30,34,35,37,39,45,46,52,53,56,57,58,59,63,64,65,66,70,71,72,73,75,81,82,],[16,16,-22,16,16,16,-34,16,16,16,16,16,16,-23,-41,16,16,-21,-40,-36,16,-37,16,-33,-32,16,-42,-38,-35,16,-11,-16,16,-12,-39,-28,-26,-25,]),'DOUBLEQUOTE_END':([16,40,],[39,64,]),'F_SEQUENCE_START':([0,3,9,18,27,28,34,35,58,],[17,17,17,17,17,17,17,17,17,]),'B_SEQUENCE_COMPACT_START':([0,1,3,5,13,18,22,27,30,32,33,34,35,39,45,52,58,59,63,64,66,67,72,73,77,],[18,18,18,-46,-34,18,-45,18,-41,-49,-48,18,18,-40,-36,-37,18,-42,-38,-35,-11,-29,-12,-39,-47,]),'F_SEQUENCE_END':([13,30,39,41,42,43,45,52,59,63,64,73,79,],[-34,-41,-40,-19,-20,66,-36,-37,-42,-38,-35,-39,-18,]),'CAST_TYPE':([0,3,7,9,10,11,13,17,18,19,20,27,28,29,30,34,35,37,39,45,46,52,53,56,57,58,59,63,64,65,66,70,71,72,73,75,81,82,],[19,19,-22,19,19,19,-34,19,19,19,19,19,19,-23,-41,19,19,-21,-40,-36,19,-37,19,-33,-32,19,-42,-38,-35,19,-11,-16,19,-12,-39,-28,-26,-25,]),'F_MAP_KEY':([13,30,39,45,47,52,59,63,64,73,],[-34,-41,-40,-36,70,-37,-42,-38,-35,-39,]),'F_MAP_END':([13,30,39,45,48,49,52,59,63,64,68,69,73,80,],[-34,-41,-40,-36,72,-14,-37,-42,-38,-35,-15,-17,-39,-13,]),'F_MAP_START':([0,3,9,18,27,28,34,35,58,],[20,20,20,20,20,20,20,20,20,]),'B_LITERAL_START':([0,3,7,9,10,11,13,17,18,19,20,27,28,29,30,34,35,37,39,45,46,52,53,56,57,58,59,63,64,65,66,70,71,72,73,75,81,82,],[21,21,-22,21,21,21,-34,21,21,21,21,21,21,-23,-41,21,21,-21,-40,-36,21,-37,21,-33,-32,21,-42,-38,-35,21,-11,-16,21,-12,-39,-28,-26,-25,]),}
+_lr_action_items = {'DEDENT':([1,4,5,6,11,14,15,16,25,26,29,31,34,35,40,42,43,45,46,47,48,53,54,60,61,64,65,66,67,69,70,71,72,73,74,76,77,82,83,84,85,86,88,91,92,],[-8,-7,-21,-11,-9,-6,-34,-10,-22,-38,63,-4,-13,-32,-12,-23,-28,-34,72,73,-31,77,-33,-39,-36,-3,85,-20,-19,-30,87,88,-5,-37,-29,-40,-27,-41,-35,91,-26,92,-24,-14,-18,]),'SINGLEQUOTE_END':([9,36,],[35,69,]),'B_FOLD_START':([0,1,3,4,5,6,7,10,11,12,13,14,15,16,17,19,20,21,22,23,25,31,32,33,34,35,37,40,41,42,43,44,48,54,55,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[2,-8,2,-7,-21,-11,2,2,2,2,2,-6,-34,-10,2,-1,2,2,2,2,-22,-4,2,2,-13,-32,2,-12,-2,-23,-28,2,-31,-33,2,-36,2,-3,-20,-19,2,-30,-5,-37,-29,2,-40,-27,-48,2,-41,-35,-26,-24,-14,-18,]),'B_MAP_COMPACT_KEY':([0,1,3,4,5,6,7,11,12,14,15,16,17,19,21,25,31,32,34,35,37,40,41,42,43,44,48,54,61,64,66,67,68,69,72,73,74,76,77,82,83,85,88,91,92,],[3,-8,3,-7,-21,-11,3,3,3,-6,-34,-10,3,-1,3,-22,-4,3,-13,-32,3,-12,-2,-23,-28,3,-31,-33,-36,-3,-20,-19,3,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'B_MAP_VALUE':([4,8,15,28,35,38,39,45,48,54,61,63,69,73,74,83,87,],[-16,33,-34,62,-32,-15,-16,-34,-31,-33,-36,-25,-30,-37,-29,-35,-17,]),'DOC_END':([1,4,5,6,11,14,15,16,25,31,34,35,40,42,43,48,54,61,64,66,67,69,72,73,74,76,77,82,83,85,88,91,92,],[-8,-7,-21,-11,-9,-6,-34,-10,-22,64,-13,-32,-12,-23,-28,-31,-33,-36,-3,-20,-19,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'F_SEP':([15,35,48,50,51,52,54,57,58,61,69,73,74,78,79,83,89,90,],[-34,-32,-31,-42,-44,75,-33,81,-45,-36,-30,-37,-29,-47,-49,-35,-43,-46,]),'DOC_START':([0,1,4,5,6,7,11,12,14,15,16,17,19,25,31,34,35,40,41,42,43,48,54,61,64,66,67,69,72,73,74,76,77,82,83,85,88,91,92,],[7,-8,-7,-21,-11,7,-9,7,-6,-34,-10,7,-1,-22,-4,-13,-32,-12,-2,-23,-28,-31,-33,-36,-3,-20,-19,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'SINGLEQUOTE_START':([0,1,3,4,5,6,7,10,11,12,13,14,15,16,17,19,20,21,22,23,25,31,32,33,34,35,37,40,41,42,43,44,48,54,55,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[9,-8,9,-7,-21,-11,9,9,9,9,9,-6,-34,-10,9,-1,9,9,9,9,-22,-4,9,9,-13,-32,9,-12,-2,-23,-28,9,-31,-33,9,-36,9,-3,-20,-19,9,-30,-5,-37,-29,9,-40,-27,-48,9,-41,-35,-26,-24,-14,-18,]),'B_SEQUENCE_START':([0,1,3,4,5,6,7,11,12,14,15,16,17,19,21,25,31,32,34,35,37,40,41,42,43,44,48,54,61,64,66,67,68,69,72,73,74,76,77,82,83,85,88,91,92,],[13,13,13,-7,-21,-11,13,-9,13,-6,-34,-10,13,-1,13,-22,-4,13,-13,-32,13,-12,-2,-23,-28,13,-31,-33,-36,-3,-20,-19,13,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'$end':([1,4,5,6,11,12,14,15,16,19,25,31,34,35,40,41,42,43,48,54,61,64,66,67,69,72,73,74,76,77,82,83,85,88,91,92,],[-8,-7,-21,-11,-9,0,-6,-34,-10,-1,-22,-4,-13,-32,-12,-2,-23,-28,-31,-33,-36,-3,-20,-19,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'B_MAP_KEY':([0,1,3,4,5,6,7,11,12,14,15,16,17,19,21,25,31,32,34,35,37,40,41,42,43,44,48,54,61,64,66,67,68,69,72,73,74,76,77,82,83,85,88,91,92,],[10,-8,10,-7,-21,-11,10,10,10,-6,-34,-10,10,-1,10,-22,-4,10,-13,-32,10,-12,-2,-23,-28,10,-31,-33,-36,-3,-20,-19,10,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'B_MAP_COMPACT_VALUE':([4,8,15,28,35,38,39,45,48,54,61,63,69,73,74,83,87,],[-16,32,-34,-16,-32,-15,-16,-34,-31,-33,-36,-25,-30,-37,-29,-35,-17,]),'B_LITERAL_END':([26,59,60,],[-38,83,-39,]),'SCALAR':([0,1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35,37,40,41,42,43,44,45,47,48,54,55,59,60,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[15,-8,26,15,-7,-21,-11,15,36,15,15,15,15,-6,-34,-10,45,49,-1,15,15,15,15,26,-22,-38,60,26,-4,15,15,-13,-32,45,-12,-2,-23,-28,45,-38,60,-31,-33,15,60,-39,-36,15,-3,-20,-19,45,-30,-5,-37,-29,15,-40,-27,-48,15,-41,-35,-26,-24,-14,-18,]),'B_FOLD_END':([26,27,60,],[-38,61,-39,]),'INDENT':([0,1,3,4,5,6,7,10,11,12,13,14,15,16,17,19,20,21,22,23,25,31,32,33,34,35,37,40,41,42,43,44,48,54,55,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[17,-8,30,-7,-21,-11,17,37,30,17,44,-6,-34,-10,17,-1,30,30,30,30,-22,-4,30,68,-13,-32,30,-12,-2,-23,-28,30,-31,-33,30,-36,30,-3,-20,-19,30,-30,-5,-37,-29,30,-40,-27,-48,30,-41,-35,-26,-24,-14,-18,]),'DOUBLEQUOTE_START':([0,1,3,4,5,6,7,10,11,12,13,14,15,16,17,19,20,21,22,23,25,31,32,33,34,35,37,40,41,42,43,44,48,54,55,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[18,-8,18,-7,-21,-11,18,18,18,18,18,-6,-34,-10,18,-1,18,18,18,18,-22,-4,18,18,-13,-32,18,-12,-2,-23,-28,18,-31,-33,18,-36,18,-3,-20,-19,18,-30,-5,-37,-29,18,-40,-27,-48,18,-41,-35,-26,-24,-14,-18,]),'DOUBLEQUOTE_END':([18,49,],[48,74,]),'F_SEQUENCE_START':([0,1,3,4,5,6,7,11,12,13,14,15,16,17,19,21,25,31,32,33,34,35,37,40,41,42,43,44,48,54,61,64,66,67,68,69,72,73,74,76,77,82,83,85,88,91,92,],[20,-8,20,-7,-21,-11,20,-9,20,20,-6,-34,-10,20,-1,20,-22,-4,20,20,-13,-32,20,-12,-2,-23,-28,20,-31,-33,-36,-3,-20,-19,20,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'B_SEQUENCE_COMPACT_START':([0,1,3,4,5,6,7,11,12,14,15,16,17,19,21,25,31,32,34,35,37,40,41,42,43,44,48,54,61,64,66,67,68,69,72,73,74,76,77,82,83,85,88,91,92,],[21,21,21,-7,-21,-11,21,-9,21,-6,-34,-10,21,-1,21,-22,-4,21,-13,-32,21,-12,-2,-23,-28,21,-31,-33,-36,-3,-20,-19,21,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'F_SEQUENCE_END':([15,35,48,50,51,52,54,61,69,73,74,83,89,],[-34,-32,-31,-42,-44,76,-33,-36,-30,-37,-29,-35,-43,]),'CAST_TYPE':([0,1,3,4,5,6,7,10,11,12,13,14,15,16,17,19,20,21,22,23,25,31,32,33,34,35,37,40,41,42,43,44,48,54,55,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[22,-8,22,-7,-21,-11,22,22,22,22,22,-6,-34,-10,22,-1,22,22,22,22,-22,-4,22,22,-13,-32,22,-12,-2,-23,-28,22,-31,-33,22,-36,22,-3,-20,-19,22,-30,-5,-37,-29,22,-40,-27,-48,22,-41,-35,-26,-24,-14,-18,]),'F_MAP_KEY':([15,35,48,54,56,61,69,73,74,83,],[-34,-32,-31,-33,80,-36,-30,-37,-29,-35,]),'F_MAP_END':([15,35,48,54,57,58,61,69,73,74,78,79,83,90,],[-34,-32,-31,-33,82,-45,-36,-30,-37,-29,-47,-49,-35,-46,]),'F_MAP_START':([0,1,3,4,5,6,7,11,12,13,14,15,16,17,19,21,25,31,32,33,34,35,37,40,41,42,43,44,48,54,61,64,66,67,68,69,72,73,74,76,77,82,83,85,88,91,92,],[23,-8,23,-7,-21,-11,23,-9,23,23,-6,-34,-10,23,-1,23,-22,-4,23,23,-13,-32,23,-12,-2,-23,-28,23,-31,-33,-36,-3,-20,-19,23,-30,-5,-37,-29,-40,-27,-41,-35,-26,-24,-14,-18,]),'B_LITERAL_START':([0,1,3,4,5,6,7,10,11,12,13,14,15,16,17,19,20,21,22,23,25,31,32,33,34,35,37,40,41,42,43,44,48,54,55,61,62,64,66,67,68,69,72,73,74,75,76,77,80,81,82,83,85,88,91,92,],[24,-8,24,-7,-21,-11,24,24,24,24,24,-6,-34,-10,24,-1,24,24,24,24,-22,-4,24,24,-13,-32,24,-12,-2,-23,-28,24,-31,-33,24,-36,24,-3,-20,-19,24,-30,-5,-37,-29,24,-40,-27,-48,24,-41,-35,-26,-24,-14,-18,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'flow_sequence_item':([17,65,],[41,79,]),'map':([0,3,18,27,34,35,58,],[11,11,11,11,11,11,11,]),'flow_map_item_value':([46,],[68,]),'flow_map':([20,],[48,]),'flow_map_item':([20,71,],[49,80,]),'sequence':([0,3,18,27,34,35,58,],[1,1,1,1,1,1,1,]),'map_item_key':([0,3,11,18,27,34,35,58,],[6,6,6,6,6,6,6,6,]),'flow_map_item_key':([20,71,],[46,46,]),'collection':([0,3,18,27,34,35,58,],[12,26,44,55,60,62,76,]),'scalar':([0,3,9,10,11,17,18,19,20,27,28,34,35,46,53,58,65,71,],[4,25,32,36,4,42,4,45,47,4,56,4,4,69,74,4,42,47,]),'flow_collection':([0,3,9,18,27,28,34,35,58,],[14,14,33,14,14,57,14,14,14,]),'flow_sequence':([17,],[43,]),'sequence_item':([0,1,3,18,27,34,35,58,],[5,22,5,5,5,5,5,5,]),'map_item':([0,3,11,18,27,34,35,58,],[7,7,37,7,7,7,7,7,]),'scalar_group':([2,15,21,34,35,58,],[24,38,50,38,38,38,]),'map_item_value':([6,],[29,]),}
+_lr_goto_items = {'flow_sequence_item':([20,75,],[50,89,]),'map':([0,3,7,12,17,21,32,37,44,68,],[11,11,11,11,11,11,11,11,11,11,]),'flow_map_item_value':([55,],[78,]),'flow_map':([23,],[57,]),'flow_map_item':([23,81,],[58,90,]),'sequence':([0,3,7,12,17,21,32,37,44,68,],[1,1,1,1,1,1,1,1,1,1,]),'docs':([0,],[12,]),'flow_map_item_key':([23,81,],[55,55,]),'collection':([0,3,7,12,17,21,32,37,44,68,],[14,29,14,14,14,53,65,70,71,86,]),'map_item_value':([8,],[34,]),'scalar':([0,3,7,10,11,12,13,17,20,21,22,23,32,33,37,44,55,62,68,75,81,],[4,28,4,38,39,4,42,4,51,39,54,56,39,66,39,39,79,84,39,51,56,]),'flow_collection':([0,3,7,12,13,17,21,32,33,37,44,68,],[16,16,16,16,43,16,16,16,67,16,16,16,]),'flow_sequence':([20,],[52,]),'doc':([0,7,12,17,],[19,31,41,46,]),'sequence_item':([0,1,3,7,12,17,21,32,37,44,68,],[5,25,5,5,5,5,5,5,5,5,5,]),'map_item_key':([0,3,7,11,12,17,21,32,37,44,68,],[8,8,8,8,8,8,8,8,8,8,8,]),'scalar_group':([2,17,24,30,37,44,68,],[27,47,59,47,47,47,47,]),'map_item':([0,3,7,11,12,17,21,32,37,44,68,],[6,6,6,40,6,6,6,6,6,6,6,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -25,54 +25,54 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> collection","S'",1,None,None,None),
-  ('collection -> sequence','collection',1,'p_collection','productions.py',15),
-  ('collection -> map','collection',1,'p_collection','productions.py',16),
-  ('collection -> flow_collection','collection',1,'p_collection','productions.py',17),
-  ('doc -> collection','doc',1,'p_doc','productions.py',15),
-  ('doc -> scalar','doc',1,'p_doc','productions.py',16),
-  ('doc -> DOC_START doc DOC_END','doc',3,'p_doc__indent','productions.py',15),
-  ('doc -> DOC_START doc','doc',2,'p_doc__indent','productions.py',16),
-  ('doc -> INDENT doc DEDENT','doc',3,'p_doc__indent','productions.py',17),
-  ('docs -> docs doc','docs',2,'p_docs__init','productions.py',15),
-  ('docs -> doc','docs',1,'p_docs__last','productions.py',15),
-  ('flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END','flow_collection',3,'p_flow_collection','productions.py',15),
-  ('flow_collection -> F_MAP_START flow_map F_MAP_END','flow_collection',3,'p_flow_collection','productions.py',16),
-  ('flow_map -> flow_map F_SEP flow_map_item','flow_map',3,'p_flow_map__init','productions.py',15),
-  ('flow_map -> flow_map_item','flow_map',1,'p_flow_map__last','productions.py',15),
-  ('flow_map_item -> flow_map_item_key flow_map_item_value','flow_map_item',2,'p_flow_map_item','productions.py',15),
-  ('flow_map_item_key -> scalar F_MAP_KEY','flow_map_item_key',2,'p_flow_map_item_key','productions.py',15),
-  ('flow_map_item_value -> scalar','flow_map_item_value',1,'p_flow_map_item_value','productions.py',15),
-  ('flow_sequence -> flow_sequence F_SEP flow_sequence_item','flow_sequence',3,'p_flow_sequence__init','productions.py',15),
-  ('flow_sequence -> flow_sequence_item','flow_sequence',1,'p_flow_sequence__last','productions.py',15),
-  ('flow_sequence_item -> scalar','flow_sequence_item',1,'p_flow_sequence_item','productions.py',15),
-  ('map -> map map_item','map',2,'p_map__init','productions.py',15),
-  ('map -> map_item','map',1,'p_map__last','productions.py',15),
-  ('map_item -> map_item_key map_item_value','map_item',2,'p_map_item','productions.py',15),
-  ('map_item_key -> B_MAP_KEY INDENT collection DEDENT','map_item_key',4,'p_map_item___key_value__collection','productions.py',15),
-  ('map_item_value -> B_MAP_VALUE INDENT collection DEDENT','map_item_value',4,'p_map_item___key_value__collection','productions.py',16),
-  ('map_item -> B_MAP_COMPACT_KEY scalar B_MAP_VALUE scalar DEDENT','map_item',5,'p_map_item__compact_scalar','productions.py',15),
-  ('map_item_key -> B_MAP_COMPACT_KEY collection DEDENT','map_item_key',3,'p_map_item__key__map_item_value__sequence_item__compact_collection','productions.py',15),
-  ('map_item_value -> B_MAP_COMPACT_VALUE collection DEDENT','map_item_value',3,'p_map_item__key__map_item_value__sequence_item__compact_collection','productions.py',16),
-  ('sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT','sequence_item',3,'p_map_item__key__map_item_value__sequence_item__compact_collection','productions.py',17),
-  ('map_item_key -> scalar','map_item_key',1,'p_map_item_key','productions.py',15),
-  ('map_item_key -> B_MAP_KEY scalar','map_item_key',2,'p_map_item_key__complex_key_scalar','productions.py',15),
-  ('map_item_value -> B_MAP_VALUE flow_collection','map_item_value',2,'p_map_item_value__flow_collection','productions.py',15),
-  ('map_item_value -> B_MAP_VALUE scalar','map_item_value',2,'p_map_item_value__scalar','productions.py',15),
-  ('scalar -> SCALAR','scalar',1,'p_scalar','productions.py',15),
-  ('scalar -> DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END','scalar',3,'p_scalar__doublequote','productions.py',15),
-  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar__explicit_cast','productions.py',15),
-  ('scalar -> B_FOLD_START scalar_group B_FOLD_END','scalar',3,'p_scalar__folded','productions.py',15),
-  ('scalar -> INDENT scalar_group DEDENT','scalar',3,'p_scalar__indented_flow','productions.py',15),
-  ('scalar -> B_LITERAL_START scalar_group B_LITERAL_END','scalar',3,'p_scalar__literal','productions.py',15),
-  ('scalar -> DOUBLEQUOTE_START DOUBLEQUOTE_END','scalar',2,'p_scalar__quote_empty','productions.py',15),
-  ('scalar -> SINGLEQUOTE_START SINGLEQUOTE_END','scalar',2,'p_scalar__quote_empty','productions.py',16),
-  ('scalar -> SINGLEQUOTE_START SCALAR SINGLEQUOTE_END','scalar',3,'p_scalar__singlequote','productions.py',15),
-  ('scalar_group -> SCALAR','scalar_group',1,'p_scalar_group','productions.py',15),
-  ('scalar_group -> scalar_group SCALAR','scalar_group',2,'p_scalar_group','productions.py',16),
-  ('sequence -> sequence sequence_item','sequence',2,'p_sequence__init','productions.py',15),
-  ('sequence -> sequence_item','sequence',1,'p_sequence__last','productions.py',15),
-  ('sequence_item -> B_SEQUENCE_START INDENT collection DEDENT','sequence_item',4,'p_sequence_item__collection','productions.py',15),
-  ('sequence_item -> B_SEQUENCE_START flow_collection','sequence_item',2,'p_sequence_item__flow_collection','productions.py',15),
-  ('sequence_item -> B_SEQUENCE_START scalar','sequence_item',2,'p_sequence_item__scalar','productions.py',15),
+  ("S' -> docs","S'",1,None,None,None),
+  ('docs -> doc','docs',1,'p_docs__last','productions.py',20),
+  ('docs -> docs doc','docs',2,'p_docs__init','productions.py',27),
+  ('doc -> DOC_START doc DOC_END','doc',3,'p_doc__indent','productions.py',34),
+  ('doc -> DOC_START doc','doc',2,'p_doc__indent','productions.py',35),
+  ('doc -> INDENT doc DEDENT','doc',3,'p_doc__indent','productions.py',36),
+  ('doc -> collection','doc',1,'p_doc','productions.py',43),
+  ('doc -> scalar','doc',1,'p_doc','productions.py',44),
+  ('collection -> sequence','collection',1,'p_collection','productions.py',51),
+  ('collection -> map','collection',1,'p_collection','productions.py',52),
+  ('collection -> flow_collection','collection',1,'p_collection','productions.py',53),
+  ('map -> map_item','map',1,'p_map__last','productions.py',60),
+  ('map -> map map_item','map',2,'p_map__init','productions.py',67),
+  ('map_item -> map_item_key map_item_value','map_item',2,'p_map_item','productions.py',74),
+  ('map_item -> B_MAP_COMPACT_KEY scalar B_MAP_VALUE scalar DEDENT','map_item',5,'p_map_item__compact_scalar','productions.py',81),
+  ('map_item_key -> B_MAP_KEY scalar','map_item_key',2,'p_map_item_key__complex_key_scalar','productions.py',88),
+  ('map_item_key -> scalar','map_item_key',1,'p_map_item_key','productions.py',95),
+  ('map_item_key -> B_MAP_KEY INDENT collection DEDENT','map_item_key',4,'p_map_item___key_value__collection','productions.py',102),
+  ('map_item_value -> B_MAP_VALUE INDENT collection DEDENT','map_item_value',4,'p_map_item___key_value__collection','productions.py',103),
+  ('map_item_value -> B_MAP_VALUE flow_collection','map_item_value',2,'p_map_item_value__flow_collection','productions.py',110),
+  ('map_item_value -> B_MAP_VALUE scalar','map_item_value',2,'p_map_item_value__scalar','productions.py',117),
+  ('sequence -> sequence_item','sequence',1,'p_sequence__last','productions.py',131),
+  ('sequence -> sequence sequence_item','sequence',2,'p_sequence__init','productions.py',138),
+  ('sequence_item -> B_SEQUENCE_START scalar','sequence_item',2,'p_sequence_item__scalar','productions.py',145),
+  ('sequence_item -> B_SEQUENCE_START INDENT collection DEDENT','sequence_item',4,'p_sequence_item__collection','productions.py',159),
+  ('map_item_key -> B_MAP_COMPACT_KEY collection DEDENT','map_item_key',3,'p_map_item__key__map_item_value__sequence_item__compact_collection','productions.py',166),
+  ('map_item_value -> B_MAP_COMPACT_VALUE collection DEDENT','map_item_value',3,'p_map_item__key__map_item_value__sequence_item__compact_collection','productions.py',167),
+  ('sequence_item -> B_SEQUENCE_COMPACT_START collection DEDENT','sequence_item',3,'p_map_item__key__map_item_value__sequence_item__compact_collection','productions.py',168),
+  ('sequence_item -> B_SEQUENCE_START flow_collection','sequence_item',2,'p_sequence_item__flow_collection','productions.py',175),
+  ('scalar -> DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END','scalar',3,'p_scalar__doublequote','productions.py',182),
+  ('scalar -> SINGLEQUOTE_START SCALAR SINGLEQUOTE_END','scalar',3,'p_scalar__singlequote','productions.py',190),
+  ('scalar -> DOUBLEQUOTE_START DOUBLEQUOTE_END','scalar',2,'p_scalar__quote_empty','productions.py',197),
+  ('scalar -> SINGLEQUOTE_START SINGLEQUOTE_END','scalar',2,'p_scalar__quote_empty','productions.py',198),
+  ('scalar -> CAST_TYPE scalar','scalar',2,'p_scalar__explicit_cast','productions.py',205),
+  ('scalar -> SCALAR','scalar',1,'p_scalar','productions.py',212),
+  ('scalar -> B_LITERAL_START scalar_group B_LITERAL_END','scalar',3,'p_scalar__literal','productions.py',219),
+  ('scalar -> B_FOLD_START scalar_group B_FOLD_END','scalar',3,'p_scalar__folded','productions.py',227),
+  ('scalar -> INDENT scalar_group DEDENT','scalar',3,'p_scalar__indented_flow','productions.py',236),
+  ('scalar_group -> SCALAR','scalar_group',1,'p_scalar_group','productions.py',245),
+  ('scalar_group -> scalar_group SCALAR','scalar_group',2,'p_scalar_group','productions.py',246),
+  ('flow_collection -> F_SEQUENCE_START flow_sequence F_SEQUENCE_END','flow_collection',3,'p_flow_collection','productions.py',257),
+  ('flow_collection -> F_MAP_START flow_map F_MAP_END','flow_collection',3,'p_flow_collection','productions.py',258),
+  ('flow_sequence -> flow_sequence_item','flow_sequence',1,'p_flow_sequence__last','productions.py',265),
+  ('flow_sequence -> flow_sequence F_SEP flow_sequence_item','flow_sequence',3,'p_flow_sequence__init','productions.py',272),
+  ('flow_sequence_item -> scalar','flow_sequence_item',1,'p_flow_sequence_item','productions.py',279),
+  ('flow_map -> flow_map_item','flow_map',1,'p_flow_map__last','productions.py',286),
+  ('flow_map -> flow_map F_SEP flow_map_item','flow_map',3,'p_flow_map__init','productions.py',293),
+  ('flow_map_item -> flow_map_item_key flow_map_item_value','flow_map_item',2,'p_flow_map_item','productions.py',300),
+  ('flow_map_item_key -> scalar F_MAP_KEY','flow_map_item_key',2,'p_flow_map_item_key','productions.py',307),
+  ('flow_map_item_value -> scalar','flow_map_item_value',1,'p_flow_map_item_value','productions.py',314),
 ]

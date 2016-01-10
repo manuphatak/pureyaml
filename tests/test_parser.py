@@ -8,6 +8,7 @@ test_pureyaml
 Tests for `pureyaml` module.
 """
 from __future__ import absolute_import
+
 from textwrap import dedent
 
 from pureyaml.nodes import *  # noqa

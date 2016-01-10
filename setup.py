@@ -7,24 +7,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from setuptools.command.test import test as TestCommand
-
-
-class PyTest(TestCommand):
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
-
-    def initialize_options(self):
-        TestCommand.initialize_options(self)
-        self.pytest_args = []
-
-    def run_tests(self):
-        import pytest
-        import sys
-
-        errno = pytest.main(self.pytest_args)
-        sys.exit(errno)
-
-
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -35,9 +17,8 @@ with open('HISTORY.rst') as history_file:
 requirements = ['ply#bionikspoon/1.0.0', 'singledispatch']
 # TODO: put package test requirements here
 test_requirements = ['pytest', 'future']
-
 # TODO: put package setup requirements here
-setup_requirements = ['flake8']
+setup_requirements = ['pytest-runner', 'flake8']
 
 setup(  # :off
     name='pureyaml',
@@ -52,7 +33,6 @@ setup(  # :off
     include_package_data=True,
     license='MIT',
     zip_safe=False,
-    cmdclass={'test': PyTest},
     keywords='pureyaml Manu Phatak',
     classifiers=[
         'Development Status :: 1 - Planning',

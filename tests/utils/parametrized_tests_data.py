@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 from __future__ import absolute_import
+
 from collections import namedtuple
 from difflib import get_close_matches
 
