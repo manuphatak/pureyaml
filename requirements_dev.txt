@@ -10,11 +10,10 @@ argh==0.26.1              # via watchdog
 babel==2.2.0              # via sphinx
 bumpversion==0.5.3
 click==6.2                # via pip-tools
-coverage==4.0.3
+coverage==4.0.3           # via pytest-cov
 docutils==0.12            # via restructuredtext-lint, sphinx
 first==2.0.1              # via pip-tools
 flake8==2.5.1
-funcsigs==0.4             # via mock
 future==0.15.2
 jinja2==2.8               # via sphinx
 markupsafe==0.23          # via jinja2
@@ -28,6 +27,7 @@ pluggy==0.3.1             # via tox
 py==1.4.31                # via pytest, tox
 pyflakes==1.0.0           # via flake8
 pygments==2.0.2           # via sphinx
+pytest-cov==2.2.0
 pytest==2.8.5
 pytz==2015.7              # via babel
 pyyaml==3.11              # via watchdog

@@ -16,8 +16,8 @@ flake8
 # TEST UTILITIES
 # -------------------------------------
 tox
-coverage
 pytest
+pytest-cov
 mock
 
 # DOC UTILITIES

@@ -16,7 +16,7 @@ with open('HISTORY.rst') as history_file:
 # TODO: put package requirements here
 requirements = ['ply#bionikspoon/1.0.0', 'singledispatch']
 # TODO: put package test requirements here
-test_requirements = ['pytest', 'future']
+test_requirements = ['pytest', 'pytest-cov', 'future']
 # TODO: put package setup requirements here
 setup_requirements = ['pytest-runner', 'flake8']
 

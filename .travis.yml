@@ -26,4 +26,3 @@ python:
 - '3.5'
 script:
 - tox -e $TOXENV
-- coverage run setup.py test
