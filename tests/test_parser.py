@@ -7,6 +7,7 @@ test_pureyaml
 
 Tests for `pureyaml` module.
 """
+from __future__ import absolute_import
 from textwrap import dedent
 
 from pureyaml.nodes import *  # noqa
@@ -1071,6 +1072,7 @@ def test_mixed_map_of_sequences():
     assert nodes == expected
 
 
+# noinspection SpellCheckingInspection
 def test_cast_type_binary():
     text = dedent(u"""
         ---

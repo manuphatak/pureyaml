@@ -3,6 +3,7 @@
 """
 source: https://en.wikipedia.org/wiki/YAML#Basic_components_of_YAML
 """
+from __future__ import absolute_import
 from base64 import standard_b64decode
 from textwrap import dedent
 
@@ -168,7 +169,7 @@ node_anchors_and_references = """
 """
 
 
-@mark.xfail(reason='References not supported')
+@feature_not_supported
 def test_can_read_node_anchors_and_references():
     result = pureyaml.load(node_anchors_and_references)
     expected = [  # :off
@@ -305,7 +306,7 @@ sanity_args = [  # :off
     str_folded,
     lists_of_dicts,
     dicts_of_lists,
-    mark.xfail(node_anchors_and_references),
+    feature_not_supported(node_anchors_and_references),
     casted_data_types,
     specified_data_types__binary,
 ]  # :on

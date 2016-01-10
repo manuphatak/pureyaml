@@ -9,15 +9,12 @@ Yet another yaml parser, in pure python.
 
 """
 from __future__ import absolute_import
-from future import standard_library
-
-standard_library.install_aliases()
 
 import logging
 
-from pureyaml.encoder import YAMLEncoder
 from ._compat import NullHandler
 from .decoder import YAMLDecoder
+from .encoder import YAMLEncoder
 
 logging.getLogger(__name__).addHandler(NullHandler())
 

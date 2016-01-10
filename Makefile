@@ -129,4 +129,3 @@ requirements:
 sync:
 	pip install --quiet --upgrade pip-tools
 	pip-sync requirements_dev.txt > /dev/null
-	pip install --quiet git+git://github.com/bionikspoon/ply.git@1.0.0#egg=ply

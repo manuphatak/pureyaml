@@ -141,7 +141,7 @@ class Map(MappingMixin, Collection):
 
         return values
 
-    def __eq__(self, other):
+    def __eq__(self, other):  # noqa
         if type(self) != type(other):
             return False
 

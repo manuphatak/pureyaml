@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 # coding=utf-8
-from collections import namedtuple, OrderedDict
+from __future__ import absolute_import
+from collections import namedtuple
 from difflib import get_close_matches
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from future.moves.collections import OrderedDict
 
 from future.utils import with_metaclass, iteritems
 

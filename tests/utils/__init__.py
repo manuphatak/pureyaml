@@ -2,10 +2,6 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from future import standard_library
-
-standard_library.install_aliases()
-
 from .common import test_dir, feature_not_supported
 from .node_diff import get_node_diff
 from .parametrized_tests_data import ParametrizedTestData

@@ -4,6 +4,7 @@
 #
 #    pip-compile requirements.in
 #
+-e git+git://github.com/bionikspoon/ply.git@bionikspoon/1.0.0#egg=ply
 future==0.15.2
 singledispatch==3.4.0.3
 six==1.10.0               # via singledispatch

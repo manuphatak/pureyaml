@@ -2,3 +2,4 @@
 # -------------------------------------
 future
 singledispatch
+-e git+git://github.com/bionikspoon/ply.git@bionikspoon/1.0.0#egg=ply

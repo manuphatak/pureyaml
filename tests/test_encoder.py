@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-
+from __future__ import absolute_import
 from pytest import fixture
 
 from pureyaml.encoder import node_encoder

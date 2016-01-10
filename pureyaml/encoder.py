@@ -3,14 +3,10 @@
 
 from __future__ import absolute_import
 
-from future.utils import iteritems
-
-from ._compat import singledispatch
 from .nodes import *  # noqa
 
 
-@singledispatch  # noqa
-def node_encoder(obj):
+def node_encoder(obj):  # noqa
     if isinstance(obj, dict):
         items = []
         for key, value in iteritems(obj):

@@ -4,6 +4,7 @@
 #
 #    pip-compile requirements_dev.in
 #
+-e git+git://github.com/bionikspoon/ply.git@bionikspoon/1.0.0#egg=ply
 alabaster==0.7.7          # via sphinx
 argh==0.26.1              # via watchdog
 babel==2.2.0              # via sphinx
@@ -13,6 +14,7 @@ coverage==4.0.3
 docutils==0.12            # via restructuredtext-lint, sphinx
 first==2.0.1              # via pip-tools
 flake8==2.5.1
+funcsigs==0.4             # via mock
 future==0.15.2
 jinja2==2.8               # via sphinx
 markupsafe==0.23          # via jinja2

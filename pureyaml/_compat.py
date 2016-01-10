@@ -36,9 +36,4 @@ except ImportError:
         Sequence = collections.Sequence
         MutableSequence = collections.MutableSequence
 
-try:
-    from functools import singledispatch
-except ImportError:
-    from singledispatch import singledispatch
-
-__all__ = ['NullHandler', 'collections_abc', 'singledispatch']
+__all__ = ['NullHandler', 'collections_abc']
