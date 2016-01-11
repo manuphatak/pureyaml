@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 from textwrap import dedent
 
+from future.utils import PY3, PY2, PYPY
 from pytest import mark
 
 import pureyaml
@@ -96,10 +97,16 @@ def test_list():
 
 def test_dict():
     data = {'name': 'John Smith', 'age': 33}
-    expected = dedent("""
-        age: 33
-        name: John Smith
-    """)[1:]
+    if not PYPY:
+        expected = dedent("""
+            age: 33
+            name: John Smith
+        """)[1:]
+    else:
+        expected = dedent("""
+            name: John Smith
+            age: 33
+        """)[1:]
 
     assert dump_actual(data) == expected
 
@@ -114,19 +121,27 @@ def test_list_of_dicts():
     assert dump_actual(data) == expected
 
 
-@mark.xfail
 def test_dict_of_lists():
     data = {  # :off
         'men': ['John Smith', 'Bill Jones'],
         'women': ['Mary Smith', 'Susan Williams']
     }  # :on
-    expected = dedent("""
-        women:
-            - Mary Smith
-            - Susan Williams
-        men:
-            - John Smith
-            - Bill Jones
-    """)[1:]
-
+    if PY3:
+        expected = dedent("""
+            women:
+                - Mary Smith
+                - Susan Williams
+            men:
+                - John Smith
+                - Bill Jones
+        """)[1:]
+    else:
+        expected = dedent("""
+            men:
+                - John Smith
+                - Bill Jones
+            women:
+                - Mary Smith
+                - Susan Williams
+        """)[1:]
     assert dump_actual(data) == expected
