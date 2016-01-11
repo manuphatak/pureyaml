@@ -45,23 +45,35 @@ class YAMLEncoder(NodeVisitor):
 
     def visit_Sequence(self, node):
         lines = []
+        template = '{symbol:{width}}{value}'
         for item in node:
             item = iter(self.visit(item))
-            lines.append('- %s' % next(item))
+
+            kw = {'symbol': '-', 'width': 2, 'value': next(item)}
+            lines.append(template.format(**kw))
+
+            kw['symbol'] = ' '
             for line in item:
-                lines.append('  %s' % line)
+                kw['value'] = line
+                lines.append(template.format(**kw))
 
         return lines
 
     def visit_Map(self, node):
         lines = []
+        key_value_template = '{key}: {value}'
+        key_template = '{key}:'
+        value_template = '{indent:{width}}{value}'
+
         for key, value in node.value:
             if len(key) == len(value) == 1:
-                lines.append('%s: %s' % (self.visit(key)[0], self.visit(value)[0]))
+                kw = dict(key=self.visit(key)[0], value=self.visit(value)[0])
+                lines.append(key_value_template.format(**kw))
             elif len(key) == 1:
-                lines.append('%s:' % self.visit(key)[0])
+
+                lines.append(key_template.format(key=self.visit(key)[0]))
                 for line in self.visit(value):
-                    lines.append('    %s' % line)
+                    lines.append(value_template.format(indent=' ', width=2, value=line))
 
         return lines
 

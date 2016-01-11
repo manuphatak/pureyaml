@@ -129,19 +129,19 @@ def test_dict_of_lists():
     if PY3:
         expected = dedent("""
             women:
-                - Mary Smith
-                - Susan Williams
+              - Mary Smith
+              - Susan Williams
             men:
-                - John Smith
-                - Bill Jones
+              - John Smith
+              - Bill Jones
         """)[1:]
     else:
         expected = dedent("""
             men:
-                - John Smith
-                - Bill Jones
+              - John Smith
+              - Bill Jones
             women:
-                - Mary Smith
-                - Susan Williams
+              - Mary Smith
+              - Susan Williams
         """)[1:]
     assert dump_actual(data) == expected
