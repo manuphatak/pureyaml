@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 from textwrap import dedent
 
-from future.utils import PY3, PY2, PYPY
+from future.utils import PY3, PYPY
 from pytest import mark
 
 import pureyaml
