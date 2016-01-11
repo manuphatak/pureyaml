@@ -303,13 +303,13 @@ sanity_args = [  # :off
     list_inline,
     dict_block,
     dict_inline,
-    str_literal,
-    str_folded,
+    feature_not_supported(str_literal),
+    feature_not_supported(str_folded),
     lists_of_dicts,
     dicts_of_lists,
     feature_not_supported(node_anchors_and_references),
-    casted_data_types,
-    specified_data_types__binary,
+    feature_not_supported(casted_data_types),
+    feature_not_supported(specified_data_types__binary),
 ]  # :on
 
 sanity_names = [  # :off
@@ -327,7 +327,7 @@ sanity_names = [  # :off
 ]  # :on
 
 
-@feature_not_supported
+# @feature_not_supported
 @mark.parametrize('sample', sanity_args, False, sanity_names)
 def test__sanity(sample):
     load_result = pureyaml.load(sample)

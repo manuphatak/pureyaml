@@ -76,6 +76,7 @@ class Collection(SequenceMixin, Node):
     def __init__(self, *values, **kwargs):
         self.raw_value = values
         self.value = self.init_value(*values, **kwargs)
+        self._iter = iter(self.value)
 
     def init_value(self, *value, **kwargs):
         return value
@@ -169,6 +170,9 @@ class Scalar(Node):
 
     def init_value(self, value, *args, **kwargs):
         return self.type(value)
+
+    def __len__(self):
+        return 1
 
 
 class Null(Scalar):

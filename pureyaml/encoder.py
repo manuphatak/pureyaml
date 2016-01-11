@@ -34,15 +34,39 @@ class YAMLEncoder(NodeVisitor):
         pass
 
     def encode(self, obj):
-        return ''.join(line for line in self.iterencode(obj))
+        lines = ''.join(line for line in self.iterencode(obj))
+        return lines
 
     def iterencode(self, obj):
         nodes = node_encoder(obj)
-        return self.visit(nodes)
+        lines = self.visit(nodes)
+        lines.append('')
+        return '\n'.join(lines)
 
     def visit_Sequence(self, node):
+        lines = []
         for item in node:
-            yield '- %s' % (yield item)
+            item = iter(self.visit(item))
+            lines.append('- %s' % next(item))
+            for line in item:
+                lines.append('  %s' % line)
+
+        return lines
+
+    def visit_Map(self, node):
+        lines = []
+        for key, value in node.value:
+            if len(key) == len(value) == 1:
+                lines.append('%s: %s' % (self.visit(key)[0], self.visit(value)[0]))
+            elif len(key) == 1:
+                lines.append('%s:' % self.visit(key)[0])
+                for line in self.visit(value):
+                    lines.append('    %s' % line)
+
+        return lines
 
     def visit_Str(self, node):
-        return node.value
+        return [str(node.value)]
+
+    def visit_Int(self, node):
+        return [str(node.value)]

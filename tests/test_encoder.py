@@ -2,8 +2,11 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+from textwrap import dedent
+
 from pytest import fixture
 
+import pureyaml
 from pureyaml.encoder import node_encoder
 from pureyaml.nodes import *  # noqa
 from tests.utils import ParametrizedTestData
@@ -69,22 +72,59 @@ class NodeEncoderTestCase(ParametrizedTestData):
 
 
 @fixture(params=NodeEncoderTestCase.keys())
-def case(request):
+def encoder_case(request):
     return NodeEncoderTestCase.get(request.param)
 
 
-def test_node_encoder(case):
-    data, expected = case
+def test_node_encoder(encoder_case):
+    data, expected = encoder_case
     assert node_encoder(data) == expected
 
-# def test_encode_list():
-#     expected = dedent("""
-#         ---
-#         - Casablanca
-#         - North by Northwest
-#         - The Man Who Wasn't There
-#     """)[1:]
-#     obj = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
-#     text = pureyaml.dump(obj)
-#
-#     assert text == expected
+
+class DumpTestCase(ParametrizedTestData):
+    test_list__data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
+    test_list__expected = dedent("""
+        - Casablanca
+        - North by Northwest
+        - The Man Who Wasn't There
+    """)[1:]
+
+    test_dict__data = {'name': 'John Smith', 'age': 33}
+    test_dict__expected = dedent("""
+        age: 33
+        name: John Smith
+    """)[1:]
+
+    test_list_of_dicts__data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
+    test_list_of_dicts__expected = dedent("""
+        - Casablanca
+        - North by Northwest
+        - The Man Who Wasn't There
+    """)[1:]
+
+    test_dict_of_lists__data = {  # :off
+        'men': ['John Smith', 'Bill Jones'],
+        'women': ['Mary Smith', 'Susan Williams']
+    }  # :on
+    test_dict_of_lists__expected = dedent("""
+        women:
+            - Mary Smith
+            - Susan Williams
+        men:
+            - John Smith
+            - Bill Jones
+    """)[1:]
+
+
+@fixture(params=DumpTestCase.keys())
+def dump_case(request):
+    return DumpTestCase.get(request.param)
+
+
+def test_dump(dump_case):
+    data, expected = dump_case
+
+    text = pureyaml.dump(data)
+    # print('\n' + text)
+
+    assert text == expected
