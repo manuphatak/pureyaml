@@ -11,6 +11,11 @@ from tests.utils import feature_not_supported
 parser = YAMLParser(debug=True)
 
 
+def parse_actual(text):
+    nodes = parser.parse(text)
+    return nodes
+
+
 def test_ex_2_01_sequence_of_scalars():
     text = dedent("""
         - Mark McGwire
@@ -18,7 +23,6 @@ def test_ex_2_01_sequence_of_scalars():
         - Ken Griffey
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -29,7 +33,7 @@ def test_ex_2_01_sequence_of_scalars():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_02_mapping_scalars_to_scalars():
@@ -39,7 +43,6 @@ def test_ex_2_02_mapping_scalars_to_scalars():
         rbi: 147   # Runs Batted In
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -50,7 +53,7 @@ def test_ex_2_02_mapping_scalars_to_scalars():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_03_mapping_scalars_to_sequences():
@@ -65,7 +68,6 @@ def test_ex_2_03_mapping_scalars_to_sequences():
           - Atlanta Braves
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -89,7 +91,7 @@ def test_ex_2_03_mapping_scalars_to_sequences():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_04_sequence_of_mappings():
@@ -104,7 +106,6 @@ def test_ex_2_04_sequence_of_mappings():
           avg:  0.288
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -122,7 +123,7 @@ def test_ex_2_04_sequence_of_mappings():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_05_sequence_of_sequnces():
@@ -132,7 +133,6 @@ def test_ex_2_05_sequence_of_sequnces():
         - [Sammy Sosa  , 63, 0.288]
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -155,7 +155,7 @@ def test_ex_2_05_sequence_of_sequnces():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_06_mapping_of_mappings():
@@ -167,7 +167,6 @@ def test_ex_2_06_mapping_of_mappings():
           }
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -189,7 +188,7 @@ def test_ex_2_06_mapping_of_mappings():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_07_two_docs_in_a_stream():
@@ -206,7 +205,6 @@ def test_ex_2_07_two_docs_in_a_stream():
         - St Louis Cardinals
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -223,7 +221,7 @@ def test_ex_2_07_two_docs_in_a_stream():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_08_play_by_play_feed():
@@ -240,7 +238,6 @@ def test_ex_2_08_play_by_play_feed():
         ...
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -258,7 +255,7 @@ def test_ex_2_08_play_by_play_feed():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_09_single_doc_with_two_comments():
@@ -273,7 +270,6 @@ def test_ex_2_09_single_doc_with_two_comments():
           - Ken Griffey
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -295,7 +291,7 @@ def test_ex_2_09_single_doc_with_two_comments():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 @feature_not_supported
@@ -311,7 +307,6 @@ def test_ex_2_10_node_appears_twice():
           - Ken Griffey
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -333,7 +328,7 @@ def test_ex_2_10_node_appears_twice():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_11_mapping_between_sequences():
@@ -349,7 +344,6 @@ def test_ex_2_11_mapping_between_sequences():
             2001-08-14 ]
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -377,7 +371,7 @@ def test_ex_2_11_mapping_between_sequences():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_12_compat_nested_mapping():
@@ -392,7 +386,6 @@ def test_ex_2_12_compat_nested_mapping():
           quantity: 1
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Sequence(
@@ -412,7 +405,7 @@ def test_ex_2_12_compat_nested_mapping():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_13_literal_newlines_are_preserved():
@@ -423,14 +416,13 @@ def test_ex_2_13_literal_newlines_are_preserved():
           // ||  ||__
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Str('\\//||\\/||\n// ||  ||__\n'),
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_14_folded_newlines_become_spaces():
@@ -441,14 +433,13 @@ def test_ex_2_14_folded_newlines_become_spaces():
           by a knee injury.
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Str("Mark McGwire's year was crippled by a knee injury.\n"),
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_15_folded_indents_and_blank_lines_preserved():
@@ -463,7 +454,6 @@ def test_ex_2_15_folded_indents_and_blank_lines_preserved():
          What a year!
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Str('Sammy Sosa completed another fine season with great stats.\n  63 Home Runs   0.288 Batting '
@@ -471,7 +461,7 @@ def test_ex_2_15_folded_indents_and_blank_lines_preserved():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_16_indentation_determines_scope():
@@ -485,7 +475,6 @@ def test_ex_2_16_indentation_determines_scope():
           0.278 Batting Average
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -496,7 +485,7 @@ def test_ex_2_16_indentation_determines_scope():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_17_quoated_scalars():
@@ -510,7 +499,6 @@ def test_ex_2_17_quoated_scalars():
         tie-fighter: '|\-*-/|'
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -524,7 +512,7 @@ def test_ex_2_17_quoated_scalars():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_18_multi_line_flow_scalars():
@@ -537,7 +525,6 @@ def test_ex_2_18_multi_line_flow_scalars():
           quoted scalar.\n"
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -547,7 +534,7 @@ def test_ex_2_18_multi_line_flow_scalars():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_19_integers():
@@ -558,7 +545,6 @@ def test_ex_2_19_integers():
         hexadecimal: 0xC
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -570,7 +556,7 @@ def test_ex_2_19_integers():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_20_floating_point():
@@ -582,7 +568,6 @@ def test_ex_2_20_floating_point():
         not a number: .NaN
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -595,7 +580,7 @@ def test_ex_2_20_floating_point():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_21_miscellaneous():
@@ -606,7 +591,6 @@ def test_ex_2_21_miscellaneous():
         string: '012345'
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -622,7 +606,7 @@ def test_ex_2_21_miscellaneous():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_22_timestamps():
@@ -633,7 +617,6 @@ def test_ex_2_22_timestamps():
         date: 2002-12-14
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -645,7 +628,7 @@ def test_ex_2_22_timestamps():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 def test_ex_2_23_various_explicit_tags():
@@ -666,7 +649,6 @@ def test_ex_2_23_various_explicit_tags():
         #  different documents.
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -683,7 +665,7 @@ def test_ex_2_23_various_explicit_tags():
             ),
         ),
     )  # :on
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 @feature_not_supported
@@ -705,7 +687,6 @@ def test_ex_2_24_global_tags():
           text: Pretty vector drawing.
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -715,7 +696,7 @@ def test_ex_2_24_global_tags():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 @feature_not_supported
@@ -730,7 +711,6 @@ def test_ex_2_25_unordered_sets():
         ? Ken Griff
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -740,7 +720,7 @@ def test_ex_2_25_unordered_sets():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 @feature_not_supported
@@ -755,7 +735,6 @@ def test_ex_2_26_ordered_mappings():
         - Ken Griffy: 58
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -765,7 +744,7 @@ def test_ex_2_26_ordered_mappings():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 @feature_not_supported
@@ -802,7 +781,6 @@ def test_ex_2_27_invoice():
             Billsmer @ 338-4338.
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -812,7 +790,7 @@ def test_ex_2_27_invoice():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected
 
 
 @feature_not_supported
@@ -846,7 +824,6 @@ def test_ex_2_28_log_file():
               foo = bar
     """)[1:]
 
-    nodes = parser.parse(text)
     expected = Docs(  # :off
         Doc(
             Map(
@@ -856,4 +833,4 @@ def test_ex_2_28_log_file():
         ),
     )  # :on
 
-    assert nodes == expected
+    assert parse_actual(text) == expected

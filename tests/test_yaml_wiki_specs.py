@@ -13,70 +13,64 @@ from pytest import mark
 import pureyaml
 from tests.utils import feature_not_supported
 
-list_block = """
---- # Favorite movies
-    - Casablanca
-    - North by Northwest
-    - The Man Who Wasn't There
-"""
-
 
 def test_can_read_list_block():
-    result = pureyaml.load(list_block)
+    text = dedent("""
+    --- # Favorite movies
+        - Casablanca
+        - North by Northwest
+        - The Man Who Wasn't There
+    """)[1:]
+    result = pureyaml.load(text)
 
     assert result == ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
 
 
-list_inline = """
---- # Shopping list
-[milk, pumpkin pie, eggs, juice]
-"""
-
-
 def test_can_read_list_inline():
-    result = pureyaml.load(list_inline)
+    text = dedent("""
+    --- # Shopping list
+    [milk, pumpkin pie, eggs, juice]
+    """)[1:]
+    result = pureyaml.load(text)
 
     assert result == ['milk', 'pumpkin pie', 'eggs', 'juice']
 
 
-dict_block = """
---- # Indented Block
-    name: John Smith
-    age: 33
-"""
-
-
 def test_can_read_dict_block():
-    result = pureyaml.load(dict_block)
+    text = dedent("""
+    --- # Indented Block
+        name: John Smith
+        age: 33
+    """)[1:]
+
+    result = pureyaml.load(text)
     expected = {'name': 'John Smith', 'age': 33}
 
     assert result == expected
-
-
-dict_inline = """
-{name: John Smith, age: 33}
-"""
 
 
 def test_can_read_dict_inline():
-    result = pureyaml.load(dict_inline)
+    text = dedent("""
+    {name: John Smith, age: 33}
+    """)[1:]
+
+    result = pureyaml.load(text)
     expected = {'name': 'John Smith', 'age': 33}
 
     assert result == expected
 
 
-str_literal = """
-data: |
-    There once was a short man from Ealing
-    Who got on a bus to Darjeeling
-        It said on the door
-        "Please don't spit on the floor"
-    So he carefully spat on the ceiling
-"""
-
-
 def test_can_read_str_literal():
-    result = pureyaml.load(str_literal)
+    text = dedent("""
+    data: |
+        There once was a short man from Ealing
+        Who got on a bus to Darjeeling
+            It said on the door
+            "Please don't spit on the floor"
+        So he carefully spat on the ceiling
+    """)[1:]
+
+    result = pureyaml.load(text)
     data = dedent("""
         There once was a short man from Ealing
         Who got on a bus to Darjeeling
@@ -90,35 +84,31 @@ def test_can_read_str_literal():
     assert result == expected
 
 
-str_folded = """
-data: >
-    Wrapped text
-    will be folded
-    into a single
-    paragraph
-
-    Blank lines denote
-    paragraph breaks
-"""
-
-
 def test_can_read_str_folded():
-    result = pureyaml.load(str_folded)
+    text = dedent("""
+    data: >
+        Wrapped text
+        will be folded
+        into a single
+        paragraph
+
+        Blank lines denote
+        paragraph breaks
+    """)[1:]
+    result = pureyaml.load(text)
     data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks\n"
 
     expected = {'data': data}
     assert result == expected
 
 
-lists_of_dicts = """
-- {name: John Smith, age: 33}
-- name: Mary Smith
-  age: 27
-"""
-
-
 def test_can_read_lists_of_dicts():
-    result = pureyaml.load(lists_of_dicts)
+    text = dedent("""
+    - {name: John Smith, age: 33}
+    - name: Mary Smith
+      age: 27
+    """)[1:]
+    result = pureyaml.load(text)
     expected = [  # :off
         {'name': 'John Smith', 'age': 33},
         {'name': 'Mary Smith', 'age': 27}
@@ -127,16 +117,14 @@ def test_can_read_lists_of_dicts():
     assert result == expected
 
 
-dicts_of_lists = """
-men: [John Smith, Bill Jones]
-women:
-    - Mary Smith
-    - Susan Williams
-"""
-
-
 def test_can_read_dicts_of_lists():
-    result = pureyaml.load(dicts_of_lists)
+    text = dedent("""
+    men: [John Smith, Bill Jones]
+    women:
+        - Mary Smith
+        - Susan Williams
+    """)[1:]
+    result = pureyaml.load(text)
     expected = {  # :off
         'men': ['John Smith', 'Bill Jones'],
         'women': ['Mary Smith', 'Susan Williams']
@@ -145,34 +133,32 @@ def test_can_read_dicts_of_lists():
     assert result == expected
 
 
-node_anchors_and_references = """
-# sequencer protocols for Laser eye surgery
----
-- step:  &id001                  # defines anchor label &id001
-    instrument:      Lasik 2000
-    pulseEnergy:     5.4
-    pulseDuration:   12
-    repetition:      1000
-    spotSize:        1mm
-
-- step: &id002
-    instrument:      Lasik 2000
-    pulseEnergy:     5.0
-    pulseDuration:   10
-    repetition:      500
-    spotSize:        2mm
-
-- step: *id001                   # refers to the first step (with anchor &id001)
-- step: *id002                   # refers to the second step
-- step: *id001
-    spotSize: 2mm                # redefines just this key, refers rest from &id001
-- step: *id002
-"""
-
-
 @feature_not_supported
 def test_can_read_node_anchors_and_references():
-    result = pureyaml.load(node_anchors_and_references)
+    text = dedent("""
+    # sequencer protocols for Laser eye surgery
+    ---
+    - step:  &id001                  # defines anchor label &id001
+        instrument:      Lasik 2000
+        pulseEnergy:     5.4
+        pulseDuration:   12
+        repetition:      1000
+        spotSize:        1mm
+
+    - step: &id002
+        instrument:      Lasik 2000
+        pulseEnergy:     5.0
+        pulseDuration:   10
+        repetition:      500
+        spotSize:        2mm
+
+    - step: *id001                   # refers to the first step (with anchor &id001)
+    - step: *id002                   # refers to the second step
+    - step: *id001
+        spotSize: 2mm                # redefines just this key, refers rest from &id001
+    - step: *id002
+    """)[1:]
+    result = pureyaml.load(text)
     expected = [  # :off
         {'step': {
             'instrument': 'Lasik 2000',
@@ -272,19 +258,17 @@ def test_can_read_values_from_casted_data__str_from_context():
     assert data['h'] == 'Yes we have No bananas'
 
 
-# noinspection SpellCheckingInspection
-specified_data_types__binary = """
----
-picture: !!binary |
-    R0lGODlhDAAMAIQAAP//9/X
-    17unp5WZmZgAAAOfn515eXv
-    Pz7Y6OjuDg4J+fn5OTk6enp
-    56enmleECcgggoBADs=mZmE
-"""
-
-
-def test_can_read_specified_data_types__binary():
-    result = pureyaml.load(specified_data_types__binary)
+def test_can_cast_binary():
+    # noinspection SpellCheckingInspection
+    text = dedent("""
+    ---
+    picture: !!binary |
+        R0lGODlhDAAMAIQAAP//9/X
+        17unp5WZmZgAAAOfn515eXv
+        Pz7Y6OjuDg4J+fn5OTk6enp
+        56enmleECcgggoBADs=mZmE
+    """)[1:]
+    result = pureyaml.load(text)
     # noinspection SpellCheckingInspection
     picture = standard_b64decode(dedent("""
         R0lGODlhDAAMAIQAAP//9/X
@@ -297,43 +281,43 @@ def test_can_read_specified_data_types__binary():
 
     assert result == expected
 
-
-sanity_args = [  # :off
-    list_block,
-    list_inline,
-    dict_block,
-    dict_inline,
-    feature_not_supported(str_literal),
-    feature_not_supported(str_folded),
-    lists_of_dicts,
-    dicts_of_lists,
-    feature_not_supported(node_anchors_and_references),
-    feature_not_supported(casted_data_types),
-    feature_not_supported(specified_data_types__binary),
-]  # :on
-
-sanity_names = [  # :off
-    'list_block',
-    'list_inline',
-    'dict_block',
-    'dict_inline',
-    'str_literal',
-    'str_folded',
-    'lists_of_dicts',
-    'dicts_of_lists',
-    'node_anchors_and_references',
-    'casted_data_types',
-    'specified_data_types__binary',
-]  # :on
-
-
-# @feature_not_supported
-@mark.parametrize('sample', sanity_args, False, sanity_names)
-def test__sanity(sample):
-    load_result = pureyaml.load(sample)
-    dump_result = pureyaml.dump(load_result)
-    load_expected = pureyaml.load(dump_result)
-    dump_expected = pureyaml.dump(load_expected)
-
-    assert load_result == load_expected
-    assert dump_result == dump_expected
+#
+# sanity_args = [  # :off
+#     list_block,
+#     list_inline,
+#     dict_block,
+#     dict_inline,
+#     feature_not_supported(str_literal),
+#     feature_not_supported(str_folded),
+#     lists_of_dicts,
+#     dicts_of_lists,
+#     feature_not_supported(node_anchors_and_references),
+#     feature_not_supported(casted_data_types),
+#     feature_not_supported(specified_data_types__binary),
+# ]  # :on
+#
+# sanity_names = [  # :off
+#     'list_block',
+#     'list_inline',
+#     'dict_block',
+#     'dict_inline',
+#     'str_literal',
+#     'str_folded',
+#     'lists_of_dicts',
+#     'dicts_of_lists',
+#     'node_anchors_and_references',
+#     'casted_data_types',
+#     'specified_data_types__binary',
+# ]  # :on
+#
+#
+# # @feature_not_supported
+# @mark.parametrize('sample', sanity_args, False, sanity_names)
+# def test__sanity(sample):
+#     load_result = pureyaml.load(sample)
+#     dump_result = pureyaml.dump(load_result)
+#     load_expected = pureyaml.load(dump_result)
+#     dump_expected = pureyaml.dump(load_expected)
+#
+#     assert load_result == load_expected
+#     assert dump_result == dump_expected

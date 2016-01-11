@@ -18,7 +18,7 @@ requirements = ['ply#bionikspoon/1.0.0', 'singledispatch']
 # TODO: put package test requirements here
 test_requirements = ['pytest', 'pytest-cov', 'future']
 # TODO: put package setup requirements here
-setup_requirements = ['pytest-runner', 'flake8']
+setup_requirements = ['pytest-runner', 'pytest-xdist', 'flake8']
 
 setup(  # :off
     name='pureyaml',

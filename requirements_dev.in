@@ -18,6 +18,7 @@ flake8
 tox
 pytest
 pytest-cov
+pytest-xdist
 mock
 
 # DOC UTILITIES
