@@ -113,6 +113,7 @@ def test_list_of_dicts():
     """)[1:]
     assert dump_actual(data) == expected
 
+
 @mark.xfail
 def test_dict_of_lists():
     data = {  # :off
