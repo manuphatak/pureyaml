@@ -14,6 +14,11 @@ import pureyaml
 from tests.utils import feature_not_supported
 
 
+def load(text):
+    obj = pureyaml.load(text)
+    return obj
+
+
 def test_can_read_list_block():
     text = dedent("""
     --- # Favorite movies
@@ -21,9 +26,8 @@ def test_can_read_list_block():
         - North by Northwest
         - The Man Who Wasn't There
     """)[1:]
-    result = pureyaml.load(text)
 
-    assert result == ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
+    assert load(text) == ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
 
 
 def test_can_read_list_inline():
@@ -31,9 +35,8 @@ def test_can_read_list_inline():
     --- # Shopping list
     [milk, pumpkin pie, eggs, juice]
     """)[1:]
-    result = pureyaml.load(text)
 
-    assert result == ['milk', 'pumpkin pie', 'eggs', 'juice']
+    assert load(text) == ['milk', 'pumpkin pie', 'eggs', 'juice']
 
 
 def test_can_read_dict_block():
@@ -43,10 +46,9 @@ def test_can_read_dict_block():
         age: 33
     """)[1:]
 
-    result = pureyaml.load(text)
     expected = {'name': 'John Smith', 'age': 33}
 
-    assert result == expected
+    assert load(text) == expected
 
 
 def test_can_read_dict_inline():
@@ -54,10 +56,9 @@ def test_can_read_dict_inline():
     {name: John Smith, age: 33}
     """)[1:]
 
-    result = pureyaml.load(text)
     expected = {'name': 'John Smith', 'age': 33}
 
-    assert result == expected
+    assert load(text) == expected
 
 
 def test_can_read_str_literal():
@@ -70,7 +71,6 @@ def test_can_read_str_literal():
         So he carefully spat on the ceiling
     """)[1:]
 
-    result = pureyaml.load(text)
     data = dedent("""
         There once was a short man from Ealing
         Who got on a bus to Darjeeling
@@ -81,7 +81,7 @@ def test_can_read_str_literal():
 
     expected = {'data': data}
 
-    assert result == expected
+    assert load(text) == expected
 
 
 def test_can_read_str_folded():
@@ -95,11 +95,10 @@ def test_can_read_str_folded():
         Blank lines denote
         paragraph breaks
     """)[1:]
-    result = pureyaml.load(text)
     data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks\n"
 
     expected = {'data': data}
-    assert result == expected
+    assert load(text) == expected
 
 
 def test_can_read_lists_of_dicts():
@@ -108,13 +107,12 @@ def test_can_read_lists_of_dicts():
     - name: Mary Smith
       age: 27
     """)[1:]
-    result = pureyaml.load(text)
     expected = [  # :off
         {'name': 'John Smith', 'age': 33},
         {'name': 'Mary Smith', 'age': 27}
     ]  # :on
 
-    assert result == expected
+    assert load(text) == expected
 
 
 def test_can_read_dicts_of_lists():
@@ -124,13 +122,12 @@ def test_can_read_dicts_of_lists():
         - Mary Smith
         - Susan Williams
     """)[1:]
-    result = pureyaml.load(text)
     expected = {  # :off
         'men': ['John Smith', 'Bill Jones'],
         'women': ['Mary Smith', 'Susan Williams']
     }  # :on
 
-    assert result == expected
+    assert load(text) == expected
 
 
 @feature_not_supported
@@ -158,7 +155,6 @@ def test_can_read_node_anchors_and_references():
         spotSize: 2mm                # redefines just this key, refers rest from &id001
     - step: *id002
     """)[1:]
-    result = pureyaml.load(text)
     expected = [  # :off
         {'step': {
             'instrument': 'Lasik 2000',
@@ -205,7 +201,7 @@ def test_can_read_node_anchors_and_references():
         }},
     ]  # :on
 
-    assert result == expected
+    assert load(text) == expected
 
 
 casted_data_types = """
@@ -234,27 +230,27 @@ casted_data_type_args = [  # :off
 
 @mark.parametrize('key,type_', casted_data_type_args)
 def test_can_read_casted_data_types(key, type_):
-    data = pureyaml.load(casted_data_types)
+    data = load(casted_data_types)
     assert isinstance(data[key], type_)
 
 
 def test_can_read_values_from_casted_data__str_from_int():
-    data = pureyaml.load(casted_data_types)
+    data = load(casted_data_types)
     assert data['e'] == '123'
 
 
 def test_can_read_values_from_casted_data__str_from_keyword():
-    data = pureyaml.load(casted_data_types)
+    data = load(casted_data_types)
     assert data['f'] == 'Yes'
 
 
 def test_can_read_values_from_casted_data__bool():
-    data = pureyaml.load(casted_data_types)
+    data = load(casted_data_types)
     assert data['g'] is True
 
 
 def test_can_read_values_from_casted_data__str_from_context():
-    data = pureyaml.load(casted_data_types)
+    data = load(casted_data_types)
     assert data['h'] == 'Yes we have No bananas'
 
 
@@ -268,7 +264,6 @@ def test_can_cast_binary():
         Pz7Y6OjuDg4J+fn5OTk6enp
         56enmleECcgggoBADs=mZmE
     """)[1:]
-    result = pureyaml.load(text)
     # noinspection SpellCheckingInspection
     picture = standard_b64decode(dedent("""
         R0lGODlhDAAMAIQAAP//9/X
@@ -279,7 +274,7 @@ def test_can_cast_binary():
 
     expected = {'picture': picture}
 
-    assert result == expected
+    assert load(text) == expected
 
 #
 # sanity_args = [  # :off

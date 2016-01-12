@@ -18,7 +18,7 @@ from tests.utils import feature_not_supported
 parser = YAMLParser(debug=True)
 
 
-def parse_actual(text):
+def parse(text):
     nodes = parser.parse(text)
     return nodes
 
@@ -31,7 +31,7 @@ def test_basic_single_doc():
     """)[1:]
     expected = Docs(Doc(Str('Hello World')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_doc_with_no_end_of_doc_indicator():
@@ -42,7 +42,7 @@ def test_doc_with_no_end_of_doc_indicator():
 
     expected = Docs(Doc(Str('Hello World')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_2_docs():
@@ -57,7 +57,7 @@ def test_2_docs():
 
     expected = Docs(Doc(Str('Hello World')), Doc(Str('Foo Bar')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_3_docs():
@@ -79,7 +79,7 @@ def test_3_docs():
         Doc(Str('More Docs'))
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_3_docs_no_end_of_doc_indicators():
@@ -98,7 +98,7 @@ def test_3_docs_no_end_of_doc_indicators():
         Doc(Str('More Docs'))
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_implicit_doc():
@@ -108,7 +108,7 @@ def test_implicit_doc():
 
     expected = Docs(Doc(Str('Hello World')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_scalar_int():
@@ -119,7 +119,7 @@ def test_scalar_int():
     """)[1:]
 
     expected = Docs(Doc(Int(123)))
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_1_item_sequence():
@@ -131,7 +131,7 @@ def test_1_item_sequence():
 
     expected = Docs(Doc(Sequence(Str('Hello World', ))))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_2_item_sequence():
@@ -147,7 +147,7 @@ def test_2_item_sequence():
         Str('Foo Bar'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_3_item_sequence():
@@ -165,7 +165,7 @@ def test_3_item_sequence():
         Str('More Sequence Items'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_1_item_map():
@@ -179,7 +179,7 @@ def test_1_item_map():
         (Str('Hello'), Str('World')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_2_item_map():
@@ -195,7 +195,7 @@ def test_2_item_map():
         (Str('Foo'), Str('Bar')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_3_item_map():
@@ -213,7 +213,7 @@ def test_3_item_map():
         (Str('More'), Str('Map Items')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_implicit_int():
@@ -223,7 +223,7 @@ def test_casting_implicit_int():
 
     expected = Docs(Doc(Int(123)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_doublequoted_string():
@@ -232,7 +232,7 @@ def test_casting_doublequoted_string():
     """)[1:]
 
     expected = Docs(Doc(Str('123')))
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_doublequoted_string_with_escaped_char():
@@ -242,7 +242,7 @@ def test_casting_doublequoted_string_with_escaped_char():
 
     expected = Docs(Doc(Str('She said, \\"I Like turtles\\" and she meant it!')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_singlequoted_string():
@@ -252,7 +252,7 @@ def test_casting_singlequoted_string():
 
     expected = Docs(Doc(Str('123')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_singlequoted_string_with_escaped_char():
@@ -262,7 +262,7 @@ def test_casting_singlequoted_string_with_escaped_char():
 
     expected = Docs(Doc(Str("She said, \\'I Like turtles\\' and she meant it!")))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_implicit_float():
@@ -272,7 +272,7 @@ def test_casting_implicit_float():
 
     expected = Docs(Doc(Float(123.0)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_implicit_float_no_leading_digit():
@@ -282,7 +282,7 @@ def test_casting_implicit_float_no_leading_digit():
 
     expected = Docs(Doc(Float(.123)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_explicit_float():
@@ -292,7 +292,7 @@ def test_casting_explicit_float():
 
     expected = Docs(Doc(Float(123)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_explicit_str():
@@ -302,7 +302,7 @@ def test_casting_explicit_str():
 
     expected = Docs(Doc(Str(123)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_implicit_bool_true():
@@ -312,7 +312,7 @@ def test_casting_implicit_bool_true():
 
     expected = Docs(Doc(Bool(True)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_implicit_bool_false():
@@ -322,7 +322,7 @@ def test_casting_implicit_bool_false():
 
     expected = Docs(Doc(Bool(False)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_casting_explicit_str_from_bool():
@@ -332,7 +332,7 @@ def test_casting_explicit_str_from_bool():
 
     expected = Docs(Doc(Str('Yes')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_uses_context_for_disambiguated_str():
@@ -342,7 +342,7 @@ def test_uses_context_for_disambiguated_str():
 
     expected = Docs(Doc(Str('Yes we have No bananas')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ignore_comment():
@@ -352,7 +352,7 @@ def test_ignore_comment():
 
     expected = Docs(Doc(Int(123)))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_with_scalars_and_comments():
@@ -369,7 +369,7 @@ def test_map_with_scalars_and_comments():
         (Str('c'), Float(123))
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_different_map_with_bool_and_comments():
@@ -384,7 +384,7 @@ def test_different_map_with_bool_and_comments():
         (Str('g'), Bool('Yes')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_longer_map_with_scalars_and_comments():
@@ -412,7 +412,7 @@ def test_longer_map_with_scalars_and_comments():
 
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_scalar_item():
@@ -424,7 +424,7 @@ def test_unnecessary_indent_scalar_item():
 
     expected = Docs(Doc(Int('123')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_1_item():
@@ -437,7 +437,7 @@ def test_unnecessary_indent_1_item():
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_1_item_with_comment():
@@ -450,7 +450,7 @@ def test_unnecessary_indent_1_item_with_comment():
     expected = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_2_items():
@@ -465,7 +465,7 @@ def test_unnecessary_indent_2_items():
         Str('South by Southwest'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_3_items():
@@ -482,7 +482,7 @@ def test_unnecessary_indent_3_items():
         Str('The Man Who Wasnt There'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_3_items_with_dedent():
@@ -500,7 +500,7 @@ def test_unnecessary_indent_3_items_with_dedent():
         Str('The Man Who Wasnt There'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -512,7 +512,7 @@ def test_empty_scalar():
 
     expected = Docs(Doc(Map((Str('Also a null'), Null(None)))))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_empty_scalar_double_quote():
@@ -523,7 +523,7 @@ def test_empty_scalar_double_quote():
 
     expected = Docs(Doc(Map((Str('Not a null'), Str('')))))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_scalar_types():
@@ -583,7 +583,7 @@ def test_scalar_types():
         (Str('Also floats d'), Float('.nan')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_unnecessary_indent_3_with_edge_items():
@@ -603,7 +603,7 @@ def test_unnecessary_indent_3_with_edge_items():
         Str('The Man Who Wasn\'t There'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_scalar_literal_1_line():
@@ -614,7 +614,7 @@ def test_scalar_literal_1_line():
 
     expected = Docs(Doc(Str('literal\n')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_scalar_literal_ascii_art():
@@ -626,7 +626,7 @@ def test_scalar_literal_ascii_art():
 
     expected = Docs(Doc(Str('\//||\/||\n// ||  ||__\n')))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_longer_scalar_literal_with_indents():
@@ -647,7 +647,7 @@ def test_longer_scalar_literal_with_indents():
             So he carefully spat on the ceiling
         """)[1:])))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_with_literal_block():
@@ -668,7 +668,7 @@ def test_map_with_literal_block():
             So he carefully spat on the ceiling
         """)[1:])))))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_with_folded_block():
@@ -688,7 +688,7 @@ def test_map_with_folded_block():
             Blank lines denote paragraph breaks
         """)[1:])))))
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_sequence_of_map_1_item():
@@ -704,7 +704,7 @@ def test_sequence_of_map_1_item():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_sequence_of_map_3_item():
@@ -732,7 +732,7 @@ def test_sequence_of_map_3_item():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_sequence_of_sequences_1_item():
@@ -746,7 +746,7 @@ def test_sequence_of_sequences_1_item():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_sequence_of_sequences_3_items():
@@ -764,7 +764,7 @@ def test_sequence_of_sequences_3_items():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_sequence_of_mixed_items():
@@ -793,7 +793,7 @@ def test_sequence_of_mixed_items():
         )
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_of_sequences_1_item():
@@ -808,7 +808,7 @@ def test_map_of_sequences_1_item():
         )),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_of_sequences_many_items():
@@ -843,7 +843,7 @@ def test_map_of_sequences_many_items():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_of_map_1_item():
@@ -863,7 +863,7 @@ def test_map_of_map_1_item():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_of_map_many_items():
@@ -909,7 +909,7 @@ def test_map_of_map_many_items():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_1_item_flow_sequence():
@@ -922,7 +922,7 @@ def test_1_item_flow_sequence():
         Str('milk'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_many_item_flow_sequence():
@@ -938,7 +938,7 @@ def test_many_item_flow_sequence():
         Str('juice'),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_1_item_flow_map():
@@ -951,7 +951,7 @@ def test_1_item_flow_map():
         (Str('name'), Str('John Smith')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_2_item_flow_map():
@@ -965,7 +965,7 @@ def test_2_item_flow_map():
         (Str('age'), Int(33)),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_mixed_sequence_of_maps():
@@ -986,7 +986,7 @@ def test_mixed_sequence_of_maps():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_mixed_map_of_sequences():
@@ -1014,7 +1014,7 @@ def test_mixed_map_of_sequences():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 # noinspection SpellCheckingInspection
@@ -1040,7 +1040,7 @@ def test_cast_type_binary():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_1_item_map_explicit_key():
@@ -1052,7 +1052,7 @@ def test_1_item_map_explicit_key():
         (Str('Hello'), Str('World')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_2_item_map_explicit_key():
@@ -1068,7 +1068,7 @@ def test_2_item_map_explicit_key():
         (Str('Foo'), Str('Bar')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_3_item_map_explicit_key():
@@ -1087,7 +1087,7 @@ def test_3_item_map_explicit_key():
         (Str('More'), Str('Map Items')),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_complex_key__key_sequence():
@@ -1111,7 +1111,7 @@ def test_map_complex_key__key_sequence():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_complex_key__key_sequence_compact():
@@ -1133,7 +1133,7 @@ def test_map_complex_key__key_sequence_compact():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_map_complex_key__flow_sequence():
@@ -1158,4 +1158,4 @@ def test_map_complex_key__flow_sequence():
         ),
     )))  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected

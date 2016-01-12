@@ -11,7 +11,7 @@ from tests.utils import feature_not_supported
 parser = YAMLParser(debug=True)
 
 
-def parse_actual(text):
+def parse(text):
     nodes = parser.parse(text)
     return nodes
 
@@ -33,7 +33,7 @@ def test_ex_2_01_sequence_of_scalars():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_02_mapping_scalars_to_scalars():
@@ -53,7 +53,7 @@ def test_ex_2_02_mapping_scalars_to_scalars():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_03_mapping_scalars_to_sequences():
@@ -91,7 +91,7 @@ def test_ex_2_03_mapping_scalars_to_sequences():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_04_sequence_of_mappings():
@@ -123,7 +123,7 @@ def test_ex_2_04_sequence_of_mappings():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_05_sequence_of_sequnces():
@@ -155,7 +155,7 @@ def test_ex_2_05_sequence_of_sequnces():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_06_mapping_of_mappings():
@@ -188,7 +188,7 @@ def test_ex_2_06_mapping_of_mappings():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_07_two_docs_in_a_stream():
@@ -221,7 +221,7 @@ def test_ex_2_07_two_docs_in_a_stream():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_08_play_by_play_feed():
@@ -255,7 +255,7 @@ def test_ex_2_08_play_by_play_feed():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_09_single_doc_with_two_comments():
@@ -291,7 +291,7 @@ def test_ex_2_09_single_doc_with_two_comments():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -328,7 +328,7 @@ def test_ex_2_10_node_appears_twice():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_11_mapping_between_sequences():
@@ -371,7 +371,7 @@ def test_ex_2_11_mapping_between_sequences():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_12_compat_nested_mapping():
@@ -405,7 +405,7 @@ def test_ex_2_12_compat_nested_mapping():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_13_literal_newlines_are_preserved():
@@ -422,7 +422,7 @@ def test_ex_2_13_literal_newlines_are_preserved():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_14_folded_newlines_become_spaces():
@@ -439,7 +439,7 @@ def test_ex_2_14_folded_newlines_become_spaces():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_15_folded_indents_and_blank_lines_preserved():
@@ -461,7 +461,7 @@ def test_ex_2_15_folded_indents_and_blank_lines_preserved():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_16_indentation_determines_scope():
@@ -485,7 +485,7 @@ def test_ex_2_16_indentation_determines_scope():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_17_quoated_scalars():
@@ -512,7 +512,7 @@ def test_ex_2_17_quoated_scalars():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_18_multi_line_flow_scalars():
@@ -534,7 +534,7 @@ def test_ex_2_18_multi_line_flow_scalars():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_19_integers():
@@ -556,7 +556,7 @@ def test_ex_2_19_integers():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_20_floating_point():
@@ -580,7 +580,7 @@ def test_ex_2_20_floating_point():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_21_miscellaneous():
@@ -606,7 +606,7 @@ def test_ex_2_21_miscellaneous():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_22_timestamps():
@@ -628,7 +628,7 @@ def test_ex_2_22_timestamps():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 def test_ex_2_23_various_explicit_tags():
@@ -665,7 +665,7 @@ def test_ex_2_23_various_explicit_tags():
             ),
         ),
     )  # :on
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -696,7 +696,7 @@ def test_ex_2_24_global_tags():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -720,7 +720,7 @@ def test_ex_2_25_unordered_sets():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -744,7 +744,7 @@ def test_ex_2_26_ordered_mappings():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -790,7 +790,7 @@ def test_ex_2_27_invoice():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected
 
 
 @feature_not_supported
@@ -833,4 +833,4 @@ def test_ex_2_28_log_file():
         ),
     )  # :on
 
-    assert parse_actual(text) == expected
+    assert parse(text) == expected

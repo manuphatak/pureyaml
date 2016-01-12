@@ -78,7 +78,7 @@ def test_node_encoder(case):
     assert node_encoder(data) == expected
 
 
-def dump_actual(data):
+def dump(data):
     text = pureyaml.dump(data)
     print('\n' + text)
     return text
@@ -92,7 +92,7 @@ def test_dump__list():
         - The Man Who Wasn't There
     """)[1:]
 
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
 
 
 def test_dump__dict():
@@ -108,7 +108,7 @@ def test_dump__dict():
             age: 33
         """)[1:]
 
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
 
 
 def test_dump__list_of_dicts():
@@ -118,7 +118,7 @@ def test_dump__list_of_dicts():
         - North by Northwest
         - The Man Who Wasn't There
     """)[1:]
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
 
 
 def test_dump__dict_of_lists():
@@ -144,7 +144,7 @@ def test_dump__dict_of_lists():
               - Mary Smith
               - Susan Williams
         """)[1:]
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
 
 
 def test_dump__nested_obj():
@@ -212,7 +212,7 @@ def test_dump__nested_obj():
                 6: 7
         """)[1:]
 
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
 
 
 def test_dump__nested_list():
@@ -247,7 +247,7 @@ def test_dump__nested_list():
             - 16
     """)[1:]
 
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
 
 
 def test_dump__complex_mixed_obj():
@@ -271,6 +271,19 @@ def test_dump__complex_mixed_obj():
             1:
               2: 3
         """)[1:]
+    elif PYPY:
+        expected = dedent("""
+            1:
+              2: 3
+            4:
+              5:
+                - 6:
+                    - 7
+                    - 8
+                  9: 10
+                  11: 12
+                - 13: 14
+        """)[1:]
     else:
         expected = dedent("""
             1:
@@ -285,4 +298,4 @@ def test_dump__complex_mixed_obj():
                 - 13: 14
         """)[1:]
 
-    assert dump_actual(data) == expected
+    assert dump(data) == expected
