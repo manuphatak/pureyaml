@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 from .nodes import *  # noqa
 from .utils import ContextStack
-
+from builtins import str as text
 
 def node_encoder(obj):  # noqa
     if isinstance(obj, dict):
@@ -98,8 +98,20 @@ class YAMLEncoder(NodeVisitor):
 
         return lines
 
-    def visit_Str(self, node):
-        return [str(node.value)]
+    def visit_Scalar(self, node):
+        return [repr(node.value)]
 
-    def visit_Int(self, node):
-        return [str(node.value)]
+    def visit_Str(self, node):
+        value = text(node.value)
+        repr_required = [  # :off
+            value.isdecimal(),
+            value.lower() in ['yes', 'no', 'true', 'false'],
+        ]  # :on
+
+        method = repr if any(repr_required) else str
+
+        return [method(node.value)]
+
+    visit_Int = visit_Scalar
+    visit_Bool = visit_Scalar
+    visit_Float = visit_Scalar

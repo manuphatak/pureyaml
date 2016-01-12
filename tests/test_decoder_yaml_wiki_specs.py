@@ -117,10 +117,10 @@ def test_can_read_lists_of_dicts():
 
 def test_can_read_dicts_of_lists():
     text = dedent("""
-    men: [John Smith, Bill Jones]
-    women:
-        - Mary Smith
-        - Susan Williams
+        men: [John Smith, Bill Jones]
+        women:
+            - Mary Smith
+            - Susan Williams
     """)[1:]
     expected = {  # :off
         'men': ['John Smith', 'Bill Jones'],
@@ -133,27 +133,27 @@ def test_can_read_dicts_of_lists():
 @feature_not_supported
 def test_can_read_node_anchors_and_references():
     text = dedent("""
-    # sequencer protocols for Laser eye surgery
-    ---
-    - step:  &id001                  # defines anchor label &id001
-        instrument:      Lasik 2000
-        pulseEnergy:     5.4
-        pulseDuration:   12
-        repetition:      1000
-        spotSize:        1mm
+        # sequencer protocols for Laser eye surgery
+        ---
+        - step:  &id001                  # defines anchor label &id001
+            instrument:      Lasik 2000
+            pulseEnergy:     5.4
+            pulseDuration:   12
+            repetition:      1000
+            spotSize:        1mm
 
-    - step: &id002
-        instrument:      Lasik 2000
-        pulseEnergy:     5.0
-        pulseDuration:   10
-        repetition:      500
-        spotSize:        2mm
+        - step: &id002
+            instrument:      Lasik 2000
+            pulseEnergy:     5.0
+            pulseDuration:   10
+            repetition:      500
+            spotSize:        2mm
 
-    - step: *id001                   # refers to the first step (with anchor &id001)
-    - step: *id002                   # refers to the second step
-    - step: *id001
-        spotSize: 2mm                # redefines just this key, refers rest from &id001
-    - step: *id002
+        - step: *id001                   # refers to the first step (with anchor &id001)
+        - step: *id002                   # refers to the second step
+        - step: *id001
+            spotSize: 2mm                # redefines just this key, refers rest from &id001
+        - step: *id002
     """)[1:]
     expected = [  # :off
         {'step': {

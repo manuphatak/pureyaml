@@ -170,46 +170,45 @@ def test_dump__nested_obj():
     }  # :on
     if PY3:
         expected = dedent("""
-            4:
+            '4':
               16: 17
               5:
-                10: 11
-                12:
-                  13:
-                    14: 15
-                8: 9
-                6: 7
-            1:
-              2: 3
+                '10': 11
+                '12':
+                  '13':
+                    '14': '15'
+                '8': 9
+                '6': 7
+            '1':
+              '2': 3
         """)[1:]
     elif PYPY:
         expected = dedent("""
-            1:
-              2: 3
-            4:
+            '1':
+              '2': 3
+            '4':
               5:
-                6: 7
-                8: 9
-                10: 11
-                12:
-                  13:
-                    14: 15
+                '6': 7
+                '8': 9
+                '10': 11
+                '12':
+                  '13':
+                    '14': '15'
               16: 17
         """)[1:]
-
     else:
         expected = dedent("""
-            1:
-              2: 3
-            4:
+            '1':
+              '2': 3
+            '4':
               16: 17
               5:
-                8: 9
-                12:
-                  13:
-                    14: 15
-                10: 11
-                6: 7
+                '8': 9
+                '12':
+                  '13':
+                    '14': '15'
+                '10': 11
+                '6': 7
         """)[1:]
 
     assert dump(data) == expected
@@ -260,42 +259,165 @@ def test_dump__complex_mixed_obj():
     }  # :on
     if PY3:
         expected = dedent("""
-            4:
+            '4':
               5:
-                - 9: 10
-                  11: 12
-                  6:
+                - 9: '10'
+                  11: '12'
+                  '6':
                     - 7
                     - 8
-                - 13: 14
-            1:
-              2: 3
+                - '13': 14
+            '1':
+              '2': 3
         """)[1:]
     elif PYPY:
         expected = dedent("""
-            1:
-              2: 3
-            4:
+            '1':
+              '2': 3
+            '4':
               5:
-                - 6:
+                - '6':
                     - 7
                     - 8
-                  9: 10
-                  11: 12
-                - 13: 14
+                  9: '10'
+                  11: '12'
+                - '13': 14
         """)[1:]
     else:
         expected = dedent("""
-            1:
-              2: 3
-            4:
+            '1':
+              '2': 3
+            '4':
               5:
-                - 9: 10
-                  11: 12
-                  6:
+                - 9: '10'
+                  11: '12'
+                  '6':
                     - 7
                     - 8
-                - 13: 14
+                - '13': 14
+        """)[1:]
+
+    assert dump(data) == expected
+
+
+def test_dump__list__alt():
+    data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
+    expected = dedent("""
+        - Casablanca
+        - North by Northwest
+        - The Man Who Wasn't There
+    """)[1:]
+
+    assert dump(data) == expected
+
+
+def test_dump__dict__alt():
+    data = {'name': 'John Smith', 'age': 33}
+    if not PYPY:
+        expected = dedent("""
+            age: 33
+            name: John Smith
+        """)[1:]
+    else:
+        expected = dedent("""
+            name: John Smith
+            age: 33
+        """)[1:]
+
+    assert dump(data) == expected
+
+
+def test_dump__lists_of_dicts__alt():
+    data = [  # :off
+        {'name': 'John Smith', 'age': 33},
+        {'name': 'Mary Smith', 'age': 27}
+    ]  # :on
+    if not PYPY:
+        expected = dedent("""
+            - age: 33
+              name: John Smith
+            - age: 27
+              name: Mary Smith
+        """)[1:]
+    else:
+        expected = dedent("""
+            - name: John Smith
+              age: 33
+            - name: Mary Smith
+              age: 27
+        """)[1:]
+    assert dump(data) == expected
+
+
+def test_dump__dicts_of_lists__alt():
+    data = {  # :off
+        'men': ['John Smith', 'Bill Jones'],
+        'women': ['Mary Smith', 'Susan Williams']
+    }  # :on
+    if PY3:
+        expected = dedent("""
+            women:
+              - Mary Smith
+              - Susan Williams
+            men:
+              - John Smith
+              - Bill Jones
+        """)[1:]
+    else:
+        expected = dedent("""
+            men:
+              - John Smith
+              - Bill Jones
+            women:
+              - Mary Smith
+              - Susan Williams
+        """)[1:]
+    assert dump(data) == expected
+
+
+def test_dump__casted_data__alt():
+    data = {  # :off
+        'a': 123,
+        'b': str(123),
+        'c': 123.0,
+        'd': float(123),
+        'e': str(123),
+        'f': 'Yes',
+        'g': True,
+        'h': 'Yes we have No bananas',
+    }  # :on
+    if PY3:
+        expected = dedent("""
+            g: True
+            b: '123'
+            h: Yes we have No bananas
+            c: 123.0
+            e: '123'
+            a: 123
+            f: 'Yes'
+            d: 123.0
+        """)[1:]
+    elif PYPY:
+        expected = dedent("""
+            a: 123
+            b: '123'
+            c: 123.0
+            d: 123.0
+            e: '123'
+            f: 'Yes'
+            g: True
+            h: Yes we have No bananas
+        """)[1:]
+    else:
+        expected = dedent("""
+            a: 123
+            c: 123.0
+            b: '123'
+            e: '123'
+            d: 123.0
+            g: True
+            f: 'Yes'
+            h: Yes we have No bananas
         """)[1:]
 
     assert dump(data) == expected
