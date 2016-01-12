@@ -3,9 +3,13 @@
 from contextlib import contextmanager
 
 
-class AttributeContextStack(object):
-    def __init__(self):
-        self.__dict__['stack'] = [{}]
+class ContextStack(object):
+    def __init__(self, this=None):
+        if this:
+            init = {'self': this}
+        else:
+            init = {}
+        self.__dict__['stack'] = [init]
 
     @property
     def attrs(self):
@@ -27,7 +31,7 @@ class AttributeContextStack(object):
         self.__dict__['stack'].pop()
 
     @contextmanager
-    def context(self, ):
+    def context(self):
         self.push(self.self)
         yield
         self.pop()
