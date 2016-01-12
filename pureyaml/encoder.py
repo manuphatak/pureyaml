@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+from contextlib import contextmanager
+
 from .nodes import *  # noqa
 
 
@@ -30,6 +32,23 @@ def node_encoder(obj):  # noqa
 
 
 class YAMLEncoder(NodeVisitor):
+    indent_size = 2
+    indent_depth = 0
+    EMPTY = ''
+    MINUS = '-'
+    t_INDENT = '{self.EMPTY:<{width}}'
+
+    @property
+    def s_INDENT(self):
+        width = self.indent_size * self.indent_depth
+        return self.t_INDENT.format_map(vars())
+
+    @contextmanager
+    def indent(self):
+        self.indent_depth += 1
+        yield
+        self.indent_depth -= 1
+
     def __init__(self, *args, **kwargs):
         pass
 
@@ -43,37 +62,49 @@ class YAMLEncoder(NodeVisitor):
         lines.append('')
         return '\n'.join(lines)
 
+    t_SEQUENCE_INDICATOR = '{self.MINUS:<{self.indent_size}}'
+    t_SEQUENCE = '{prefix}{value}'
+
+    @property
+    def s_SEQUENCE_INDICATOR(self):
+        return self.t_SEQUENCE_INDICATOR.format_map(vars())
+
     def visit_Sequence(self, node):
         lines = []
-        template = '{symbol:{width}}{value}'
+
         for item in node:
-            item = iter(self.visit(item))
+            iter_item = iter(self.visit(item))
 
-            kw = {'symbol': '-', 'width': 2, 'value': next(item)}
-            lines.append(template.format(**kw))
+            prefix = self.s_SEQUENCE_INDICATOR
+            value = next(iter_item)
+            lines.append(self.t_SEQUENCE.format_map(vars()))
 
-            kw['symbol'] = ' '
-            for line in item:
-                kw['value'] = line
-                lines.append(template.format(**kw))
+            prefix = ''
+            for value in iter_item:
+                lines.append('{value}'.format_map(vars()))
 
         return lines
 
+    t_MAP_INLINE = '{self.s_INDENT}{key}: {value}'
+    t_MAP_KEY = '{self.s_INDENT}{key}:'
+    t_MAP_VALUE = '{self.s_INDENT}{value}'
+
     def visit_Map(self, node):
         lines = []
-        key_value_template = '{key}: {value}'
-        key_template = '{key}:'
-        value_template = '{indent:{width}}{value}'
 
-        for key, value in node.value:
-            if len(key) == len(value) == 1:
-                kw = dict(key=self.visit(key)[0], value=self.visit(value)[0])
-                lines.append(key_value_template.format(**kw))
-            elif len(key) == 1:
+        for _key, _value in node.value:
+            if isinstance(_key, Scalar) and isinstance(_value, Scalar):
+                key = self.visit(_key)[0]
+                value = self.visit(_value)[0]
+                lines.append(self.t_MAP_INLINE.format_map(vars()))
+            elif isinstance(_key, Scalar):
+                key = self.visit(_key)[0]
 
-                lines.append(key_template.format(key=self.visit(key)[0]))
-                for line in self.visit(value):
-                    lines.append(value_template.format(indent=' ', width=2, value=line))
+                lines.append(self.t_MAP_KEY.format_map(vars()))
+
+                for value in self.visit(_value):
+                    with self.indent():
+                        lines.append(self.t_MAP_VALUE.format_map(vars()))
 
         return lines
 

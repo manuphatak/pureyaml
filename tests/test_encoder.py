@@ -84,7 +84,7 @@ def dump_actual(data):
     return text
 
 
-def test_list():
+def test_dump__list():
     data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
     expected = dedent("""
         - Casablanca
@@ -95,7 +95,7 @@ def test_list():
     assert dump_actual(data) == expected
 
 
-def test_dict():
+def test_dump__dict():
     data = {'name': 'John Smith', 'age': 33}
     if not PYPY:
         expected = dedent("""
@@ -111,7 +111,7 @@ def test_dict():
     assert dump_actual(data) == expected
 
 
-def test_list_of_dicts():
+def test_dump__list_of_dicts():
     data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
     expected = dedent("""
         - Casablanca
@@ -121,7 +121,7 @@ def test_list_of_dicts():
     assert dump_actual(data) == expected
 
 
-def test_dict_of_lists():
+def test_dump__dict_of_lists():
     data = {  # :off
         'men': ['John Smith', 'Bill Jones'],
         'women': ['Mary Smith', 'Susan Williams']
@@ -144,4 +144,26 @@ def test_dict_of_lists():
               - Mary Smith
               - Susan Williams
         """)[1:]
+    assert dump_actual(data) == expected
+
+
+def test_dump__complex_dict():
+    data = {  # :off
+        '1': {'2': 3},
+        '4': {5: [
+            {'6': [7, 8]},
+            {'9': 10}
+        ]}
+    }  # :on
+    expected = dedent("""
+        4:
+          5:
+            - 6:
+              - 7
+              - 8
+            - 9: 10
+        1:
+          2: 3
+    """)[1:]
+
     assert dump_actual(data) == expected
