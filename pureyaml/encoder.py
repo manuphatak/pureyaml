@@ -3,8 +3,6 @@
 
 from __future__ import absolute_import
 
-from contextlib import contextmanager
-
 from .nodes import *  # noqa
 from .utils import ContextStack
 
