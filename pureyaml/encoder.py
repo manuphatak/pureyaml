@@ -3,9 +3,12 @@
 
 from __future__ import absolute_import
 
+# noinspection PyCompatibility
+from builtins import str as text
+
 from .nodes import *  # noqa
 from .utils import ContextStack
-from builtins import str as text
+
 
 def node_encoder(obj):  # noqa
     if isinstance(obj, dict):
