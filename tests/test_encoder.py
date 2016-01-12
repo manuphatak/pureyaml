@@ -168,19 +168,49 @@ def test_dump__nested_obj():
             16: 17
         }
     }  # :on
-    expected = dedent("""
-        4:
-          16: 17
-          5:
-            10: 11
-            12:
-              13:
-                14: 15
-            8: 9
-            6: 7
-        1:
-          2: 3
-    """)[1:]
+    if PY3:
+        expected = dedent("""
+            4:
+              16: 17
+              5:
+                10: 11
+                12:
+                  13:
+                    14: 15
+                8: 9
+                6: 7
+            1:
+              2: 3
+        """)[1:]
+    elif PYPY:
+        expected = dedent("""
+            1:
+              2: 3
+            4:
+              5:
+                6: 7
+                8: 9
+                10: 11
+                12:
+                  13:
+                    14: 15
+              16: 17
+        """)[1:]
+
+    else:
+        expected = dedent("""
+            1:
+              2: 3
+            4:
+              16: 17
+              5:
+                8: 9
+                12:
+                  13:
+                    14: 15
+                10: 11
+                6: 7
+        """)[1:]
 
     assert dump_actual(data) == expected
 
@@ -228,17 +258,31 @@ def test_dump__complex_mixed_obj():
             {'13': 14}
         ]}
     }  # :on
-    expected = dedent("""
-        4:
-          5:
-            - 9: 10
-              11: 12
-              6:
-                - 7
-                - 8
-            - 13: 14
-        1:
-          2: 3
-    """)[1:]
+    if PY3:
+        expected = dedent("""
+            4:
+              5:
+                - 9: 10
+                  11: 12
+                  6:
+                    - 7
+                    - 8
+                - 13: 14
+            1:
+              2: 3
+        """)[1:]
+    else:
+        expected = dedent("""
+            1:
+              2: 3
+            4:
+              5:
+                - 9: 10
+                  11: 12
+                  6:
+                    - 7
+                    - 8
+                - 13: 14
+        """)[1:]
 
     assert dump_actual(data) == expected

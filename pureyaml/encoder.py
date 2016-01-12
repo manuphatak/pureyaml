@@ -32,7 +32,7 @@ def node_encoder(obj):  # noqa
 
 class _ContextStack(ContextStack):
     def __call__(self, text):
-        return text.format_map(self.attrs)
+        return text.format(**self.attrs)
 
 
 class YAMLEncoder(NodeVisitor):
