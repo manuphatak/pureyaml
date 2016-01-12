@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from contextlib import contextmanager
 
 from .nodes import *  # noqa
+from .utils import AttributeContextStack
 
 
 def node_encoder(obj):  # noqa
@@ -31,6 +32,13 @@ def node_encoder(obj):  # noqa
         return Float(obj)
 
 
+_ = AttributeContextStack()
+
+
+def expand(text):
+    return text.format_map(_)
+
+
 class YAMLEncoder(NodeVisitor):
     indent_size = 2
     indent_depth = 0
@@ -40,8 +48,8 @@ class YAMLEncoder(NodeVisitor):
 
     @property
     def s_INDENT(self):
-        width = self.indent_size * self.indent_depth
-        return self.t_INDENT.format_map(vars())
+        _.width = self.indent_size * self.indent_depth
+        return expand(self.t_INDENT)
 
     @contextmanager
     def indent(self):
@@ -49,8 +57,13 @@ class YAMLEncoder(NodeVisitor):
         yield
         self.indent_depth -= 1
 
+    # noinspection PyUnusedLocal
     def __init__(self, *args, **kwargs):
-        pass
+        _.self = self
+
+    def _visit(self, node):
+        with _.context():
+            return super(YAMLEncoder, self)._visit(node)
 
     def encode(self, obj):
         lines = ''.join(line for line in self.iterencode(obj))
@@ -67,7 +80,7 @@ class YAMLEncoder(NodeVisitor):
 
     @property
     def s_SEQUENCE_INDICATOR(self):
-        return self.t_SEQUENCE_INDICATOR.format_map(vars())
+        return expand(self.t_SEQUENCE_INDICATOR)
 
     def visit_Sequence(self, node):
         lines = []
@@ -75,13 +88,14 @@ class YAMLEncoder(NodeVisitor):
         for item in node:
             iter_item = iter(self.visit(item))
 
-            prefix = self.s_SEQUENCE_INDICATOR
-            value = next(iter_item)
-            lines.append(self.t_SEQUENCE.format_map(vars()))
+            _.prefix = self.s_SEQUENCE_INDICATOR
+            _.value = next(iter_item)
+            lines.append(expand(self.t_SEQUENCE))
 
-            prefix = ''
-            for value in iter_item:
-                lines.append('{value}'.format_map(vars()))
+            _.prefix = ''
+            for line in iter_item:
+                _.value = line
+                lines.append(expand('{value}'))
 
         return lines
 
@@ -94,17 +108,18 @@ class YAMLEncoder(NodeVisitor):
 
         for _key, _value in node.value:
             if isinstance(_key, Scalar) and isinstance(_value, Scalar):
-                key = self.visit(_key)[0]
-                value = self.visit(_value)[0]
-                lines.append(self.t_MAP_INLINE.format_map(vars()))
+                _.key = self.visit(_key)[0]
+                _.value = self.visit(_value)[0]
+                lines.append(expand(self.t_MAP_INLINE))
             elif isinstance(_key, Scalar):
-                key = self.visit(_key)[0]
+                _.key = self.visit(_key)[0]
 
-                lines.append(self.t_MAP_KEY.format_map(vars()))
+                lines.append(expand(self.t_MAP_KEY))
 
-                for value in self.visit(_value):
+                for line in self.visit(_value):
+                    _.value = line
                     with self.indent():
-                        lines.append(self.t_MAP_VALUE.format_map(vars()))
+                        lines.append(expand(self.t_MAP_VALUE))
 
         return lines
 
