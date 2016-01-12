@@ -39,20 +39,14 @@ class _ContextStack(ContextStack):
 
 class YAMLEncoder(NodeVisitor):
     indent_size = 2
-    indent_depth = 0
-    EMPTY = ''
-    MINUS = '-'
 
     @property
-    def s_INDENT(self):
-        _.width = self.indent_size * self.indent_depth
-        return _('{self.EMPTY:<{width}}')
+    def SEQUENCE_START(self):
+        return '-'.ljust(self.indent_size)
 
-    @contextmanager
-    def indent(self):
-        self.indent_depth += 1
-        yield
-        self.indent_depth -= 1
+    @property
+    def INDENT(self):
+        return ' ' * self.indent_size
 
     # noinspection PyUnusedLocal
     def __init__(self, *args, **kwargs):
@@ -73,25 +67,17 @@ class YAMLEncoder(NodeVisitor):
         lines.append('')
         return '\n'.join(lines)
 
-    @property
-    def s_SEQUENCE_INDICATOR(self):
-        return _('{self.MINUS:<{self.indent_size}}')
-
     def visit_Sequence(self, node):
         lines = []
-        t_SEQUENCE = '{prefix}{value}'
-
         for item in node:
             iter_item = iter(self.visit(item))
 
-            _.prefix = self.s_SEQUENCE_INDICATOR
             _.value = next(iter_item)
-            lines.append(_(t_SEQUENCE))
+            lines.append(_('{self.SEQUENCE_START}{value}'))
 
-            _.prefix = ''
             for line in iter_item:
                 _.value = line
-                lines.append(_(t_SEQUENCE))
+                lines.append(_('{self.INDENT}{value}'))
 
         return lines
 
@@ -102,16 +88,15 @@ class YAMLEncoder(NodeVisitor):
             if isinstance(_key, Scalar) and isinstance(_value, Scalar):
                 _.key = self.visit(_key)[0]
                 _.value = self.visit(_value)[0]
-                lines.append(_('{self.s_INDENT}{key}: {value}'))
+                lines.append(_('{key}: {value}'))
             elif isinstance(_key, Scalar):
                 _.key = self.visit(_key)[0]
 
-                lines.append(_('{self.s_INDENT}{key}:'))
+                lines.append(_('{key}:'))
 
                 for line in self.visit(_value):
                     _.value = line
-                    with self.indent():
-                        lines.append(_('{self.s_INDENT}{value}'))
+                    lines.append(_('{self.INDENT}{value}'))
 
         return lines
 

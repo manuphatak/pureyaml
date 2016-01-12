@@ -147,21 +147,96 @@ def test_dump__dict_of_lists():
     assert dump_actual(data) == expected
 
 
-def test_dump__complex_dict():
+def test_dump__nested_obj():
+    data = {  # :off
+        '1': {
+            '2': 3
+        },
+        '4': {
+            5: {
+                '6': 7,
+                '8': 9,
+                '10': 11,
+                '12': {
+                    '13': {
+                        '14': '15'
+                    }
+                }
+
+
+            },
+            16: 17
+        }
+    }  # :on
+    expected = dedent("""
+        4:
+          16: 17
+          5:
+            10: 11
+            12:
+              13:
+                14: 15
+            8: 9
+            6: 7
+        1:
+          2: 3
+    """)[1:]
+
+    assert dump_actual(data) == expected
+
+
+def test_dump__nested_list():
+    data = [1,  # :off
+            [[2,
+              3],
+             [4,
+              [5,
+               6]],
+             7],
+            [8,
+             9,
+             10],
+            [[11, 12],
+             [13, 14, 15, 16]]]  # :on
+    expected = dedent("""
+        - 1
+        - - - 2
+            - 3
+          - - 4
+            - - 5
+              - 6
+          - 7
+        - - 8
+          - 9
+          - 10
+        - - - 11
+            - 12
+          - - 13
+            - 14
+            - 15
+            - 16
+    """)[1:]
+
+    assert dump_actual(data) == expected
+
+
+def test_dump__complex_mixed_obj():
     data = {  # :off
         '1': {'2': 3},
         '4': {5: [
-            {'6': [7, 8]},
-            {'9': 10}
+            {'6': [7, 8], 9: '10', 11: '12'},
+            {'13': 14}
         ]}
     }  # :on
     expected = dedent("""
         4:
           5:
-            - 6:
-              - 7
-              - 8
             - 9: 10
+              11: 12
+              6:
+                - 7
+                - 8
+            - 13: 14
         1:
           2: 3
     """)[1:]
