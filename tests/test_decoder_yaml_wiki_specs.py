@@ -5,7 +5,6 @@ source: https://en.wikipedia.org/wiki/YAML#Basic_components_of_YAML
 """
 from __future__ import absolute_import
 
-from base64 import standard_b64decode
 from textwrap import dedent
 
 from pytest import mark
