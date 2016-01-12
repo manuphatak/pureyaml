@@ -265,12 +265,10 @@ def test_can_cast_binary():
         56enmleECcgggoBADs=mZmE
     """)[1:]
     # noinspection SpellCheckingInspection
-    picture = standard_b64decode(dedent("""
-        R0lGODlhDAAMAIQAAP//9/X
-        17unp5WZmZgAAAOfn515eXv
-        Pz7Y6OjuDg4J+fn5OTk6enp
-        56enmleECcgggoBADs=mZmE
-        """[1:-1]))
+    picture = (b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee"
+               b"\xe9\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e"
+               b"\x8e\x8e\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7"
+               b"\x9e\x9e\x9ei^\x10' \x82\n\x01\x00;")
 
     expected = {'picture': picture}
 

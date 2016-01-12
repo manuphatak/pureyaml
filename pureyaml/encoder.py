@@ -5,7 +5,6 @@ from __future__ import absolute_import
 
 # noinspection PyCompatibility
 from builtins import str as text
-
 from .nodes import *  # noqa
 from .utils import ContextStack
 
@@ -16,21 +15,35 @@ def node_encoder(obj):  # noqa
         for key, value in iteritems(obj):
             items.append((node_encoder(key), node_encoder(value)))
         return Map(*items)
-    if isinstance(obj, list):
+    elif isinstance(obj, list):
         items = []
         for item in obj:
             items.append(node_encoder(item))
         return Sequence(*items)
-    if isinstance(obj, str):
+    elif isinstance(obj, bytes):
+        try:
+            obj = text(obj, 'ascii')
+            return Str(obj)
+        except UnicodeDecodeError:
+            return Binary.from_decoded(obj)
+    elif isinstance(obj, text):
+        def is_binary_string(chars):
+            text_chars = bytearray(set([7, 8, 9, 10, 12, 13, 27]) | set(range(0x20, 0x100)) - set([0x7f]))
+            return bool(chars.translate(text_chars))
+
+        if is_binary_string(obj):
+            return Binary.from_decoded(obj)
         return Str(obj)
-    if isinstance(obj, bool):
+    elif isinstance(obj, bool):
         return Bool(obj)
-    if isinstance(obj, int):
+    elif isinstance(obj, int):
         return Int(obj)
-    if isinstance(obj, type(None)):
+    elif isinstance(obj, type(None)):
         return Null(obj)
-    if isinstance(obj, float):
+    elif isinstance(obj, float):
         return Float(obj)
+    else:
+        raise RuntimeError('Type %s not supported' % type(obj))
 
 
 class _ContextStack(ContextStack):

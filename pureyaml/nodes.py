@@ -7,7 +7,8 @@ from __future__ import absolute_import
 
 import re
 import types
-from base64 import standard_b64decode
+from base64 import standard_b64decode, standard_b64encode
+from builtins import bytes
 from functools import partial
 from math import isnan
 
@@ -242,7 +243,15 @@ class Binary(Scalar):
     type = 'binary'
 
     def init_value(self, value, *args, **kwargs):
-        return standard_b64decode(value)
+        return standard_b64decode(bytes(value, 'ascii'))
+
+    @classmethod
+    def from_decoded(cls, data):
+        self = cls.__new__(cls)
+        self.raw_value = data
+        self.raw_value = standard_b64encode(data)
+        self.value = standard_b64decode(self.raw_value)
+        return self
 
 
 class ScalarDispatch(object):

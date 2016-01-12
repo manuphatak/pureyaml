@@ -71,6 +71,24 @@ class NodeEncoderTestCase(ParametrizedTestData):
         )
     )  # :on
 
+    test_binary__data = {
+        'picture': (  # :off
+            "GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9"
+            "\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e"
+            "\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei^"
+            "\x10' \x82\n\x01\x00;"
+        )  # :on
+    }
+    test_binary__expected = Map(  # :off
+        (
+            Str('picture'),
+            Binary(
+                b'R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmle\n'
+                b'ECcgggoBADs=\n'
+            )
+        )
+    )  # :on
+
 
 @mark.parametrize('case', NodeEncoderTestCase.keys())
 def test_node_encoder(case):
