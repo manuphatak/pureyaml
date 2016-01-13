@@ -68,7 +68,13 @@ test: lint
 	python setup.py test
 
 test-all: lint
-	tox -i $(PIP_INDEX_URL)
+	tox -e py27 -i $(PIP_INDEX_URL) & \
+	tox -e py33 -i $(PIP_INDEX_URL) & \
+	tox -e py34 -i $(PIP_INDEX_URL) & \
+	tox -e py35 -i $(PIP_INDEX_URL) & \
+	tox -e pypy -i $(PIP_INDEX_URL) & \
+	tox -e docs -i $(PIP_INDEX_URL) & \
+	wait
 
 coverage:
 	coverage run setup.py test

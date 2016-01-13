@@ -6,6 +6,28 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+from setuptools.command.test import test as TestCommand
+
+
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', 'Arguments to pass to py.test')]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = ''
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.pytest_args += ' --cov=pureyaml'
+
+    def run_tests(self):
+        import pytest
+        import sys
+
+        print(self.pytest_args)
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -17,9 +39,9 @@ with open('HISTORY.rst') as history_file:
 requirements = ['ply#3.8+bionikspoon', 'future']
 dependency_links = ['git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply']
 # TODO: put package test requirements here
-test_requirements = ['pytest', 'pytest-cov', 'future', ]
+test_requirements = ['pytest', 'pytest-cov', 'pytest-xdist', 'future' ]
 # TODO: put package setup requirements here
-setup_requirements = ['pytest-runner', 'pytest-xdist', 'flake8', 'future']
+setup_requirements = ['flake8', 'ply#3.8+bionikspoon','future']
 
 setup(  # :off
     name='pureyaml',
@@ -53,6 +75,7 @@ setup(  # :off
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     test_suite='tests',
+    cmdclass={'test': PyTest},
     install_requires=requirements,
     tests_require=test_requirements,
     setup_requires=setup_requirements,
