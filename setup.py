@@ -37,7 +37,7 @@ with open('HISTORY.rst') as history_file:
 
 # TODO: put package requirements here
 requirements = ['ply#3.8+bionikspoon', 'future']
-dependency_links = ['git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply']
+dependency_links = []
 # TODO: put package test requirements here
 test_requirements = ['pytest', 'pytest-cov', 'pytest-xdist', 'future']
 # TODO: put package setup requirements here

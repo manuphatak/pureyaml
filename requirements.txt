@@ -4,6 +4,9 @@
 #
 #    pip-compile requirements.in
 #
+--index-url http://localhost:3141/manu/dev/+simple/
+
+-e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
 future==0.15.2
 singledispatch==3.4.0.3
 six==1.10.0               # via singledispatch
