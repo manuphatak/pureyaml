@@ -68,7 +68,7 @@ test: lint
 	python setup.py test
 
 test-all: lint
-	tox
+	tox -i $(PIP_INDEX_URL)
 
 coverage:
 	coverage run setup.py test

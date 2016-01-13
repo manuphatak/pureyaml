@@ -4,9 +4,6 @@
 #
 #    pip-compile requirements.in
 #
---index-url http://localhost:3141/manu/dev/+simple/
-
 future==0.15.2
-ply==3.8+bionikspoon
 singledispatch==3.4.0.3
 six==1.10.0               # via singledispatch

@@ -2,4 +2,3 @@
 # -------------------------------------
 future
 singledispatch
-ply==3.8+bionikspoon
