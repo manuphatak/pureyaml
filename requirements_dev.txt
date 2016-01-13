@@ -4,8 +4,6 @@
 #
 #    pip-compile requirements_dev.in
 #
---index-url http://localhost:3141/manu/dev/+simple/
-
 -e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
 alabaster==0.7.7          # via sphinx
 apipkg==1.4               # via execnet
