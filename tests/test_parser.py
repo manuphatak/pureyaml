@@ -1017,6 +1017,36 @@ def test_mixed_map_of_sequences():
     assert parse(text) == expected
 
 
+def test_map_of_sequences_with_no_indent():
+    text = dedent("""
+        men:
+        - John Smith
+        - Bill Jones
+        women:
+        - Mary Smith
+        - Susan Williams
+    """)[1:]
+
+    expected = Docs(Doc(Map(  # :off
+        (
+            Str('men'),
+            Sequence(
+                Str('John Smith'),
+                Str('Bill Jones'),
+            )
+        ),
+        (
+            Str('women'),
+            Sequence(
+                Str('Mary Smith'),
+                Str('Susan Williams'),
+            )
+        ),
+    )))  # :on
+
+    assert parse(text) == expected
+
+
 # noinspection SpellCheckingInspection
 def test_cast_type_binary():
     text = dedent(u"""
@@ -1090,7 +1120,7 @@ def test_3_item_map_explicit_key():
     assert parse(text) == expected
 
 
-def test_map_complex_key__key_sequence():
+def test_map_complex_key__key_sequence_expanded():
     text = dedent("""
         ?
           - Detroit Tigers

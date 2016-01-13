@@ -119,6 +119,13 @@ class YAMLProductions(YAMLTokens):
         """
         p[0] = p[2]
 
+    @strict(Sequence)
+    def p_map_item_value__sequence_no_indent(self, p):
+        """
+        map_item_value  : B_MAP_VALUE sequence
+        """
+        p[0] = p[2]
+
     # @strict(Null)
     # def p_map_item_value_empty(self, p):
     #     """

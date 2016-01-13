@@ -79,6 +79,7 @@ class NodeEncoderTestCase(ParametrizedTestData):
             "\x10' \x82\n\x01\x00;"
         )  # :on
     }
+    # noinspection SpellCheckingInspection
     test_binary__expected = Map(  # :off
         (
             Str('picture'),
@@ -98,7 +99,7 @@ def test_node_encoder(case):
 
 def dump(data):
     text = pureyaml.dump(data)
-    print('\n' + text)
+    # print('\n' + text)
     return text
 
 

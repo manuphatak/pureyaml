@@ -14,7 +14,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 # TODO: put package requirements here
-requirements = ['ply#bionikspoon/1.0.0', 'singledispatch']
+requirements = ['ply#3.8+bionikspoon', 'singledispatch']
 # TODO: put package test requirements here
 test_requirements = ['pytest', 'pytest-cov', 'future']
 # TODO: put package setup requirements here
