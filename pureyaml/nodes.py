@@ -8,11 +8,10 @@ from __future__ import absolute_import
 import re
 import types
 from base64 import standard_b64decode, standard_b64encode
-from builtins import bytes
 from functools import partial
 from math import isnan
 
-from future.utils import implements_iterator, iteritems
+from future.utils import implements_iterator, iteritems, binary_type, text_type
 
 from ._compat import collections_abc as abc
 from .exceptions import YAMLCastTypeError
@@ -243,13 +242,15 @@ class Binary(Scalar):
     type = 'binary'
 
     def init_value(self, value, *args, **kwargs):
-        return standard_b64decode(bytes(value, 'ascii'))
+        if isinstance(value, text_type):
+            value = binary_type(value, 'ascii')
+        return standard_b64decode(value)
 
     @classmethod
     def from_decoded(cls, data):
         self = cls.__new__(cls)
         self.raw_value = data
-        self.raw_value = standard_b64encode(data)
+        self.raw_value = standard_b64encode(data).decode('ascii')
         self.value = standard_b64decode(self.raw_value)
         return self
 
@@ -335,3 +336,7 @@ class NodeVisitor(object):
 
     def generic_visit(self, node):
         raise RuntimeError('No visit_%s method' % type(node).__name__)
+
+
+__all__ = ['Node', 'Collection', 'Docs', 'Doc', 'Sequence', 'Map', 'Scalar', 'Null', 'Str', 'Int', 'Float', 'Bool',
+           'Binary', 'ScalarDispatch', 'NodeVisitor', ]

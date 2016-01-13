@@ -4,7 +4,8 @@
 from __future__ import absolute_import
 
 # noinspection PyCompatibility
-from builtins import str as text
+from future.utils import text_type, binary_type, iteritems
+
 from .nodes import *  # noqa
 from .utils import ContextStack
 
@@ -20,20 +21,20 @@ def node_encoder(obj):  # noqa
         for item in obj:
             items.append(node_encoder(item))
         return Sequence(*items)
-    elif isinstance(obj, bytes):
+    elif isinstance(obj, binary_type):
         try:
-            obj = text(obj, 'ascii')
+            obj = text_type(obj, 'ascii')
             return Str(obj)
         except UnicodeDecodeError:
             return Binary.from_decoded(obj)
-    elif isinstance(obj, text):
-        def is_binary_string(chars):
-            text_chars = bytearray(set([7, 8, 9, 10, 12, 13, 27]) | set(range(0x20, 0x100)) - set([0x7f]))
-            return bool(chars.translate(text_chars))
+    elif isinstance(obj, text_type):
 
-        if is_binary_string(obj):
+        try:
+            obj.encode('ascii')
+            return Str(obj)
+        except UnicodeEncodeError:
+            obj = binary_type(obj, encoding='utf-8')
             return Binary.from_decoded(obj)
-        return Str(obj)
     elif isinstance(obj, bool):
         return Bool(obj)
     elif isinstance(obj, int):
@@ -118,7 +119,7 @@ class YAMLEncoder(NodeVisitor):
         return [repr(node.value)]
 
     def visit_Str(self, node):
-        value = text(node.value)
+        value = text_type(node.value)
         repr_required = [  # :off
             value.isdecimal(),
             value.lower() in ['yes', 'no', 'true', 'false'],

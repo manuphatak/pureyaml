@@ -1,50 +1,33 @@
 diff --git i/requirements.txt w/requirements.txt
-index 778451a..f8460c8 100644
+index f8460c8..e3ee3cc 100644
 --- i/requirements.txt
 +++ w/requirements.txt
-@@ -4,7 +4,9 @@
+@@ -6,7 +6,7 @@
  #
- #    pip-compile requirements.in
- #
---e git+git://github.com/bionikspoon/ply.git@bionikspoon/1.0.0#egg=ply
-+--index-url http://localhost:3141/manu/dev/+simple/
-+
-+-e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
+ --index-url http://localhost:3141/manu/dev/+simple/
+ 
+--e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
  future==0.15.2
++ply==3.8+bionikspoon
  singledispatch==3.4.0.3
  six==1.10.0               # via singledispatch
 diff --git i/requirements_dev.txt w/requirements_dev.txt
-index b5d502e..8b0219e 100644
+index 8b0219e..3b381f6 100644
 --- i/requirements_dev.txt
 +++ w/requirements_dev.txt
-@@ -4,7 +4,9 @@
+@@ -6,7 +6,6 @@
  #
- #    pip-compile requirements_dev.in
- #
---e git+git://github.com/bionikspoon/ply.git@bionikspoon/1.0.0#egg=ply
-+--index-url http://localhost:3141/manu/dev/+simple/
-+
-+-e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
+ --index-url http://localhost:3141/manu/dev/+simple/
+ 
+--e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
  alabaster==0.7.7          # via sphinx
  apipkg==1.4               # via execnet
  argh==0.26.1              # via watchdog
-@@ -23,8 +25,8 @@ mccabe==0.3.1             # via flake8
- mock==1.3.0
- pathtools==0.1.2          # via watchdog
- pbr==1.8.1                # via mock
--pep8==1.5.7               # via flake8
--pip-tools==1.4.3
-+pep8==1.7.0               # via flake8
-+pip-tools==1.4.4
+@@ -28,6 +27,7 @@ pbr==1.8.1                # via mock
+ pep8==1.7.0               # via flake8
+ pip-tools==1.4.4
  pluggy==0.3.1             # via tox
++ply==3.8+bionikspoon
  py==1.4.31                # via pytest, pytest-xdist, tox
  pyflakes==1.0.0           # via flake8
-@@ -39,7 +41,7 @@ singledispatch==3.4.0.3
- six==1.10.0               # via mock, pip-tools, singledispatch, sphinx
- snowballstemmer==1.2.1    # via sphinx
- sphinx-rtd-theme==0.1.9   # via sphinx
--sphinx==1.3.3
-+sphinx==1.3.4
- tox==2.3.1
- virtualenv==13.1.2        # via tox
- watchdog==0.8.3
+ pygments==2.0.2           # via sphinx

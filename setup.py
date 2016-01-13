@@ -14,11 +14,12 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 # TODO: put package requirements here
-requirements = ['ply#3.8+bionikspoon', 'singledispatch']
+requirements = ['ply#3.8+bionikspoon', 'future']
+dependency_links = ['git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply']
 # TODO: put package test requirements here
-test_requirements = ['pytest', 'pytest-cov', 'future']
+test_requirements = ['pytest', 'pytest-cov', 'future', ]
 # TODO: put package setup requirements here
-setup_requirements = ['pytest-runner', 'pytest-xdist', 'flake8']
+setup_requirements = ['pytest-runner', 'pytest-xdist', 'flake8', 'future']
 
 setup(  # :off
     name='pureyaml',
@@ -55,4 +56,5 @@ setup(  # :off
     install_requires=requirements,
     tests_require=test_requirements,
     setup_requires=setup_requirements,
+    dependency_links=dependency_links
 )  # :on

@@ -4,6 +4,7 @@ pureyaml
 """
 from __future__ import absolute_import
 
+import re
 from textwrap import dedent
 
 from .tokens import YAMLTokens
