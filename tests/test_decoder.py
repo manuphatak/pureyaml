@@ -8,7 +8,6 @@ from __future__ import absolute_import
 from textwrap import dedent
 
 import pureyaml
-from tests.utils import feature_not_supported
 
 
 def load(text):
