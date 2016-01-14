@@ -418,6 +418,7 @@ def test_dump__casted_data():
 
 
 def test_dump__travis_yaml():
+    # noinspection SpellCheckingInspection
     secure_block = (  # :off
         'ndFpfTvPZN8SfvduvS4567k1TqYl7L7lRxxEPjmRzg3OgzMgCHRMO/uCrce5i8TkxTWL'
         'W82ArNvBZnTkRzGyChKfoNzKwukgrJACOibc6cPgNBPpuDpZTb7X6hZixSs9VBsMwL9T'
