@@ -4,6 +4,8 @@
 from __future__ import absolute_import
 
 # noinspection PyCompatibility
+import re
+
 from future.utils import text_type, binary_type, iteritems
 
 from .nodes import *  # noqa
@@ -72,7 +74,7 @@ class YAMLEncoder(NodeVisitor):
         lines = ''.join(line for line in self.iterencode(obj))
         return lines
 
-    def iterencode(self, obj):
+    def iterencode(self, obj):  # noqa
         indent_depth = 0
         nodes = node_encoder(obj)
         items = self.visit(nodes)
@@ -154,13 +156,23 @@ class YAMLEncoder(NodeVisitor):
     def visit_Str(self, node):
         value = text_type(node.value)
         use_repr = any([  # :off
-            value.isdecimal(),
             value.lower() in ['yes', 'no', 'true', 'false'],
+            value.isnumeric(),
+            is_float(value),
         ])  # :on
 
         method = repr if use_repr else str
         return method(node.value)
 
+    def visit_Bool(self, node):
+        return self.visit_Scalar(node).lower()
+
     visit_Int = visit_Scalar
-    visit_Bool = visit_Scalar
     visit_Float = visit_Scalar
+
+
+re_float = re.compile(r'[+-]?(?:\d*\.\d+|\d+\.\d)')
+
+
+def is_float(string):
+    return not not re_float.match(string)
