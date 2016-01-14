@@ -175,20 +175,20 @@ def test_dump__dict_of_lists():
     if PY34 or PY35:
         expected = dedent("""
             women:
-              - Mary Smith
-              - Susan Williams
+            - Mary Smith
+            - Susan Williams
             men:
-              - John Smith
-              - Bill Jones
+            - John Smith
+            - Bill Jones
         """)[1:]
     else:
         expected = dedent("""
             men:
-              - John Smith
-              - Bill Jones
+            - John Smith
+            - Bill Jones
             women:
-              - Mary Smith
-              - Susan Williams
+            - Mary Smith
+            - Susan Williams
         """)[1:]
     assert dump(data) == expected
 
@@ -261,18 +261,40 @@ def test_dump__nested_obj():
 
 
 def test_dump__nested_list():
-    data = [1,  # :off
-            [[2,
-              3],
-             [4,
-              [5,
-               6]],
-             7],
-            [8,
-             9,
-             10],
-            [[11, 12],
-             [13, 14, 15, 16]]]  # :on
+    data = [  # :off
+        1,
+        [
+            [
+                2,
+                3
+            ],
+            [
+                4,
+                [
+                    5,
+                    6
+                ]
+            ],
+            7
+        ],
+        [
+            8,
+            9,
+            10
+        ],
+        [
+            [
+                11,
+                12
+            ],
+            [
+                13,
+                14,
+                15,
+                16
+            ]
+        ]
+    ]  # :on
     expected = dedent("""
         - 1
         - - - 2
@@ -307,12 +329,12 @@ def test_dump__complex_mixed_obj():
         expected = dedent("""
             '4':
               5:
-                - 9: '10'
-                  11: '12'
-                  '6':
-                    - 7
-                    - 8
-                - '13': 14
+              - 9: '10'
+                11: '12'
+                '6':
+                - 7
+                - 8
+              - '13': 14
             '1':
               '2': 3
         """)[1:]
@@ -322,12 +344,12 @@ def test_dump__complex_mixed_obj():
               '2': 3
             '4':
               5:
-                - '6':
-                    - 7
-                    - 8
-                  9: '10'
-                  11: '12'
-                - '13': 14
+              - '6':
+                - 7
+                - 8
+                9: '10'
+                11: '12'
+              - '13': 14
         """)[1:]
     else:
         expected = dedent("""
@@ -335,12 +357,12 @@ def test_dump__complex_mixed_obj():
               '2': 3
             '4':
               5:
-                - 9: '10'
-                  11: '12'
-                  '6':
-                    - 7
-                    - 8
-                - '13': 14
+              - 9: '10'
+                11: '12'
+                '6':
+                - 7
+                - 8
+              - '13': 14
         """)[1:]
 
     assert dump(data) == expected

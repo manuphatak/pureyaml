@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 
 # noinspection PyCompatibility
-from future.utils import text_type, binary_type, iteritems
+from future.utils import text_type, binary_type, iteritems, string_types
 
 from .nodes import *  # noqa
 from .utils import ContextStack
@@ -52,6 +52,19 @@ class _ContextStack(ContextStack):
         return text.format(**self.attrs)
 
 
+class SYMBOL:
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return self.name
+
+
+INDENT = SYMBOL('INDENT')
+DEDENT = SYMBOL('DEDENT')
+NL = SYMBOL('NL')
+
+
 class YAMLEncoder(NodeVisitor):
     indent_size = 2
     stack = []
@@ -70,65 +83,73 @@ class YAMLEncoder(NodeVisitor):
             try:
                 current_item, next_item = next_item, next(items)
 
-                if next_item == '\n':
-                    current_item = current_item.rstrip(' ')
+                if next_item is NL:
+                    if isinstance(current_item, string_types):
+                        current_item = current_item.rstrip(' ')
 
-                if next_item == 'INDENT':
+                if next_item is INDENT:
                     indent_depth += 1
                     next_item = current_item
                     continue
 
-                if next_item == 'DEDENT':
+                if next_item is DEDENT:
                     indent_depth -= 1
                     next_item = current_item
                     continue
 
-                if current_item == '\n':
+                if current_item is NL:
                     yield '\n{indent}'.format(indent=' ' * indent_depth * self.indent_size)
                 else:
                     yield current_item
 
             except StopIteration:
-                yield next_item
+                if next_item is NL:
+                    yield '\n'
+                else:
+                    yield next_item
                 break
 
     def visit_Sequence(self, node):
         stack = []
-        for item in node:
+        for child in node:
             stack.append('-'.ljust(self.indent_size))
-            item_value = (yield item)
-            if not isinstance(item_value, list):
-                stack.append(item_value)
-                stack.append('\n')
+            item = (yield child)
+            if not isinstance(item, list):
+                stack.append(item)
+                stack.append(NL)
             else:
-                iter_items = iter(item_value)
+                iter_items = iter(item)
                 while True:
                     next_item = next(iter_items)
                     stack.append(next_item)
-                    if next_item == '\n':
+                    if next_item == NL:
                         break
-                stack.append('INDENT')
+                stack.append(INDENT)
                 stack.extend([next_item for next_item in iter_items])
-                stack.append('DEDENT')
+                stack.append(DEDENT)
 
         yield stack
 
     def visit_Map(self, node):
         stack = []
-        for key, value in iteritems(node):
-            key, value = (yield key), (yield value)
+        for k, v in iteritems(node):
+            key, value = (yield k), (yield v)
             if not isinstance(key, list) and not isinstance(value, list):
                 stack.append((yield key))
                 stack.append(': ')
                 stack.append((yield value))
-                stack.append('\n')
+                stack.append(NL)
             elif not isinstance(key, list):
                 stack.append((yield key))
                 stack.append(': ')
-                stack.append('\n')
-                stack.append('INDENT')
-                stack.extend(value)
-                stack.append('DEDENT')
+                stack.append(NL)
+                if isinstance(v, Sequence):
+                    # special case, Map value -> Sequence has optional indent.
+                    stack.extend(value)
+                else:
+                    stack.append(INDENT)
+                    stack.extend(value)
+                    stack.append(DEDENT)
 
         yield stack
 
