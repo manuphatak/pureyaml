@@ -96,6 +96,7 @@ def test_travis_yml():
     actual = load(text)
     assert actual == expected
 
+
 @feature_not_supported
 def test_travis_yml__literal_key():
     text = dedent("""
