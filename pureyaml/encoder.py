@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 
 # noinspection PyCompatibility
-from future.utils import text_type, binary_type, iteritems, string_types
+from future.utils import text_type, binary_type, iteritems
 
 from .nodes import *  # noqa
 from .utils import ContextStack
