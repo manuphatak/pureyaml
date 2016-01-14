@@ -235,9 +235,9 @@ class YAMLProductions(YAMLTokens):
         """
         scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
-        scalar_group = ''.join(p[2] + ('\n',))
+        scalar_group = ''.join(p[2])
         cleaned_scalar = fold(dedent(scalar_group)).rstrip()
-        p[0] = ScalarDispatch(cleaned_scalar + '\n', cast='str')
+        p[0] = ScalarDispatch(cleaned_scalar, cast='str')
 
     @strict(Str)
     def p_scalar__indented_flow(self, p):

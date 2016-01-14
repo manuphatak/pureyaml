@@ -686,7 +686,7 @@ def test_map_with_folded_block():
     expected = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
             Blank lines denote paragraph breaks
-        """)[1:])))))
+        """)[1:-1])))))
 
     assert parse(text) == expected
 
@@ -1251,7 +1251,7 @@ def test_double_dedent__literal_end():
                     (
                         Str('John Smith'),
                         Map(
-                            (Str('short bio'), Str('I like turtles. And green turtles.\n')),
+                            (Str('short bio'), Str('I like turtles. And green turtles.')),
                             (Str('long bio'), Str('I like turtles.\nAnd green turtles.\n')),
                         ),
                     ),
