@@ -91,6 +91,12 @@ class NodeEncoderTestCase(ParametrizedTestData):
     )  # :on
 
 
+@mark.parametrize('case', NodeEncoderTestCase.keys())
+def test_node_encoder(case):
+    data, expected = NodeEncoderTestCase.get(case)
+    assert node_encoder(data) == expected
+
+
 def test_node_binary_encoder():
     data, expected = NodeEncoderTestCase.get('test_binary')
 
@@ -103,12 +109,6 @@ def test_node_binary_encoder():
     encoded_nodes = node_encoder(data)
     picture_actual = encoded_nodes.value[0][1].value
     assert picture_actual == picture
-
-
-@mark.parametrize('case', NodeEncoderTestCase.keys())
-def test_node_encoder(case):
-    data, expected = NodeEncoderTestCase.get(case)
-    assert node_encoder(data) == expected
 
 
 def dump(data):
@@ -144,13 +144,25 @@ def test_dump__dict():
     assert dump(data) == expected
 
 
-def test_dump__list_of_dicts():
-    data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
-    expected = dedent("""
-        - Casablanca
-        - North by Northwest
-        - The Man Who Wasn't There
-    """)[1:]
+def test_dump__lists_of_dicts():
+    data = [  # :off
+        {'name': 'John Smith', 'age': 33},
+        {'name': 'Mary Smith', 'age': 27}
+    ]  # :on
+    if not PYPY:
+        expected = dedent("""
+            - age: 33
+              name: John Smith
+            - age: 27
+              name: Mary Smith
+        """)[1:]
+    else:
+        expected = dedent("""
+            - name: John Smith
+              age: 33
+            - name: Mary Smith
+              age: 27
+        """)[1:]
     assert dump(data) == expected
 
 
@@ -334,85 +346,7 @@ def test_dump__complex_mixed_obj():
     assert dump(data) == expected
 
 
-def test_dump__list__alt():
-    data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
-    expected = dedent("""
-        - Casablanca
-        - North by Northwest
-        - The Man Who Wasn't There
-    """)[1:]
-
-    assert dump(data) == expected
-
-
-def test_dump__dict__alt():
-    data = {'name': 'John Smith', 'age': 33}
-    if not PYPY:
-        expected = dedent("""
-            age: 33
-            name: John Smith
-        """)[1:]
-    else:
-        expected = dedent("""
-            name: John Smith
-            age: 33
-        """)[1:]
-
-    assert dump(data) == expected
-
-
-def test_dump__lists_of_dicts__alt():
-    data = [  # :off
-        {'name': 'John Smith', 'age': 33},
-        {'name': 'Mary Smith', 'age': 27}
-    ]  # :on
-    if not PYPY:
-        expected = dedent("""
-            - age: 33
-              name: John Smith
-            - age: 27
-              name: Mary Smith
-        """)[1:]
-    else:
-        expected = dedent("""
-            - name: John Smith
-              age: 33
-            - name: Mary Smith
-              age: 27
-        """)[1:]
-    assert dump(data) == expected
-
-
-def test_dump__dicts_of_lists__alt():
-    data = {  # :off
-        'men': ['John Smith', 'Bill Jones'],
-        'women': ['Mary Smith', 'Susan Williams']
-    }  # :on
-    if PY34 or PY35:
-        expected = dedent("""
-            women:
-              - Mary Smith
-              - Susan Williams
-            men:
-              - John Smith
-              - Bill Jones
-        """)[1:]
-        actual = dump(data)
-    else:
-        expected = dedent("""
-            men:
-              - John Smith
-              - Bill Jones
-            women:
-              - Mary Smith
-              - Susan Williams
-        """)[1:]
-        actual = dump(data)
-
-    assert actual == expected
-
-
-def test_dump__casted_data__alt():
+def test_dump__casted_data():
     data = {  # :off
         'a': 123,
         'b': str(123),
