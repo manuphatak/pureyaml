@@ -309,6 +309,9 @@ class ScalarDispatch(object):
 
 
 class NodeVisitor(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
     def visit(self, node):
         stack = [node]
         last_result = None
@@ -316,7 +319,8 @@ class NodeVisitor(object):
             try:
                 last = stack[-1]
                 if isinstance(last, types.GeneratorType):
-                    stack.append(last.send(last_result))
+                    sent = last.send(last_result)
+                    stack.append(sent)
                     last_result = None
                 elif isinstance(last, Node):
                     stack.append(self._visit(stack.pop()))

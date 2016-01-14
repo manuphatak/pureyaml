@@ -54,69 +54,86 @@ class _ContextStack(ContextStack):
 
 class YAMLEncoder(NodeVisitor):
     indent_size = 2
-
-    @property
-    def SEQUENCE_START(self):
-        return '-'.ljust(self.indent_size)
-
-    @property
-    def INDENT(self):
-        return ' ' * self.indent_size
-
-    # noinspection PyUnusedLocal
-    def __init__(self, *args, **kwargs):
-        global _
-        _ = _ContextStack(self)
-
-    def _visit(self, node):
-        with _.context():
-            return super(YAMLEncoder, self)._visit(node)
+    stack = []
 
     def encode(self, obj):
         lines = ''.join(line for line in self.iterencode(obj))
         return lines
 
     def iterencode(self, obj):
+        indent_depth = 0
         nodes = node_encoder(obj)
-        lines = self.visit(nodes)
-        lines.append('')
-        return '\n'.join(lines)
+        items = self.visit(nodes)
+        items = iter(items)
+        next_item = next(items)
+        while True:
+            try:
+                current_item, next_item = next_item, next(items)
+
+                if next_item == '\n':
+                    current_item = current_item.rstrip(' ')
+
+                if next_item == 'INDENT':
+                    indent_depth += 1
+                    next_item = current_item
+                    continue
+
+                if next_item == 'DEDENT':
+                    indent_depth -= 1
+                    next_item = current_item
+                    continue
+
+                if current_item == '\n':
+                    yield '\n{indent}'.format(indent=' ' * indent_depth * self.indent_size)
+                else:
+                    yield current_item
+
+            except StopIteration:
+                yield next_item
+                break
 
     def visit_Sequence(self, node):
-        lines = []
+        stack = []
         for item in node:
-            iter_item = iter(self.visit(item))
+            stack.append('-'.ljust(self.indent_size))
+            item_value = (yield item)
+            if not isinstance(item_value, list):
+                stack.append(item_value)
+                stack.append('\n')
+            else:
+                iter_items = iter(item_value)
+                while True:
+                    next_item = next(iter_items)
+                    stack.append(next_item)
+                    if next_item == '\n':
+                        break
+                stack.append('INDENT')
+                stack.extend([next_item for next_item in iter_items])
+                stack.append('DEDENT')
 
-            _.value = next(iter_item)
-            lines.append(_('{self.SEQUENCE_START}{value}'))
-
-            for line in iter_item:
-                _.value = line
-                lines.append(_('{self.INDENT}{value}'))
-
-        return lines
+        yield stack
 
     def visit_Map(self, node):
-        lines = []
+        stack = []
+        for key, value in iteritems(node):
+            key, value = (yield key), (yield value)
+            if not isinstance(key, list) and not isinstance(value, list):
+                stack.append((yield key))
+                stack.append(': ')
+                stack.append((yield value))
+                stack.append('\n')
+            elif not isinstance(key, list):
+                stack.append((yield key))
+                stack.append(': ')
+                stack.append('\n')
+                stack.append('INDENT')
+                stack.extend(value)
+                stack.append('DEDENT')
 
-        for _key, _value in node.value:
-            if isinstance(_key, Scalar) and isinstance(_value, Scalar):
-                _.key = self.visit(_key)[0]
-                _.value = self.visit(_value)[0]
-                lines.append(_('{key}: {value}'))
-            elif isinstance(_key, Scalar):
-                _.key = self.visit(_key)[0]
-
-                lines.append(_('{key}:'))
-
-                for line in self.visit(_value):
-                    _.value = line
-                    lines.append(_('{self.INDENT}{value}'))
-
-        return lines
+        yield stack
 
     def visit_Scalar(self, node):
-        return [repr(node.value)]
+        return repr(node.value)
 
     def visit_Str(self, node):
         value = text_type(node.value)
@@ -127,7 +144,7 @@ class YAMLEncoder(NodeVisitor):
 
         method = repr if any(repr_required) else str
 
-        return [method(node.value)]
+        return method(node.value)
 
     visit_Int = visit_Scalar
     visit_Bool = visit_Scalar
