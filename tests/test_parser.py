@@ -1189,3 +1189,86 @@ def test_map_complex_key__flow_sequence():
     )))  # :on
 
     assert parse(text) == expected
+
+
+def test_double_dedent():
+    text = dedent("""
+        people:
+            John Smith:
+                nickname: Ol' johnny boy
+        places:
+            US:
+                capital: DC
+    """)[1:]
+    expected = Docs(Doc(  # :off
+        Map(
+            (
+                Str('people'),
+                Map(
+                    (
+                        Str('John Smith'),
+                        Map(
+                            (Str('nickname'), Str("Ol' johnny boy")),
+                        ),
+                    ),
+                ),
+            ),
+            (
+                Str('places'),
+                Map(
+                    (
+                        Str('US'),
+                        Map(
+                            (Str('capital'), Str('DC')),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ))  # :on
+    assert parse(text) == expected
+
+
+@feature_not_supported
+def test_double_dedent__literal_end():
+    text = dedent("""
+        people:
+            John Smith:
+                short bio: <
+                    I like turtles.
+                    And green turtles.
+                long bio: |
+                    I like turtles.
+                    And green turtles.
+        places:
+            US:
+                capital: DC
+    """)[1:]
+    expected = Docs(Doc(  # :off
+        Map(
+            (
+                Str('people'),
+                Map(
+                    (
+                        Str('John Smith'),
+                        Map(
+                            (Str('short bio'), Str('I like turtles. And green turtles.')),
+                            (Str('long bio'), Str('I like turtles.\nAnd green turtles.')),
+                        ),
+                    ),
+                ),
+            ),
+            (
+                Str('places'),
+                Map(
+                    (
+                        Str('US'),
+                        Map(
+                            (Str('capital'), Str('DC')),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ))  # :on
+    assert parse(text) == expected

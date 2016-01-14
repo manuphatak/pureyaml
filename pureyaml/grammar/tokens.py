@@ -42,7 +42,7 @@ class TokenList(object):
     ]  # :on
 
 
-# noinspection PyMethodMayBeStatic,PyIncorrectDocstring,PySingleQuotedDocstring
+# noinspection PyMethodMayBeStatic,PyIncorrectDocstring,PySingleQuotedDocstring,PyPep8Naming
 class YAMLTokens(TokenList):
     def __init__(self):
         self.indent_stack = [1]
@@ -87,12 +87,20 @@ class YAMLTokens(TokenList):
             return
 
         if indent_status == 'INDENT':
-            # note: also set by t_B_SEQUENCE_COMPACT_START
+            # note: also set by
+            #   * t_B_SEQUENCE_COMPACT_START
+            #   * t_B_MAP_COMPACT_KEY
+            #   * t_B_MAP_COMPACT_VALUE
             self.indent_stack.append(next_depth)
 
         if indent_status == 'DEDENT':
-            indent_delta = curr_depth - self.indent_stack.pop()
-            t.lexer.lexpos -= indent_delta
+            indent_delta = curr_depth - next_depth
+            step = self.indent_stack.pop() - self.indent_stack[-1]
+
+            # If dedent is larger then last indent
+            if indent_delta > step:
+                # Go back and reevaluate this token.
+                t.lexer.lexpos -= 1
 
         t.type = indent_status
         return t
