@@ -1229,12 +1229,11 @@ def test_double_dedent():
     assert parse(text) == expected
 
 
-@feature_not_supported
 def test_double_dedent__literal_end():
     text = dedent("""
         people:
             John Smith:
-                short bio: <
+                short bio: >
                     I like turtles.
                     And green turtles.
                 long bio: |
@@ -1252,8 +1251,8 @@ def test_double_dedent__literal_end():
                     (
                         Str('John Smith'),
                         Map(
-                            (Str('short bio'), Str('I like turtles. And green turtles.')),
-                            (Str('long bio'), Str('I like turtles.\nAnd green turtles.')),
+                            (Str('short bio'), Str('I like turtles. And green turtles.\n')),
+                            (Str('long bio'), Str('I like turtles.\nAnd green turtles.\n')),
                         ),
                     ),
                 ),

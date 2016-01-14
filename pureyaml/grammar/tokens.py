@@ -183,15 +183,13 @@ class YAMLTokens(TokenList):
         column = find_column(t)
         indent = self.indent_stack[-1]
         if column < indent:
-            # TODO rollback and dedent
-            raise Exception('TODO, dedent')
-        elif column == indent:
+            t.lexer.lexpos -= 1
+        if column <= indent:
             t.lexer.pop_state()
             t.type = 'B_LITERAL_END'
-            return t
-        else:
+        if column > indent:
             t.type = 'SCALAR'
-            return t
+        return t
 
     # state: fold
     # -------------------------------------------------------------------
@@ -208,15 +206,13 @@ class YAMLTokens(TokenList):
         column = find_column(t)
         indent = self.indent_stack[-1]
         if column < indent:
-            # TODO rollback and dedent
-            raise Exception('TODO, dedent')
-        elif column == indent:
+            t.lexer.lexpos -= 1
+        if column <= indent:
             t.lexer.pop_state()
             t.type = 'B_FOLD_END'
-            return t
-        else:
+        if column > indent:
             t.type = 'SCALAR'
-            return t
+        return t
 
     # state: flowsequence
     # -------------------------------------------------------------------
@@ -367,5 +363,5 @@ class YAMLTokens(TokenList):
         return t
 
     def t_SCALAR(self, t):
-        r'(?:\\.|[^\n\#\:\-\|]|[\:\-\|]\S)+'
+        r'(?:\\.|[^\n\#\:\-\|\>]|[\:\-\|\>]\S)+'
         return t
