@@ -82,9 +82,8 @@ class YAMLEncoder(NodeVisitor):
             try:
                 current_item, next_item = next_item, next(items)
 
-                if next_item is '\n':
-                    if isinstance(current_item, string_types):
-                        current_item = current_item.rstrip(' ')
+                if next_item == '\n':
+                    current_item = current_item.rstrip(' ')
 
                 if next_item is INDENT:
                     indent_depth += 1
@@ -96,10 +95,10 @@ class YAMLEncoder(NodeVisitor):
                     next_item = current_item
                     continue
 
-                if current_item == '\n':
-                    yield '\n{indent}'.format(indent=' ' * indent_depth * self.indent_size)
-                else:
-                    yield current_item
+                indent = ''.ljust(indent_depth * self.indent_size)
+                current_item = current_item.replace('\n', '\n{0}'.format(indent))
+
+                yield current_item
 
             except StopIteration:
                 yield next_item
