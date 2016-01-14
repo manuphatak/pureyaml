@@ -62,7 +62,6 @@ class SYMBOL:
 
 INDENT = SYMBOL('INDENT')
 DEDENT = SYMBOL('DEDENT')
-NL = SYMBOL('NL')
 
 
 class YAMLEncoder(NodeVisitor):
@@ -83,7 +82,7 @@ class YAMLEncoder(NodeVisitor):
             try:
                 current_item, next_item = next_item, next(items)
 
-                if next_item is NL:
+                if next_item is '\n':
                     if isinstance(current_item, string_types):
                         current_item = current_item.rstrip(' ')
 
@@ -97,16 +96,13 @@ class YAMLEncoder(NodeVisitor):
                     next_item = current_item
                     continue
 
-                if current_item is NL:
+                if current_item == '\n':
                     yield '\n{indent}'.format(indent=' ' * indent_depth * self.indent_size)
                 else:
                     yield current_item
 
             except StopIteration:
-                if next_item is NL:
-                    yield '\n'
-                else:
-                    yield next_item
+                yield next_item
                 break
 
     def visit_Sequence(self, node):
@@ -116,13 +112,13 @@ class YAMLEncoder(NodeVisitor):
             item = (yield child)
             if not isinstance(item, list):
                 stack.append(item)
-                stack.append(NL)
+                stack.append('\n')
             else:
                 iter_items = iter(item)
                 while True:
                     next_item = next(iter_items)
                     stack.append(next_item)
-                    if next_item == NL:
+                    if next_item == '\n':
                         break
                 stack.append(INDENT)
                 stack.extend([next_item for next_item in iter_items])
@@ -138,11 +134,11 @@ class YAMLEncoder(NodeVisitor):
                 stack.append((yield key))
                 stack.append(': ')
                 stack.append((yield value))
-                stack.append(NL)
+                stack.append('\n')
             elif not isinstance(key, list):
                 stack.append((yield key))
                 stack.append(': ')
-                stack.append(NL)
+                stack.append('\n')
                 if isinstance(v, Sequence):
                     # special case, Map value -> Sequence has optional indent.
                     stack.extend(value)
