@@ -137,13 +137,12 @@ class YAMLEncoder(NodeVisitor):
 
     def visit_Str(self, node):
         value = text_type(node.value)
-        repr_required = [  # :off
+        use_repr = any([  # :off
             value.isdecimal(),
             value.lower() in ['yes', 'no', 'true', 'false'],
-        ]  # :on
+        ])  # :on
 
-        method = repr if any(repr_required) else str
-
+        method = repr if use_repr else str
         return method(node.value)
 
     visit_Int = visit_Scalar
