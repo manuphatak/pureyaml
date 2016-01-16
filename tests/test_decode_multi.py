@@ -8,7 +8,7 @@ from pytest import mark
 import pureyaml
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import MultiTestCaseBase, feature_not_supported
+from tests.utils import MultiTestCaseBase
 
 
 class DecodeTestCase(MultiTestCaseBase):
@@ -817,10 +817,10 @@ class DecodeTestCase(MultiTestCaseBase):
 
     """)[1:]
 
-    it_handles_map_of_sequences_many_items__test_load = {
+    it_handles_map_of_sequences_many_items__test_load = {  # :off
         'people': ['John Smith', 'Joe Sixpack', 'Jane Doe'],
         'places': ['London', 'Australia', 'US']
-        }
+    }  # :on
     it_handles_map_of_sequences_many_items__test_parser = Docs(Doc(Map(  # :off
         (
             Str('people'),
@@ -848,7 +848,12 @@ class DecodeTestCase(MultiTestCaseBase):
             family_name:  Gale
     """)[1:]
 
-    it_handles_map_of_map_1_item__test_load = {'customer': {'family_name': 'Gale', 'first_name': 'Dorothy'}}
+    it_handles_map_of_map_1_item__test_load = {  # :off
+        'customer': {
+            'family_name': 'Gale',
+            'first_name': 'Dorothy'
+        }
+    }  # :on
     it_handles_map_of_map_1_item__test_parser = Docs(Doc(Map(  # :off
         (
             Str('customer'),
@@ -880,7 +885,7 @@ class DecodeTestCase(MultiTestCaseBase):
         'cashier': {'family_name': 'Sixpack', 'first_name': 'Joe'},
         'items': ['doritos', 'soda', 'candy'],
         'total': 20
-        }
+    }
     it_handles_map_of_map_many_items__test_parser = Docs(Doc(Map(  # :off
         (
             Str('customer'),
@@ -991,10 +996,10 @@ class DecodeTestCase(MultiTestCaseBase):
           - Susan Williams
     """)[1:]
 
-    it_handles_mixed_map_of_sequences__test_load = {
+    it_handles_mixed_map_of_sequences__test_load = {  # :off
         'women': ['Mary Smith', 'Susan Williams'],
         'men': ['John Smith', 'Bill Jones']
-        }
+    }  # :on
     it_handles_mixed_map_of_sequences__test_parser = Docs(Doc(Map(  # :off
         (
             Str('men'),
@@ -1023,10 +1028,10 @@ class DecodeTestCase(MultiTestCaseBase):
         - Susan Williams
     """)[1:]
 
-    it_handles_map_of_sequences_with_no_indent__test_load = {
+    it_handles_map_of_sequences_with_no_indent__test_load = {  # :off
         'women': ['Mary Smith', 'Susan Williams'],
         'men': ['John Smith', 'Bill Jones']
-        }
+    }  # :on
     it_handles_map_of_sequences_with_no_indent__test_parser = Docs(Doc(Map(  # :off
         (
             Str('men'),
@@ -1055,11 +1060,14 @@ class DecodeTestCase(MultiTestCaseBase):
             56enmleECcgggoBADs=mZmE
     """)[1:]
 
-    it_handles_cast_type_binary__test_load = {
-        'picture': b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9\xe9\xe5fff\x00\x00\x00\xe7\xe7"
-                   b"\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei"
-                   b"^\x10' \x82\n\x01\x00;"
-        }
+    it_handles_cast_type_binary__test_load = {  # :off
+        'picture': (
+            b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9"
+            b"\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e"
+            b"\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei^"
+            b"\x10' \x82\n\x01\x00;"
+        )
+    }  # :on
     it_handles_cast_type_binary__test_parser = Docs(Doc(Map(  # :off
         (
             Str('picture'),
@@ -1195,10 +1203,14 @@ class DecodeTestCase(MultiTestCaseBase):
                 capital: DC
     """)[1:]
 
-    it_handles_double_dedent__test_load = {
-        'people': {'John Smith': {'nickname': "Ol' johnny boy"}},
-        'places': {'US': {'capital': 'DC'}}
+    it_handles_double_dedent__test_load = {  # :off
+        'people': {
+            'John Smith': {'nickname': "Ol' johnny boy"}
+        },
+        'places': {
+            'US': {'capital': 'DC'}
         }
+    }  # :on
     it_handles_double_dedent__test_parser = Docs(Doc(  # :off
         Map(
             (
@@ -1242,15 +1254,17 @@ class DecodeTestCase(MultiTestCaseBase):
                 capital: DC
     """)[1:]
 
-    it_handles_double_dedent_with_literal_end__test_load = {
+    it_handles_double_dedent_with_literal_end__test_load = {  # :off
         'people': {
             'John Smith': {
                 'short bio': 'I like turtles. And green turtles.\n',
                 'long bio': 'I like turtles.\nAnd green turtles.\n'
-                }
-            },
-        'places': {'US': {'capital': 'DC'}}
+            }
+        },
+        'places': {
+            'US': {'capital': 'DC'}
         }
+    }  # :on
     it_handles_double_dedent_with_literal_end__test_parser = Docs(Doc(  # :off
         Map(
             (
