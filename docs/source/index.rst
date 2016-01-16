@@ -13,7 +13,8 @@ Contents:
    Contributing <contributing>
    Authors <authors>
    History <history>
-   API Docs <pureyaml>
+   pureyaml API Docs <pureyaml>
+   pureyaml.grammar API Docs <pureyaml.grammar>
 
 Feedback
 ========

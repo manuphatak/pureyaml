@@ -39,7 +39,7 @@ with open('HISTORY.rst') as history_file:
 requirements = ['ply#3.8+bionikspoon', 'future']
 dependency_links = []
 # TODO: put package test requirements here
-test_requirements = ['pytest', 'pytest-cov', 'pytest-xdist', 'future']
+test_requirements = ['pytest', 'pytest-cov', 'pytest-xdist', 'future', 'pyyaml']
 # TODO: put package setup requirements here
 setup_requirements = ['flake8', 'ply#3.8+bionikspoon', 'future']
 
@@ -51,7 +51,7 @@ setup(  # :off
     author='Manu Phatak',
     author_email='bionikspoon@gmail.com',
     url='https://github.com/bionikspoon/pureyaml',
-    packages=['pureyaml'],
+    packages=['pureyaml', 'pureyaml.grammar'],
     package_dir={'pureyaml': 'pureyaml'},
     include_package_data=True,
     license='MIT',

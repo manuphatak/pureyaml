@@ -33,7 +33,7 @@ pytest-cov==2.2.0
 pytest-xdist==1.13.1
 pytest==2.8.5
 pytz==2015.7              # via babel
-pyyaml==3.11              # via watchdog
+pyyaml==3.11
 restructuredtext-lint==0.14.0
 singledispatch==3.4.0.3
 six==1.10.0               # via mock, pip-tools, singledispatch, sphinx
