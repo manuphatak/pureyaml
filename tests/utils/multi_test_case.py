@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 
 from collections import namedtuple
-# from difflib import get_close_matches
+from difflib import get_close_matches
 from warnings import warn
 
 from tests.utils import PY34, PY35, PY33
@@ -14,6 +14,35 @@ except ImportError:
     from future.moves.collections import OrderedDict, defaultdict
 
 from future.utils import with_metaclass, iteritems, PY26, PY27, PYPY, PY2, PY3, iterkeys
+
+
+def get_error_message(message, needle=None, haystack=None, ignore=None):
+    if needle is None and haystack is None:
+        return message
+
+    if not isinstance(ignore, (type(None), list, tuple, set)):
+        raise TypeError('ignore needs to be a list, you are doing it wrong')
+
+    if needle is None:
+        missing_attr_message = ''
+    else:
+        missing_attr_message = ' !! Missing attribute:   %r' % needle
+
+    if haystack is None:
+        haystack = []
+
+    if ignore is None:
+        choices = haystack
+    else:
+        choices = [item for item in haystack if item not in ignore]
+
+    close_match = get_close_matches(needle, choices, 1)
+    if close_match:
+        misspelled_message = '\nDid you perhaps mistype  %r  ?\n' % close_match[0]
+    else:
+        misspelled_message = ''
+
+    return '\n'.join(['',message, missing_attr_message, misspelled_message])
 
 
 def head_and_tail(x, *xs):
@@ -119,10 +148,15 @@ class MultiTestMeta(type):
             # Guard, expectations defined before data (simplicity)
             test_data = test_data_q.get(test_name, None)
             if test_data is None:
-                # TODO detailed error message
+                detailed_error_message = get_error_message(  # :off
+                    '{name!r} is improperly defined.'.format(**vars()),
+                    needle='{test_name}__data'.format(**vars()),
+                    haystack=list(iterkeys(cls_dict))
+                )  # :on
+
                 warn(  # :off
-                    '{name} is improperly defined. Missing data definition: {test_name}__data'.format(**vars()),
-                    category=UserWarning
+                    detailed_error_message,
+                    category=MultiTestCaseWarning
                 )  # :on
                 continue
 
@@ -134,11 +168,15 @@ class MultiTestMeta(type):
             # Guard, missing meta data
             action_meta_tags, meta = separate_action_tags(meta)
             if not action_meta_tags:
-                # TODO detailed error message
-                warn(  # :off
-                    '{name} is improperly defined. Missing action tags'.format(**vars()),
-                    category=UserWarning
+                detailed_error_message = get_error_message(  # :off
+                    '{name!r} is improperly defined. Missing action_tags'.format(**vars()),
+                    needle='{test_name}__test_*'.format(**vars()),
+                    haystack=list(iterkeys(cls_dict))
+                )  # :on
 
+                warn(  # :off
+                    detailed_error_message,
+                    category=MultiTestCaseWarning
                 )  # :on
                 continue
 
@@ -147,70 +185,27 @@ class MultiTestMeta(type):
                 d[action][test_name] = _data(test_data, value)
                 order[action].append(test_name)
 
-                # # setup
-                # is_data = name.endswith('__data')
-                # is_expected = name.endswith('__expected')
-                #
-                # # Guard, deal with the easy case.
-                # is_simple_definition = not is_data and not is_expected
-                # if is_simple_definition:
-                #     if len(value) != 2:
-                #         msg = '%r in class %r improperly configured.\n!! Expecting a 2-tuple, got: %r'
-                #         raise AttributeError(msg % (name, cls_name, value))
-                #     # Add onto ordered list.
-                #     d[name] = _data(*value)
-                #     order.append(name)
-                #     continue
-                #
-                # _name = name
-                # # rename attribute: strip suffix
-                # if is_data:
-                #     name = name[:-len('__data')]
-                # if is_expected:
-                #     name = name[:-len('__expected')]
-                #
-                # # remove original attributes from dict
-                # data = d.pop(name + '__data', None)
-                # expected = d.pop(name + '__expected', None)
-                #
-                # # Guard, improperly defined attribute or second visit
-                # if not data or not expected:
-                #     # second visit
-                #     if name in order:
-                #         continue
-                #
-                #     # error handling
-                #     if data:
-                #         missing_attr = name + '__expected'
-                #     elif expected:
-                #         missing_attr = name + '__data'
-                #     else:
-                #         missing_attr = 'Unknown'
-                #
-                #     choices = [key for key in cls_dict if key != _name]
-                #     close_match = get_close_matches(missing_attr, choices, 1)
-                #     if close_match:
-                #         misspelled = '\n\nDid you mistype  %r  ?' % close_match[0]
-                #     else:
-                #         misspelled = ''
-                #
-                #     msg = '%r in class %r improperly configured.\n!! Missing attribute: %r%s'
-                #     raise AttributeError(msg % (name, cls_name, missing_attr, misspelled))
-                #
-                # # Add onto ordered list.
-                # d[name] = _data(data, expected)
-                # order.append(name)
         for test_name in iterkeys(test_data_q):
             for action_tag, action in iteritems(order):
                 if test_name not in action:
+                    detailed_error_message = get_error_message(  # :off
+                        '{test_name!r} is improperly defined. Missing expected_results'.format(**vars()),
+                        needle='{test_name}__test_{action_tag}'.format(**vars()),
+                        haystack=list(iterkeys(cls_dict))
+                    )  # :on
+
                     warn(  # :off
-                        '{test_name} is missing expected results for test_{action_tag}'.format(**vars()),
-                        category=UserWarning
+                        detailed_error_message,
+                        category=MultiTestCaseWarning
                     )  # :on
 
         if order:
             d['__ordered__'] = order
         return type.__new__(cls, cls_name, bases, d)
+
+
+class MultiTestCaseWarning(UserWarning):
+    pass
 
 
 class MultiTestCaseBase(with_metaclass(MultiTestMeta)):
