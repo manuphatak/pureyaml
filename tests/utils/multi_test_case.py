@@ -136,7 +136,7 @@ class MultiTestMeta(type):
             if not action_meta_tags:
                 # TODO detailed error message
                 warn(  # :off
-                    '{name} is improperly defined. Missing action tags'.format(**vars())                ,
+                    '{name} is improperly defined. Missing action tags'.format(**vars()),
                     category=UserWarning
 
                 )  # :on
