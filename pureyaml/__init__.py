@@ -12,6 +12,8 @@ from __future__ import absolute_import
 
 import logging
 
+from future.utils import string_types
+
 from ._compat import NullHandler
 from .decoder import YAMLDecoder
 from .encoder import YAMLEncoder
@@ -43,7 +45,7 @@ def load(s, **kwargs):
 
 
 def loads(s, cls=None, **kwargs):
-    if not isinstance(s, str):
+    if not isinstance(s, string_types):
         raise TypeError('the YAML object must be str, not {!r}'.format(s.__class__.__name__))
 
     cls = cls or YAMLDecoder

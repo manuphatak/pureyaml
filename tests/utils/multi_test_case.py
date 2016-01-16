@@ -6,17 +6,24 @@ from collections import namedtuple
 from difflib import get_close_matches
 from warnings import warn
 
+from pytest import mark
+
 from tests.utils import PY34, PY35, PY33
 
 try:
-    from collections import OrderedDict, defaultdict
+    from collections import OrderedDict
 except ImportError:
-    from future.moves.collections import OrderedDict, defaultdict
+    from future.moves.collections import OrderedDict
+
+try:
+    from collections import defaultdict
+except ImportError:
+    from future.moves.collections import defaultdict
 
 from future.utils import with_metaclass, iteritems, PY26, PY27, PYPY, PY2, PY3, iterkeys
 
 
-def get_error_message(message, needle=None, haystack=None, ignore=None):
+def get_error_message(message, needle=None, haystack=None, ignore=None):  # noqa
     if needle is None and haystack is None:
         return message
 
@@ -133,23 +140,26 @@ class MultiTestMeta(type):
 
         test_data_q = {}
 
-        for name, value in iteritems(cls_dict):
+        for key in cls_dict:
             # Guard, skip internal object attributes
-            if not name.startswith('it_'):
+            if not key.startswith('it_'):
                 continue
 
-            test_name, meta = head_and_tail(*name.split('__'))
+            # clean
+            del d[key]
+
+            test_name, meta = head_and_tail(*key.split('__'))
 
             # Guard, store test data, and move on.
             if 'data' in meta:
-                test_data_q[test_name] = value
+                test_data_q[test_name] = cls_dict[key]
                 continue
 
             # Guard, expectations defined before data (simplicity)
             test_data = test_data_q.get(test_name, None)
             if test_data is None:
                 detailed_error_message = get_error_message(  # :off
-                    '{name!r} is improperly defined.'.format(**vars()),
+                    '{key!r} is improperly defined.'.format(**vars()),
                     needle='{test_name}__data'.format(**vars()),
                     haystack=list(iterkeys(cls_dict))
                 )  # :on
@@ -169,7 +179,7 @@ class MultiTestMeta(type):
             action_meta_tags, meta = separate_action_tags(meta)
             if not action_meta_tags:
                 detailed_error_message = get_error_message(  # :off
-                    '{name!r} is improperly defined. Missing action_tags'.format(**vars()),
+                    '{key!r} is improperly defined. Missing action_tags'.format(**vars()),
                     needle='{test_name}__test_*'.format(**vars()),
                     haystack=list(iterkeys(cls_dict))
                 )  # :on
@@ -180,24 +190,44 @@ class MultiTestMeta(type):
                 )  # :on
                 continue
 
+            xfail = 'xfail' in meta
+            skip = 'skip' in meta
+            if xfail:
+                test_name = 'xfail_%s' % test_name
+            elif skip:
+                test_name = 'skip_%s' % test_name
+
             # add test to class
             for action in action_meta_tags:
-                d[action][test_name] = _data(test_data, value)
+                d[action][test_name] = _data(test_data, cls_dict[key])
                 order[action].append(test_name)
 
+        # check attributes are properly paired.
         for test_name in iterkeys(test_data_q):
             for action_tag, action in iteritems(order):
-                if test_name not in action:
-                    detailed_error_message = get_error_message(  # :off
-                        '{test_name!r} is improperly defined. Missing expected_results'.format(**vars()),
-                        needle='{test_name}__test_{action_tag}'.format(**vars()),
-                        haystack=list(iterkeys(cls_dict))
-                    )  # :on
+                if test_name in action:
+                    continue
 
-                    warn(  # :off
-                        detailed_error_message,
-                        category=TestDataWithNoActionTagWarning
-                    )  # :on
+                if 'xfail_%s' % test_name in action:
+                    continue
+
+                if 'skip_%s' % test_name in action:
+                    continue
+
+                detailed_error_message = get_error_message(  # :off
+                    '{test_name!r} is improperly defined. Missing expected_results'.format(**vars()),
+                    needle='{test_name}__test_{action_tag}'.format(**vars()),
+                    haystack=list(iterkeys(cls_dict))
+                )  # :on
+
+                warn(  # :off
+                    detailed_error_message,
+                    category=TestDataWithNoActionTagWarning
+                )  # :on
+
+        if PY26:
+            for key in iterkeys(order):
+                order[key].sort()
 
         if order:
             d['__ordered__'] = order
@@ -215,7 +245,14 @@ class TestDataWithNoActionTagWarning(UserWarning):
 class MultiTestCaseBase(with_metaclass(MultiTestMeta)):
     @classmethod
     def keys(cls, category):
-        return cls.__ordered__[category]
+        keys = []
+        for key in cls.__ordered__[category]:
+            xfail = 'xfail' in key
+            if xfail:
+                keys.append(mark.xfail(condition=True, reason='Marked as xfail.')(key))
+            else:
+                keys.append(key)
+        return keys
 
     @classmethod
     def get(cls, category, item):

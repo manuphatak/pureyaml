@@ -94,7 +94,7 @@ def test_can_read_str_folded():
         Blank lines denote
         paragraph breaks
     """)[1:]
-    data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks"
+    data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks\n"
 
     expected = {'data': data}
     assert load(text) == expected

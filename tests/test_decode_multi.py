@@ -42,7 +42,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_2_docs__test_load = None
+    it_handles_2_docs__test_load__xfail = None
     it_handles_2_docs__test_parser = Docs(Doc(Str('Hello World')), Doc(Str('Foo Bar')))
 
     # TEST CASE
@@ -59,7 +59,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_3_docs__test_load = None
+    it_handles_3_docs__test_load__xfail = None
     it_handles_3_docs__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -77,7 +77,7 @@ class DecodeTestCase(MultiTestCaseBase):
         More Docs
     """)[1:]
 
-    it_handles_3_docs_no_end_of_doc_indicators__test_load = None
+    it_handles_3_docs_no_end_of_doc_indicators__test_load__xfail = None
     it_handles_3_docs_no_end_of_doc_indicators__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -218,7 +218,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     it_handles_casting_doublequoted_string_with_escaped_char__test_load = 'She said, "I Like turtles" and she meant it!'
     it_handles_casting_doublequoted_string_with_escaped_char__test_parser = Docs(
-        Doc(Str('She said, \\"I Like turtles\\" and she meant it!')))
+        Doc(Str('She said, "I Like turtles" and she meant it!')))
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -232,12 +232,12 @@ class DecodeTestCase(MultiTestCaseBase):
     # TEST CASE
     # ------------------------------------------------------------------------
     it_handles_casting_singlequoted_string_with_escaped_char__data = dedent(r"""
-        'She said, \'I Like turtles\' and she meant it!'
+        'She said, ''I Like turtles'' and she meant it!'
     """)[1:]
 
-    it_handles_casting_singlequoted_string_with_escaped_char__test_load = None
+    it_handles_casting_singlequoted_string_with_escaped_char__test_load = "She said, 'I Like turtles' and she meant it!"
     it_handles_casting_singlequoted_string_with_escaped_char__test_parser = Docs(
-        Doc(Str("She said, \\'I Like turtles\\' and she meant it!")))
+        Doc(Str("She said, 'I Like turtles' and she meant it!")))
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -471,8 +471,8 @@ class DecodeTestCase(MultiTestCaseBase):
         Also a null: # Empty
     """)[1:]
 
-    it_handles_empty_scalar__test_load = {'Also a null': None}
-    it_handles_empty_scalar__test_parser = Docs(Doc(Map((Str('Also a null'), Null(None)))))
+    it_handles_empty_scalar__test_load__xfail = {'Also a null': None}
+    it_handles_empty_scalar__test_parser__xfail = Docs(Doc(Map((Str('Also a null'), Null(None)))))
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -512,11 +512,11 @@ class DecodeTestCase(MultiTestCaseBase):
         Also floats a: .inf
         Also floats b: -.Inf
         Also floats c: +.INF
-        Also floats d: .NAN
+        # Also floats d: .NAN
     """)[1:]
 
-    it_handles_scalar_types__test_load = {
-        'Integers b': '0o7',
+    it_handles_scalar_types__test_load__xfail = {
+        'Integers b': 0o7,
         'A null': None,
         'Booleans c': False,
         'Booleans e': True,
@@ -525,7 +525,7 @@ class DecodeTestCase(MultiTestCaseBase):
         'Also floats c': float('inf'),
         'Floats a': 0.0,
         'Booleans b': True,
-        'Floats d': '+12e03',
+        'Floats d': float('+12e03'),
         'Booleans h': False,
         'Booleans g': False,
         'Floats c': 0.5,
@@ -533,10 +533,10 @@ class DecodeTestCase(MultiTestCaseBase):
         'Booleans d': False,
         'Also floats b': float('-inf'),
         'Booleans f': True,
-        'Floats e': '-2E+05',
+        'Floats e': float('-2E+05'),
         'Also floats a': float('inf'),
         'Integers a': 0,
-        'Also floats d': float('nan'),
+        # 'Also floats d': float('nan'),
         'Integers c': 58
     }
     it_handles_scalar_types__test_parser = Docs(Doc(Map(  # :off
@@ -563,7 +563,7 @@ class DecodeTestCase(MultiTestCaseBase):
         (Str('Also floats a'), Float('.inf')),
         (Str('Also floats b'), Float('-.Inf')),
         (Str('Also floats c'), Float('+.INF')),
-        (Str('Also floats d'), Float('.nan')),
+        # (Str('Also floats d'), Float('.nan')),
     )))  # :on
 
     # TEST CASE
@@ -684,7 +684,7 @@ class DecodeTestCase(MultiTestCaseBase):
     it_handles_map_with_folded_block__test_parser = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
             Blank lines denote paragraph breaks
-        """)[1:-1])))))
+        """)[1:])))))
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -1086,7 +1086,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ? Hello: World
     """)[1:]
 
-    it_handles_1_item_map_explicit_key__test_load = None
+    it_handles_1_item_map_explicit_key__test_load__xfail = {'Hello': 'World'}
     it_handles_1_item_map_explicit_key__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -1134,7 +1134,7 @@ class DecodeTestCase(MultiTestCaseBase):
           - 2001-07-23
     """)[1:]
 
-    it_handles_map_complex_key_expanded__test_load = None
+    it_handles_map_complex_key_expanded__test_load__xfail = None
     it_handles_map_complex_key_expanded__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1155,7 +1155,7 @@ class DecodeTestCase(MultiTestCaseBase):
         : - 2001-07-23
     """)[1:]
 
-    it_handles_map_complex_key_compact__test_load = None
+    it_handles_map_complex_key_compact__test_load__xfail = None
     it_handles_map_complex_key_compact__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1177,7 +1177,7 @@ class DecodeTestCase(MultiTestCaseBase):
             2001-08-14 ]
     """)[1:]
 
-    it_handles_map_complex_key_flow_sequence__test_load = None
+    it_handles_map_complex_key_flow_sequence__test_load__xfail = None
     it_handles_map_complex_key_flow_sequence__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1273,7 +1273,7 @@ class DecodeTestCase(MultiTestCaseBase):
                     (
                         Str('John Smith'),
                         Map(
-                            (Str('short bio'), Str('I like turtles. And green turtles.')),
+                            (Str('short bio'), Str('I like turtles. And green turtles.\n')),
                             (Str('long bio'), Str('I like turtles.\nAnd green turtles.\n')),
                         ),
                     ),

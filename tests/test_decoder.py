@@ -152,7 +152,7 @@ def test_travis_yml__literal_key():
         'Hf3MIHAs4Uj32mToi0699lp749PQ4o0Jb2WF0P8vh+vlOJNVM+51vO5CmEj2cF7rJcrb'
         'n+T68gmlvqcYCt3q5gCn+4iBhzGCqeDxlDU1jgC9T/9V4Q+qyAEv/wtYDduoe4R1WGWO'
         'lqSxr8k6Tr92CjI1TXbJUP3N3V0pNYayUJDIIvjWy7T/10xRhMaRhBM88XDJh7QBpcZT'
-        'KJo='
+        'KJo=\n'
     )  # :on
     expected = {  # :off
         'env': [

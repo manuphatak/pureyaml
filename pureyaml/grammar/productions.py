@@ -191,7 +191,7 @@ class YAMLProductions(YAMLTokens):
         scalar  : DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END
         """
         scalar = re.sub('\n\s+', ' ', str(p[2]))
-        p[0] = Str(scalar)
+        p[0] = Str(scalar.replace('\\"', '"'))
 
     @strict(Str)
     def p_scalar__singlequote(self, p):
@@ -228,7 +228,7 @@ class YAMLProductions(YAMLTokens):
         scalar  : B_LITERAL_START scalar_group B_LITERAL_END
         """
         scalar_group = ''.join(p[2])
-        p[0] = ScalarDispatch(dedent(scalar_group).replace('\n\n\n', '\n') + '\n', cast='str')
+        p[0] = ScalarDispatch('%s\n' % dedent(scalar_group).replace('\n\n\n', '\n'), cast='str')
 
     @strict(Str)
     def p_scalar__folded(self, p):
@@ -237,7 +237,7 @@ class YAMLProductions(YAMLTokens):
         """
         scalar_group = ''.join(p[2])
         cleaned_scalar = fold(dedent(scalar_group)).rstrip()
-        p[0] = ScalarDispatch(cleaned_scalar, cast='str')
+        p[0] = ScalarDispatch('%s\n' % cleaned_scalar, cast='str')
 
     @strict(Str)
     def p_scalar__indented_flow(self, p):

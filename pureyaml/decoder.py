@@ -31,8 +31,9 @@ class YAMLDecoder(NodeVisitor):
     def visit_Scalar(self, node):
         return node.type(node.value)
 
+    def visit_Null(self, _):
+        return None
     visit_Doc = visit_Docs
-    visit_Null = visit_Scalar
     visit_Str = visit_Scalar
     visit_Int = visit_Scalar
     visit_Float = visit_Scalar
