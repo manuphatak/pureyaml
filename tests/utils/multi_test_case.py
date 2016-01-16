@@ -42,7 +42,7 @@ def get_error_message(message, needle=None, haystack=None, ignore=None):
     else:
         misspelled_message = ''
 
-    return '\n'.join(['',message, missing_attr_message, misspelled_message])
+    return '\n'.join(['', message, missing_attr_message, misspelled_message])
 
 
 def head_and_tail(x, *xs):
