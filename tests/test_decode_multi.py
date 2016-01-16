@@ -535,8 +535,7 @@ class DecodeTestCase(MultiTestCaseBase):
         'Booleans f': True,
         'Floats e': float('-2E+05'),
         'Also floats a': float('inf'),
-        'Integers a': 0,
-        # 'Also floats d': float('nan'),
+        'Integers a': 0,  # 'Also floats d': float('nan'),
         'Integers c': 58
     }
     it_handles_scalar_types__test_parser = Docs(Doc(Map(  # :off
@@ -1313,14 +1312,16 @@ def pyyaml_load(data):
     return obj
 
 
-def sanity(data):
-    text = pureyaml.dump(data)
-    _data = pureyaml.load(text)
-    return _data
+def sanity(text):
+    _obj = pureyaml_load(text)
+    _text = pureyaml.dump(_obj)
+    print(_text)
+    obj = pureyaml_load(_text)
+    return _obj, obj
 
 
 @mark.parametrize('case', DecodeTestCase.keys('parser'))
-def test_encode(case):
+def test_parser(case):
     data, expected = DecodeTestCase.get('parser', case)
     assert parser(data) == expected
 
@@ -1335,12 +1336,13 @@ def test_pureyaml_load(case):
 def test_pyyaml_load(case):
     data, expected = DecodeTestCase.get('load', case)
     obj = pyyaml_load(data)
-    print('{case}__test_load = {obj!r}'.format(case=case, obj=obj))
+    # print('{case}__test_load = {obj!r}'.format(case=case, obj=obj))
     assert obj == expected
 
 
-@mark.skipif
-@mark.parametrize('case', DecodeTestCase.keys('pureyaml_dump'))
+@mark.xfail
+@mark.parametrize('case', DecodeTestCase.keys('load'))
 def test_pureyaml_sanity(case):
-    data, _ = DecodeTestCase.get('pureyaml_dump', case)
-    assert sanity(data) == data
+    data, _ = DecodeTestCase.get('load', case)
+    obj1, obj2 = sanity(data)
+    assert obj1 == obj2

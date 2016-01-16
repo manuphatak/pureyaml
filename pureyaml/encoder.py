@@ -30,7 +30,6 @@ def node_encoder(obj):  # noqa
         except UnicodeDecodeError:
             return Binary.from_decoded(obj)
     elif isinstance(obj, text_type):
-
         try:
             obj.encode('ascii')
             return Str(obj)
@@ -158,7 +157,7 @@ class YAMLEncoder(NodeVisitor):
         use_repr = any([  # :off
             value.lower() in ['yes', 'no', 'true', 'false'],
             value.isnumeric(),
-            is_float(value),
+            is_float(value)
         ])  # :on
 
         method = repr if use_repr else str
