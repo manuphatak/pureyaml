@@ -156,7 +156,7 @@ class MultiTestMeta(type):
 
                 warn(  # :off
                     detailed_error_message,
-                    category=MultiTestCaseWarning
+                    category=TestActionWithNoDataWarning
                 )  # :on
                 continue
 
@@ -176,7 +176,7 @@ class MultiTestMeta(type):
 
                 warn(  # :off
                     detailed_error_message,
-                    category=MultiTestCaseWarning
+                    category=TestDataWithNoActionTagWarning
                 )  # :on
                 continue
 
@@ -196,7 +196,7 @@ class MultiTestMeta(type):
 
                     warn(  # :off
                         detailed_error_message,
-                        category=MultiTestCaseWarning
+                        category=TestDataWithNoActionTagWarning
                     )  # :on
 
         if order:
@@ -204,7 +204,11 @@ class MultiTestMeta(type):
         return type.__new__(cls, cls_name, bases, d)
 
 
-class MultiTestCaseWarning(UserWarning):
+class TestActionWithNoDataWarning(UserWarning):
+    pass
+
+
+class TestDataWithNoActionTagWarning(UserWarning):
     pass
 
 
