@@ -3,7 +3,6 @@
 from math import isnan
 from textwrap import dedent
 
-import pytest
 import yaml as pyyaml
 from pytest import mark
 
