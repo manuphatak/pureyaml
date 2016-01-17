@@ -34,7 +34,7 @@ def _serialize_nodes(node, depth=0):  # noqa
                 yield indent() + '('
                 depth += 1
                 for line in _serialize_nodes(k):
-                    yield indent() + line
+                    yield indent() + line + ','
                 for line in _serialize_nodes(v):
                     yield indent() + line
                 depth -= 1

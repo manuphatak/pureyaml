@@ -83,8 +83,8 @@ def separate_action_tags(meta):
 
 
 map_version = {  # :off
-    'PY26': PY26,
-    'PY27': PY27,
+    'PY26': PY26 and not PYPY,
+    'PY27': PY27 and not PYPY,
     'PY33': PY33,
     'PY34': PY34,
     'PY35': PY35,

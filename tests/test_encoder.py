@@ -1,46 +1,206 @@
 #!/usr/bin/env python
 # coding=utf-8
-from __future__ import absolute_import
-
+from math import isnan
 from textwrap import dedent
 
-from future.utils import PYPY, PY2
+import yaml as pyyaml
 from pytest import mark
 
 import pureyaml
 from pureyaml.encoder import node_encoder
 from pureyaml.nodes import *  # noqa
-from tests.utils import ParametrizedTestData, PY34, PY35
+from tests.utils import MultiTestCaseBase, serialize_nodes
 
 
-class NodeEncoderTestCase(ParametrizedTestData):
-    test_int = 1, Int(1)
-    test_str = '1', Str(1)
-    test_null = None, Null(None)
-    test_float__implicit = 1., Float(1)
-    test_float__explicit = float(1), Float(1)
-    test_float__nan = float('nan'), Float('nan')
-    test_float__inf = float('-inf'), Float('-inf')
-    test_bool = True, Bool(True)
-    test_list__int = [1, 2, 3], Sequence(Int(1), Int(2), Int(3))
-    test_list__list__int = (  # :off
-        [[1, 2], [3], [4, 5, 6]],
-        Sequence(
-            Sequence(Int(1), Int(2)),
-            Sequence(Int(3)),
-            Sequence(Int(4), Int(5), Int(6)),
-        )
+class EncodeTestCase(MultiTestCaseBase):
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_int__data = 1
+    it_handles_simple_int__test_pyyaml = dedent("""
+        1
+        ...
+    """)[1:]
+    it_handles_simple_int__test_pureyaml_sanity = dedent("""
+        1
+        ...
+    """)[1:]
+    it_handles_simple_int__test_encode = Int(1)
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_str__data = '1'
+    it_handles_simple_str__test_pyyaml = dedent("""
+        '1'
+    """)[1:]
+    it_handles_simple_str__test_pureyaml_sanity = dedent("""
+        '1'
+    """)[1:]
+    it_handles_simple_str__test_encode = Str(1)
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_implicit_float__data = 1.
+    it_handles_simple_implicit_float__test_pyyaml = dedent("""
+        1.0
+        ...
+    """)[1:]
+    it_handles_simple_implicit_float__test_pureyaml_sanity = dedent("""
+        1.0
+        ...
+    """)[1:]
+    it_handles_simple_implicit_float__test_encode = Float(1)
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_explicit_float__data = float(1)
+    it_handles_simple_explicit_float__test_pyyaml = dedent("""
+        1.0
+        ...
+    """)[1:]
+    it_handles_simple_explicit_float__test_pureyaml_sanity = dedent("""
+        1.0
+        ...
+    """)[1:]
+    it_handles_simple_explicit_float__test_encode = Float(1)
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_nan_float__data = float('nan')
+    it_handles_simple_nan_float__test_pyyaml = dedent("""
+        .nan
+        ...
+    """)[1:]
+    it_handles_simple_nan_float__test_pureyaml_sanity = dedent("""
+        .nan
+        ...
+    """)[1:]
+    it_handles_simple_nan_float__test_encode = Float('nan')
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_inf_float__data = float('-inf')
+    it_handles_simple_inf_float__test_pyyaml = dedent("""
+        -.inf
+        ...
+    """)[1:]
+    it_handles_simple_inf_float__test_pureyaml_sanity = dedent("""
+        -.inf
+        ...
+    """)[1:]
+    it_handles_simple_inf_float__test_encode = Float('-inf')
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_bool__data = True
+    it_handles_simple_bool__test_pyyaml = dedent("""
+        true
+        ...
+    """)[1:]
+    it_handles_simple_bool__test_pureyaml_sanity = dedent("""
+        true
+        ...
+    """)[1:]
+    it_handles_simple_bool__test_encode = Bool(True)
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_list__data = [1, 2, 3]
+    it_handles_simple_list__test_pyyaml = dedent("""
+        - 1
+        - 2
+        - 3
+    """)[1:]
+    it_handles_simple_list__test_pureyaml_sanity = dedent("""
+        - 1
+        - 2
+        - 3
+    """)[1:]
+    it_handles_simple_list__test_encode = Sequence(Int(1), Int(2), Int(3))
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_lists_of_list__data = [[1, 2], [3], [4, 5, 6]]
+
+    it_handles_lists_of_list__test_pyyaml = dedent("""
+        - - 1
+          - 2
+        - - 3
+        - - 4
+          - 5
+          - 6
+    """)[1:]
+    it_handles_lists_of_list__test_pureyaml_sanity = dedent("""
+        - - 1
+          - 2
+        - - 3
+        - - 4
+          - 5
+          - 6
+    """)[1:]
+    it_handles_lists_of_list__test_encode = Sequence(  # :off
+        Sequence(Int(1), Int(2)),
+        Sequence(Int(3)),
+        Sequence(Int(4), Int(5), Int(6)),
     )  # :on
-    test_dict__int = {'1': 1}, Map((Str(1), Int(1)))
 
-    test_dict__dict_complex__data = {  # :off
-        '1': {'2': 3},
-        '4': {5: [
-            {'6': [7, 8]},
-            {'9': 10}
-        ]}
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_simple_dict__data = {'1': 1}
+    it_handles_simple_dict__test_pyyaml = dedent("""
+        '1': 1
+    """)[1:]
+    it_handles_simple_dict__test_pureyaml_sanity = dedent("""
+        '1': 1
+    """)[1:]
+    it_handles_simple_dict__test_encode = Map((Str(1), Int(1)))
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_complex_dict__data = {  # :off
+        '1': {
+            '2': 3
+        },
+        '4': {
+            5: [
+                {
+                    '6': [7, 8]
+                },
+                {'9': 10}
+            ]
+        }
     }  # :on
-    test_dict__dict_complex__expected = Map(  # :off
+    it_handles_complex_dict__test_pyyaml = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+          - '6':
+            - 7
+            - 8
+          - '9': 10
+    """)[1:]
+    it_handles_complex_dict__test_pureyaml__PY34__PY35 = dedent("""
+        '4':
+          5:
+          - '6':
+            - 7
+            - 8
+          - '9': 10
+        '1':
+          '2': 3
+    """)[1:]
+    it_handles_complex_dict__test_pureyaml__PY2__PY33 = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+          - '6':
+            - 7
+            - 8
+          - '9': 10
+    """)[1:]
+    it_handles_complex_dict__test_sanity = None
+    it_handles_complex_dict__test_encode = Map(  # :off
         (
             Str(1),
             Map(
@@ -71,7 +231,9 @@ class NodeEncoderTestCase(ParametrizedTestData):
         )
     )  # :on
 
-    test_binary__data = {
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_binary__data = {
         'picture': (  # :off
             b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9"
             b"\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e"
@@ -80,121 +242,154 @@ class NodeEncoderTestCase(ParametrizedTestData):
         )  # :on
     }
     # noinspection SpellCheckingInspection
-    test_binary__expected = Map(  # :off
+    it_handles_binary__test_pyyaml = dedent("""
+        picture: !!binary |
+          R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmle
+          ECcgggoBADs=
+    """)[1:]
+    it_handles_binary__test_pureyaml = dedent("""
+        picture: !!binary |
+          R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmleECcgggoBADs=
+    """)[1:]
+    it_handles_binary__test_sanity = None
+    it_handles_binary__test_encode = Map(  # :off
         (
             Str('picture'),
             Binary(
-                b'R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmle\n'
+                b'R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J'
+                b'+fn5OTk6enp56enmle\n'
                 b'ECcgggoBADs=\n'
             )
         )
     )  # :on
 
-
-@mark.parametrize('case', NodeEncoderTestCase.keys())
-def test_node_encoder(case):
-    data, expected = NodeEncoderTestCase.get(case)
-    assert node_encoder(data) == expected
-
-
-def test_node_binary_encoder():
-    data, expected = NodeEncoderTestCase.get('test_binary')
-
-    picture = (  # :off
-        b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9"
-        b"\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e"
-        b"\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei^"
-        b"\x10' \x82\n\x01\x00;"
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_dict__data = {'name': 'John Smith', 'age': 33}
+    it_handles_dict__test_pureyaml_sanity__not_PYPY = dedent("""
+        age: 33
+        name: John Smith
+    """)[1:]
+    it_handles_dict__test_pureyaml_sanity__PYPY = dedent("""
+        name: John Smith
+        age: 33
+    """)[1:]
+    it_handles_dict__test_pyyaml = dedent("""
+        age: 33
+        name: John Smith
+    """)[1:]
+    it_handles_dict__test_encode = Map(  # :off
+        (Str('name'), Str('John Smith')),
+        (Str('age'), Int(33)),
     )  # :on
-    encoded_nodes = node_encoder(data)
-    picture_actual = encoded_nodes.value[0][1].value
-    assert picture_actual == picture
 
-
-def dump(data):
-    text = pureyaml.dump(data)
-    # print('\n' + text)
-    return text
-
-
-def test_dump__list():
-    data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
-    expected = dedent("""
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_list__data = ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
+    it_handles_list__test_encode = Sequence(  # :off
+        Str('Casablanca'),
+        Str('North by Northwest'),
+        Str("The Man Who Wasn't There"),
+    )  # :on
+    it_handles_list__test_pureyaml = dedent("""
         - Casablanca
         - North by Northwest
         - The Man Who Wasn't There
     """)[1:]
+    it_handles_list__test_pyyaml = dedent("""
+        - Casablanca
+        - North by Northwest
+        - The Man Who Wasn't There
+    """)[1:]
+    it_handles_list__test_sanity = None
 
-    assert dump(data) == expected
-
-
-def test_dump__dict():
-    data = {'name': 'John Smith', 'age': 33}
-    if not PYPY:
-        expected = dedent("""
-            age: 33
-            name: John Smith
-        """)[1:]
-    else:
-        expected = dedent("""
-            name: John Smith
-            age: 33
-        """)[1:]
-
-    assert dump(data) == expected
-
-
-def test_dump__lists_of_dicts():
-    data = [  # :off
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_lists_of_dicts__data = [  # :off
         {'name': 'John Smith', 'age': 33},
         {'name': 'Mary Smith', 'age': 27}
     ]  # :on
-    if not PYPY:
-        expected = dedent("""
-            - age: 33
-              name: John Smith
-            - age: 27
-              name: Mary Smith
-        """)[1:]
-    else:
-        expected = dedent("""
-            - name: John Smith
-              age: 33
-            - name: Mary Smith
-              age: 27
-        """)[1:]
-    assert dump(data) == expected
+    it_handles_lists_of_dicts__test_encode = Sequence(  # :off
+        Map(
+            (Str('name'), Str('John Smith')),
+            (Str('age'), Int(33)),
+        ),
+        Map(
+            (Str('name'), Str('Mary Smith')),
+            (Str('age'), Int(27)),
+        ),
+    )  # :on
+    it_handles_lists_of_dicts__test_pureyaml__not_PYPY = dedent("""
+        - age: 33
+          name: John Smith
+        - age: 27
+          name: Mary Smith
+    """)[1:]
+    it_handles_lists_of_dicts__test_pureyaml__PYPY = dedent("""
+        - name: John Smith
+          age: 33
+        - name: Mary Smith
+          age: 27
+    """)[1:]
+    it_handles_lists_of_dicts__test_pyyaml = dedent("""
+        - age: 33
+          name: John Smith
+        - age: 27
+          name: Mary Smith
+    """)[1:]
+    it_handles_lists_of_dicts__test_sanity = None
 
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_dict_of_lists__data = {  # :off
+            'men': ['John Smith', 'Bill Jones'],
+            'women': ['Mary Smith', 'Susan Williams']
+        }  # :on
+    it_handles_dict_of_lists__test_encode = Map(  # :off
+        (
+            Str('men'),
+            Sequence(
+                Str('John Smith'),
+                Str('Bill Jones'),
+            )
+        ),
+        (
+            Str('women'),
+            Sequence(
+                Str('Mary Smith'),
+                Str('Susan Williams'),
+            )
+        ),
+    )  # :on
+    it_handles_dict_of_lists__test_pureyaml__PY34__PY35 = dedent("""
+        women:
+        - Mary Smith
+        - Susan Williams
+        men:
+        - John Smith
+        - Bill Jones
+    """)[1:]
+    it_handles_dict_of_lists__test_pureyaml__PY2__PY33 = dedent("""
+        men:
+        - John Smith
+        - Bill Jones
+        women:
+        - Mary Smith
+        - Susan Williams
+    """)[1:]
+    it_handles_dict_of_lists__test_pyyaml = dedent("""
+        men:
+        - John Smith
+        - Bill Jones
+        women:
+        - Mary Smith
+        - Susan Williams
+    """)[1:]
+    it_handles_dict_of_lists__test_sanity = None
 
-def test_dump__dict_of_lists():
-    data = {  # :off
-        'men': ['John Smith', 'Bill Jones'],
-        'women': ['Mary Smith', 'Susan Williams']
-    }  # :on
-
-    if PY34 or PY35:
-        expected = dedent("""
-            women:
-            - Mary Smith
-            - Susan Williams
-            men:
-            - John Smith
-            - Bill Jones
-        """)[1:]
-    else:
-        expected = dedent("""
-            men:
-            - John Smith
-            - Bill Jones
-            women:
-            - Mary Smith
-            - Susan Williams
-        """)[1:]
-    assert dump(data) == expected
-
-
-def test_dump__nested_obj():
-    data = {  # :off
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_nested_obj__data = {  # :off
         '1': {
             '2': 3
         },
@@ -208,94 +403,168 @@ def test_dump__nested_obj():
                         '14': '15'
                     }
                 }
-
-
             },
             16: 17
         }
     }  # :on
-    if PY34 or PY35:
-        expected = dedent("""
-            '4':
-              16: 17
-              5:
-                '10': 11
-                '12':
-                  '13':
-                    '14': '15'
-                '8': 9
-                '6': 7
-            '1':
-              '2': 3
-        """)[1:]
-    elif PYPY:
-        expected = dedent("""
-            '1':
-              '2': 3
-            '4':
-              5:
-                '6': 7
-                '8': 9
-                '10': 11
-                '12':
-                  '13':
-                    '14': '15'
-              16: 17
-        """)[1:]
-    else:
-        expected = dedent("""
-            '1':
-              '2': 3
-            '4':
-              16: 17
-              5:
-                '8': 9
-                '12':
-                  '13':
-                    '14': '15'
-                '10': 11
-                '6': 7
-        """)[1:]
+    it_handles_nested_obj__test_encode = Map(  # :off
+        (
+            Str('1'),
+            Map(
+                (Str('2'), Int(3)),
+            )
+        ),
+        (
+            Str('4'),
+            Map(
+                (
+                    Int(5),
+                    Map(
+                        (Str('6'), Int(7)),
+                        (Str('8'), Int(9)),
+                        (Str('10'), Int(11)),
+                        (
+                            Str('12'),
+                            Map(
+                                (
+                                    Str('13'),
+                                    Map(
+                                        (Str('14'), Str('15')),
+                                    )
+                                ),
+                            )
+                        ),
+                    )
+                ),
+                (Int(16), Int(17)),
+            )
+        ),
+    )  # :on
+    it_handles_nested_obj__test_pureyaml__PY34__PY34 = dedent("""
+        '4':
+          16: 17
+          5:
+            '10': 11
+            '12':
+              '13':
+                '14': '15'
+            '8': 9
+            '6': 7
+        '1':
+          '2': 3
+    """)[1:]
+    it_handles_nested_obj__test_pureyaml__PYPY = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+            '6': 7
+            '8': 9
+            '10': 11
+            '12':
+              '13':
+                '14': '15'
+          16: 17
+    """)[1:]
+    it_handles_nested_obj__test_pureyaml__PY26__PY27__PY33 = dedent("""
+        '1':
+          '2': 3
+        '4':
+          16: 17
+          5:
+            '8': 9
+            '12':
+              '13':
+                '14': '15'
+            '10': 11
+            '6': 7
+    """)[1:]
+    it_handles_nested_obj__test_pyyaml = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+            '10': 11
+            '12':
+              '13':
+                '14': '15'
+            '6': 7
+            '8': 9
+          16: 17
+    """)[1:]
+    it_handles_nested_obj__test_sanity__xfail = None
 
-    assert dump(data) == expected
-
-
-def test_dump__nested_list():
-    data = [  # :off
-        1,
-        [
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_nested_list__data = [  # :off
+            1,
             [
-                2,
-                3
-            ],
-            [
-                4,
                 [
-                    5,
-                    6
+                    2,
+                    3
+                ],
+                [
+                    4,
+                    [
+                        5,
+                        6
+                    ]
+                ],
+                7
+            ],
+            [
+                8,
+                9,
+                10
+            ],
+            [
+                [
+                    11,
+                    12
+                ],
+                [
+                    13,
+                    14,
+                    15,
+                    16
                 ]
-            ],
-            7
-        ],
-        [
-            8,
-            9,
-            10
-        ],
-        [
-            [
-                11,
-                12
-            ],
-            [
-                13,
-                14,
-                15,
-                16
             ]
-        ]
-    ]  # :on
-    expected = dedent("""
+        ]  # :on
+    it_handles_nested_list__test_encode = Sequence(  # :off
+        Int(1),
+        Sequence(
+            Sequence(
+                Int(2),
+                Int(3),
+            ),
+            Sequence(
+                Int(4),
+                Sequence(
+                    Int(5),
+                    Int(6),
+                ),
+            ),
+            Int(7),
+        ),
+        Sequence(
+            Int(8),
+            Int(9),
+            Int(10),
+        ),
+        Sequence(
+            Sequence(
+                Int(11),
+                Int(12),
+            ),
+            Sequence(
+                Int(13),
+                Int(14),
+                Int(15),
+                Int(16),
+            ),
+        ),
+    )  # :on
+    it_handles_nested_list__test_pureyaml = dedent("""
         - 1
         - - - 2
             - 3
@@ -313,63 +582,120 @@ def test_dump__nested_list():
             - 15
             - 16
     """)[1:]
+    it_handles_nested_list__test_pyyaml = dedent("""
+        - 1
+        - - - 2
+            - 3
+          - - 4
+            - - 5
+              - 6
+          - 7
+        - - 8
+          - 9
+          - 10
+        - - - 11
+            - 12
+          - - 13
+            - 14
+            - 15
+            - 16
+    """)[1:]
+    it_handles_nested_list__test_sanity__xfail = None
 
-    assert dump(data) == expected
-
-
-def test_dump__complex_mixed_obj():
-    data = {  # :off
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_complex_mixed_obj__data = {  # :off
         '1': {'2': 3},
         '4': {5: [
             {'6': [7, 8], 9: '10', 11: '12'},
             {'13': 14}
         ]}
     }  # :on
-    if PY34 or PY35:
-        expected = dedent("""
-            '4':
-              5:
-              - 9: '10'
-                11: '12'
-                '6':
-                - 7
-                - 8
-              - '13': 14
-            '1':
-              '2': 3
-        """)[1:]
-    elif PYPY:
-        expected = dedent("""
-            '1':
-              '2': 3
-            '4':
-              5:
-              - '6':
-                - 7
-                - 8
-                9: '10'
-                11: '12'
-              - '13': 14
-        """)[1:]
-    else:
-        expected = dedent("""
-            '1':
-              '2': 3
-            '4':
-              5:
-              - 9: '10'
-                11: '12'
-                '6':
-                - 7
-                - 8
-              - '13': 14
-        """)[1:]
+    it_handles_complex_mixed_obj__test_encode = Map(  # :off
+        (
+            Str('1'),
+            Map(
+                (Str('2'), Int(3)),
+            )
+        ),
+        (
+            Str('4'),
+            Map(
+                (
+                    Int(5),
+                    Sequence(
+                        Map(
+                            (
+                                Str('6'),
+                                Sequence(
+                                    Int(7),
+                                    Int(8),
+                                ),
+                            ),
+                            (Int(9), Str('10')),
+                            (Int(11), Str('12')),
+                        ),
+                        Map(
+                            (Str('13'), Int(14)),
+                        ),
+                    )
+                ),
+            )
+        ),
+    )  # :on
+    it_handles_complex_mixed_obj__test_pureyaml__PY34__PY34 = dedent("""
+        '4':
+          5:
+          - 9: '10'
+            11: '12'
+            '6':
+            - 7
+            - 8
+          - '13': 14
+        '1':
+          '2': 3
+    """)[1:]
+    it_handles_complex_mixed_obj__test_pureyaml__PYPY = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+          - '6':
+            - 7
+            - 8
+            9: '10'
+            11: '12'
+          - '13': 14
+    """)[1:]
+    it_handles_complex_mixed_obj__test_pureyaml__PY26__PY27__PY33 = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+          - 9: '10'
+            11: '12'
+            '6':
+            - 7
+            - 8
+          - '13': 14
+    """)[1:]
+    it_handles_complex_mixed_obj__test_pyyaml = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+          - 9: '10'
+            11: '12'
+            '6':
+            - 7
+            - 8
+          - '13': 14
+    """)[1:]
+    it_handles_complex_mixed_obj__test_sanity = None
 
-    assert dump(data) == expected
-
-
-def test_dump__casted_data():
-    data = {  # :off
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_casted_data__data = {  # :off
         'a': 123,
         'b': str(123),
         'c': 123.0,
@@ -379,178 +705,149 @@ def test_dump__casted_data():
         'g': True,
         'h': 'Yes we have No bananas',
     }  # :on
-    if PY34 or PY35:
-        expected = dedent("""
-            g: true
-            b: '123'
-            h: Yes we have No bananas
-            c: 123.0
-            e: '123'
-            a: 123
-            f: 'Yes'
-            d: 123.0
-        """)[1:]
-    elif PYPY:
-        expected = dedent("""
-            a: 123
-            b: '123'
-            c: 123.0
-            d: 123.0
-            e: '123'
-            f: 'Yes'
-            g: true
-            h: Yes we have No bananas
-        """)[1:]
-    else:
-        expected = dedent("""
-            a: 123
-            c: 123.0
-            b: '123'
-            e: '123'
-            d: 123.0
-            g: true
-            f: 'Yes'
-            h: Yes we have No bananas
-        """)[1:]
-    actual = dump(data)
-
-    assert actual == expected
-
-
-def test_dump__travis_yaml():
-    # noinspection SpellCheckingInspection
-    secure_block = (  # :off
-        'ndFpfTvPZN8SfvduvS4567k1TqYl7L7lRxxEPjmRzg3OgzMgCHRMO/uCrce5i8TkxTWL'
-        'W82ArNvBZnTkRzGyChKfoNzKwukgrJACOibc6cPgNBPpuDpZTb7X6hZixSs9VBsMwL9T'
-        'kQfImq3Q2uSnW7tBrHYKEIOXeCmKzomI3RYxWoxOlrAP7TqUjxyw/Ax5pOdjODDEMOjB'
-        'Z8qRcrRD/n/JyAQrNVtaEaMkauTPbvJ86vG8mDPLzD3c2PFK1qAOimcJb5izM9y9kent'
-        '/muLfjeruBxwYGrqAkQnWM0KUqMbfZ9sxMO0hgMZs3p2fldTyANC9bRu65XLW3qseHs9'
-        'NTbbdgAZMlsXU9WxzvxTyibvMGHODyps/Ra9NkgRZJC9NLsabuw42P3AVfQjhih/dwn0'
-        'DjRU+DlNyY291CazPjSWP4hLBAp72hhv1sGQD33sY3ERx5XPXyeb1B32s3l94bpdPwzO'
-        'Hf3MIHAs4Uj32mToi0699lp749PQ4o0Jb2WF0P8vh+vlOJNVM+51vO5CmEj2cF7rJcrb'
-        'n+T68gmlvqcYCt3q5gCn+4iBhzGCqeDxlDU1jgC9T/9V4Q+qyAEv/wtYDduoe4R1WGWO'
-        'lqSxr8k6Tr92CjI1TXbJUP3N3V0pNYayUJDIIvjWy7T/10xRhMaRhBM88XDJh7QBpcZT'
-        'KJo='
+    it_handles_casted_data__test_encode = Map(  # :off
+        (Str('a'), Int(123)),
+        (Str('b'), Str('123')),
+        (Str('c'), Float(123.0)),
+        (Str('d'), Float(123.0)),
+        (Str('e'), Str('123')),
+        (Str('f'), Str('Yes')),
+        (Str('g'), Bool(True)),
+        (Str('h'), Str('Yes we have No bananas')),
     )  # :on
-    data = {  # :off
-        'env': [
-            'TOXENV=py26',
-            'TOXENV=py27',
-            'TOXENV=py33',
-            'TOXENV=py34',
-            'TOXENV=py35',
-            'TOXENV=pypy',
-            'TOXENV=docs'
-        ],
-        'language': 'python',
-        'script': ['tox -e $TOXENV'],
-        'python': ['3.5'],
-        'after_success': ['coveralls'],
-        'install': ['pip install tox coveralls'],
-        'deploy': {
-            True: {
-                'repo': 'bionikspoon/pureyaml',
-                'condition': '$TOXENV == py34',
-                'tags': True
-            },
-            'password': {
-                'secure': secure_block
-            },
-            'distributions': 'sdist bdist_wheel',
-            'user': 'bionikspoon',
-            'provider': 'pypi'
-        }
-    }  # :on
-    if PY34 or PY35:
-        expected = dedent("""
-            python:
-            - '3.5'
-            after_success:
-            - coveralls
-            install:
-            - pip install tox coveralls
-            env:
-            - TOXENV=py26
-            - TOXENV=py27
-            - TOXENV=py33
-            - TOXENV=py34
-            - TOXENV=py35
-            - TOXENV=pypy
-            - TOXENV=docs
-            script:
-            - tox -e $TOXENV
-            deploy:
-              true:
-                condition: $TOXENV == py34
-                tags: true
-                repo: bionikspoon/pureyaml
-              provider: pypi
-              distributions: sdist bdist_wheel
-              password:
-                secure: {secure_block}
-              user: bionikspoon
-            language: python
-        """)[1:].format(secure_block=secure_block)
-    elif PY2:
-        expected = dedent("""
-            env:
-            - TOXENV=py26
-            - TOXENV=py27
-            - TOXENV=py33
-            - TOXENV=py34
-            - TOXENV=py35
-            - TOXENV=pypy
-            - TOXENV=docs
-            language: python
-            script:
-            - tox -e $TOXENV
-            python:
-            - '3.5'
-            after_success:
-            - coveralls
-            install:
-            - pip install tox coveralls
-            deploy:
-              true:
-                repo: bionikspoon/pureyaml
-                condition: $TOXENV == py34
-                tags: true
-              password:
-                secure: {secure_block}
-              distributions: sdist bdist_wheel
-              user: bionikspoon
-              provider: pypi
-        """)[1:].format(secure_block=secure_block)
-    else:
-        expected = dedent("""
-            install:
-            - pip install tox coveralls
-            env:
-            - TOXENV=py26
-            - TOXENV=py27
-            - TOXENV=py33
-            - TOXENV=py34
-            - TOXENV=py35
-            - TOXENV=pypy
-            - TOXENV=docs
-            language: python
-            script:
-            - tox -e $TOXENV
-            python:
-            - '3.5'
-            after_success:
-            - coveralls
-            deploy:
-              true:
-                repo: bionikspoon/pureyaml
-                condition: $TOXENV == py34
-                tags: true
-              password:
-                secure: {secure_block}
-              distributions: sdist bdist_wheel
-              user: bionikspoon
-              provider: pypi
-        """)[1:].format(secure_block=secure_block)
+    it_handles_casted_data__test_pureyaml__PY34__PY35 = dedent("""
+        g: true
+        b: '123'
+        h: Yes we have No bananas
+        c: 123.0
+        e: '123'
+        a: 123
+        f: 'Yes'
+        d: 123.0
+    """)[1:]
+    it_handles_casted_data__test_pureyaml__PYPY = dedent("""
+        a: 123
+        b: '123'
+        c: 123.0
+        d: 123.0
+        e: '123'
+        f: 'Yes'
+        g: true
+        h: Yes we have No bananas
+    """)[1:]
+    it_handles_casted_data__test_pureyaml__PY26__PY27__PY33 = dedent("""
+        a: 123
+        c: 123.0
+        b: '123'
+        e: '123'
+        d: 123.0
+        g: true
+        f: 'Yes'
+        h: Yes we have No bananas
+    """)[1:]
+    it_handles_casted_data__test_pyyaml = dedent("""
+        a: 123
+        b: '123'
+        c: 123.0
+        d: 123.0
+        e: '123'
+        f: 'Yes'
+        g: true
+        h: Yes we have No bananas
+    """)[1:]
+    it_handles_casted_data__test_sanity = None
 
-    actual = dump(data)
+
+def pureyaml_dump(data):
+    text = pureyaml.dump(data)
+    # print('\n' + text)
+    return text
+
+
+def pyyaml_dump(data):
+    text = pyyaml.dump(data, default_flow_style=False)
+    # print('\n' + text)
+    return text
+
+
+def encode(data):
+    nodes = node_encoder(data)
+    return nodes
+
+
+def sanity(obj):
+    # print(obj)
+    text = pureyaml.dump(obj)
+    # print(text)
+    _data = pureyaml.load(text)
+    # print(_data)
+    return _data
+
+
+@mark.parametrize('case', EncodeTestCase.keys('encode'))
+def test_encode(case):
+    data, expected = EncodeTestCase.get('encode', case)
+    nodes = encode(data)
+    # print(serialize_nodes(nodes))
+    assert nodes == expected
+
+
+@mark.parametrize('case', EncodeTestCase.keys('pureyaml'))
+def test_pureyaml_dump(case):
+    data, expected = EncodeTestCase.get('pureyaml', case)
+    actual = pureyaml_dump(data)
+    # print('%s__test_pureyaml_sanity = dedent("""\n%s""")[1:]\n' % (case, actual))
     assert actual == expected
+
+
+@mark.parametrize('case', EncodeTestCase.keys('sanity'))
+def test_sanity(case):
+    data, _ = EncodeTestCase.get('sanity', case)
+    if case in ['it_handles_simple_nan_float']:
+        assert isnan(sanity(data))
+        assert isnan(data)
+        return
+    assert sanity(data) == data
+
+
+@mark.parametrize('case', EncodeTestCase.keys('pyyaml'))
+def test_pyyaml_dump(case):
+    data, expected = EncodeTestCase.get('pyyaml', case)
+    actual = pyyaml_dump(data)
+    # print('%s__test_pyyaml = dedent("""\n%s""")[1:]\n' % (case, actual))
+    assert actual == expected
+
+
+# TEST CASE
+# ----------------------------------------------------------------------------
+def test_it_handles_null__pureyaml_dump():
+    data = None
+    expected = dedent("""
+        null
+        ...
+    """)[1:]
+    actual = pureyaml_dump(data)
+    # print('expected = dedent("""\n%s""")[1:]\n' % actual)
+    assert actual == expected
+
+
+def test_it_handles_null__pyyaml_dump():
+    data = None
+    expected = dedent("""
+        null
+        ...
+    """)[1:]
+    actual = pyyaml_dump(data)
+    # print('expected = dedent("""\n%s""")[1:]\n' % actual)
+    assert actual == expected
+
+
+def test_it_handles_null__encode():
+    data = None
+    expected = Null(None)
+    assert encode(data) == expected
+
+
+def test_it_handles_null__sanity():
+    data = None
+    assert sanity(data) == data
