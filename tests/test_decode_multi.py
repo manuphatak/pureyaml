@@ -1460,7 +1460,7 @@ class DecodeTestCase(MultiTestCaseBase):
         {'6': [7, 8]},
         {'9': 10}
     ]  # :on
-    it_handles_sequence_of_map_with_compact_key__test_parser = Docs(Doc(Sequence(
+    it_handles_sequence_of_map_with_compact_key__test_parser = Docs(Doc(Sequence(  # :off
         Map(
             (
                 Str(6),
@@ -1470,8 +1470,7 @@ class DecodeTestCase(MultiTestCaseBase):
         Map(
             (Str(9), Int(10))
         )
-    )))
-
+    )))  # :on
 
 
 pureyaml_parser = YAMLParser(debug=True)
