@@ -1222,7 +1222,7 @@ class DecodeTestCase(MultiTestCaseBase):
           - 2001-07-23
     """)[1:]
 
-    it_handles_map_complex_key_expanded__test_pureyaml_pyyaml_sanity__xfail = None
+    it_handles_map_complex_key_expanded__test_pureyaml_pyyaml_sanity__skip = None
     it_handles_map_complex_key_expanded__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1243,7 +1243,7 @@ class DecodeTestCase(MultiTestCaseBase):
         : - 2001-07-23
     """)[1:]
 
-    it_handles_map_complex_key_compact__test_pureyaml_pyyaml_sanity__xfail = None
+    it_handles_map_complex_key_compact__test_pureyaml_pyyaml_sanity__skip = None
     it_handles_map_complex_key_compact__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1265,7 +1265,7 @@ class DecodeTestCase(MultiTestCaseBase):
             2001-08-14 ]
     """)[1:]
 
-    it_handles_map_complex_key_flow_sequence__test_pureyaml_pyyaml_sanity__xfail = None
+    it_handles_map_complex_key_flow_sequence__test_pureyaml_pyyaml_sanity__skip = None
     it_handles_map_complex_key_flow_sequence__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1409,7 +1409,7 @@ class DecodeTestCase(MultiTestCaseBase):
             ]
         }
     }  # :on
-    it_handles_nested_map__test_pureyaml_sanity__xfail = {  # :off
+    it_handles_nested_map__test_pureyaml_sanity = {  # :off
         '1': {
             '2': 3
         },
@@ -1422,7 +1422,7 @@ class DecodeTestCase(MultiTestCaseBase):
             ]
         }
     }  # :on
-    it_handles_nested_map__test_parser__xfail = Map(  # :off
+    it_handles_nested_map__test_parser = Docs(Doc(Map(  # :off
         (
             Str(1),
             Map((Str(2), Int(3)))
@@ -1446,7 +1446,32 @@ class DecodeTestCase(MultiTestCaseBase):
                 )
             )
         )
-    )  # :on
+    )))  # :on
+    #  TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_sequence_of_map_with_compact_key__data = dedent("""
+        - '6':
+          - 7
+          - 8
+        - '9': 10
+    """)[1:]
+
+    it_handles_sequence_of_map_with_compact_key__test_pyyaml_pureyaml_sanity = [  # :off
+        {'6': [7, 8]},
+        {'9': 10}
+    ]  # :on
+    it_handles_sequence_of_map_with_compact_key__test_parser = Docs(Doc(Sequence(
+        Map(
+            (
+                Str(6),
+                Sequence(Int(7), Int(8))
+            )
+        ),
+        Map(
+            (Str(9), Int(10))
+        )
+    )))
+
 
 
 pureyaml_parser = YAMLParser(debug=True)
@@ -1471,7 +1496,6 @@ def pyyaml_load(data):
 def sanity(text):
     _obj = pureyaml_load(text)
     _text = pureyaml.dump(_obj)
-    print(_text)
     obj = pureyaml_load(_text)
     return _obj, obj
 

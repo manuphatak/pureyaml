@@ -273,28 +273,28 @@ class YAMLTokens(TokenList):
         r"""
           \-\ + (?=  -\   )
         #            ^ + sequence indicator
-        | \-\ + (?=  [\{\[]\   |  [^:\n]*:\   )
+        | \-\ + (?=  [\{\[]\   |  [^:\n]*:\s   )
         #            ^            ^ + map indicator
         #            ^ + flow indicator
         """
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
-        if indent_status != 'INDENT':
-            msg = dedent("""
-                expected 'INDENT', got %r
-                current_depth:      %s
-                next_depth:         %s
-                token:              %s
-            """)
-            raise YAMLUnknownSyntaxError(msg % (  # :off
-                indent_status,
-                curr_depth,
-                next_depth,
-                t
-            ))  # :on
+        if indent_status == 'INDENT':
+            self.indent_stack.append(next_depth)
+            return t
 
-        self.indent_stack.append(next_depth)
-        return t
+        msg = dedent("""
+            expected 'INDENT', got %r
+            current_depth:      %s
+            next_depth:         %s
+            token:              %s
+        """)
+        raise YAMLUnknownSyntaxError(msg % (  # :off
+            indent_status,
+            curr_depth,
+            next_depth,
+            t
+        ))  # :on
 
     def t_B_SEQUENCE_START(self, t):
         r'-\ +|-(?=\n)'
@@ -304,7 +304,7 @@ class YAMLTokens(TokenList):
         r"""
           \?\ + (?=  -\   )
         #            ^ + sequence indicator
-        | \?\ + (?=  [\{\[]\   |  [^:\n]*:\   )
+        | \?\ + (?=  [\{\[]\   |  [^:\n]*:\s   )
         #            ^            ^ + map indicator
         #            ^ + flow indicator
         """
@@ -331,7 +331,7 @@ class YAMLTokens(TokenList):
         r"""
           \:\ + (?=  -\   )
         #            ^ + sequence indicator
-        | \:\ + (?=  [\{\[]\   |  [^:\n]*:\   )
+        | \:\ + (?=  [\{\[]\   |  [^:\n]*:\s   )
         #            ^            ^ + map indicator
         #            ^ + flow indicator
         """

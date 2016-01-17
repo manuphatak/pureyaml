@@ -199,7 +199,7 @@ class EncodeTestCase(MultiTestCaseBase):
             - 8
           - '9': 10
     """)[1:]
-    it_handles_complex_dict__test_sanity__xfail = None
+    it_handles_complex_dict__test_sanity = None
     it_handles_complex_dict__test_encode = Map(  # :off
         (
             Str(1),

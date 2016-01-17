@@ -261,9 +261,12 @@ class MultiTestCaseBase(with_metaclass(MultiTestMeta)):
     def keys(cls, category):
         keys = []
         for key in cls.__ordered__[category]:
-            xfail = 'xfail' in key
+            xfail = key.startswith('xfail')
+            skip = key.startswith('skip')
             if xfail:
                 keys.append(mark.xfail(condition=True, reason='Marked as xfail.')(key))
+            elif skip:
+                keys.append(mark.skipif(condition=True, reason='Marked as skip.')(key))
             else:
                 keys.append(key)
         return keys
