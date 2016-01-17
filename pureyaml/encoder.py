@@ -135,12 +135,20 @@ class YAMLEncoder(NodeVisitor):
         stack = []
         for k, v in iteritems(node):
             key, value = (yield k), (yield v)
-            if not isinstance(key, list) and not isinstance(value, list):
+            is_oneliner = not isinstance(key, list) and not isinstance(value, list)
+            is_compact_key = isinstance(v, Str) and isinstance(value, list)
+            is_complex_key = isinstance(key, list)
+            if is_oneliner:
                 stack.append((yield key))
                 stack.append(': ')
                 stack.append((yield value))
                 stack.append('\n')
-            elif not isinstance(key, list):
+            elif is_compact_key:
+                stack.append((yield key))
+                stack.append(': ')
+                stack.extend(value)
+                stack.append('\n')
+            elif not is_complex_key:
                 stack.append((yield key))
                 stack.append(': ')
                 stack.append('\n')
@@ -168,6 +176,14 @@ class YAMLEncoder(NodeVisitor):
         ])  # :on
 
         method = repr if use_repr else str
+        if value.endswith('\n') and '\n' in value[:-1]:
+            stack = ['|\n', INDENT]
+            stack.extend(method(node.value).splitlines(True))
+            stack.append(DEDENT)
+            return stack
+
+        if value.endswith('\n'):
+            return ['>\n', INDENT, method(node.value), DEDENT]
         return method(node.value)
 
     def visit_Bool(self, node):

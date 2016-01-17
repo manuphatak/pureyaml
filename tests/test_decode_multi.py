@@ -654,7 +654,7 @@ class DecodeTestCase(MultiTestCaseBase):
     """)[1:]
 
     it_handles_scalar_literal_1_line__test_pureyaml_pyyaml = 'literal\n'
-    it_handles_scalar_literal_1_line__test_sanity__xfail = None
+    it_handles_scalar_literal_1_line__test_sanity = None
     it_handles_scalar_literal_1_line__test_parser = Docs(Doc(Str('literal\n')))
 
     # TEST CASE
@@ -668,7 +668,7 @@ class DecodeTestCase(MultiTestCaseBase):
     it_handles_scalar_literal_ascii_art__test_pureyaml_pyyaml = (  # :off
         '\\//||\\/||\n// ||  ||__\n'
     )  # :on
-    it_handles_scalar_literal_ascii_art__test_sanity__xfail = None
+    it_handles_scalar_literal_ascii_art__test_sanity = None
     it_handles_scalar_literal_ascii_art__test_parser = Docs(Doc(  # :off
         Str('\//||\/||\n// ||  ||__\n')
     ))  # :on
@@ -691,7 +691,7 @@ class DecodeTestCase(MultiTestCaseBase):
         '   "Please don\'t spit on the floor"\n'
         'So he carefully spat on the ceiling\n'
     )  # :on
-    it_handles_longer_scalar_literal_with_indents__test_sanity__xfail = None
+    it_handles_longer_scalar_literal_with_indents__test_sanity = None
     it_handles_longer_scalar_literal_with_indents__test_parser = Docs(Doc(Str(dedent("""
             There once was a short man from Ealing
             Who got on a bus to Darjeeling
@@ -720,7 +720,7 @@ class DecodeTestCase(MultiTestCaseBase):
             'So he carefully spat on the ceiling\n'
         )
     }  # :on
-    it_handles_map_with_literal_block__test_sanity__xfail = None
+    it_handles_map_with_literal_block__test_sanity = None
     it_handles_map_with_literal_block__test_parser = Docs(Doc(Map(  # :off
         (
             Str('data'),
@@ -753,7 +753,7 @@ class DecodeTestCase(MultiTestCaseBase):
             'Blank lines denote paragraph breaks\n'
         )
     }  # :on
-    it_handles_map_with_folded_block__test_sanity__xfail = None
+    it_handles_map_with_folded_block__test_sanity = None
     it_handles_map_with_folded_block__test_parser = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
             Blank lines denote paragraph breaks
@@ -1362,7 +1362,7 @@ class DecodeTestCase(MultiTestCaseBase):
             'US': {'capital': 'DC'}
         }
     }  # :on
-    it_handles_double_dedent_with_literal_end__test_sanity__xfail = None
+    it_handles_double_dedent_with_literal_end__test_sanity = None
     it_handles_double_dedent_with_literal_end__test_parser = Docs(Doc(  # :off
         Map(
             (
@@ -1502,11 +1502,11 @@ def pyyaml_load(data):
 
 def sanity(text):
     _obj = pureyaml_load(text)
-    # print(_obj)
+    print(_obj)
     _text = pureyaml.dump(_obj)
-    # print(_text)
+    print(_text)
     obj = pureyaml_load(_text)
-    # print(obj)
+    print(obj)
     return _obj, obj
 
 
