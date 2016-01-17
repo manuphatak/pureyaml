@@ -20,6 +20,7 @@ class YAMLProductions(YAMLTokens):
     def p_docs__last(self, p):
         """
         docs    : doc
+                | doc DOC_END
         """
         p[0] = Docs(p[1])
 

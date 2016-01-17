@@ -7,7 +7,7 @@ from __future__ import absolute_import
 import re
 
 from future.utils import text_type, binary_type, iteritems
-
+from math import isinf, isnan
 from .nodes import *  # noqa
 from .utils import ContextStack
 
@@ -65,6 +65,7 @@ INDENT = SYMBOL('INDENT')
 DEDENT = SYMBOL('DEDENT')
 
 
+# noinspection PyMethodMayBeStatic
 class YAMLEncoder(NodeVisitor):
     indent_size = 2
     stack = []
@@ -103,6 +104,10 @@ class YAMLEncoder(NodeVisitor):
 
             except StopIteration:
                 yield next_item
+                if next_item != '\n':
+                    yield '\n'
+                if not isinstance(nodes, (Collection, Str)):
+                    yield '...\n'
                 break
 
     def visit_Sequence(self, node):
@@ -167,7 +172,18 @@ class YAMLEncoder(NodeVisitor):
         return self.visit_Scalar(node).lower()
 
     visit_Int = visit_Scalar
-    visit_Float = visit_Scalar
+
+    def visit_Float(self, node):
+        if isnan(node.value):
+            return '.nan'
+        if isinf(node.value):
+            return repr(node.value).replace('inf', '.inf')
+
+        return repr(node.value)
+
+    # noinspection PyUnusedLocal
+    def visit_Null(self, node):
+        return 'null'
 
 
 re_float = re.compile(r'[+-]?(?:\d*\.\d+|\d+\.\d)')

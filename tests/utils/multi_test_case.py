@@ -75,8 +75,8 @@ def separate_action_tags(meta):
     _actions = []
     for tag in meta:
         if tag.startswith(ACTION_INDICATOR):
-            action = tag[len(ACTION_INDICATOR):]
-            _actions.append(action)
+            actions = tag[len(ACTION_INDICATOR):].split('_')
+            _actions.extend(actions)
         else:
             _meta.append(tag)
     return tuple(_actions), tuple(_meta)
@@ -108,7 +108,7 @@ def is_correct_python_version(version_tags):
     if not version_tags:
         return True
 
-    return all(map(lambda tag: map_version[tag], version_tags))
+    return any(map(lambda tag: map_version[tag], version_tags))
 
 
 def prepare_py2(cls_dict):
@@ -190,6 +190,16 @@ class MultiTestMeta(type):
                 )  # :on
                 continue
 
+            for action in action_meta_tags:
+                is_duplicate = any([  # :off
+                    test_name in order[action],
+                    'xfail_%s' % test_name in order[action],
+                    'skip_%s' % test_name in order[action],
+                ])  # :on
+                msg = '\n  !! Duplicate entry: {test_name}__test_{action} already loaded.'.format(**vars())
+                if is_duplicate:
+                    warn(msg, category=TestWithDuplicateActionWarning)
+
             xfail = 'xfail' in meta
             skip = 'skip' in meta
             if xfail:
@@ -239,6 +249,10 @@ class TestActionWithNoDataWarning(UserWarning):
 
 
 class TestDataWithNoActionTagWarning(UserWarning):
+    pass
+
+
+class TestWithDuplicateActionWarning(UserWarning):
     pass
 
 

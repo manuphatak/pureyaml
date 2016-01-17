@@ -20,7 +20,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
     it_handles_basic_single_doc__test_parser = Docs(Doc(Str('Hello World')))
-    it_handles_basic_single_doc__test_load = 'Hello World'
+    it_handles_basic_single_doc__test_pureyaml_pyyaml_sanity = 'Hello World'
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -29,7 +29,7 @@ class DecodeTestCase(MultiTestCaseBase):
         Hello World
     """)[1:]
     it_handles_doc_with_no_end_of_doc_indicator__test_parser = Docs(Doc(Str('Hello World')))
-    it_handles_doc_with_no_end_of_doc_indicator__test_load = 'Hello World'
+    it_handles_doc_with_no_end_of_doc_indicator__test_pureyaml_pyyaml_sanity = 'Hello World'
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -42,8 +42,12 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_2_docs__test_load__xfail = None
-    it_handles_2_docs__test_parser = Docs(Doc(Str('Hello World')), Doc(Str('Foo Bar')))
+    it_handles_2_docs__test_pureyaml_pyyaml__xfail = None
+    it_handles_2_docs__test_sanity = None
+    it_handles_2_docs__test_parser = Docs(  # :off
+        Doc(Str('Hello World')),
+        Doc(Str('Foo Bar'))
+    )  # :on
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -59,7 +63,8 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_3_docs__test_load__xfail = None
+    it_handles_3_docs__test_pureyaml_pyyaml__xfail = None
+    it_handles_3_docs__test_sanity = None
     it_handles_3_docs__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -77,7 +82,8 @@ class DecodeTestCase(MultiTestCaseBase):
         More Docs
     """)[1:]
 
-    it_handles_3_docs_no_end_of_doc_indicators__test_load__xfail = None
+    it_handles_3_docs_no_end_of_doc_indicators__test_pureyaml_pyyaml__xfail = None
+    it_handles_3_docs_no_end_of_doc_indicators__test_sanity = None
     it_handles_3_docs_no_end_of_doc_indicators__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
         Doc(Str('Foo Bar')),
@@ -90,7 +96,7 @@ class DecodeTestCase(MultiTestCaseBase):
         Hello World
     """)[1:]
 
-    it_handles_implicit_doc__test_load = 'Hello World'
+    it_handles_implicit_doc__test_pureyaml_pyyaml_sanity = 'Hello World'
     it_handles_implicit_doc__test_parser = Docs(Doc(Str('Hello World')))
 
     # TEST CASE
@@ -101,7 +107,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_scalar_int__test_load = 123
+    it_handles_scalar_int__test_pureyaml_pyyaml_sanity = 123
     it_handles_scalar_int__test_parser = Docs(Doc(Int(123)))
 
     # TEST CASE
@@ -112,7 +118,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_1_item_sequence__test_load = ['Hello World']
+    it_handles_1_item_sequence__test_pureyaml_pyyaml_sanity = ['Hello World']
     it_handles_1_item_sequence__test_parser = Docs(Doc(Sequence(Str('Hello World', ))))
 
     # TEST CASE
@@ -124,7 +130,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_2_item_sequence__test_load = ['Hello World', 'Foo Bar']
+    it_handles_2_item_sequence__test_pureyaml_pyyaml_sanity = ['Hello World', 'Foo Bar']
     it_handles_2_item_sequence__test_parser = Docs(Doc(Sequence(  # :off
         Str('Hello World'),
         Str('Foo Bar'),
@@ -140,7 +146,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_3_item_sequence__test_load = ['Hello World', 'Foo Bar', 'More Sequence Items']
+    it_handles_3_item_sequence__test_pureyaml_pyyaml_sanity = ['Hello World', 'Foo Bar', 'More Sequence Items']
     it_handles_3_item_sequence__test_parser = Docs(Doc(Sequence(  # :off
         Str('Hello World'),
         Str('Foo Bar'),
@@ -155,7 +161,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_1_item_map__test_load = {'Hello': 'World'}
+    it_handles_1_item_map__test_pureyaml_pyyaml_sanity = {'Hello': 'World'}
     it_handles_1_item_map__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -169,7 +175,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_2_item_map__test_load = {'Foo': 'Bar', 'Hello': 'World'}
+    it_handles_2_item_map__test_pureyaml_pyyaml_sanity = {'Foo': 'Bar', 'Hello': 'World'}
     it_handles_2_item_map__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -185,7 +191,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_3_item_map__test_load = {'Foo': 'Bar', 'Hello': 'World', 'More': 'Map Items'}
+    it_handles_3_item_map__test_pureyaml_pyyaml_sanity = {'Foo': 'Bar', 'Hello': 'World', 'More': 'Map Items'}
     it_handles_3_item_map__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -198,7 +204,7 @@ class DecodeTestCase(MultiTestCaseBase):
         123
     """)[1:]
 
-    it_handles_casting_implicit_int__test_load = 123
+    it_handles_casting_implicit_int__test_pureyaml_pyyaml_sanity = 123
     it_handles_casting_implicit_int__test_parser = Docs(Doc(Int(123)))
 
     # TEST CASE
@@ -207,7 +213,7 @@ class DecodeTestCase(MultiTestCaseBase):
         "123"
     """)[1:]
 
-    it_handles_casting_doublequoted_string__test_load = '123'
+    it_handles_casting_doublequoted_string__test_pureyaml_pyyaml_sanity = '123'
     it_handles_casting_doublequoted_string__test_parser = Docs(Doc(Str('123')))
 
     # TEST CASE
@@ -216,7 +222,9 @@ class DecodeTestCase(MultiTestCaseBase):
         "She said, \"I Like turtles\" and she meant it!"
     """)[1:]
 
-    it_handles_casting_doublequoted_string_with_escaped_char__test_load = 'She said, "I Like turtles" and she meant it!'
+    it_handles_casting_doublequoted_string_with_escaped_char__test_pureyaml_pyyaml_sanity = (  # :off
+        'She said, "I Like turtles" and she meant it!'
+    )  # :on
     it_handles_casting_doublequoted_string_with_escaped_char__test_parser = Docs(
         Doc(Str('She said, "I Like turtles" and she meant it!')))
 
@@ -226,7 +234,7 @@ class DecodeTestCase(MultiTestCaseBase):
         '123'
     """)[1:]
 
-    it_handles_casting_singlequoted_string__test_load = '123'
+    it_handles_casting_singlequoted_string__test_pureyaml_pyyaml_sanity = '123'
     it_handles_casting_singlequoted_string__test_parser = Docs(Doc(Str('123')))
 
     # TEST CASE
@@ -235,7 +243,11 @@ class DecodeTestCase(MultiTestCaseBase):
         'She said, ''I Like turtles'' and she meant it!'
     """)[1:]
 
-    it_handles_casting_singlequoted_string_with_escaped_char__test_load = "She said, 'I Like turtles' and she meant it!"
+    it_handles_casting_singlequoted_string_with_escaped_char__test_pureyaml_pyyaml_sanity = "She said, " \
+                                                                                            "'I Like turtles' and she " \
+                                                                                            "" \
+                                                                                            "" \
+                                                                                            "meant it!"
     it_handles_casting_singlequoted_string_with_escaped_char__test_parser = Docs(
         Doc(Str("She said, 'I Like turtles' and she meant it!")))
 
@@ -245,7 +257,7 @@ class DecodeTestCase(MultiTestCaseBase):
         123.0
     """)[1:]
 
-    it_handles_casting_implicit_float__test_load = 123.0
+    it_handles_casting_implicit_float__test_pureyaml_pyyaml_sanity = 123.0
     it_handles_casting_implicit_float__test_parser = Docs(Doc(Float(123.0)))
 
     # TEST CASE
@@ -254,7 +266,7 @@ class DecodeTestCase(MultiTestCaseBase):
         .123
     """)[1:]
 
-    it_handles_casting_implicit_float_no_leading_digit__test_load = 0.123
+    it_handles_casting_implicit_float_no_leading_digit__test_pureyaml_pyyaml_sanity = 0.123
     it_handles_casting_implicit_float_no_leading_digit__test_parser = Docs(Doc(Float(.123)))
 
     # TEST CASE
@@ -263,7 +275,7 @@ class DecodeTestCase(MultiTestCaseBase):
         !!float 123
     """)[1:]
 
-    it_handles_casting_explicit_float__test_load = 123.0
+    it_handles_casting_explicit_float__test_pureyaml_pyyaml_sanity = 123.0
     it_handles_casting_explicit_float__test_parser = Docs(Doc(Float(123)))
 
     # TEST CASE
@@ -272,7 +284,7 @@ class DecodeTestCase(MultiTestCaseBase):
         !!str 123
     """)[1:]
 
-    it_handles_casting_explicit_str__test_load = '123'
+    it_handles_casting_explicit_str__test_pureyaml_pyyaml_sanity = '123'
     it_handles_casting_explicit_str__test_parser = Docs(Doc(Str(123)))
 
     # TEST CASE
@@ -281,7 +293,7 @@ class DecodeTestCase(MultiTestCaseBase):
         Yes
     """)[1:]
 
-    it_handles_casting_implicit_bool_true__test_load = True
+    it_handles_casting_implicit_bool_true__test_pureyaml_pyyaml_sanity = True
     it_handles_casting_implicit_bool_true__test_parser = Docs(Doc(Bool(True)))
 
     # TEST CASE
@@ -290,7 +302,7 @@ class DecodeTestCase(MultiTestCaseBase):
         No
     """)[1:]
 
-    it_handles_casting_implicit_bool_false__test_load = False
+    it_handles_casting_implicit_bool_false__test_pureyaml_pyyaml_sanity = False
     it_handles_casting_implicit_bool_false__test_parser = Docs(Doc(Bool(False)))
 
     # TEST CASE
@@ -299,7 +311,7 @@ class DecodeTestCase(MultiTestCaseBase):
         !!str Yes
     """)[1:]
 
-    it_handles_casting_explicit_str_from_bool__test_load = 'Yes'
+    it_handles_casting_explicit_str_from_bool__test_pureyaml_pyyaml_sanity = 'Yes'
     it_handles_casting_explicit_str_from_bool__test_parser = Docs(Doc(Str('Yes')))
 
     # TEST CASE
@@ -308,7 +320,7 @@ class DecodeTestCase(MultiTestCaseBase):
         Yes we have No bananas
     """)[1:]
 
-    it_handles_uses_context_for_disambiguated_str__test_load = 'Yes we have No bananas'
+    it_handles_uses_context_for_disambiguated_str__test_pureyaml_pyyaml_sanity = 'Yes we have No bananas'
     it_handles_uses_context_for_disambiguated_str__test_parser = Docs(Doc(Str('Yes we have No bananas')))
 
     # TEST CASE
@@ -317,7 +329,7 @@ class DecodeTestCase(MultiTestCaseBase):
         123 # an integer
     """)[1:]
 
-    it_handles_ignore_comment__test_load = 123
+    it_handles_ignore_comment__test_pureyaml_pyyaml_sanity = 123
     it_handles_ignore_comment__test_parser = Docs(Doc(Int(123)))
 
     # TEST CASE
@@ -329,7 +341,7 @@ class DecodeTestCase(MultiTestCaseBase):
         c: 123.0                   # a float
     """)[1:]
 
-    it_handles_map_with_scalars_and_comments__test_load = {'a': 123, 'b': '123', 'c': 123.0}
+    it_handles_map_with_scalars_and_comments__test_pureyaml_pyyaml_sanity = {'a': 123, 'b': '123', 'c': 123.0}
     it_handles_map_with_scalars_and_comments__test_parser = Docs(Doc(Map(  # :off
         (Str('a'), Int(123)),
         (Str('b'), Str(123)),
@@ -344,7 +356,7 @@ class DecodeTestCase(MultiTestCaseBase):
         g: Yes                     # a boolean True (yaml1.1), string "Yes" (yaml1.2)
     """)[1:]
 
-    it_handles_different_map_with_bool_and_comments__test_load = {'g': True, 'f': 'Yes'}
+    it_handles_different_map_with_bool_and_comments__test_pureyaml_pyyaml_sanity = {'g': True, 'f': 'Yes'}
     it_handles_different_map_with_bool_and_comments__test_parser = Docs(Doc(Map(  # :off
         (Str('f'), Str('Yes')),
         (Str('g'), Bool('Yes')),
@@ -364,7 +376,7 @@ class DecodeTestCase(MultiTestCaseBase):
         h: Yes we have No bananas  # a string, "Yes" and "No" disambiguated by context.
     """)[1:]
 
-    it_handles_longer_map_with_scalars_and_comments__test_load = {
+    it_handles_longer_map_with_scalars_and_comments__test_pureyaml_pyyaml_sanity = {
         'b': '123', 'h': 'Yes we have No bananas', 'a': 123, 'd': 123.0, 'g': True, 'c': 123.0, 'f': 'Yes', 'e': '123'
     }
     it_handles_longer_map_with_scalars_and_comments__test_parser = Docs(Doc(Map(  # :off
@@ -387,7 +399,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_unnecessary_indent_scalar_item__test_load = 123
+    it_handles_unnecessary_indent_scalar_item__test_pureyaml_pyyaml_sanity = 123
     it_handles_unnecessary_indent_scalar_item__test_parser = Docs(Doc(Int('123')))
 
     # TEST CASE
@@ -398,7 +410,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_unnecessary_indent_1_item__test_load = ['Casablanca']
+    it_handles_unnecessary_indent_1_item__test_pureyaml_pyyaml_sanity = ['Casablanca']
     it_handles_unnecessary_indent_1_item__test_parser = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
@@ -411,7 +423,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_unnecessary_indent_1_item_with_comment__test_load = ['Casablanca']
+    it_handles_unnecessary_indent_1_item_with_comment__test_pureyaml_pyyaml_sanity = ['Casablanca']
     it_handles_unnecessary_indent_1_item_with_comment__test_parser = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
     )))  # :on
@@ -424,7 +436,7 @@ class DecodeTestCase(MultiTestCaseBase):
             - South by Southwest
     """)[1:]
 
-    it_handles_unnecessary_indent_2_items__test_load = ['Casablanca', 'South by Southwest']
+    it_handles_unnecessary_indent_2_items__test_pureyaml_pyyaml_sanity = ['Casablanca', 'South by Southwest']
     it_handles_unnecessary_indent_2_items__test_parser = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -439,7 +451,8 @@ class DecodeTestCase(MultiTestCaseBase):
             - The Man Who Wasnt There
     """)[1:]
 
-    it_handles_unnecessary_indent_3_items__test_load = ['Casablanca', 'South by Southwest', 'The Man Who Wasnt There']
+    it_handles_unnecessary_indent_3_items__test_pureyaml_pyyaml_sanity = ['Casablanca', 'South by Southwest',
+                                                                          'The Man Who Wasnt There']
     it_handles_unnecessary_indent_3_items__test_parser = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -456,8 +469,9 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_unnecessary_indent_3_items_with_dedent__test_load = ['Casablanca', 'South by Southwest',
-                                                                    'The Man Who Wasnt There']
+    it_handles_unnecessary_indent_3_items_with_dedent__test_pureyaml_pyyaml_sanity = ['Casablanca',
+                                                                                      'South by Southwest',
+                                                                                      'The Man Who Wasnt There']
     it_handles_unnecessary_indent_3_items_with_dedent__test_parser = Docs(Doc(Sequence(  # :off
         Str('Casablanca'),
         Str('South by Southwest'),
@@ -471,7 +485,8 @@ class DecodeTestCase(MultiTestCaseBase):
         Also a null: # Empty
     """)[1:]
 
-    it_handles_empty_scalar__test_load__xfail = {'Also a null': None}
+    it_handles_empty_scalar__test_pureyaml_sanity__xfail = None
+    it_handles_empty_scalar__test_pyyaml = {'Also a null': None}
     it_handles_empty_scalar__test_parser__xfail = Docs(Doc(Map((Str('Also a null'), Null(None)))))
 
     # TEST CASE
@@ -481,7 +496,8 @@ class DecodeTestCase(MultiTestCaseBase):
         Not a null: ""
     """)[1:]
 
-    it_handles_empty_scalar_double_quote__test_load = {'Not a null': ''}
+    it_handles_empty_scalar_double_quote__test_pureyaml_pyyaml = {'Not a null': ''}
+    it_handles_empty_scalar_double_quote__test_sanity__xfail = None
     it_handles_empty_scalar_double_quote__test_parser = Docs(Doc(Map((Str('Not a null'), Str('')))))
 
     # TEST CASE
@@ -515,7 +531,7 @@ class DecodeTestCase(MultiTestCaseBase):
         # Also floats d: .NAN
     """)[1:]
 
-    it_handles_scalar_types__test_load__xfail = {
+    it_handles_scalar_types__test_pureyaml_sanity = {  # :off
         'Integers b': 0o7,
         'A null': None,
         'Booleans c': False,
@@ -535,9 +551,11 @@ class DecodeTestCase(MultiTestCaseBase):
         'Booleans f': True,
         'Floats e': float('-2E+05'),
         'Also floats a': float('inf'),
-        'Integers a': 0,  # 'Also floats d': float('nan'),
+        'Integers a': 0,
+        # 'Also floats d': float('nan'),
         'Integers c': 58
-    }
+    }  # :on
+    it_handles_scalar_types__test_pyyaml__xfail = None
     it_handles_scalar_types__test_parser = Docs(Doc(Map(  # :off
         (Str('A null'), Null('null')),
         # (Str('Also a null'), Null(None)),
@@ -577,8 +595,9 @@ class DecodeTestCase(MultiTestCaseBase):
             - The Man Who Wasn't There
     """)[1:]
 
-    it_handles_unnecessary_indent_3_with_edge_items__test_load = ['21 Jump Street', 'se7en', 'North by Northwest',
-                                                                  "The Man Who Wasn't There"]
+    it_handles_unnecessary_indent_3_with_edge_items__test_pureyaml_pyyaml_sanity = ['21 Jump Street', 'se7en',
+                                                                                    'North by Northwest',
+                                                                                    "The Man Who Wasn't There"]
     it_handles_unnecessary_indent_3_with_edge_items__test_parser = Docs(Doc(Sequence(  # :off
         Str('21 Jump Street'),
         Str('se7en'),
@@ -593,7 +612,8 @@ class DecodeTestCase(MultiTestCaseBase):
           literal
     """)[1:]
 
-    it_handles_scalar_literal_1_line__test_load = 'literal\n'
+    it_handles_scalar_literal_1_line__test_pureyaml_pyyaml = 'literal\n'
+    it_handles_scalar_literal_1_line__test_sanity__xfail = None
     it_handles_scalar_literal_1_line__test_parser = Docs(Doc(Str('literal\n')))
 
     # TEST CASE
@@ -604,8 +624,11 @@ class DecodeTestCase(MultiTestCaseBase):
           // ||  ||__
     """)[1:]
 
-    it_handles_scalar_literal_ascii_art__test_load = '\\//||\\/||\n// ||  ||__\n'
-    it_handles_scalar_literal_ascii_art__test_parser = Docs(Doc(Str('\//||\/||\n// ||  ||__\n')))
+    it_handles_scalar_literal_ascii_art__test_pureyaml_pyyaml = '\\//||\\/||\n// ||  ||__\n'
+    it_handles_scalar_literal_ascii_art__test_sanity__xfail = None
+    it_handles_scalar_literal_ascii_art__test_parser = Docs(Doc(  # :off
+        Str('\//||\/||\n// ||  ||__\n')
+    ))  # :on
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -618,13 +641,14 @@ class DecodeTestCase(MultiTestCaseBase):
             So he carefully spat on the ceiling
     """)[1:]
 
-    it_handles_longer_scalar_literal_with_indents__test_load = (  # :off
+    it_handles_longer_scalar_literal_with_indents__test_pureyaml_pyyaml = (  # :off
         'There once was a short man from Ealing\n'
         'Who got on a bus to Darjeeling\n'
         '   It said on the door\n'
         '   "Please don\'t spit on the floor"\n'
         'So he carefully spat on the ceiling\n'
     )  # :on
+    it_handles_longer_scalar_literal_with_indents__test_sanity__xfail = None
     it_handles_longer_scalar_literal_with_indents__test_parser = Docs(Doc(Str(dedent("""
             There once was a short man from Ealing
             Who got on a bus to Darjeeling
@@ -644,7 +668,7 @@ class DecodeTestCase(MultiTestCaseBase):
           So he carefully spat on the ceiling
     """)[1:]
 
-    it_handles_map_with_literal_block__test_load = {  # :off
+    it_handles_map_with_literal_block__test_pureyaml_pyyaml = {  # :off
         'data': (
             'There once was a short man from Ealing\n'
             'Who got on a bus to Darjeeling\n'
@@ -653,6 +677,7 @@ class DecodeTestCase(MultiTestCaseBase):
             'So he carefully spat on the ceiling\n'
         )
     }  # :on
+    it_handles_map_with_literal_block__test_sanity__xfail = None
     it_handles_map_with_literal_block__test_parser = Docs(Doc(Map((Str('data'), Str(dedent("""
             There once was a short man from Ealing
             Who got on a bus to Darjeeling
@@ -674,12 +699,13 @@ class DecodeTestCase(MultiTestCaseBase):
             paragraph breaks
     """)[1:]
 
-    it_handles_map_with_folded_block__test_load = {  # :off
+    it_handles_map_with_folded_block__test_pureyaml_pyyaml = {  # :off
         'data': (
             'Wrapped text will be folded into a single paragraph\n'
             'Blank lines denote paragraph breaks\n'
         )
     }  # :on
+    it_handles_map_with_folded_block__test_sanity__xfail = None
     it_handles_map_with_folded_block__test_parser = Docs(Doc(Map((Str('data'), Str(dedent("""
             Wrapped text will be folded into a single paragraph
             Blank lines denote paragraph breaks
@@ -692,7 +718,7 @@ class DecodeTestCase(MultiTestCaseBase):
           last_name: Smith
     """)[1:]
 
-    it_handles_sequence_of_map_1_item__test_load = [{'first_name': 'John', 'last_name': 'Smith'}]
+    it_handles_sequence_of_map_1_item__test_pureyaml_pyyaml_sanity = [{'first_name': 'John', 'last_name': 'Smith'}]
     it_handles_sequence_of_map_1_item__test_parser = Docs(Doc(Sequence(  # :off
         Map(
             (Str('first_name'), Str('John')),
@@ -711,9 +737,9 @@ class DecodeTestCase(MultiTestCaseBase):
           last_name: Doe
     """)[1:]
 
-    it_handles_sequence_of_map_3_item__test_load = [{'first_name': 'John', 'last_name': 'Smith'},
-                                                    {'first_name': 'Joe', 'last_name': 'Sixpack'},
-                                                    {'first_name': 'Jane', 'last_name': 'Doe'}]
+    it_handles_sequence_of_map_3_item__test_pureyaml_pyyaml_sanity = [{'first_name': 'John', 'last_name': 'Smith'},
+                                                                      {'first_name': 'Joe', 'last_name': 'Sixpack'},
+                                                                      {'first_name': 'Jane', 'last_name': 'Doe'}]
     it_handles_sequence_of_map_3_item__test_parser = Docs(Doc(Sequence(  # :off
         Map(
             (Str('first_name'), Str('John')),
@@ -735,7 +761,7 @@ class DecodeTestCase(MultiTestCaseBase):
         - - John Smith
     """)[1:]
 
-    it_handles_sequence_of_sequences_1_item__test_load = [['John Smith']]
+    it_handles_sequence_of_sequences_1_item__test_pureyaml_pyyaml_sanity = [['John Smith']]
     it_handles_sequence_of_sequences_1_item__test_parser = Docs(Doc(Sequence(  # :off
         Sequence(
             Str('John Smith'),
@@ -750,7 +776,7 @@ class DecodeTestCase(MultiTestCaseBase):
           - Jane Doe
     """)[1:]
 
-    it_handles_sequence_of_sequences_3_items__test_load = [['John Smith', 'Joe Sixpack', 'Jane Doe']]
+    it_handles_sequence_of_sequences_3_items__test_pureyaml_pyyaml_sanity = [['John Smith', 'Joe Sixpack', 'Jane Doe']]
     it_handles_sequence_of_sequences_3_items__test_parser = Docs(Doc(Sequence(  # :off
         Sequence(
             Str('John Smith'),
@@ -772,8 +798,12 @@ class DecodeTestCase(MultiTestCaseBase):
           1 edge case: success
     """)[1:]
 
-    it_handles_sequence_of_mixed_items__test_load = [['John Smith', 'Joe Sixpack', 'Jane Doe'], 'Casablanca',
-                                                     {'1 edge case': 'success', 'hello': 'world', 'foo': 'bar'}]
+    it_handles_sequence_of_mixed_items__test_pureyaml_pyyaml_sanity = [['John Smith', 'Joe Sixpack', 'Jane Doe'],
+                                                                       'Casablanca', {
+                                                                           '1 edge case': 'success',
+                                                                           'hello': 'world',
+                                                                           'foo': 'bar'
+                                                                       }]
     it_handles_sequence_of_mixed_items__test_parser = Docs(Doc(Sequence(  # :off
         Sequence(
             Str('John Smith'),
@@ -795,7 +825,7 @@ class DecodeTestCase(MultiTestCaseBase):
           - John Smith
     """)[1:]
 
-    it_handles_map_of_sequences_1_item__test_load = {'people': ['John Smith']}
+    it_handles_map_of_sequences_1_item__test_pureyaml_pyyaml_sanity = {'people': ['John Smith']}
     it_handles_map_of_sequences_1_item__test_parser = Docs(Doc(Map(  # :off
         (Str('people'), Sequence(
             Str('John Smith'),
@@ -816,7 +846,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     """)[1:]
 
-    it_handles_map_of_sequences_many_items__test_load = {  # :off
+    it_handles_map_of_sequences_many_items__test_pureyaml_pyyaml_sanity = {  # :off
         'people': ['John Smith', 'Joe Sixpack', 'Jane Doe'],
         'places': ['London', 'Australia', 'US']
     }  # :on
@@ -847,7 +877,7 @@ class DecodeTestCase(MultiTestCaseBase):
             family_name:  Gale
     """)[1:]
 
-    it_handles_map_of_map_1_item__test_load = {  # :off
+    it_handles_map_of_map_1_item__test_pureyaml_pyyaml_sanity = {  # :off
         'customer': {
             'family_name': 'Gale',
             'first_name': 'Dorothy'
@@ -879,7 +909,7 @@ class DecodeTestCase(MultiTestCaseBase):
             - candy
     """)[1:]
 
-    it_handles_map_of_map_many_items__test_load = {
+    it_handles_map_of_map_many_items__test_pureyaml_pyyaml_sanity = {
         'customer': {'family_name': 'Gale', 'first_name': 'Dorothy'},
         'cashier': {'family_name': 'Sixpack', 'first_name': 'Joe'},
         'items': ['doritos', 'soda', 'candy'],
@@ -920,7 +950,7 @@ class DecodeTestCase(MultiTestCaseBase):
         [milk]
     """)[1:]
 
-    it_handles_1_item_flow_sequence__test_load = ['milk']
+    it_handles_1_item_flow_sequence__test_pureyaml_pyyaml_sanity = ['milk']
     it_handles_1_item_flow_sequence__test_parser = Docs(Doc(Sequence(  # :off
         Str('milk'),
     )))  # :on
@@ -932,7 +962,7 @@ class DecodeTestCase(MultiTestCaseBase):
         [milk, pumpkin pie, eggs, juice]
     """)[1:]
 
-    it_handles_many_item_flow_sequence__test_load = ['milk', 'pumpkin pie', 'eggs', 'juice']
+    it_handles_many_item_flow_sequence__test_pureyaml_pyyaml_sanity = ['milk', 'pumpkin pie', 'eggs', 'juice']
     it_handles_many_item_flow_sequence__test_parser = Docs(Doc(Sequence(  # :off
         Str('milk'),
         Str('pumpkin pie'),
@@ -947,7 +977,7 @@ class DecodeTestCase(MultiTestCaseBase):
         {name: John Smith}
     """)[1:]
 
-    it_handles_1_item_flow_map__test_load = {'name': 'John Smith'}
+    it_handles_1_item_flow_map__test_pureyaml_pyyaml_sanity = {'name': 'John Smith'}
     it_handles_1_item_flow_map__test_parser = Docs(Doc(Map(  # :off
         (Str('name'), Str('John Smith')),
     )))  # :on
@@ -959,7 +989,7 @@ class DecodeTestCase(MultiTestCaseBase):
         {name: John Smith, age: 33}
     """)[1:]
 
-    it_handles_2_item_flow_map__test_load = {'age': 33, 'name': 'John Smith'}
+    it_handles_2_item_flow_map__test_pureyaml_pyyaml_sanity = {'age': 33, 'name': 'John Smith'}
     it_handles_2_item_flow_map__test_parser = Docs(Doc(Map(  # :off
         (Str('name'), Str('John Smith')),
         (Str('age'), Int(33)),
@@ -973,8 +1003,8 @@ class DecodeTestCase(MultiTestCaseBase):
           age: 27
     """)[1:]
 
-    it_handles_mixed_sequence_of_maps__test_load = [{'age': 33, 'name': 'John Smith'},
-                                                    {'age': 27, 'name': 'Mary Smith'}]
+    it_handles_mixed_sequence_of_maps__test_pureyaml_pyyaml_sanity = [{'age': 33, 'name': 'John Smith'},
+                                                                      {'age': 27, 'name': 'Mary Smith'}]
     it_handles_mixed_sequence_of_maps__test_parser = Docs(Doc(Sequence(  # :off
         Map(
             (Str('name'), Str('John Smith')),
@@ -995,7 +1025,7 @@ class DecodeTestCase(MultiTestCaseBase):
           - Susan Williams
     """)[1:]
 
-    it_handles_mixed_map_of_sequences__test_load = {  # :off
+    it_handles_mixed_map_of_sequences__test_pureyaml_pyyaml_sanity = {  # :off
         'women': ['Mary Smith', 'Susan Williams'],
         'men': ['John Smith', 'Bill Jones']
     }  # :on
@@ -1027,7 +1057,7 @@ class DecodeTestCase(MultiTestCaseBase):
         - Susan Williams
     """)[1:]
 
-    it_handles_map_of_sequences_with_no_indent__test_load = {  # :off
+    it_handles_map_of_sequences_with_no_indent__test_pureyaml_pyyaml_sanity = {  # :off
         'women': ['Mary Smith', 'Susan Williams'],
         'men': ['John Smith', 'Bill Jones']
     }  # :on
@@ -1050,6 +1080,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # noinspection SpellCheckingInspection
     it_handles_cast_type_binary__data = dedent("""
         ---
         picture: !!binary |
@@ -1059,7 +1090,7 @@ class DecodeTestCase(MultiTestCaseBase):
             56enmleECcgggoBADs=mZmE
     """)[1:]
 
-    it_handles_cast_type_binary__test_load = {  # :off
+    it_handles_cast_type_binary__test_pureyaml_pyyaml = {  # :off
         'picture': (
             b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9"
             b"\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e"
@@ -1067,6 +1098,8 @@ class DecodeTestCase(MultiTestCaseBase):
             b"\x10' \x82\n\x01\x00;"
         )
     }  # :on
+    it_handles_cast_type_binary__test_sanity__xfail = None
+    # noinspection SpellCheckingInspection
     it_handles_cast_type_binary__test_parser = Docs(Doc(Map(  # :off
         (
             Str('picture'),
@@ -1085,7 +1118,8 @@ class DecodeTestCase(MultiTestCaseBase):
         ? Hello: World
     """)[1:]
 
-    it_handles_1_item_map_explicit_key__test_load__xfail = {'Hello': 'World'}
+    it_handles_1_item_map_explicit_key__test_pureyaml_sanity = {'Hello': 'World'}
+    it_handles_1_item_map_explicit_key__test_pyyaml__xfail = None
     it_handles_1_item_map_explicit_key__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -1099,7 +1133,7 @@ class DecodeTestCase(MultiTestCaseBase):
         : Bar
     """)[1:]
 
-    it_handles_2_item_map_explicit_key__test_load = {'Foo': 'Bar', 'Hello': 'World'}
+    it_handles_2_item_map_explicit_key__test_pureyaml_pyyaml_sanity = {'Foo': 'Bar', 'Hello': 'World'}
     it_handles_2_item_map_explicit_key__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -1116,7 +1150,9 @@ class DecodeTestCase(MultiTestCaseBase):
         : Map Items
     """)[1:]
 
-    it_handles_3_item_map_explicit_key__test_load = {'Foo': 'Bar', 'Hello': 'World', 'More': 'Map Items'}
+    it_handles_3_item_map_explicit_key__test_pureyaml_pyyaml_sanity = {
+        'Foo': 'Bar', 'Hello': 'World', 'More': 'Map Items'
+    }
     it_handles_3_item_map_explicit_key__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
         (Str('Foo'), Str('Bar')),
@@ -1133,7 +1169,7 @@ class DecodeTestCase(MultiTestCaseBase):
           - 2001-07-23
     """)[1:]
 
-    it_handles_map_complex_key_expanded__test_load__xfail = None
+    it_handles_map_complex_key_expanded__test_pureyaml_pyyaml_sanity__xfail = None
     it_handles_map_complex_key_expanded__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1154,7 +1190,7 @@ class DecodeTestCase(MultiTestCaseBase):
         : - 2001-07-23
     """)[1:]
 
-    it_handles_map_complex_key_compact__test_load__xfail = None
+    it_handles_map_complex_key_compact__test_pureyaml_pyyaml_sanity__xfail = None
     it_handles_map_complex_key_compact__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1176,7 +1212,7 @@ class DecodeTestCase(MultiTestCaseBase):
             2001-08-14 ]
     """)[1:]
 
-    it_handles_map_complex_key_flow_sequence__test_load__xfail = None
+    it_handles_map_complex_key_flow_sequence__test_pureyaml_pyyaml_sanity__xfail = None
     it_handles_map_complex_key_flow_sequence__test_parser = Docs(Doc(Map(  # :off
         (
             Sequence(
@@ -1202,7 +1238,7 @@ class DecodeTestCase(MultiTestCaseBase):
                 capital: DC
     """)[1:]
 
-    it_handles_double_dedent__test_load = {  # :off
+    it_handles_double_dedent__test_pureyaml_pyyaml = {  # :off
         'people': {
             'John Smith': {'nickname': "Ol' johnny boy"}
         },
@@ -1210,6 +1246,7 @@ class DecodeTestCase(MultiTestCaseBase):
             'US': {'capital': 'DC'}
         }
     }  # :on
+    it_handles_double_dedent__test_sanity = None
     it_handles_double_dedent__test_parser = Docs(Doc(  # :off
         Map(
             (
@@ -1253,7 +1290,7 @@ class DecodeTestCase(MultiTestCaseBase):
                 capital: DC
     """)[1:]
 
-    it_handles_double_dedent_with_literal_end__test_load = {  # :off
+    it_handles_double_dedent_with_literal_end__test_pureyaml_pyyaml = {  # :off
         'people': {
             'John Smith': {
                 'short bio': 'I like turtles. And green turtles.\n',
@@ -1264,6 +1301,7 @@ class DecodeTestCase(MultiTestCaseBase):
             'US': {'capital': 'DC'}
         }
     }  # :on
+    it_handles_double_dedent_with_literal_end__test_sanity__xfail = None
     it_handles_double_dedent_with_literal_end__test_parser = Docs(Doc(  # :off
         Map(
             (
@@ -1291,6 +1329,71 @@ class DecodeTestCase(MultiTestCaseBase):
             ),
         ),
     ))  # :on
+
+    #  TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_nested_map__data = dedent("""
+        '1':
+          '2': 3
+        '4':
+          5:
+          - '6':
+            - 7
+            - 8
+          - '9': 10
+    """)[1:]
+
+    it_handles_nested_map__test_pyyaml = {  # :off
+        '1': {
+            '2': 3
+        },
+        '4': {
+            5: [
+                {
+                    '6': [7, 8]
+                },
+                {'9': 10}
+            ]
+        }
+    }  # :on
+    it_handles_nested_map__test_pureyaml_sanity__xfail = {  # :off
+        '1': {
+            '2': 3
+        },
+        '4': {
+            5: [
+                {
+                    '6': [7, 8]
+                },
+                {'9': 10}
+            ]
+        }
+    }  # :on
+    it_handles_nested_map__test_parser__xfail = Map(  # :off
+        (
+            Str(1),
+            Map((Str(2), Int(3)))
+        ),
+        (
+            Str(4),
+            Map(
+                (
+                    Int(5),
+                    Sequence(
+                        Map(
+                            (
+                                Str(6),
+                                Sequence(Int(7), Int(8))
+                            )
+                        ),
+                        Map(
+                            (Str(9), Int(10))
+                        )
+                    )
+                )
+            )
+        )
+    )  # :on
 
 
 pureyaml_parser = YAMLParser(debug=True)
@@ -1326,23 +1429,22 @@ def test_parser(case):
     assert parser(data) == expected
 
 
-@mark.parametrize('case', DecodeTestCase.keys('load'))
+@mark.parametrize('case', DecodeTestCase.keys('pureyaml'))
 def test_pureyaml_load(case):
-    data, expected = DecodeTestCase.get('load', case)
+    data, expected = DecodeTestCase.get('pureyaml', case)
     assert pureyaml_load(data) == expected
 
 
-@mark.parametrize('case', DecodeTestCase.keys('load'))
+@mark.parametrize('case', DecodeTestCase.keys('pyyaml'))
 def test_pyyaml_load(case):
-    data, expected = DecodeTestCase.get('load', case)
+    data, expected = DecodeTestCase.get('pyyaml', case)
     obj = pyyaml_load(data)
-    # print('{case}__test_load = {obj!r}'.format(case=case, obj=obj))
+    # print('{case}__test_pureyaml_pyyaml_sanity = {obj!r}'.format(case=case, obj=obj))
     assert obj == expected
 
 
-@mark.xfail
-@mark.parametrize('case', DecodeTestCase.keys('load'))
-def test_pureyaml_sanity(case):
-    data, _ = DecodeTestCase.get('load', case)
+@mark.parametrize('case', DecodeTestCase.keys('sanity'))
+def test_sanity(case):
+    data, _ = DecodeTestCase.get('sanity', case)
     obj1, obj2 = sanity(data)
     assert obj1 == obj2
