@@ -44,7 +44,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_2_docs__test_pureyaml_pyyaml__xfail = None
+    it_handles_2_docs__test_pureyaml_pyyaml__skip = None
     it_handles_2_docs__test_sanity = None
     it_handles_2_docs__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
@@ -65,7 +65,7 @@ class DecodeTestCase(MultiTestCaseBase):
         ...
     """)[1:]
 
-    it_handles_3_docs__test_pureyaml_pyyaml__xfail = None
+    it_handles_3_docs__test_pureyaml_pyyaml__skip = None
     it_handles_3_docs__test_sanity = None
     it_handles_3_docs__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
@@ -84,7 +84,7 @@ class DecodeTestCase(MultiTestCaseBase):
         More Docs
     """)[1:]
 
-    it_handles_3_docs_no_end_of_doc_indicators__test_pureyaml_pyyaml__xfail = None
+    it_handles_3_docs_no_end_of_doc_indicators__test_pureyaml_pyyaml__skip = None
     it_handles_3_docs_no_end_of_doc_indicators__test_sanity = None
     it_handles_3_docs_no_end_of_doc_indicators__test_parser = Docs(  # :off
         Doc(Str('Hello World')),
@@ -531,13 +531,14 @@ class DecodeTestCase(MultiTestCaseBase):
     """)[1:]
 
     it_handles_empty_scalar_double_quote__test_pureyaml_pyyaml = {'Not a null': ''}
-    it_handles_empty_scalar_double_quote__test_sanity__xfail = None
+    it_handles_empty_scalar_double_quote__test_sanity = None
     it_handles_empty_scalar_double_quote__test_parser = Docs(Doc(Map(  # :off
         (Str('Not a null'), Str(''))
     )))  # :on
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # PyYaml Floats/Int not supported.
     #  TODO uncomment lines
     it_handles_scalar_types__data = dedent("""
         ---
@@ -591,7 +592,8 @@ class DecodeTestCase(MultiTestCaseBase):
         # 'Also floats d': float('nan'),
         'Integers c': 58
     }  # :on
-    it_handles_scalar_types__test_pyyaml__xfail = None
+
+    it_handles_scalar_types__test_pyyaml__skip = None
     it_handles_scalar_types__test_parser = Docs(Doc(Map(  # :off
         (Str('A null'), Null('null')),
         # (Str('Also a null'), Null(None)),
@@ -1179,6 +1181,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # Not supported by PyYaml
     it_handles_2_item_map_explicit_key__data = dedent("""
         ? Hello
         : World
@@ -1186,6 +1189,7 @@ class DecodeTestCase(MultiTestCaseBase):
         : Bar
     """)[1:]
 
+    # Not supported by PyYaml
     it_handles_2_item_map_explicit_key__test_pureyaml_pyyaml_sanity = {'Foo': 'Bar', 'Hello': 'World'}
     it_handles_2_item_map_explicit_key__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
@@ -1194,6 +1198,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # Not supported by PyYaml
     it_handles_3_item_map_explicit_key__data = dedent("""
         ? Hello
         : World
@@ -1214,6 +1219,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # Not supported by PyYaml
     it_handles_map_complex_key_expanded__data = dedent("""
         ?
           - Detroit Tigers
@@ -1237,6 +1243,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # Not supported by PyYaml
     it_handles_map_complex_key_compact__data = dedent("""
         ? - Detroit Tigers
           - Chicago Cubs
@@ -1258,6 +1265,7 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # Not supported by PyYaml
     it_handles_map_complex_key_flow_sequence__data = dedent("""
         ? [ New York Yankees,
             Atlanta Braves ]
@@ -1494,8 +1502,11 @@ def pyyaml_load(data):
 
 def sanity(text):
     _obj = pureyaml_load(text)
+    # print(_obj)
     _text = pureyaml.dump(_obj)
+    # print(_text)
     obj = pureyaml_load(_text)
+    # print(obj)
     return _obj, obj
 
 

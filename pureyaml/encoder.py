@@ -159,6 +159,8 @@ class YAMLEncoder(NodeVisitor):
 
     def visit_Str(self, node):
         value = text_type(node.value)
+        if not value:
+            return '""'
         use_repr = any([  # :off
             value.lower() in ['yes', 'no', 'true', 'false'],
             value.isnumeric(),
