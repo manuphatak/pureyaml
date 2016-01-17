@@ -179,7 +179,7 @@ class EncodeTestCase(MultiTestCaseBase):
             - 8
           - '9': 10
     """)[1:]
-    it_handles_complex_dict__test_pureyaml__PY3 = dedent("""
+    it_handles_complex_dict__test_pureyaml__PY34__PY35 = dedent("""
         '4':
           5:
           - '6':
@@ -189,7 +189,7 @@ class EncodeTestCase(MultiTestCaseBase):
         '1':
           '2': 3
     """)[1:]
-    it_handles_complex_dict__test_pureyaml__PY2__PYPY = dedent("""
+    it_handles_complex_dict__test_pureyaml__PY2__PY33 = dedent("""
         '1':
           '2': 3
         '4':

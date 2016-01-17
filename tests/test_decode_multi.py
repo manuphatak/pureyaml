@@ -240,12 +240,12 @@ class DecodeTestCase(MultiTestCaseBase):
     # TEST CASE
     # ------------------------------------------------------------------------
     it_handles_casting_singlequoted_string_with_escaped_char__data = dedent(r"""
-        'She said, ''I Like turtles'' and she meant it!'
+        She said, 'I Like turtles' and she meant it!
     """)[1:]
 
     it_handles_casting_singlequoted_string_with_escaped_char__test_pureyaml_pyyaml_sanity = dedent(r"""
-        'She said, ''I Like turtles'' and she meant it!'
-    """)[1:]
+        She said, 'I Like turtles' and she meant it!
+    """)[1:-1]
     it_handles_casting_singlequoted_string_with_escaped_char__test_parser = Docs(
         Doc(Str("She said, 'I Like turtles' and she meant it!")))
 
