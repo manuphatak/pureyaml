@@ -1153,7 +1153,7 @@ class DecodeTestCase(MultiTestCaseBase):
             b"\x10' \x82\n\x01\x00;"
         )
     }  # :on
-    it_handles_cast_type_binary__test_sanity__xfail = None
+    it_handles_cast_type_binary__test_sanity = None
     # noinspection SpellCheckingInspection
     it_handles_cast_type_binary__test_parser = Docs(Doc(Map(  # :off
         (
@@ -1169,12 +1169,13 @@ class DecodeTestCase(MultiTestCaseBase):
 
     # TEST CASE
     # ------------------------------------------------------------------------
+    # Not supported by PyYaml
     it_handles_1_item_map_explicit_key__data = dedent("""
         ? Hello: World
     """)[1:]
 
-    it_handles_1_item_map_explicit_key__test_pureyaml_sanity = {'Hello': 'World'}
-    it_handles_1_item_map_explicit_key__test_pyyaml__xfail = None
+    it_handles_1_item_map_explicit_key__test_pureyaml = {'Hello': 'World'}
+    it_handles_1_item_map_explicit_key__test_pyyaml_sanity__skip = None
     it_handles_1_item_map_explicit_key__test_parser = Docs(Doc(Map(  # :off
         (Str('Hello'), Str('World')),
     )))  # :on
@@ -1502,11 +1503,11 @@ def pyyaml_load(data):
 
 def sanity(text):
     _obj = pureyaml_load(text)
-    print(_obj)
+    # print(_obj)
     _text = pureyaml.dump(_obj)
-    print(_text)
+    # print(_text)
     obj = pureyaml_load(_text)
-    print(obj)
+    # print(obj)
     return _obj, obj
 
 

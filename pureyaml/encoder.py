@@ -136,7 +136,7 @@ class YAMLEncoder(NodeVisitor):
         for k, v in iteritems(node):
             key, value = (yield k), (yield v)
             is_oneliner = not isinstance(key, list) and not isinstance(value, list)
-            is_compact_key = isinstance(v, Str) and isinstance(value, list)
+            is_compact_key = isinstance(v, Scalar) and isinstance(value, list)
             is_complex_key = isinstance(key, list)
             if is_oneliner:
                 stack.append((yield key))
@@ -202,6 +202,12 @@ class YAMLEncoder(NodeVisitor):
     # noinspection PyUnusedLocal
     def visit_Null(self, node):
         return 'null'
+
+    def visit_Binary(self, node):
+        stack = ['!!binary |\n', INDENT]
+        stack.extend(node.raw_value.splitlines(True))
+        stack.append(DEDENT)
+        return stack
 
 
 re_float = re.compile(r'[+-]?(?:\d*\.\d+|\d+\.\d)')

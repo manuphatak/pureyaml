@@ -247,7 +247,11 @@ class EncodeTestCase(MultiTestCaseBase):
           R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmle
           ECcgggoBADs=
     """)[1:]
-    it_handles_binary__test_pureyaml_sanity__xfail = None
+    it_handles_binary__test_pureyaml = dedent("""
+        picture: !!binary |
+          R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmleECcgggoBADs=
+    """)[1:]
+    it_handles_binary__test_sanity = None
     it_handles_binary__test_encode = Map(  # :off
         (
             Str('picture'),
