@@ -9,7 +9,7 @@ from pytest import mark
 import pureyaml
 from pureyaml.encoder import node_encoder
 from pureyaml.nodes import *  # noqa
-from tests.utils import MultiTestCaseBase, serialize_nodes
+from tests.utils import MultiTestCaseBase
 
 
 class EncodeTestCase(MultiTestCaseBase):
@@ -247,11 +247,13 @@ class EncodeTestCase(MultiTestCaseBase):
           R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmle
           ECcgggoBADs=
     """)[1:]
+    # noinspection SpellCheckingInspection
     it_handles_binary__test_pureyaml = dedent("""
         picture: !!binary |
           R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5OTk6enp56enmleECcgggoBADs=
     """)[1:]
     it_handles_binary__test_sanity = None
+    # noinspection SpellCheckingInspection
     it_handles_binary__test_encode = Map(  # :off
         (
             Str('picture'),
