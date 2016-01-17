@@ -7,131 +7,223 @@ from __future__ import absolute_import
 
 from textwrap import dedent
 
+import yaml as pyyaml
 from pytest import mark
 
 import pureyaml
-from tests.utils import feature_not_supported
+from pureyaml.nodes import *  # noqa
+from pureyaml.parser import YAMLParser
+from tests.utils import MultiTestCaseBase, serialize_nodes
 
 
-def load(text):
-    obj = pureyaml.load(text)
-    return obj
-
-
-def test_can_read_list_block():
-    text = dedent("""
-    --- # Favorite movies
-        - Casablanca
-        - North by Northwest
-        - The Man Who Wasn't There
+class DecoderWikiSpecs(MultiTestCaseBase):
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_list_block__data = dedent("""
+        --- # Favorite movies
+            - Casablanca
+            - North by Northwest
+            - The Man Who Wasn't There
     """)[1:]
+    it_can_read_list_block__test_parser = Docs(  # :off
+        Doc(
+            Sequence(
+                Str('Casablanca'),
+                Str('North by Northwest'),
+                Str("The Man Who Wasn't There"),
+            ),
+        ),
+    )  # :on
+    _obj = ['Casablanca', 'North by Northwest', "The Man Who Wasn't There"]
+    it_can_read_list_block__test_pureyaml = _obj
+    it_can_read_list_block__test_pyyaml = _obj
+    it_can_read_list_block__test_sanity = None
 
-    assert load(text) == ['Casablanca', 'North by Northwest', 'The Man Who Wasn\'t There']
-
-
-def test_can_read_list_inline():
-    text = dedent("""
-    --- # Shopping list
-    [milk, pumpkin pie, eggs, juice]
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_list_inline__data = dedent("""
+        --- # Shopping list
+        [milk, pumpkin pie, eggs, juice]
     """)[1:]
+    it_can_read_list_inline__test_parser = Docs(  # :off
+        Doc(
+            Sequence(
+                Str('milk'),
+                Str('pumpkin pie'),
+                Str('eggs'),
+                Str('juice'),
+            ),
+        ),
+    )  # :on
+    _obj = ['milk', 'pumpkin pie', 'eggs', 'juice']
+    it_can_read_list_inline__test_pureyaml = _obj
+    it_can_read_list_inline__test_pyyaml = _obj
+    it_can_read_list_inline__test_sanity = None
 
-    assert load(text) == ['milk', 'pumpkin pie', 'eggs', 'juice']
-
-
-def test_can_read_dict_block():
-    text = dedent("""
-    --- # Indented Block
-        name: John Smith
-        age: 33
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_dict_block__data = dedent("""
+        --- # Indented Block
+            name: John Smith
+            age: 33
     """)[1:]
+    it_can_read_dict_block__test_parser = Docs(  # :off
+        Doc(
+            Map(
+                (Str('name'), Str('John Smith')),
+                (Str('age'), Int(33)),
+            ),
+        ),
+    )  # :on
+    _obj = {'name': 'John Smith', 'age': 33}
+    it_can_read_dict_block__test_pureyaml = _obj
+    it_can_read_dict_block__test_pyyaml = _obj
+    it_can_read_dict_block__test_sanity = None
 
-    expected = {'name': 'John Smith', 'age': 33}
-
-    assert load(text) == expected
-
-
-def test_can_read_dict_inline():
-    text = dedent("""
-    {name: John Smith, age: 33}
+    it_can_read_dict_inline__data = dedent("""
+        {name: John Smith, age: 33}
     """)[1:]
+    it_can_read_dict_inline__test_parser = Docs(  # :off
+        Doc(
+            Map(
+                (Str('name'), Str('John Smith')),
+                (Str('age'), Int(33)),
+            ),
+        ),
+    )  # :on
+    _obj = {'name': 'John Smith', 'age': 33}
+    it_can_read_dict_inline__test_pureyaml = _obj
+    it_can_read_dict_inline__test_pyyaml = _obj
+    it_can_read_dict_inline__test_sanity = None
 
-    expected = {'name': 'John Smith', 'age': 33}
-
-    assert load(text) == expected
-
-
-def test_can_read_str_literal():
-    text = dedent("""
-    data: |
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_str_literal__data = dedent("""
+        data: |
+            There once was a short man from Ealing
+            Who got on a bus to Darjeeling
+                It said on the door
+                "Please don't spit on the floor"
+            So he carefully spat on the ceiling
+    """)[1:]
+    _data = dedent("""
         There once was a short man from Ealing
         Who got on a bus to Darjeeling
             It said on the door
             "Please don't spit on the floor"
         So he carefully spat on the ceiling
+    """[1:-1])
+    it_can_read_str_literal__test_parser = Docs(  # :off
+        Doc(
+            Map(
+                (
+                    Str('data'),
+                    Str(_data)
+                ),
+            ),
+        ),
+    )  # :on
+    _obj = {'data': _data}
+    it_can_read_str_literal__test_pureyaml = _obj
+    it_can_read_str_literal__test_pyyaml = _obj
+    it_can_read_str_literal__test_sanity = None
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_str_folded__data = dedent("""
+        data: >
+            Wrapped text
+            will be folded
+            into a single
+            paragraph
+
+            Blank lines denote
+            paragraph breaks
     """)[1:]
+    _data = (  # :off
+        "Wrapped text will be folded into a single paragraph\n"
+        "Blank lines denote paragraph breaks\n"
+    )  # :on
+    it_can_read_str_folded__test_parser = Docs(  # :off
+        Doc(
+            Map(
+                (Str('data'), Str(_data)),
+            ),
+        ),
+    )  # :on
+    _obj = {'data': _data}
+    it_can_read_str_folded__test_pureyaml = _obj
+    it_can_read_str_folded__test_pyyaml = _obj
+    it_can_read_str_folded__test_sanity = None
 
-    data = dedent("""
-        There once was a short man from Ealing
-        Who got on a bus to Darjeeling
-            It said on the door
-            "Please don't spit on the floor"
-        So he carefully spat on the ceiling
-        """[1:-1])
-
-    expected = {'data': data}
-
-    assert load(text) == expected
-
-
-def test_can_read_str_folded():
-    text = dedent("""
-    data: >
-        Wrapped text
-        will be folded
-        into a single
-        paragraph
-
-        Blank lines denote
-        paragraph breaks
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_lists_of_dicts__data = dedent("""
+        - {name: John Smith, age: 33}
+        - name: Mary Smith
+          age: 27
     """)[1:]
-    data = "Wrapped text will be folded into a single paragraph\nBlank lines denote paragraph breaks\n"
-
-    expected = {'data': data}
-    assert load(text) == expected
-
-
-def test_can_read_lists_of_dicts():
-    text = dedent("""
-    - {name: John Smith, age: 33}
-    - name: Mary Smith
-      age: 27
-    """)[1:]
-    expected = [  # :off
+    it_can_read_lists_of_dicts__test_parser = Docs(  # :off
+        Doc(
+            Sequence(
+                Map(
+                    (Str('name'), Str('John Smith')),
+                    (Str('age'), Int(33)),
+                ),
+                Map(
+                    (Str('name'), Str('Mary Smith')),
+                    (Str('age'), Int(27)),
+                ),
+            ),
+        ),
+    )  # :on
+    _obj = [  # :off
         {'name': 'John Smith', 'age': 33},
         {'name': 'Mary Smith', 'age': 27}
     ]  # :on
+    it_can_read_lists_of_dicts__test_pureyaml = _obj
+    it_can_read_lists_of_dicts__test_pyyaml = _obj
+    it_can_read_lists_of_dicts__test_sanity = None
 
-    assert load(text) == expected
-
-
-def test_can_read_dicts_of_lists():
-    text = dedent("""
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_dicts_of_lists__data = dedent("""
         men: [John Smith, Bill Jones]
         women:
             - Mary Smith
             - Susan Williams
     """)[1:]
-    expected = {  # :off
+    it_can_read_dicts_of_lists__test_parser = Docs(  # :off
+        Doc(
+            Map(
+                (
+                    Str('men'),
+                    Sequence(
+                        Str('John Smith'),
+                        Str('Bill Jones'),
+                    ),
+                ),
+                (
+                    Str('women'),
+                    Sequence(
+                        Str('Mary Smith'),
+                        Str('Susan Williams'),
+                    ),
+                ),
+            ),
+        ),
+    )  # :on
+    _obj = {  # :off
         'men': ['John Smith', 'Bill Jones'],
         'women': ['Mary Smith', 'Susan Williams']
     }  # :on
+    it_can_read_dicts_of_lists__test_pureyaml = _obj
+    it_can_read_dicts_of_lists__test_pyyaml = _obj
+    it_can_read_dicts_of_lists__test_sanity = None
 
-    assert load(text) == expected
-
-
-@feature_not_supported
-def test_can_read_node_anchors_and_references():
-    text = dedent("""
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    it_can_read_node_anchors_and_references__data = dedent("""
         # sequencer protocols for Laser eye surgery
         ---
         - step:  &id001                  # defines anchor label &id001
@@ -154,7 +246,8 @@ def test_can_read_node_anchors_and_references():
             spotSize: 2mm                # redefines just this key, refers rest from &id001
         - step: *id002
     """)[1:]
-    expected = [  # :off
+    it_can_read_node_anchors_and_references__test_parser__skip = None
+    _obj = [  # :off
         {'step': {
             'instrument': 'Lasik 2000',
             'pulseEnergy': 5.4,
@@ -200,7 +293,77 @@ def test_can_read_node_anchors_and_references():
         }},
     ]  # :on
 
-    assert load(text) == expected
+    it_can_read_node_anchors_and_references__test_pureyaml__skip = _obj
+    it_can_read_node_anchors_and_references__test_pyyaml__skip = _obj
+    it_can_read_node_anchors_and_references__test_sanity__skip = None
+
+    # TEST CASE
+    # ------------------------------------------------------------------------
+    _picture = (  # :off
+        b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee\xe9\xe9"
+        b"\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e\x8e\x8e\xe0\xe0"
+        b"\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7\x9e\x9e\x9ei^\x10' \x82\n"
+        b"\x01\x00;"
+    )  # :on
+    # noinspection SpellCheckingInspection
+    it_can_cast_binary__data = dedent("""
+    ---
+    picture: !!binary |
+        R0lGODlhDAAMAIQAAP//9/X
+        17unp5WZmZgAAAOfn515eXv
+        Pz7Y6OjuDg4J+fn5OTk6enp
+        56enmleECcgggoBADs=mZmE
+    """)[1:]
+    it_can_cast_binary__test_parser = Docs(  # :off
+        Doc(
+            Map(
+                (Str('picture'), Binary.from_decoded(_picture)),
+            ),
+        ),
+    )  # :on
+    _obj = {'picture': _picture}
+    it_can_cast_binary__test_pureyaml = _obj
+    it_can_cast_binary__test_pyyaml = _obj
+    it_can_cast_binary__test_sanity = None
+
+
+pureyaml_parser = YAMLParser(debug=True)
+
+
+@mark.parametrize('case', DecoderWikiSpecs.keys('parser'))
+def test_parser(case):
+    text, expected = DecoderWikiSpecs.get('parser', case)
+    nodes = pureyaml_parser.parse(text)
+    print(serialize_nodes(nodes))
+    assert nodes == expected
+
+
+@mark.parametrize('case', DecoderWikiSpecs.keys('pureyaml'))
+def test_pureyaml_load(case):
+    text, expected = DecoderWikiSpecs.get('pureyaml', case)
+    obj = pureyaml.load(text)
+    print('{case}__test_pureyaml = {obj!r}'.format(case=case, obj=obj))
+    assert obj == expected
+
+
+@mark.parametrize('case', DecoderWikiSpecs.keys('pyyaml'))
+def test_pyyaml_load(case):
+    text, expected = DecoderWikiSpecs.get('pyyaml', case)
+    obj = pyyaml.load(text)
+    print('{case}__test_pyyaml = {obj!r}'.format(case=case, obj=obj))
+    assert obj == expected
+
+
+@mark.parametrize('case', DecoderWikiSpecs.keys('sanity'))
+def test_sanity(case):
+    text, _ = DecoderWikiSpecs.get('sanity', case)
+    obj1 = pureyaml.load(text)
+    # print(obj1)
+    _text = pureyaml.dump(obj1)
+    # print(_text)
+    obj2 = pureyaml.load(_text)
+    # print(obj2)
+    assert obj1 == obj2
 
 
 casted_data_types = """
@@ -229,87 +392,25 @@ casted_data_type_args = [  # :off
 
 @mark.parametrize('key,type_', casted_data_type_args)
 def test_can_read_casted_data_types(key, type_):
-    data = load(casted_data_types)
-    assert isinstance(data[key], type_)
+    obj = pureyaml.load(casted_data_types)
+    assert isinstance(obj[key], type_)
 
 
 def test_can_read_values_from_casted_data__str_from_int():
-    data = load(casted_data_types)
-    assert data['e'] == '123'
+    obj = pureyaml.load(casted_data_types)
+    assert obj['e'] == '123'
 
 
 def test_can_read_values_from_casted_data__str_from_keyword():
-    data = load(casted_data_types)
-    assert data['f'] == 'Yes'
+    obj = pureyaml.load(casted_data_types)
+    assert obj['f'] == 'Yes'
 
 
 def test_can_read_values_from_casted_data__bool():
-    data = load(casted_data_types)
-    assert data['g'] is True
+    obj = pureyaml.load(casted_data_types)
+    assert obj['g'] is True
 
 
 def test_can_read_values_from_casted_data__str_from_context():
-    data = load(casted_data_types)
-    assert data['h'] == 'Yes we have No bananas'
-
-
-def test_can_cast_binary():
-    # noinspection SpellCheckingInspection
-    text = dedent("""
-    ---
-    picture: !!binary |
-        R0lGODlhDAAMAIQAAP//9/X
-        17unp5WZmZgAAAOfn515eXv
-        Pz7Y6OjuDg4J+fn5OTk6enp
-        56enmleECcgggoBADs=mZmE
-    """)[1:]
-    # noinspection SpellCheckingInspection
-    picture = (b"GIF89a\x0c\x00\x0c\x00\x84\x00\x00\xff\xff\xf7\xf5\xf5\xee"
-               b"\xe9\xe9\xe5fff\x00\x00\x00\xe7\xe7\xe7^^^\xf3\xf3\xed\x8e"
-               b"\x8e\x8e\xe0\xe0\xe0\x9f\x9f\x9f\x93\x93\x93\xa7\xa7\xa7"
-               b"\x9e\x9e\x9ei^\x10' \x82\n\x01\x00;")
-
-    expected = {'picture': picture}
-
-    assert load(text) == expected
-
-#
-# sanity_args = [  # :off
-#     list_block,
-#     list_inline,
-#     dict_block,
-#     dict_inline,
-#     feature_not_supported(str_literal),
-#     feature_not_supported(str_folded),
-#     lists_of_dicts,
-#     dicts_of_lists,
-#     feature_not_supported(node_anchors_and_references),
-#     feature_not_supported(casted_data_types),
-#     feature_not_supported(specified_data_types__binary),
-# ]  # :on
-#
-# sanity_names = [  # :off
-#     'list_block',
-#     'list_inline',
-#     'dict_block',
-#     'dict_inline',
-#     'str_literal',
-#     'str_folded',
-#     'lists_of_dicts',
-#     'dicts_of_lists',
-#     'node_anchors_and_references',
-#     'casted_data_types',
-#     'specified_data_types__binary',
-# ]  # :on
-#
-#
-# # @feature_not_supported
-# @mark.parametrize('sample', sanity_args, False, sanity_names)
-# def test__sanity(sample):
-#     load_result = pureyaml.load(sample)
-#     dump_result = pureyaml.dump(load_result)
-#     load_expected = pureyaml.load(dump_result)
-#     dump_expected = pureyaml.dump(load_expected)
-#
-#     assert load_result == load_expected
-#     assert dump_result == dump_expected
+    obj = pureyaml.load(casted_data_types)
+    assert obj['h'] == 'Yes we have No bananas'

@@ -126,7 +126,7 @@ def test_ex_2_04_sequence_of_mappings():
     assert parse(text) == expected
 
 
-def test_ex_2_05_sequence_of_sequnces():
+def test_ex_2_05_sequence_of_sequences():
     text = dedent("""
         - [name        , hr, avg  ]
         - [Mark McGwire, 65, 0.278]
@@ -488,7 +488,7 @@ def test_ex_2_16_indentation_determines_scope():
     assert parse(text) == expected
 
 
-def test_ex_2_17_quoated_scalars():
+def test_ex_2_17_quoted_scalars():
     text = dedent(r"""
         unicode: "Sosa did fine.\u263A"
         control: "\b1998\t1999\t2000\n"
@@ -633,6 +633,7 @@ def test_ex_2_22_timestamps():
 
 def test_ex_2_23_various_explicit_tags():
     # TODO, remove comments
+    # noinspection SpellCheckingInspection
     text = dedent("""
         ---
         not-date: !!str 2002-04-28
@@ -649,6 +650,7 @@ def test_ex_2_23_various_explicit_tags():
         #  different documents.
     """)[1:]
 
+    # noinspection SpellCheckingInspection
     expected = Docs(  # :off
         Doc(
             Map(

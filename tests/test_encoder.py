@@ -12,7 +12,7 @@ from pureyaml.nodes import *  # noqa
 from tests.utils import MultiTestCaseBase
 
 
-class EncodeTestCase(MultiTestCaseBase):
+class EncoderTestCase(MultiTestCaseBase):
     # TEST CASE
     # ------------------------------------------------------------------------
     it_handles_simple_int__data = 1
@@ -760,96 +760,86 @@ class EncodeTestCase(MultiTestCaseBase):
     it_handles_casted_data__test_sanity = None
 
 
-def pureyaml_dump(data):
-    text = pureyaml.dump(data)
-    # print('\n' + text)
-    return text
-
-
-def pyyaml_dump(data):
-    text = pyyaml.dump(data, default_flow_style=False)
-    # print('\n' + text)
-    return text
-
-
-def encode(data):
-    nodes = node_encoder(data)
-    return nodes
-
-
-def sanity(obj):
-    # print(obj)
-    text = pureyaml.dump(obj)
-    # print(text)
-    _data = pureyaml.load(text)
-    # print(_data)
-    return _data
-
-
-@mark.parametrize('case', EncodeTestCase.keys('encode'))
+@mark.parametrize('case', EncoderTestCase.keys('encode'))
 def test_encode(case):
-    data, expected = EncodeTestCase.get('encode', case)
-    nodes = encode(data)
+    obj, expected = EncoderTestCase.get('encode', case)
+    nodes = node_encoder(obj)
     # print(serialize_nodes(nodes))
     assert nodes == expected
 
 
-@mark.parametrize('case', EncodeTestCase.keys('pureyaml'))
+@mark.parametrize('case', EncoderTestCase.keys('pureyaml'))
 def test_pureyaml_dump(case):
-    data, expected = EncodeTestCase.get('pureyaml', case)
-    actual = pureyaml_dump(data)
-    # print('%s__test_pureyaml_sanity = dedent("""\n%s""")[1:]\n' % (case, actual))
-    assert actual == expected
+    obj, expected = EncoderTestCase.get('pureyaml', case)
+    text = pureyaml.dump(obj)
+    # print('%s__test_pureyaml_sanity = dedent("""\n%s""")[1:]\n' % (case, text))
+    assert text == expected
 
 
-@mark.parametrize('case', EncodeTestCase.keys('sanity'))
+@mark.parametrize('case', EncoderTestCase.keys('sanity'))
 def test_sanity(case):
-    data, _ = EncodeTestCase.get('sanity', case)
+    obj1, _ = EncoderTestCase.get('sanity', case)
+    # print(obj1)
+    text = pureyaml.dump(obj1)
+    # print(text)
+    obj2 = pureyaml.load(text)
+    # print(obj2)
     if case in ['it_handles_simple_nan_float']:
-        assert isnan(sanity(data))
-        assert isnan(data)
+        assert isnan(obj2)
+        assert isnan(obj1)
         return
-    assert sanity(data) == data
+
+    assert obj2 == obj1
 
 
-@mark.parametrize('case', EncodeTestCase.keys('pyyaml'))
+def pyyaml_dump(obj):
+    text = pyyaml.dump(obj, default_flow_style=False)
+    return text
+
+
+@mark.parametrize('case', EncoderTestCase.keys('pyyaml'))
 def test_pyyaml_dump(case):
-    data, expected = EncodeTestCase.get('pyyaml', case)
-    actual = pyyaml_dump(data)
-    # print('%s__test_pyyaml = dedent("""\n%s""")[1:]\n' % (case, actual))
-    assert actual == expected
+    obj, expected = EncoderTestCase.get('pyyaml', case)
+    text = pyyaml_dump(obj)
+    # print('%s__test_pyyaml = dedent("""\n%s""")[1:]\n' % (case, text))
+    assert text == expected
 
 
 # TEST CASE
 # ----------------------------------------------------------------------------
 def test_it_handles_null__pureyaml_dump():
-    data = None
+    obj = None
     expected = dedent("""
         null
         ...
     """)[1:]
-    actual = pureyaml_dump(data)
-    # print('expected = dedent("""\n%s""")[1:]\n' % actual)
-    assert actual == expected
+    text = pureyaml.dump(obj)
+    assert text == expected
 
 
 def test_it_handles_null__pyyaml_dump():
-    data = None
+    obj = None
     expected = dedent("""
         null
         ...
     """)[1:]
-    actual = pyyaml_dump(data)
-    # print('expected = dedent("""\n%s""")[1:]\n' % actual)
-    assert actual == expected
+    text = pyyaml_dump(obj)
+    assert text == expected
 
 
 def test_it_handles_null__encode():
-    data = None
+    obj = None
     expected = Null(None)
-    assert encode(data) == expected
+    nodes = node_encoder(obj)
+    assert nodes == expected
 
 
 def test_it_handles_null__sanity():
-    data = None
-    assert sanity(data) == data
+    obj1 = None
+    # print(obj1)
+    text = pureyaml.dump(obj1)
+    # print(text)
+    obj2 = pureyaml.load(text)
+    # print(obj2)
+
+    assert obj2 == obj1

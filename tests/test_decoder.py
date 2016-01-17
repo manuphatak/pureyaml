@@ -11,7 +11,7 @@ from pureyaml.parser import YAMLParser
 from tests.utils import MultiTestCaseBase
 
 
-class DecodeTestCase(MultiTestCaseBase):
+class DecoderTestCase(MultiTestCaseBase):
     # TEST CASE
     # ------------------------------------------------------------------------
     it_handles_basic_single_doc__data = dedent("""
@@ -1485,54 +1485,36 @@ class DecodeTestCase(MultiTestCaseBase):
 pureyaml_parser = YAMLParser(debug=True)
 
 
-def parser(text):
-    nodes = pureyaml_parser.parse(text)
-    return nodes
-
-
-def pureyaml_load(data):
-    text = pureyaml.load(data)
-    # print('\n' + text)
-    return text
-
-
-def pyyaml_load(data):
-    obj = pyyaml.load(data)
-    return obj
-
-
-def sanity(text):
-    _obj = pureyaml_load(text)
-    # print(_obj)
-    _text = pureyaml.dump(_obj)
-    # print(_text)
-    obj = pureyaml_load(_text)
-    # print(obj)
-    return _obj, obj
-
-
-@mark.parametrize('case', DecodeTestCase.keys('parser'))
+@mark.parametrize('case', DecoderTestCase.keys('parser'))
 def test_parser(case):
-    data, expected = DecodeTestCase.get('parser', case)
-    assert parser(data) == expected
+    text, expected = DecoderTestCase.get('parser', case)
+    nodes = pureyaml_parser.parse(text)
+    assert nodes == expected
 
 
-@mark.parametrize('case', DecodeTestCase.keys('pureyaml'))
+@mark.parametrize('case', DecoderTestCase.keys('pureyaml'))
 def test_pureyaml_load(case):
-    data, expected = DecodeTestCase.get('pureyaml', case)
-    assert pureyaml_load(data) == expected
+    text, expected = DecoderTestCase.get('pureyaml', case)
+    obj = pureyaml.load(text)
+    # print('\n' + obj)
+    assert obj == expected
 
 
-@mark.parametrize('case', DecodeTestCase.keys('pyyaml'))
+@mark.parametrize('case', DecoderTestCase.keys('pyyaml'))
 def test_pyyaml_load(case):
-    data, expected = DecodeTestCase.get('pyyaml', case)
-    obj = pyyaml_load(data)
+    text, expected = DecoderTestCase.get('pyyaml', case)
+    obj = pyyaml.load(text)
     # print('{case}__test_pureyaml_pyyaml_sanity = {obj!r}'.format(case=case, obj=obj))
     assert obj == expected
 
 
-@mark.parametrize('case', DecodeTestCase.keys('sanity'))
+@mark.parametrize('case', DecoderTestCase.keys('sanity'))
 def test_sanity(case):
-    data, _ = DecodeTestCase.get('sanity', case)
-    obj1, obj2 = sanity(data)
+    text, _ = DecoderTestCase.get('sanity', case)
+    obj1 = pureyaml.load(text)
+    # print(obj1)
+    _text = pureyaml.dump(obj1)
+    # print(_text)
+    obj2 = pureyaml.load(_text)
+    # print(obj2)
     assert obj1 == obj2
