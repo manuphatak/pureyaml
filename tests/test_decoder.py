@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # coding=utf-8
-from pprint import pprint
 from textwrap import dedent
 
 import yaml as pyyaml
@@ -9,7 +8,7 @@ from pytest import mark
 import pureyaml
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import MultiTestCaseBase, serialize_nodes
+from tests.utils import MultiTestCaseBase
 
 
 class DecoderTestCase(MultiTestCaseBase):
