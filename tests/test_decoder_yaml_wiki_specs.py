@@ -334,7 +334,7 @@ pureyaml_parser = YAMLParser(debug=True)
 def test_parser(case):
     text, expected = DecoderWikiSpecs.get('parser', case)
     nodes = pureyaml_parser.parse(text)
-    print(serialize_nodes(nodes))
+    # print(serialize_nodes(nodes))
     assert nodes == expected
 
 
@@ -342,7 +342,7 @@ def test_parser(case):
 def test_pureyaml_load(case):
     text, expected = DecoderWikiSpecs.get('pureyaml', case)
     obj = pureyaml.load(text)
-    print('{case}__test_pureyaml = {obj!r}'.format(case=case, obj=obj))
+    # print('{case}__test_pureyaml = {obj!r}'.format(case=case, obj=obj))
     assert obj == expected
 
 
@@ -350,7 +350,7 @@ def test_pureyaml_load(case):
 def test_pyyaml_load(case):
     text, expected = DecoderWikiSpecs.get('pyyaml', case)
     obj = pyyaml.load(text)
-    print('{case}__test_pyyaml = {obj!r}'.format(case=case, obj=obj))
+    # print('{case}__test_pyyaml = {obj!r}'.format(case=case, obj=obj))
     assert obj == expected
 
 
