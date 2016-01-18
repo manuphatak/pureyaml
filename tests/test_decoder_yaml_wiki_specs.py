@@ -13,7 +13,7 @@ from pytest import mark
 import pureyaml
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import MultiTestCaseBase, serialize_nodes
+from tests.utils import MultiTestCaseBase
 
 
 class DecoderWikiSpecs(MultiTestCaseBase):
