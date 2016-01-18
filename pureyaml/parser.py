@@ -48,13 +48,13 @@ class YAMLParser(YAMLProductions):
         kwargs.setdefault('module', self)
         kwargs.setdefault('tabmodule', 'pureyaml.grammar._parsetab')
         kwargs.setdefault('debugfile', '_parser.out')
-        # kwargs.setdefault('debuglog', yacc_logger)
 
         self.debug = kwargs.get('debug')
         self.parser = yacc(**kwargs)
 
     def parse(self, data, **kwargs):
         kwargs.setdefault('lexer', YAMLLexer.build())
+        kwargs.setdefault('debug', False)
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):

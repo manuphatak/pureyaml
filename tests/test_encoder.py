@@ -494,7 +494,7 @@ class EncoderTestCase(MultiTestCaseBase):
             '8': 9
           16: 17
     """)[1:]
-    it_handles_nested_obj__test_sanity__xfail = None
+    it_handles_nested_obj__test_sanity = None
 
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -602,7 +602,7 @@ class EncoderTestCase(MultiTestCaseBase):
             - 15
             - 16
     """)[1:]
-    it_handles_nested_list__test_sanity__xfail = None
+    it_handles_nested_list__test_sanity = None
 
     # TEST CASE
     # ------------------------------------------------------------------------

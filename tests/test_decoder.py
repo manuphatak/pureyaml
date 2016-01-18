@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
+from pprint import pprint
 from textwrap import dedent
 
 import yaml as pyyaml
@@ -8,7 +9,7 @@ from pytest import mark
 import pureyaml
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import MultiTestCaseBase
+from tests.utils import MultiTestCaseBase, serialize_nodes
 
 
 class DecoderTestCase(MultiTestCaseBase):
@@ -1529,7 +1530,8 @@ class DecoderTestCase(MultiTestCaseBase):
         - '9': 10
     """)[1:]
 
-    it_handles_sequence_of_map_with_compact_key__test_pyyaml_pureyaml_sanity = [  # :off
+    it_handles_sequence_of_map_with_compact_key__test_sanity = None
+    it_handles_sequence_of_map_with_compact_key__test_pyyaml_pureyaml = [  # :off
         {'6': [7, 8]},
         {'9': 10}
     ]  # :on
@@ -1544,6 +1546,144 @@ class DecoderTestCase(MultiTestCaseBase):
             (Str(9), Int(10))
         )
     )))  # :on
+    #  TEST CASE
+    # ------------------------------------------------------------------------
+    it_handles_deeply_nested_object__data = dedent("""
+        '4':
+          16: 17
+          5:
+            '10': 11
+            '12':
+              '13':
+                '14': '15'
+            '8': 9
+            '6': 7
+        '1':
+          '2': 3
+    """)[1:]
+
+    it_handles_deeply_nested_object__test_sanity = None
+    it_handles_deeply_nested_object__test_pyyaml_pureyaml = {  # :off
+        '4': {
+            16: 17,
+            5: {
+                '10': 11,
+                '12': {
+                    '13': {'14': '15'}
+                },
+                '8': 9,
+                '6': 7
+            }
+        },
+        '1': {'2': 3}
+    }  # :on
+    it_handles_deeply_nested_object__test_parser = Docs(Doc(Map(  # :off
+        (
+            Str('4'),
+            Map(
+                (Int(16), Int(17)),
+                (
+                    Int(5),
+                    Map(
+                        (Str('10'), Int(11)),
+                        (
+                            Str('12'),
+                            Map(
+                                (
+                                    Str('13'),
+                                    Map(
+                                        (Str('14'), Str('15')),
+                                    ),
+                                ),
+                            ),
+                        ),
+                        (Str('8'), Int(9)),
+                        (Str('6'), Int(7)),
+                    ),
+                ),
+            ),
+        ),
+        (
+            Str('1'),
+            Map(
+                (Str('2'), Int(3)),
+            ),
+        )
+    )))  # :on
+
+    #  TEST CASE
+    # ------------------------------------------------------------------------
+
+    it_handles_deeply_nested_list__data = dedent("""
+        - 1
+        - - - 2
+            - 3
+          - - 4
+            - - 5
+              - 6
+          - 7
+        - - 8
+          - 9
+          - 10
+        - - - 11
+            - 12
+          - - 13
+            - 14
+            - 15
+            - 16
+    """)[1:]
+
+    it_handles_deeply_nested_list__test_sanity = None
+    it_handles_deeply_nested_list__test_pyyaml_pureyaml = [  # :off
+        1,
+        [
+            [2, 3],
+            [
+                4,
+                [5, 6]
+            ],
+            7
+        ],
+        [8, 9, 10],
+        [
+            [11, 12],
+            [13, 14, 15, 16]
+        ]
+    ]  # :on
+    it_handles_deeply_nested_list__test_parser = Docs(Doc(Sequence(  # :off
+        Int(1),
+        Sequence(
+            Sequence(
+                Int(2),
+                Int(3),
+            ),
+            Sequence(
+                Int(4),
+                Sequence(
+                    Int(5),
+                    Int(6),
+                ),
+            ),
+            Int(7),
+        ),
+        Sequence(
+            Int(8),
+            Int(9),
+            Int(10),
+        ),
+        Sequence(
+            Sequence(
+                Int(11),
+                Int(12),
+            ),
+            Sequence(
+                Int(13),
+                Int(14),
+                Int(15),
+                Int(16),
+            ),
+        ),
+    )))  # :on
 
 
 pureyaml_parser = YAMLParser(debug=True)
@@ -1553,6 +1693,7 @@ pureyaml_parser = YAMLParser(debug=True)
 def test_parser(case):
     text, expected = DecoderTestCase.get('parser', case)
     nodes = pureyaml_parser.parse(text)
+    # print(serialize_nodes(nodes))
     assert nodes == expected
 
 
@@ -1560,7 +1701,7 @@ def test_parser(case):
 def test_pureyaml_load(case):
     text, expected = DecoderTestCase.get('pureyaml', case)
     obj = pureyaml.load(text)
-    # print('\n' + obj)
+    # print('\n' + str(obj))
     assert obj == expected
 
 

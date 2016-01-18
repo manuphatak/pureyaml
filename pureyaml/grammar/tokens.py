@@ -100,7 +100,7 @@ class YAMLTokens(TokenList):
             # If dedent is larger then last indent
             if indent_delta > step:
                 # Go back and reevaluate this token.
-                t.lexer.lexpos -= 1
+                t.lexer.lexpos -= len(t.value)
 
         t.type = indent_status
         return t
@@ -272,10 +272,10 @@ class YAMLTokens(TokenList):
     def t_B_SEQUENCE_COMPACT_START(self, t):
         r"""
           \-\ + (?=  -\   )
-        #            ^ + sequence indicator
+          #          ^ ^ sequence indicator
         | \-\ + (?=  [\{\[]\   |  [^:\n]*:\s   )
-        #            ^            ^ + map indicator
-        #            ^ + flow indicator
+          #            ^ ^          ^^^ map indicator
+          #            ^ ^ flow indicator
         """
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
@@ -284,17 +284,13 @@ class YAMLTokens(TokenList):
             return t
 
         msg = dedent("""
-            expected 'INDENT', got %r
-            current_depth:      %s
-            next_depth:         %s
-            token:              %s
-        """)
-        raise YAMLUnknownSyntaxError(msg % (  # :off
-            indent_status,
-            curr_depth,
-            next_depth,
-            t
-        ))  # :on
+            expected 'INDENT', got  {indent_status!r}
+            current_depth:          {curr_depth}
+            next_depth:             {next_depth}
+            token:                  {t}
+        """).format(**vars())
+
+        raise YAMLUnknownSyntaxError(msg)
 
     def t_B_SEQUENCE_START(self, t):
         r'-\ +|-(?=\n)'
@@ -303,56 +299,48 @@ class YAMLTokens(TokenList):
     def t_B_MAP_COMPACT_KEY(self, t):
         r"""
           \?\ + (?=  -\   )
-        #            ^ + sequence indicator
+          #          ^ ^ sequence indicator
         | \?\ + (?=  [\{\[]\   |  [^:\n]*:\s   )
-        #            ^            ^ + map indicator
-        #            ^ + flow indicator
+          #            ^ ^          ^^^ map indicator
+          #            ^ ^ flow indicator
         """
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
-        if indent_status != 'INDENT':
-            msg = dedent("""
-                expected 'INDENT', got %r
-                current_depth:      %s
-                next_depth:         %s
-                token:              %s
-            """)
-            raise YAMLUnknownSyntaxError(msg % (  # :off
-                indent_status,
-                curr_depth,
-                next_depth,
-                t
-            ))  # :on
+        if indent_status == 'INDENT':
+            self.indent_stack.append(next_depth)
+            return t
 
-        self.indent_stack.append(next_depth)
-        return t
+        msg = dedent("""
+            expected 'INDENT', got  {indent_status!r}
+            current_depth:          {curr_depth}
+            next_depth:             {next_depth}
+            token:                  {t}
+        """).format(**vars())
+
+        raise YAMLUnknownSyntaxError(msg)
 
     def t_B_MAP_COMPACT_VALUE(self, t):
         r"""
           \:\ + (?=  -\   )
-        #            ^ + sequence indicator
+          #          ^ ^ sequence indicator
         | \:\ + (?=  [\{\[]\   |  [^:\n]*:\s   )
-        #            ^            ^ + map indicator
-        #            ^ + flow indicator
+          #            ^ ^          ^^^ map indicator
+          #            ^ ^ flow indicator
         """
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
-        if indent_status != 'INDENT':
-            msg = dedent("""
-                expected 'INDENT', got %r
-                current_depth:      %s
-                next_depth:         %s
-                token:              %s
-            """)
-            raise YAMLUnknownSyntaxError(msg % (  # :off
-                indent_status,
-                curr_depth,
-                next_depth,
-                t
-            ))  # :on
+        if indent_status == 'INDENT':
+            self.indent_stack.append(next_depth)
+            return t
 
-        self.indent_stack.append(next_depth)
-        return t
+        msg = dedent("""
+            expected 'INDENT', got  {indent_status!r}
+            current_depth:          {curr_depth}
+            next_depth:             {next_depth}
+            token:                  {t}
+        """).format(**vars())
+
+        raise YAMLUnknownSyntaxError(msg)
 
     def t_B_MAP_KEY(self, t):
         r'\?\ +|\?(?=\n)'

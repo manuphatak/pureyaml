@@ -2,6 +2,8 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+from textwrap import dedent
+
 
 class YAMLException(Exception):
     def __init__(self, message):
@@ -56,25 +58,16 @@ class YAMLStrictTypeError(TypeError, YAMLException):
         self.token = token
 
     def __str__(self):
-        template = ('\nexpected:            %s'
-                    '\nunexpected type:     %s'
-                    '\n    |      value:    %r'
-                    '\nline:                %i'
-                    '\nmodule:              %s'
-                    '\nfunction:            %s')
-
-        args = (self.expected_types,  # :off
-                self.token_type,
-                self.token,
-                self.lineno,
-                self.module,
-                self.function)  # :on
-
-        return template % args
+        return dedent("""
+            expected:            {self.expected_types}
+            unexpected  type:    {self.token_type}
+                |      value:    {self.token!r}
+            line:                {self.lineno}
+            module:              {self.module}
+            function:            {self.function}
+        """).format(self=self)
 
 
 class YAMLCastTypeError(TypeError, YAMLException):
     def __init__(self, message=None, cast=None):
-        msg = 'Unexpected cast type: %r.  Type not defined' % cast
-        if message or cast:
-            self.message = message or msg
+        self.message = message or 'Unexpected cast type: {cast}.  Type not defined'.format(cast=cast)
