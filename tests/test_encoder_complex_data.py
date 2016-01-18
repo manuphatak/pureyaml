@@ -16,7 +16,8 @@ def dump(data):
     return text
 
 
-def test_dump__travis_yaml():
+def test_dump__travis_yaml(tmpdir):
+    """:type tmpdir: py._path.local.LocalPath"""
     # noinspection SpellCheckingInspection
     secure_block = (  # :off
         'ndFpfTvPZN8SfvduvS4567k1TqYl7L7lRxxEPjmRzg3OgzMgCHRMO/uCrce5i8TkxTWL'
@@ -152,4 +153,12 @@ def test_dump__travis_yaml():
         """)[1:].format(secure_block=secure_block)
 
     actual = dump(data)
+    assert actual == expected
+
+    with tmpdir.join('temp.yml').open('w') as f:
+        pureyaml.dump(data, f)
+
+    with tmpdir.join('temp.yml').open() as f:
+        actual = f.read()
+
     assert actual == expected

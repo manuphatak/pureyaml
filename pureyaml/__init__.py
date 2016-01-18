@@ -41,7 +41,10 @@ def dumps(obj, cls=None, indent=None, default=None, sort_keys=False, **kw):
 
 
 def load(s, **kwargs):
-    return loads(s, **kwargs)
+    try:
+        return loads(s, **kwargs)
+    except TypeError:
+        return loads(s.read(), **kwargs)
 
 
 def loads(s, cls=None, **kwargs):

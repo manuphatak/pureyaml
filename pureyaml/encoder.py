@@ -74,7 +74,20 @@ class YAMLEncoder(NodeVisitor):
         lines = ''.join(line for line in self.iterencode(obj))
         return lines
 
-    def iterencode(self, obj):  # noqa
+    def iterencode(self, obj):
+        stack = []
+        for chunk in self._encode(obj):
+            stack.append(chunk)
+            if not chunk.endswith('\n'):
+                continue
+
+            yield ''.join(stack)
+            stack = []
+
+        yield ''.join(stack)
+
+    def _encode(self, obj):  # noqa
+
         indent_depth = 0
         nodes = node_encoder(obj)
         items = self.visit(nodes)

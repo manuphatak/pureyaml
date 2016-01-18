@@ -6,7 +6,7 @@ from __future__ import absolute_import
 
 from textwrap import dedent
 
-from .utils import find_column
+from .utils import find_column, rollback_lexpos
 from ..exceptions import YAMLUnknownSyntaxError
 
 
@@ -100,7 +100,7 @@ class YAMLTokens(TokenList):
             # If dedent is larger then last indent
             if indent_delta > step:
                 # Go back and reevaluate this token.
-                t.lexer.lexpos -= len(t.value)
+                rollback_lexpos(t)
 
         t.type = indent_status
         return t
@@ -183,7 +183,7 @@ class YAMLTokens(TokenList):
         column = find_column(t)
         indent = self.indent_stack[-1]
         if column < indent:
-            t.lexer.lexpos -= 1
+            rollback_lexpos(t)
         if column <= indent:
             t.lexer.pop_state()
             t.type = 'B_LITERAL_END'
@@ -206,7 +206,7 @@ class YAMLTokens(TokenList):
         column = find_column(t)
         indent = self.indent_stack[-1]
         if column < indent:
-            t.lexer.lexpos -= 1
+            rollback_lexpos(t)
         if column <= indent:
             t.lexer.pop_state()
             t.type = 'B_FOLD_END'

@@ -9,7 +9,7 @@ from pytest import mark
 
 
 def test_dir(*paths):
-    dirname = os.path.dirname(__file__)
+    dirname = os.path.dirname(os.path.dirname(__file__))
     return os.path.abspath(os.path.join(dirname, *paths))
 
 

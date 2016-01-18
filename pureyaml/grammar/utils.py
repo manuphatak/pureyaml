@@ -31,6 +31,8 @@ def find_column(t):
     column = pos - last_cr
     return column
 
+def rollback_lexpos(t):
+    t.lexer.lexpos -= len(t.value)
 
 class fold(object):
     re_folded_repl = re.compile(r"""
