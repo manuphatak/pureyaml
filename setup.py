@@ -35,12 +35,9 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-# TODO: put package requirements here
 requirements = ['ply#3.8+bionikspoon', 'future']
 dependency_links = []
-# TODO: put package test requirements here
 test_requirements = ['pytest', 'pytest-cov', 'pytest-xdist', 'future', 'pyyaml']
-# TODO: put package setup requirements here
 setup_requirements = ['flake8', 'ply#3.8+bionikspoon', 'future']
 
 setup(  # :off
@@ -58,21 +55,33 @@ setup(  # :off
     zip_safe=False,
     keywords='pureyaml Manu Phatak',
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
+        'Intended Audience :: Information Technology',
+        'License :: OSI Approved',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
+        'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
+        'Programming Language :: YACC',
+        'Topic :: Database',
+        'Topic :: Documentation :: Sphinx',
+        'Topic :: Internet',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Text Processing',
+        'Topic :: Text Processing :: General',
+        'Topic :: Text Processing :: Markup',
+        'Topic :: Utilities',
     ],
     test_suite='tests',
     cmdclass={'test': PyTest},
