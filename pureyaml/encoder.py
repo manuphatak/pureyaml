@@ -6,7 +6,7 @@ from __future__ import absolute_import
 # noinspection PyCompatibility
 import re
 
-from future.utils import text_type, binary_type, iteritems, iterkeys
+from future.utils import text_type, binary_type, iteritems
 from math import isinf, isnan
 from .nodes import *  # noqa
 from .utils import ContextStack

@@ -48,7 +48,7 @@ setup(  # :off
     author='Manu Phatak',
     author_email='bionikspoon@gmail.com',
     url='https://github.com/bionikspoon/pureyaml',
-    packages=['pureyaml', 'pureyaml.grammar'],
+    packages=['pureyaml', 'pureyaml.grammar', 'pureyaml._compat'],
     package_dir={'pureyaml': 'pureyaml'},
     include_package_data=True,
     license='MIT',
