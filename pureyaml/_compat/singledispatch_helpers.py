@@ -8,20 +8,17 @@ from __future__ import unicode_literals
 
 from abc import ABCMeta
 from collections import MutableMapping
-import sys
-from future.moves.collections import OrderedDict, UserDict
 
-try:
-    from thread import get_ident
-except ImportError:
-    try:
-        from _thread import get_ident
-    except ImportError:
-        from _dummy_thread import get_ident
+from future.backports.misc import get_ident
+from future.moves.collections import UserDict
+
+# noinspection PyIncorrectDocstring
+from future.utils import PYPY
 
 
+# noinspection PyIncorrectDocstring
 def recursive_repr(fillvalue='...'):
-    'Decorator to make a repr function return fillvalue for a recursive call'
+    """Decorator to make a repr function return fillvalue for a recursive call"""
 
     def decorating_function(user_function):
         repr_running = set()
@@ -48,7 +45,7 @@ def recursive_repr(fillvalue='...'):
 
 
 class ChainMap(MutableMapping):
-    ''' A ChainMap groups multiple dicts (or other mappings) together
+    """ A ChainMap groups multiple dicts (or other mappings) together
     to create a single, updateable view.
 
     The underlying mappings are stored in a list.  That list is public and can
@@ -58,15 +55,16 @@ class ChainMap(MutableMapping):
     In contrast, writes, updates, and deletions only operate on the first
     mapping.
 
-    '''
+    """
 
     def __init__(self, *maps):
-        '''Initialize a ChainMap by setting *maps* to the given mappings.
+        """Initialize a ChainMap by setting *maps* to the given mappings.
         If no mappings are provided, a single empty dictionary is used.
 
-        '''
+        """
         self.maps = list(maps) or [{}]  # always at least one map
 
+    # noinspection PyMethodMayBeStatic
     def __missing__(self, key):
         raise KeyError(key)
 
@@ -94,24 +92,25 @@ class ChainMap(MutableMapping):
     def __repr__(self):
         return '{0.__class__.__name__}({1})'.format(self, ', '.join(map(repr, self.maps)))
 
+    # noinspection PyIncorrectDocstring
     @classmethod
     def fromkeys(cls, iterable, *args):
-        'Create a ChainMap with a single dict created from the iterable.'
+        """Create a ChainMap with a single dict created from the iterable."""
         return cls(dict.fromkeys(iterable, *args))
 
     def copy(self):
-        'New ChainMap or subclass with a new copy of maps[0] and refs to maps[1:]'
+        """New ChainMap or subclass with a new copy of maps[0] and refs to maps[1:]"""
         return self.__class__(self.maps[0].copy(), *self.maps[1:])
 
     __copy__ = copy
 
     def new_child(self):  # like Django's Context.push()
-        'New ChainMap with a new dict followed by all previous maps.'
+        """New ChainMap with a new dict followed by all previous maps."""
         return self.__class__({}, *self.maps)
 
     @property
     def parents(self):  # like Django's Context.pop()
-        'New ChainMap from maps[1:].'
+        """New ChainMap from maps[1:]."""
         return self.__class__(*self.maps[1:])
 
     def __setitem__(self, key, value):
@@ -124,21 +123,22 @@ class ChainMap(MutableMapping):
             raise KeyError('Key not found in the first mapping: {!r}'.format(key))
 
     def popitem(self):
-        'Remove and return an item pair from maps[0]. Raise KeyError is maps[0] is empty.'
+        """Remove and return an item pair from maps[0]. Raise KeyError is maps[0] is empty."""
         try:
             return self.maps[0].popitem()
         except KeyError:
             raise KeyError('No keys found in the first mapping.')
 
+    # noinspection PyIncorrectDocstring
     def pop(self, key, *args):
-        'Remove *key* from maps[0] and return its value. Raise KeyError if *key* not in maps[0].'
+        """Remove *key* from maps[0] and return its value. Raise KeyError if *key* not in maps[0]."""
         try:
             return self.maps[0].pop(key, *args)
         except KeyError:
             raise KeyError('Key not found in the first mapping: {!r}'.format(key))
 
     def clear(self):
-        'Clear maps[0], leaving maps[1:] intact.'
+        """Clear maps[0], leaving maps[1:] intact."""
         self.maps[0].clear()
 
 
@@ -149,6 +149,7 @@ class MappingProxyType(UserDict):
 
 
 def get_cache_token():
+    # noinspection PyProtectedMember
     return ABCMeta._abc_invalidation_counter
 
 
@@ -157,6 +158,4 @@ class Support(object):
         pass
 
     def cpython_only(self, func):
-        if 'PyPy' in sys.version:
-            return self.dummy
-        return func
+        return self.dummy if PYPY else func
