@@ -6,7 +6,7 @@ from __future__ import absolute_import
 # noinspection PyCompatibility
 import re
 
-from future.utils import text_type, binary_type, iteritems
+from future.utils import text_type, binary_type, iteritems, iterkeys
 from math import isinf, isnan
 from .nodes import *  # noqa
 from .utils import ContextStack
@@ -67,8 +67,12 @@ DEDENT = SYMBOL('DEDENT')
 
 # noinspection PyMethodMayBeStatic
 class YAMLEncoder(NodeVisitor):
-    indent_size = 2
     stack = []
+
+    def __init__(self, indent=None, sort_keys=None, **kw):
+        super(YAMLEncoder, self).__init__(**kw)
+        self.indent = indent or 2
+        self.sort_keys = sort_keys or False
 
     def encode(self, obj):
         lines = ''.join(line for line in self.iterencode(obj))
@@ -110,8 +114,8 @@ class YAMLEncoder(NodeVisitor):
                     next_item = current_item
                     continue
 
-                indent = ''.ljust(indent_depth * self.indent_size)
-                current_item = current_item.replace('\n', '\n{0}'.format(indent))
+                indent_spaces = ''.ljust(indent_depth * self.indent)
+                current_item = current_item.replace('\n', '\n{0}'.format(indent_spaces))
 
                 yield current_item
 
@@ -126,7 +130,7 @@ class YAMLEncoder(NodeVisitor):
     def visit_Sequence(self, node):
         stack = []
         for child in node:
-            stack.append('-'.ljust(self.indent_size))
+            stack.append('-'.ljust(self.indent))
             item = (yield child)
             if not isinstance(item, list):
                 stack.append(item)
@@ -144,9 +148,19 @@ class YAMLEncoder(NodeVisitor):
 
         yield stack
 
+    def iter_map_items(self, node):
+        if not isinstance(node, Map):
+            raise TypeError('Expecting %r, got %r' % (Map, type(node)))
+        if self.sort_keys is False:
+            for k, v in iteritems(node):
+                yield k, v
+        else:
+            for k in iter(sorted(node)):
+                yield k, node[k]
+
     def visit_Map(self, node):
         stack = []
-        for k, v in iteritems(node):
+        for k, v in self.iter_map_items(node):
             key, value = (yield k), (yield v)
             is_oneliner = not isinstance(key, list) and not isinstance(value, list)
             is_compact_key = isinstance(v, Scalar) and isinstance(value, list)

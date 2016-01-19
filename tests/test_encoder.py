@@ -4,12 +4,13 @@ from math import isnan
 from textwrap import dedent
 
 import yaml as pyyaml
+from future.utils import PYPY
 from pytest import mark
 
 import pureyaml
 from pureyaml.encoder import node_encoder
 from pureyaml.nodes import *  # noqa
-from tests.utils import MultiTestCaseBase
+from tests.utils import MultiTestCaseBase, PY34, PY35
 
 
 class EncoderTestCase(MultiTestCaseBase):
@@ -792,6 +793,38 @@ def test_sanity(case):
     assert obj2 == obj1
 
 
+@mark.parametrize('case', EncoderTestCase.keys('sanity'))
+def test_sanity_indent(case):
+    obj1, _ = EncoderTestCase.get('sanity', case)
+    # print(obj1)
+    text = pureyaml.dump(obj1, indent=4)
+    # print(text)
+    obj2 = pureyaml.load(text)
+    # print(obj2)
+    if case in ['it_handles_simple_nan_float']:
+        assert isnan(obj2)
+        assert isnan(obj1)
+        return
+
+    assert obj2 == obj1
+
+
+@mark.parametrize('case', EncoderTestCase.keys('sanity'))
+def test_sanity_sorted(case):
+    obj1, _ = EncoderTestCase.get('sanity', case)
+    # print(obj1)
+    text = pureyaml.dump(obj1, sort_keys=True)
+    # print(text)
+    obj2 = pureyaml.load(text)
+    # print(obj2)
+    if case in ['it_handles_simple_nan_float']:
+        assert isnan(obj2)
+        assert isnan(obj1)
+        return
+
+    assert obj2 == obj1
+
+
 def pyyaml_dump(obj):
     text = pyyaml.dump(obj, default_flow_style=False)
     return text
@@ -843,3 +876,216 @@ def test_it_handles_null__sanity():
     # print(obj2)
 
     assert obj2 == obj1
+
+
+def test_indent_4():
+    obj1 = {  # :off
+        'men': [
+            {'name': 'John Smith', 'age': 33},
+            {'name': 'Bill Jones', 'age': 29},
+        ],
+        'women': [
+            {'name': 'Mary Smith', 'age': 27},
+            {'name': 'Susan Williams', 'age': 56},
+        ]
+    }  # :on
+    if PY34 or PY35:
+        expected = dedent("""
+            women:
+            -   age: 27
+                name: Mary Smith
+            -   age: 56
+                name: Susan Williams
+            men:
+            -   age: 33
+                name: John Smith
+            -   age: 29
+                name: Bill Jones
+        """)[1:]
+    elif PYPY:
+        expected = dedent("""
+            men:
+            -   name: John Smith
+                age: 33
+            -   name: Bill Jones
+                age: 29
+            women:
+            -   name: Mary Smith
+                age: 27
+            -   name: Susan Williams
+                age: 56
+        """)[1:]
+    else:
+        expected = dedent("""
+            men:
+            -   age: 33
+                name: John Smith
+            -   age: 29
+                name: Bill Jones
+            women:
+            -   age: 27
+                name: Mary Smith
+            -   age: 56
+                name: Susan Williams
+        """)[1:]
+
+    text1 = pureyaml.dump(obj1, indent=4)
+    print(text1)
+    assert text1 == expected
+
+    obj2 = pureyaml.load(text1)
+    assert obj1 == obj2
+    text2 = pureyaml.dump(obj2, indent=4)
+    assert text1 == text2 == expected
+
+
+def test_indent_8():
+    obj1 = {  # :off
+        'men': [
+            {'name': 'John Smith', 'age': 33},
+            {'name': 'Bill Jones', 'age': 29},
+        ],
+        'women': [
+            {'name': 'Mary Smith', 'age': 27},
+            {'name': 'Susan Williams', 'age': 56},
+        ]
+    }  # :on
+    if PY34 or PY35:
+        expected = dedent("""
+            women:
+            -       age: 27
+                    name: Mary Smith
+            -       age: 56
+                    name: Susan Williams
+            men:
+            -       age: 33
+                    name: John Smith
+            -       age: 29
+                    name: Bill Jones
+        """)[1:]
+    elif PYPY:
+        expected = dedent("""
+            men:
+            -       name: John Smith
+                    age: 33
+            -       name: Bill Jones
+                    age: 29
+            women:
+            -       name: Mary Smith
+                    age: 27
+            -       name: Susan Williams
+                    age: 56
+        """)[1:]
+    else:
+        expected = dedent("""
+            men:
+            -       age: 33
+                    name: John Smith
+            -       age: 29
+                    name: Bill Jones
+            women:
+            -       age: 27
+                    name: Mary Smith
+            -       age: 56
+                    name: Susan Williams
+        """)[1:]
+
+    text1 = pureyaml.dump(obj1, indent=8)
+    assert text1 == expected
+
+    obj2 = pureyaml.load(text1)
+    assert obj1 == obj2
+    text2 = pureyaml.dump(obj2, indent=8)
+    assert text1 == text2 == expected
+
+
+def test_indent_3():
+    obj1 = {  # :off
+        'men': [
+            {'name': 'John Smith', 'age': 33},
+            {'name': 'Bill Jones', 'age': 29},
+        ],
+        'women': [
+            {'name': 'Mary Smith', 'age': 27},
+            {'name': 'Susan Williams', 'age': 56},
+        ]
+    }  # :on
+    if PY34 or PY35:
+        expected = dedent("""
+            women:
+            -  age: 27
+               name: Mary Smith
+            -  age: 56
+               name: Susan Williams
+            men:
+            -  age: 33
+               name: John Smith
+            -  age: 29
+               name: Bill Jones
+        """)[1:]
+    elif PYPY:
+        expected = dedent("""
+            men:
+            -  name: John Smith
+               age: 33
+            -  name: Bill Jones
+               age: 29
+            women:
+            -  name: Mary Smith
+               age: 27
+            -  name: Susan Williams
+               age: 56
+        """)[1:]
+    else:
+        expected = dedent("""
+            men:
+            -  age: 33
+               name: John Smith
+            -  age: 29
+               name: Bill Jones
+            women:
+            -  age: 27
+               name: Mary Smith
+            -  age: 56
+               name: Susan Williams
+        """)[1:]
+
+    text1 = pureyaml.dump(obj1, indent=3)
+    assert text1 == expected
+
+    obj2 = pureyaml.load(text1)
+    assert obj1 == obj2
+    text2 = pureyaml.dump(obj2, indent=3)
+    assert text1 == text2 == expected
+
+
+def test_sorted():
+    obj1 = {  # :off
+        'c': 123.0,
+        'f': 'Yes',
+        'b': str(123),
+        'a': 123,
+        'd': float(123),
+        'h': 'Yes we have No bananas',
+        'g': True,
+        'e': str(123),
+    }  # :on
+
+    expected = dedent("""
+        a: 123
+        b: '123'
+        c: 123.0
+        d: 123.0
+        e: '123'
+        f: 'Yes'
+        g: true
+        h: Yes we have No bananas
+    """)[1:]
+
+    text1 = pureyaml.dump(obj1, sort_keys=True)
+    assert text1 == expected
+
+    obj2 = pureyaml.load(text1)
+    assert obj1 == obj2
+    text2 = pureyaml.dump(obj2, sort_keys=True)
+    assert text1 == text2 == expected

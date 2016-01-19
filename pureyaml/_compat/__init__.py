@@ -36,4 +36,9 @@ except ImportError:
         Sequence = collections.Sequence
         MutableSequence = collections.MutableSequence
 
-__all__ = ['NullHandler', 'collections_abc']
+try:
+    from functools import total_ordering
+except ImportError:
+    from .total_ordering import total_ordering
+
+__all__ = ['NullHandler', 'collections_abc', 'total_ordering']

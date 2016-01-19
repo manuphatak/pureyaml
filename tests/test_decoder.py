@@ -1722,3 +1722,27 @@ def test_sanity(case):
     obj2 = pureyaml.load(_text)
     # print(obj2)
     assert obj1 == obj2
+
+
+@mark.parametrize('case', DecoderTestCase.keys('sanity'))
+def test_sanity_indent(case):
+    text, _ = DecoderTestCase.get('sanity', case)
+    obj1 = pureyaml.load(text)
+    # print(obj1)
+    _text = pureyaml.dump(obj1, indent=4)
+    # print(_text)
+    obj2 = pureyaml.load(_text)
+    # print(obj2)
+    assert obj1 == obj2
+
+
+@mark.parametrize('case', DecoderTestCase.keys('sanity'))
+def test_sanity_sorted(case):
+    text, _ = DecoderTestCase.get('sanity', case)
+    obj1 = pureyaml.load(text)
+    # print(obj1)
+    _text = pureyaml.dump(obj1, sort_keys=True)
+    # print(_text)
+    obj2 = pureyaml.load(_text)
+    # print(obj2)
+    assert obj1 == obj2

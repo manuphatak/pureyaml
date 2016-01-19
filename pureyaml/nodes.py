@@ -13,10 +13,11 @@ from math import isnan
 
 from future.utils import implements_iterator, iteritems, binary_type, text_type
 
-from ._compat import collections_abc as abc
+from ._compat import collections_abc as abc, total_ordering
 from .exceptions import YAMLCastTypeError
 
 
+@total_ordering
 class Node(object):
     def __init__(self, value, **kwargs):
         self.raw_value = value
@@ -30,6 +31,9 @@ class Node(object):
             return self.value == other.value and type(self) == type(other)
         except AttributeError:
             return False
+
+    def __gt__(self, other):
+        return self.value > other.value
 
     def __ne__(self, other):
         return not (self == other)
@@ -170,6 +174,9 @@ class Scalar(Node):
 
     def init_value(self, value, *args, **kwargs):
         return self.type(value)
+
+    def __gt__(self, other):
+        return str(self.value) > str(other.value)
 
     def __len__(self):
         return 1
