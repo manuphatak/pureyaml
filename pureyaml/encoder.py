@@ -7,9 +7,9 @@ import re
 from math import isinf, isnan
 
 from future.utils import text_type, binary_type, iteritems
+from ._compat import singledispatch
 
 from .nodes import *  # noqa
-
 
 def node_encoder(obj):  # noqa
     """Convert python object to node tree."""

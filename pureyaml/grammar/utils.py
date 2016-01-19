@@ -42,13 +42,13 @@ def rollback_lexpos(t):
 # noinspection PyPep8Naming
 class fold(object):
     """Properly clean ``fold`` text."""
-    re_folded_repl = re.compile(r"""
+    _re_fold_replace = re.compile(r"""
           (?P<PARAGRAPH>\n\n)
         | (?P<SPACE>\n)
     """, re.X)
 
     @classmethod
-    def folded_repl(cls, match):
+    def _fold_replace(cls, match):
         if match.group('PARAGRAPH') is not None:
             return '\n'
         elif match.group('SPACE') is not None:
@@ -57,4 +57,4 @@ class fold(object):
             return match
 
     def __new__(cls, text):
-        return cls.re_folded_repl.sub(cls.folded_repl, text)
+        return cls._re_fold_replace.sub(cls._fold_replace, text)

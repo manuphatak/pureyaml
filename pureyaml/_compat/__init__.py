@@ -41,4 +41,7 @@ try:
 except ImportError:
     from .total_ordering import total_ordering
 
-__all__ = ['NullHandler', 'collections_abc', 'total_ordering']
+from .singledispatch import singledispatch
+
+
+__all__ = ['NullHandler', 'collections_abc', 'total_ordering', 'singledispatch']
