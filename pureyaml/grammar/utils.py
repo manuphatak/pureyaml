@@ -9,6 +9,8 @@ from ..exceptions import YAMLStrictTypeError
 
 
 def strict(*types):
+    """Decorator, type check production rule output"""
+
     def decorate(func):
         @wraps(func)
         def wrapper(self, p):
@@ -23,6 +25,7 @@ def strict(*types):
 
 
 def find_column(t):
+    """Get cursor position, based on previous newline"""
     pos = t.lexer.lexpos
     data = t.lexer.lexdata
     last_cr = data.rfind('\n', 0, pos)
@@ -38,6 +41,7 @@ def rollback_lexpos(t):
 
 # noinspection PyPep8Naming
 class fold(object):
+    """Properly clean ``fold`` text."""
     re_folded_repl = re.compile(r"""
           (?P<PARAGRAPH>\n\n)
         | (?P<SPACE>\n)

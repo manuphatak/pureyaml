@@ -6,6 +6,7 @@ from textwrap import dedent
 
 
 class YAMLException(Exception):
+    """Base exception for package"""
     def __init__(self, message):
         self.message = message
 
@@ -15,7 +16,7 @@ class YAMLException(Exception):
 
 
 class YAMLUnknownSyntaxError(SyntaxError, YAMLException):
-    pass
+    """Unexpected syntax error"""
 
 
 class YAMLSyntaxError(SyntaxError, YAMLException):

@@ -9,6 +9,8 @@ from .parser import YAMLParser
 
 # noinspection PyMethodMayBeStatic
 class YAMLDecoder(NodeVisitor):
+    """Convert node tree into python object."""
+
     def decode(self, s):
         return self.visit(YAMLParser().parse(s))
 

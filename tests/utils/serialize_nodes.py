@@ -11,7 +11,6 @@ def serialize_nodes(nodes):
     return '\n'.join(_serialize_nodes(nodes))
 
 
-# TODO delete this
 def _serialize_nodes(node, depth=0):  # noqa
 
     def indent():

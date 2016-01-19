@@ -1,7 +1,5 @@
 # coding=utf-8
-"""
-pureyaml
-"""
+"""Yaml tokens."""
 from __future__ import absolute_import
 
 from textwrap import dedent

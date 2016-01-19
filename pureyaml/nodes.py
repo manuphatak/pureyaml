@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-"""
-nodes
-"""
+"""Node definitions for intermediary node tree."""
 from __future__ import absolute_import
 
 import re

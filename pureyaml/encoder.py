@@ -3,15 +3,16 @@
 
 from __future__ import absolute_import
 
-# noinspection PyCompatibility
 import re
+from math import isinf, isnan
 
 from future.utils import text_type, binary_type, iteritems
-from math import isinf, isnan
+
 from .nodes import *  # noqa
 
 
 def node_encoder(obj):  # noqa
+    """Convert python object to node tree."""
     if isinstance(obj, dict):
         items = []
         for key, value in iteritems(obj):
@@ -61,6 +62,7 @@ DEDENT = SYMBOL('DEDENT')
 
 # noinspection PyMethodMayBeStatic
 class YAMLEncoder(NodeVisitor):
+    """Convert node tree into string."""
     stack = []
 
     def __init__(self, indent=None, sort_keys=None, **kw):

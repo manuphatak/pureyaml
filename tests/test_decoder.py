@@ -607,10 +607,10 @@ class DecoderTestCase(MultiTestCaseBase):
         Also floats a: .inf
         Also floats b: -.Inf
         Also floats c: +.INF
-        # Also floats d: .NAN
+        Also floats d: .NAN
     """)[1:]
-
-    it_handles_scalar_types__test_pureyaml_sanity = {  # :off
+    it_handles_scalar_types__test_sanity__skip = None
+    it_handles_scalar_types__test_pureyaml__skip = {  # :off
         'Integers b': 0o7,
         'A null': None,
         'Booleans c': False,
@@ -631,7 +631,7 @@ class DecoderTestCase(MultiTestCaseBase):
         'Floats e': float('-2E+05'),
         'Also floats a': float('inf'),
         'Integers a': 0,
-        # 'Also floats d': float('nan'),
+        'Also floats d': float('nan'),
         'Integers c': 58
     }  # :on
 
@@ -660,7 +660,7 @@ class DecoderTestCase(MultiTestCaseBase):
         (Str('Also floats a'), Float('.inf')),
         (Str('Also floats b'), Float('-.Inf')),
         (Str('Also floats c'), Float('+.INF')),
-        # (Str('Also floats d'), Float('.nan')),
+        (Str('Also floats d'), Float('.nan')),
     )))  # :on
 
     # TEST CASE
@@ -1700,6 +1700,7 @@ def test_parser(case):
 def test_pureyaml_load(case):
     text, expected = DecoderTestCase.get('pureyaml', case)
     obj = pureyaml.load(text)
+
     # print('\n' + str(obj))
     assert obj == expected
 

@@ -1,7 +1,5 @@
 # coding=utf-8
-"""
-pureyaml
-"""
+"""Build yacc parser from lex tokens."""
 from __future__ import absolute_import
 
 import logging
@@ -60,8 +58,7 @@ class YAMLParser(YAMLProductions):
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
-        # TODO use logger
-        print(self.tokenize(data))
+        logger.info(self.tokenize(data))
         kwargs.setdefault('lexer', YAMLLexer.build(debug=True))
         kwargs.setdefault('debug', True)
 
