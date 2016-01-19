@@ -9,7 +9,6 @@ import re
 from future.utils import text_type, binary_type, iteritems
 from math import isinf, isnan
 from .nodes import *  # noqa
-from .utils import ContextStack
 
 
 def node_encoder(obj):  # noqa
@@ -46,11 +45,6 @@ def node_encoder(obj):  # noqa
         return Float(obj)
     else:
         raise RuntimeError('Type %s not supported' % type(obj))
-
-
-class _ContextStack(ContextStack):
-    def __call__(self, text):
-        return text.format(**self.attrs)
 
 
 class SYMBOL:

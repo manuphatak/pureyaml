@@ -17,6 +17,7 @@ from ._compat import collections_abc as abc, total_ordering
 from .exceptions import YAMLCastTypeError
 
 
+# noinspection PyMethodMayBeStatic
 @total_ordering
 class Node(object):
     def __init__(self, value, **kwargs):
@@ -57,6 +58,7 @@ class SequenceMixin(abc.Sequence):
     value = NotImplemented
 
     def __init__(self, *args, **kwargs):
+        # noinspection PyArgumentList
         super(SequenceMixin, self).__init__(*args, **kwargs)
         self._iter = iter(self.value)
 
@@ -77,6 +79,7 @@ class SequenceMixin(abc.Sequence):
 
 
 class Collection(SequenceMixin, Node):
+    # noinspection PyMissingConstructor
     def __init__(self, *values, **kwargs):
         self.raw_value = values
         self.value = self.init_value(*values, **kwargs)
@@ -113,6 +116,7 @@ class MappingMixin(abc.Mapping):
     value = NotImplemented
 
     def __init__(self, *args, **kwargs):
+        # noinspection PyArgumentList
         super(MappingMixin, self).__init__(*args, **kwargs)
         self._iter = iter(self.value)
 
@@ -168,6 +172,7 @@ class Map(MappingMixin, Collection):
 class Scalar(Node):
     type = NotImplemented
 
+    # noinspection PyMissingConstructor
     def __init__(self, value, *args, **kwargs):
         self.raw_value = value
         self.value = self.init_value(value, *args, **kwargs)
@@ -315,6 +320,7 @@ class ScalarDispatch(object):
         return cls.map[match.lastgroup](value)
 
 
+# noinspection PyMethodMayBeStatic
 class NodeVisitor(object):
     def __init__(self, *args, **kwargs):
         pass

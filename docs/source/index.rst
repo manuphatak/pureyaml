@@ -15,6 +15,7 @@ Contents:
    History <history>
    pureyaml API Docs <pureyaml>
    pureyaml.grammar API Docs <pureyaml.grammar>
+   pureyaml._compat API Docs <pureyaml._compat>
 
 Feedback
 ========

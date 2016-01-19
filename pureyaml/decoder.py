@@ -23,16 +23,17 @@ class YAMLDecoder(NodeVisitor):
         yield sequence
 
     def visit_Map(self, node):
-        map = {}
+        _map = {}
         for key, value in node.value:
-            map[(yield key)] = (yield value)
-        yield map
+            _map[(yield key)] = (yield value)
+        yield _map
 
     def visit_Scalar(self, node):
         return node.type(node.value)
 
     def visit_Null(self, _):
         return None
+
     visit_Doc = visit_Docs
     visit_Str = visit_Scalar
     visit_Int = visit_Scalar

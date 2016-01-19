@@ -11,18 +11,12 @@ Subpackages
 
 .. toctree::
 
+    pureyaml._compat
     pureyaml.grammar
+    pureyaml.ply
 
 Submodules
 ----------
-
-pureyaml._compat module
------------------------
-
-.. automodule:: pureyaml._compat
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 pureyaml.decoder module
 -----------------------
@@ -60,14 +54,6 @@ pureyaml.parser module
 ----------------------
 
 .. automodule:: pureyaml.parser
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pureyaml.utils module
----------------------
-
-.. automodule:: pureyaml.utils
     :members:
     :undoc-members:
     :show-inheritance:

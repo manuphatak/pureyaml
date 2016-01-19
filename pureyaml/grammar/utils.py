@@ -36,6 +36,7 @@ def rollback_lexpos(t):
     t.lexer.lexpos -= len(t.value)
 
 
+# noinspection PyPep8Naming
 class fold(object):
     re_folded_repl = re.compile(r"""
           (?P<PARAGRAPH>\n\n)

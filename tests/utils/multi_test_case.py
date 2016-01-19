@@ -70,6 +70,7 @@ def separate_version_tags(meta):
 
 
 def separate_action_tags(meta):
+    # noinspection PyPep8Naming
     ACTION_INDICATOR = 'test_'
     _meta = []
     _actions = []

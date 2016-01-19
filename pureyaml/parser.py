@@ -7,26 +7,25 @@ from __future__ import absolute_import
 import logging
 from pprint import pformat
 
-from .ply.lex import lex
-from .ply.yacc import yacc
-
 from .exceptions import YAMLSyntaxError, YAMLUnknownSyntaxError
 from .grammar.productions import YAMLProductions
 from .grammar.tokens import YAMLTokens
+from .ply.lex import lex
+from .ply.yacc import yacc
 
 logger = logging.getLogger(__name__)
 
+lex_logger = logging.getLogger('ply.lex')
+yacc_logger = logging.getLogger('ply.yacc')
 
-# lex_logger = logging.getLogger('ply.lex')
-# yacc_logger = logging.getLogger('ply.yacc')
 
-
+# noinspection PyMethodMayBeStatic
 class YAMLLexer(YAMLTokens):
     @classmethod
     def build(cls, **kwargs):
         self = cls()
         kwargs.setdefault('module', self)
-        # kwargs.setdefault('debuglog', lex_logger)
+        kwargs.setdefault('errorlog', lex_logger)
         return lex(**kwargs)
 
     @classmethod
@@ -43,11 +42,14 @@ class YAMLLexer(YAMLTokens):
         raise YAMLSyntaxError(t, t.value[0])
 
 
+# noinspection PyMethodMayBeStatic
 class YAMLParser(YAMLProductions):
+    # noinspection PyMissingConstructor
     def __init__(self, **kwargs):
         kwargs.setdefault('module', self)
         kwargs.setdefault('tabmodule', 'pureyaml.grammar._parsetab')
         kwargs.setdefault('debugfile', '_parser.out')
+        kwargs.setdefault('errorlog', yacc_logger)
 
         self.debug = kwargs.get('debug')
         self.parser = yacc(**kwargs)

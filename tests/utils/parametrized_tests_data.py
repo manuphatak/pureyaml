@@ -13,6 +13,7 @@ except ImportError:
 from future.utils import with_metaclass, iteritems
 
 
+# noinspection PyMethodParameters
 class OrderedTestMeta(type):
     def __new__(cls, cls_name, bases, cls_dict):  # noqa
         d = dict(cls_dict)
