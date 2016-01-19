@@ -1,0 +1,3 @@
+[submodule "submodules/ply"]
+	path = submodules/ply
+	url = git@github.com:bionikspoon/ply.git

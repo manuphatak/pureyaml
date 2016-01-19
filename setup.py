@@ -24,7 +24,6 @@ class PyTest(TestCommand):
         import pytest
         import sys
 
-        print(self.pytest_args)
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
@@ -35,10 +34,9 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['ply#3.8+bionikspoon', 'future']
-dependency_links = []
+requirements = ['future']
 test_requirements = ['pytest', 'pytest-cov', 'pytest-xdist', 'future', 'pyyaml']
-setup_requirements = ['flake8', 'ply#3.8+bionikspoon', 'future']
+setup_requirements = ['flake8', 'future']
 
 setup(  # :off
     name='pureyaml',
@@ -48,7 +46,7 @@ setup(  # :off
     author='Manu Phatak',
     author_email='bionikspoon@gmail.com',
     url='https://github.com/bionikspoon/pureyaml',
-    packages=['pureyaml', 'pureyaml.grammar', 'pureyaml._compat'],
+    packages=['pureyaml', 'pureyaml.grammar', 'pureyaml._compat', 'pureyaml.ply'],
     package_dir={'pureyaml': 'pureyaml'},
     include_package_data=True,
     license='MIT',
@@ -88,5 +86,4 @@ setup(  # :off
     install_requires=requirements,
     tests_require=test_requirements,
     setup_requires=setup_requirements,
-    dependency_links=dependency_links
 )  # :on
