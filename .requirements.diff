@@ -1,33 +1,24 @@
 diff --git i/requirements.txt w/requirements.txt
-index 6b39c05..8bdc51e 100644
+index 8bdc51e..4dbebb6 100644
 --- i/requirements.txt
 +++ w/requirements.txt
-@@ -4,7 +4,6 @@
- #
+@@ -5,5 +5,3 @@
  #    pip-compile requirements.in
  #
---e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
  future==0.15.2
- singledispatch==3.4.0.3
- six==1.10.0               # via singledispatch
+-singledispatch==3.4.0.3
+-six==1.10.0               # via singledispatch
 diff --git i/requirements_dev.txt w/requirements_dev.txt
-index 1804263..2d48fe2 100644
+index 2d48fe2..758ee37 100644
 --- i/requirements_dev.txt
 +++ w/requirements_dev.txt
-@@ -4,7 +4,6 @@
- #
- #    pip-compile requirements_dev.in
- #
---e git+git://github.com/bionikspoon/ply.git@3.8+bionikspoon#egg=ply
- alabaster==0.7.7          # via sphinx
- apipkg==1.4               # via execnet
- argh==0.26.1              # via watchdog
-@@ -28,7 +27,7 @@ pip-tools==1.4.4
- pluggy==0.3.1             # via tox
- py==1.4.31                # via pytest, pytest-xdist, tox
- pyflakes==1.0.0           # via flake8
--pygments==2.0.2           # via sphinx
-+pygments==2.1             # via sphinx
- pytest-cov==2.2.0
- pytest-xdist==1.13.1
- pytest==2.8.5
+@@ -34,8 +34,7 @@ pytest==2.8.5
+ pytz==2015.7              # via babel
+ pyyaml==3.11
+ restructuredtext-lint==0.14.0
+-singledispatch==3.4.0.3
+-six==1.10.0               # via mock, pip-tools, singledispatch, sphinx
++six==1.10.0               # via mock, pip-tools, sphinx
+ snowballstemmer==1.2.1    # via sphinx
+ sphinx-rtd-theme==0.1.9   # via sphinx
+ sphinx==1.3.4

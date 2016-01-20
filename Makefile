@@ -141,4 +141,4 @@ requirements:
 
 sync:
 	pip install --quiet --upgrade pip-tools
-	pip-sync requirements_dev.txt > /dev/null
+	pip-sync -i $(PYPI) requirements_dev.txt > /dev/null

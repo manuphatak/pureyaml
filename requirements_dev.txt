@@ -34,8 +34,7 @@ pytest==2.8.5
 pytz==2015.7              # via babel
 pyyaml==3.11
 restructuredtext-lint==0.14.0
-singledispatch==3.4.0.3
-six==1.10.0               # via mock, pip-tools, singledispatch, sphinx
+six==1.10.0               # via mock, pip-tools, sphinx
 snowballstemmer==1.2.1    # via sphinx
 sphinx-rtd-theme==0.1.9   # via sphinx
 sphinx==1.3.4
