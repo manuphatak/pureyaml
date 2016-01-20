@@ -195,6 +195,7 @@ class YAMLTokens(TokenList):
 
     def t_begin_fold(self, t):
         r'\ *(?<!\\)\>\ ?\n'
+
         t.lexer.push_state('fold')
         t.type = 'B_FOLD_START'
         return t
@@ -275,6 +276,7 @@ class YAMLTokens(TokenList):
           #            ^ ^          ^^^ map indicator
           #            ^ ^ flow indicator
         """
+
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
         if indent_status == 'INDENT':
@@ -302,6 +304,7 @@ class YAMLTokens(TokenList):
           #            ^ ^          ^^^ map indicator
           #            ^ ^ flow indicator
         """
+
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
         if indent_status == 'INDENT':
@@ -325,6 +328,7 @@ class YAMLTokens(TokenList):
           #            ^ ^          ^^^ map indicator
           #            ^ ^ flow indicator
         """
+
         indent_status, curr_depth, next_depth = self.get_indent_status(t)
 
         if indent_status == 'INDENT':

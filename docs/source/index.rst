@@ -16,6 +16,7 @@ Contents:
    pureyaml API Docs <pureyaml>
    pureyaml.grammar API Docs <pureyaml.grammar>
    pureyaml._compat API Docs <pureyaml._compat>
+   pureyaml.ply API Docs <pureyaml.ply>
 
 Feedback
 ========

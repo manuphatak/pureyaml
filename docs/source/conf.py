@@ -2,7 +2,11 @@
 # coding=utf-8
 import sys
 from os.path import abspath, relpath
+
 import sphinx.environment
+
+sys.path.insert(0, abspath(relpath('../', __file__)))
+import pureyaml
 
 
 def _warn_node(func):
@@ -17,11 +21,55 @@ def _warn_node(func):
 
 sphinx.environment.BuildEnvironment.warn_node = _warn_node(sphinx.environment.BuildEnvironment.warn_node)
 
-sys.path.insert(0, abspath(relpath('../', __file__)))
 
-import pureyaml
+# noinspection PyUnusedLocal
+def doctree_read_handler(app, doctree):
+    """
+    Add 'orphan' to metadata for partials
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.coverage', 'sphinx.ext.viewcode', ]
+    :type app: sphinx.application.Sphinx
+    :type doctree: docutils.nodes.document
+    """
+    # noinspection PyProtectedMember
+    docname = sys._getframe(2).f_locals['docname']
+    if docname.startswith('_partial'):
+        app.env.metadata[docname]['orphan'] = True
+
+
+def autodoc_skip_member_handler(app, what, name, obj, skip, options):
+    """
+    Skip un parseable functions.
+
+    :type app: sphinx.application.Sphinx
+    :param str what: the type of the object which the docstring belongs to
+        (one of "module", "class", "exception", "function", "method", "attribute")
+    :param str name: the fully qualified name of the object
+    :param type obj: the object itself
+    :param bool skip: a boolean indicating if autodoc will skip this member
+    :param sphinx.ext.autodoc.Options options: the options given to the directive
+    :rtype: bool
+    """
+    if 'YAMLTokens' in name:
+        return True
+    return False
+
+
+def setup(app):
+    """
+    Silence warnings that partials are not included in toctree.
+
+    :type app: sphinx.application.Sphinx
+    """
+    app.connect('doctree-read', doctree_read_handler)
+    app.connect('autodoc-skip-member', autodoc_skip_member_handler)
+
+
+extensions = [  # :off
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
+]  # :on
 
 templates_path = ['_templates']
 
@@ -41,7 +89,7 @@ release = pureyaml.__version__
 # language = None
 # today = ''
 # today_fmt = '%B %d, %Y'
-exclude_patterns = ['build']
+exclude_patterns = ['**/tokens.py']
 # default_role = None
 # add_function_parentheses = True
 # add_module_names = True

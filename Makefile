@@ -101,6 +101,7 @@ builddocs:
 		--private \
 		--no-toc \
 		--module-first \
+		--follow-links \
 		--output-dir=$(DOCSSOURCEDIR)/ pureyaml
 	$(MAKE) -C docs html
 
