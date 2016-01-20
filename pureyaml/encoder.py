@@ -15,39 +15,62 @@ from .nodes import *  # noqa
 @singledispatch
 def node_encoder(obj):  # noqa
     """Convert python object to node tree."""
-    if isinstance(obj, dict):
-        items = []
-        for key, value in iteritems(obj):
-            items.append((node_encoder(key), node_encoder(value)))
-        return Map(*items)
-    elif isinstance(obj, list):
-        items = []
-        for item in obj:
-            items.append(node_encoder(item))
-        return Sequence(*items)
-    elif isinstance(obj, binary_type):
-        try:
-            obj = text_type(obj, 'ascii')
-            return Str(obj)
-        except UnicodeDecodeError:
-            return Binary.from_decoded(obj)
-    elif isinstance(obj, text_type):
-        try:
-            obj.encode('ascii')
-            return Str(obj)
-        except UnicodeEncodeError:
-            obj = binary_type(obj, encoding='utf-8')
-            return Binary.from_decoded(obj)
-    elif isinstance(obj, bool):
-        return Bool(obj)
-    elif isinstance(obj, int):
-        return Int(obj)
-    elif isinstance(obj, type(None)):
-        return Null(obj)
-    elif isinstance(obj, float):
-        return Float(obj)
-    else:
-        raise RuntimeError('Type %s not supported' % type(obj))
+    raise RuntimeError('Type %s not supported' % type(obj))
+
+
+@node_encoder.register(dict)
+def _(obj):
+    items = []
+    for key, value in iteritems(obj):
+        items.append((node_encoder(key), node_encoder(value)))
+    return Map(*items)
+
+
+@node_encoder.register(list)
+def _(obj):
+    items = []
+    for item in obj:
+        items.append(node_encoder(item))
+    return Sequence(*items)
+
+
+@node_encoder.register(binary_type)
+def _(obj):
+    try:
+        obj = text_type(obj, 'ascii')
+        return Str(obj)
+    except UnicodeDecodeError:
+        return Binary.from_decoded(obj)
+
+
+@node_encoder.register(text_type)
+def _(obj):
+    try:
+        obj.encode('ascii')
+        return Str(obj)
+    except UnicodeEncodeError:
+        obj = binary_type(obj, encoding='utf-8')
+        return Binary.from_decoded(obj)
+
+
+@node_encoder.register(bool)
+def _(obj):
+    return Bool(obj)
+
+
+@node_encoder.register(int)
+def _(obj):
+    return Int(obj)
+
+
+@node_encoder.register(type(None))
+def _(obj):
+    return Null(obj)
+
+
+@node_encoder.register(float)
+def _(obj):
+    return Float(obj)
 
 
 class SYMBOL:
