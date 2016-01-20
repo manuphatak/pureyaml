@@ -98,16 +98,20 @@ def _compose_mro(cls, types):  # noqa
     bases = set(cls.__mro__)
 
     # Remove entries which are already present in the __mro__ or unrelated.
-    def is_related(typ):
-        return (typ not in bases and hasattr(typ, '__mro__') and issubclass(cls, typ))
+    def is_related(_type):
+        return (  # :off
+            _type not in bases and
+            hasattr(_type, '__mro__') and
+            issubclass(cls, _type)
+        )  # :on
 
     types = [n for n in types if is_related(n)]
 
     # Remove entries which are strict bases of other entries (they will end up
     # in the MRO anyway.
-    def is_strict_base(typ):
+    def is_strict_base(_typ):
         for other in types:
-            if typ != other and typ in other.__mro__:
+            if _typ != other and _typ in other.__mro__:
                 return True
         return False
 
@@ -163,7 +167,7 @@ def _find_impl(cls, registry):
 
 
 # noinspection PyIncorrectDocstring
-def singledispatch(func):  # noqa
+def singledispatch(function):  # noqa
     """Single-dispatch generic function decorator.
 
     Transforms a function into a generic function, which can have different
@@ -222,10 +226,10 @@ def singledispatch(func):  # noqa
     def wrapper(*args, **kw):
         return dispatch(args[0].__class__)(*args, **kw)
 
-    registry[object] = func
+    registry[object] = function
     wrapper.register = register
     wrapper.dispatch = dispatch
     wrapper.registry = MappingProxyType(registry)
     wrapper._clear_cache = dispatch_cache.clear
-    update_wrapper(wrapper, func)
+    update_wrapper(wrapper, function)
     return wrapper
