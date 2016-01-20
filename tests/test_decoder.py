@@ -8,7 +8,7 @@ from pytest import mark
 import pureyaml
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import MultiTestCaseBase
+from tests.utils import MultiTestCaseBase, serialize_nodes
 
 
 class DecoderTestCase(MultiTestCaseBase):
@@ -1692,7 +1692,7 @@ pureyaml_parser = YAMLParser(debug=True)
 def test_parser(case):
     text, expected = DecoderTestCase.get('parser', case)
     nodes = pureyaml_parser.parse(text)
-    # print(serialize_nodes(nodes))
+    print(serialize_nodes(nodes))
     assert nodes == expected
 
 
