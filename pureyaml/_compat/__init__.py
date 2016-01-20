@@ -7,7 +7,7 @@ try:
 except ImportError:  # pragma: no cover
     import logging  # :off
 
-    # Python < 2.7
+    # Python 2.6
     class NullHandler(logging.Handler):  # :on
         def emit(self, record):
             pass
@@ -41,7 +41,9 @@ try:
 except ImportError:
     from .total_ordering import total_ordering
 
-from .singledispatch import singledispatch
-
+try:
+    from functools import singledispatch
+except ImportError:
+    from .singledispatch import singledispatch
 
 __all__ = ['NullHandler', 'collections_abc', 'total_ordering', 'singledispatch']
