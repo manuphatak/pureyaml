@@ -18,7 +18,7 @@ __all__ = ['singledispatch']
 # singledispatch() - single-dispatch generic function decorator
 ################################################################################
 
-def _c3_merge(sequences):
+def _c3_merge(sequences):  # noqa
     """Merges MROs in *sequences* to a single MRO using the C3 algorithm.
 
     Adapted from http://www.python.org/download/releases/2.3/mro/.
@@ -88,7 +88,7 @@ def _c3_mro(cls, abcs=None):
             other_bases])
 
 
-def _compose_mro(cls, types):
+def _compose_mro(cls, types):  # noqa
     """Calculates the method resolution order for a given class *cls*.
 
     Includes relevant abstract base classes (with their respective bases) from
@@ -163,7 +163,7 @@ def _find_impl(cls, registry):
 
 
 # noinspection PyIncorrectDocstring
-def singledispatch(func):
+def singledispatch(func):  # noqa
     """Single-dispatch generic function decorator.
 
     Transforms a function into a generic function, which can have different

@@ -26,7 +26,7 @@ def _(obj):
     return Map(*items)
 
 
-@node_encoder.register(list)
+@node_encoder.register(list)  # noqa
 def _(obj):
     items = []
     for item in obj:
@@ -34,7 +34,7 @@ def _(obj):
     return Sequence(*items)
 
 
-@node_encoder.register(binary_type)
+@node_encoder.register(binary_type)  # noqa
 def _(obj):
     try:
         obj = text_type(obj, 'ascii')
@@ -43,7 +43,7 @@ def _(obj):
         return Binary.from_decoded(obj)
 
 
-@node_encoder.register(text_type)
+@node_encoder.register(text_type)  # noqa
 def _(obj):
     try:
         obj.encode('ascii')
@@ -53,24 +53,24 @@ def _(obj):
         return Binary.from_decoded(obj)
 
 
-@node_encoder.register(bool)
+@node_encoder.register(bool)  # noqa
 def _(obj):
     return Bool(obj)
 
 
-@node_encoder.register(int)
+@node_encoder.register(int)  # noqa
 def _(obj):
     return Int(obj)
 
 
-@node_encoder.register(type(None))
-def _(obj):
-    return Null(obj)
-
-
-@node_encoder.register(float)
+@node_encoder.register(float)  # noqa
 def _(obj):
     return Float(obj)
+
+
+@node_encoder.register(type(None))  # noqa
+def _(obj):
+    return Null(obj)
 
 
 class SYMBOL:
