@@ -6,7 +6,7 @@ from os.path import abspath, relpath
 import sphinx.environment
 
 sys.path.insert(0, abspath(relpath('../', __file__)))
-import pureyaml
+import pureyaml  # noqa
 
 
 def _warn_node(func):
