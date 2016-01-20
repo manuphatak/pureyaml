@@ -16,7 +16,7 @@ def test_example_5_1__byte_order_mark():
     Expected:
         # This stream contains no
         # documents, only comments.
-
+        
     """
 
     text = dedent("""
@@ -38,17 +38,17 @@ def test_example_5_2__invalid_byte_order_mark():
         ERROR:
          A BOM must not appear
          inside a document.
-
+        
     """
 
     text = dedent("""
         - Invalid use of BOM
-
+         
         - Inside a document.
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -79,7 +79,7 @@ def test_example_5_3__block_structure_indicators():
             ? !!str "sea" : !!str "green",
           },
         }
-
+        
     """
 
     text = dedent("""
@@ -90,10 +90,10 @@ def test_example_5_3__block_structure_indicators():
           ? sky
           : blue
           sea : green
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -136,16 +136,16 @@ def test_example_5_4__flow_collection_indicators():
             ? !!str "sea" : !!str "green",
           },
         }
-
+        
     """
 
     text = dedent("""
         sequence: [ one, two, ]
         mapping: { sky: blue, sea: green }
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -179,7 +179,7 @@ def test_example_5_5__comment_indicator():
     Expected:
         # This stream contains no
         # documents, only comments.
-
+        
     """
 
     text = dedent("""
@@ -206,13 +206,13 @@ def test_example_5_6__node_property_indicators():
           ? !!str "alias"
           : *A1,
         }
-
+        
     """
 
     text = dedent("""
         anchored: !local &anchor value
         alias: *anchor
-
+        
     """)[1:-1]
 
     expected = None
@@ -235,7 +235,7 @@ def test_example_5_7__block_scalar_indicators():
           ? !!str "folded"
           : !!str "some text\n",
         }
-
+        
     """
 
     text = dedent("""
@@ -245,10 +245,10 @@ def test_example_5_7__block_scalar_indicators():
         folded: >
           some
           text
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -276,16 +276,16 @@ def test_example_5_8__quoted_scalar_indicators():
           ? !!str "double"
           : !!str "text",
         }
-
+        
     """
 
     text = dedent("""
         single: 'text'
         double: "text"
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -308,16 +308,16 @@ def test_example_5_9__directive_indicator():
         %YAML 1.2
         ---
         !!str "text"
-
+        
     """
 
     text = dedent("""
         %YAML 1.2
         --- text
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('%YAML 1.2'),
@@ -340,16 +340,16 @@ def test_example_5_10__invalid_use_of_reserved_indicators():
         ERROR:
          Reserved indicators can't
          start a plain scalar.
-
+        
     """
 
     text = dedent("""
         commercial-at: @text
         grave-accent: `text
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -373,17 +373,17 @@ def test_example_5_11__line_break_characters():
         ---
         !!str "line break (no glyph)\n\
               line break (glyphed)\n"
-
+        
     """
 
     text = dedent("""
         |
           Line break (no glyph)
-          Line break (glyphed)
-
+          Line break (glyphed) 
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('Line break (no glyph)\nLine break (glyphed) \n'),
@@ -410,7 +410,7 @@ def test_example_5_12__tabs_and_spaces():
             \tprintf(\"Hello, world!\\n\");\n\
             }\n",
         }
-
+        
     """
 
     text = dedent("""
@@ -420,10 +420,10 @@ def test_example_5_12__tabs_and_spaces():
           void main() {
            printf("Hello, world!\n");
           }
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -450,19 +450,19 @@ def test_example_5_13__escaped_characters():
         \x0A \x0D \x09 \x0B \x00
         \x20 \xA0 \x85 \u2028 \u2029
         A A A"
-
+        
     """
 
     text = dedent(r"""
         "Fun with \\
-        \" \a \b \e \f \
-        \n \r \t \v \0 \
-        \  \_ \N \L \P \
+        \" \a \b \e \f \ 
+        \n \r \t \v \0 \ 
+        \  \_ \N \L \P \ 
         \x41 \u0041 \U00000041"
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('Fun with \\\\\n" \\a \\b \\e \\f \\ \n\\n \\r \\t \\v \\0 \\ \n\\  \\_ \\N \\L \\P \\ \n\\x41 \\u0041 \\U00000041'),
@@ -482,14 +482,14 @@ def test_example_5_14__invalid_escaped_characters():
         ERROR:
         - c is an invalid escaped character.
         - q and - are invalid hex digits.
-
+        
     """
 
     text = dedent(r"""
         Bad escapes:
           "\c
           \xq-"
-
+        
     """)[1:-1]
 
     expected = None
@@ -519,13 +519,13 @@ def test_example_6_1__indentation_spaces():
                 ]
             }
         }
-
+        
     """
 
     text = dedent("""
           # Leading comment line spaces are
            # neither content nor indentation.
-
+            
         Not indented:
          By one space: |
             By four
@@ -535,7 +535,7 @@ def test_example_6_1__indentation_spaces():
           Also by two,    # are neither
            Still by two   # content nor
             ]             # indentation.
-
+        
     """)[1:-1]
 
     expected = None
@@ -559,14 +559,14 @@ def test_example_6_2__indentation_indicators():
             !!seq [ !!str "c", !!str "d" ]
           ],
         }
-
+        
     """
 
     text = dedent("""
         ? a: - b
           -  - c
              - d
-
+        
     """)[1:-1]
 
     expected = None
@@ -589,17 +589,17 @@ def test_example_6_3__separation_spaces():
           },
           !!seq [ !!str "baz", !!str "baz" ],
         ]
-
+        
     """
 
     text = dedent("""
         - foo:  bar
         - - baz
           - baz
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -634,7 +634,7 @@ def test_example_6_4__line_prefixes():
           ? !!str "block"
           : !!str "text\n  lines\n",
         }
-
+        
     """
 
     text = dedent("""
@@ -644,10 +644,10 @@ def test_example_6_4__line_prefixes():
         block: |
           text
             lines
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -676,18 +676,18 @@ def test_example_6_5__empty_lines():
           ? !!str "Chomping"
           : !!str "Clipped empty lines\n",
         }
-
+        
     """
 
     text = dedent("""
         Folding:
           "Empty line
-
+            
           as a line feed"
         Chomping: |
           Clipped empty lines
-
-
+         
+        
     """)[1:-1]
 
     expected = None
@@ -705,21 +705,21 @@ def test_example_6_6__line_folding():
         %YAML 1.2
         ---
         !!str "trimmed\n\n\nas space"
-
+        
     """
 
     text = dedent("""
         >-
-          trimmed
-
-
-
-          as
+          trimmed 
+           
+          
+         
+          as 
           space
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('>-'),
@@ -742,20 +742,20 @@ def test_example_6_7__block_folding():
         %YAML 1.2
         --- !!str
         "foo \n\n\t bar\n\nbaz\n"
-
+        
     """
 
     text = dedent("""
         >
-          foo
-
-            bar
-
-          baz
-
+          foo  
+          
+            bar 
+         
+          baz 
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('foo  \n  bar \nbaz\n'),
@@ -775,21 +775,21 @@ def test_example_6_8__flow_folding():
         %YAML 1.2
         --- !!str
         " foo\nbar\nbaz "
-
+        
     """
 
     text = dedent("""
+        " 
+          foo  
+          
+            bar 
+         
+          baz 
         "
-          foo
-
-            bar
-
-          baz
-        "
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('  foo   bar  baz \n'),
@@ -812,13 +812,13 @@ def test_example_6_9__separated_comment():
           ? !!str "key"
           : !!str "value",
         }
-
+        
     """
 
     text = dedent("""
-        key:    # Comment
+        key:    # Comment 
           valueeof
-
+        
     """)[1:-1]
 
     expected = None
@@ -835,13 +835,13 @@ def test_example_6_10__comment_lines():
     Expected:
         # This stream contains no
         # documents, only comments.
-
+        
     """
 
     text = dedent("""
-          # Comment
-
-
+          # Comment     
+         
+        
     """)[1:-1]
 
     expected = None
@@ -862,15 +862,15 @@ def test_example_6_11__multi_line_comments():
           ? !!str "key"
           : !!str "value",
         }
-
+        
     """
 
     text = dedent("""
-        key:    # Comment
-                # lines
-          value
-
-
+        key:    # Comment 
+                # lines 
+          value 
+         
+        
     """)[1:-1]
 
     expected = None
@@ -901,17 +901,17 @@ def test_example_6_12__separation_spaces():
             : !!float "0.278",
           },
         }
-
+        
     """
 
     text = dedent("""
-        { first: Sammy, last: Sosa }:
+        { first: Sammy, last: Sosa }: 
         # Statistics:
           hr:  # Home runs
              65
           avg: # Average
            0.278
-
+        
     """)[1:-1]
 
     expected = None
@@ -929,14 +929,14 @@ def test_example_6_13__reserved_directives():
         %YAML 1.2
         --- !!str
         "foo"
-
+        
     """
 
     text = dedent("""
         %FOO  bar baz # Should be ignored
                        # with a warning.
         --- "foo"
-
+        
     """)[1:-1]
 
     expected = None
@@ -954,7 +954,7 @@ def test_example_6_14__yaml__directive():
         %YAML 1.2
         ---
         !!str "foo"
-
+        
     """
 
     text = dedent("""
@@ -962,7 +962,7 @@ def test_example_6_14__yaml__directive():
                    # with a warning
         ---
         "foo"
-
+        
     """)[1:-1]
 
     expected = None
@@ -980,17 +980,17 @@ def test_example_6_15__invalid_repeated_yaml_directive():
         ERROR:
         The YAML directive must only be
         given at most once per document.
-
+        
     """
 
     text = dedent("""
         %YAML 1.2
         %YAML 1.1
         foo
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('%YAML 1.2'),
@@ -1016,14 +1016,14 @@ def test_example_6_16__tag__directive():
         %YAML 1.2
         ---
         !!str "foo"
-
+        
     """
 
     text = dedent("""
         %TAG !yaml! tag:yaml.org,2002:
         ---
         !yaml!str "foo"
-
+        
     """)[1:-1]
 
     expected = None
@@ -1042,17 +1042,17 @@ def test_example_6_17__invalid_repeated_tag_directive():
         The TAG directive must only
         be given at most once per
         handle in the same document.
-
+        
     """
 
     text = dedent("""
         %TAG ! !foo
         %TAG ! !foo
         bar
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('%TAG ! !foo'),
@@ -1081,7 +1081,7 @@ def test_example_6_18__primary_tag_handle():
         ...
         ---
         !<tag:example.com,2000:app/foo> "bar"
-
+        
     """
 
     text = dedent("""
@@ -1092,7 +1092,7 @@ def test_example_6_18__primary_tag_handle():
         %TAG ! tag:example.com,2000:app/
         ---
         !foo "bar"
-
+        
     """)[1:-1]
 
     expected = None
@@ -1110,17 +1110,17 @@ def test_example_6_19__secondary_tag_handle():
         %YAML 1.2
         ---
         !<tag:example.com,2000:app/int> "1 - 3"
-
+        
     """
 
     text = dedent("""
         %TAG !! tag:example.com,2000:app/
         ---
         !!int 1 - 3 # Interval, not integer
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('%TAG !! tag:example.com,2000:app/'),
@@ -1148,14 +1148,14 @@ def test_example_6_20__tag_handles():
         %YAML 1.2
         ---
         !<tag:example.com,2000:app/foo> "bar"
-
+        
     """
 
     text = dedent("""
         %TAG !e! tag:example.com,2000:app/
         ---
         !e!foo "bar"
-
+        
     """)[1:-1]
 
     expected = None
@@ -1177,7 +1177,7 @@ def test_example_6_21__local_tag_prefix():
         %YAML 1.2
         ---
         !<!my-light> "green"
-
+        
     """
 
     text = dedent("""
@@ -1188,7 +1188,7 @@ def test_example_6_21__local_tag_prefix():
         %TAG !m! !my-
         --- # Color here
         !m!light green
-
+        
     """)[1:-1]
 
     expected = None
@@ -1206,14 +1206,14 @@ def test_example_6_22__global_tag_prefix():
         %YAML 1.2
         ---
         !<tag:example.com,2000:app/foo> "bar"
-
+        
     """
 
     text = dedent("""
         %TAG !e! tag:example.com,2000:app/
         ---
         - !e!foo "bar"
-
+        
     """)[1:-1]
 
     expected = None
@@ -1236,14 +1236,14 @@ def test_example_6_23__node_properties():
           ? !!str "baz"
           : *B1,
         }
-
+        
     """
 
     text = dedent("""
         !!str &a1 "foo":
           !!str bar
         &a2 baz : *a1
-
+        
     """)[1:-1]
 
     expected = None
@@ -1264,13 +1264,13 @@ def test_example_6_24__verbatim_tags():
           ? !<tag:yaml.org,2002:str> "foo"
           : !<!bar> "baz",
         }
-
+        
     """
 
     text = dedent("""
         !<tag:yaml.org,2002:str> foo :
           !<!bar> baz
-
+        
     """)[1:-1]
 
     expected = None
@@ -1291,13 +1291,13 @@ def test_example_6_25__invalid_verbatim_tags():
         - The $:? tag is neither a global
           URI tag nor a local tag starting
           with  ! .
-
+        
     """
 
     text = dedent("""
         - !<!> foo
         - !<$:?> bar
-
+        
     """)[1:-1]
 
     expected = None
@@ -1319,7 +1319,7 @@ def test_example_6_26__tag_shorthands():
           !<tag:yaml.org,2002:str> "bar",
           !<tag:example.com,2000:app/tag!> "baz"
         ]
-
+        
     """
 
     text = dedent("""
@@ -1328,7 +1328,7 @@ def test_example_6_26__tag_shorthands():
         - !local foo
         - !!str bar
         - !e!tag%21 baz
-
+        
     """)[1:-1]
 
     expected = None
@@ -1346,7 +1346,7 @@ def test_example_6_27__invalid_tag_shorthands():
         ERROR:
         - The !o! handle has no suffix.
         - The !h! handle wasn't declared.
-
+        
     """
 
     text = dedent("""
@@ -1354,7 +1354,7 @@ def test_example_6_27__invalid_tag_shorthands():
         ---
         - !e! foo
         - !h!bar baz
-
+        
     """)[1:-1]
 
     expected = None
@@ -1376,7 +1376,7 @@ def test_example_6_28__non_specific_tags():
           !<tag:yaml.org,2002:int> "12",
           !<tag:yaml.org,2002:str> "12",
         ]
-
+        
     """
 
     text = dedent("""
@@ -1384,10 +1384,10 @@ def test_example_6_28__non_specific_tags():
         - "12"
         - 12
         - ! 12
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -1416,16 +1416,16 @@ def test_example_6_29__node_anchors():
           ? !!str "Second occurrence"
           : *A,
         }
-
+        
     """
 
     text = dedent("""
         First occurrence: &anchor Value
         Second occurrence: *anchor
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -1457,7 +1457,7 @@ def test_example_7_1__alias_nodes():
           ? !!str "Reuse anchor"
           : *B,
         }
-
+        
     """
 
     text = dedent("""
@@ -1465,10 +1465,10 @@ def test_example_7_1__alias_nodes():
         Second occurrence: *anchor
         Override anchor: &anchor Bar
         Reuse anchor: *anchor
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -1496,7 +1496,7 @@ def test_example_7_2__empty_content():
           ? !!str "foo" : !!str "",
           ? !!str ""    : !!str "bar",
         }
-
+        
     """
 
     text = dedent("""
@@ -1504,7 +1504,7 @@ def test_example_7_2__empty_content():
           foo : !!str ,
           !!str  : bar,
         }
-
+        
     """)[1:-1]
 
     expected = None
@@ -1525,7 +1525,7 @@ def test_example_7_3__completely_empty_flow_nodes():
           ? !!str "foo" : !!null "",
           ? !!null ""   : !!str "bar",
         }
-
+        
     """
 
     text = dedent("""
@@ -1533,7 +1533,7 @@ def test_example_7_3__completely_empty_flow_nodes():
           ? foo : ,
            : bar,
         }
-
+        
     """)[1:-1]
 
     expected = None
@@ -1559,17 +1559,17 @@ def test_example_7_4__double_quoted_implicit_keys():
             }
           ]
         }
-
+        
     """
 
     text = dedent("""
         "implicit block key" : [
           "implicit flow key" : value,
          ]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('implicit block key'),
@@ -1601,19 +1601,19 @@ def test_example_7_5__double_quoted_line_breaks():
         !!str "folded to a space,\n\
               to a line feed, \
               or \t \tnon-content"
-
+        
     """
 
     text = dedent("""
-        "folded
-        to a space,
-
-        to a line feed, or  \
+        "folded  
+        to a space,  
+          
+        to a line feed, or  \ 
          \  non-content"
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('folded  \nto a space,   to a line feed, or  \\  \\  non-content'),
@@ -1635,18 +1635,18 @@ def test_example_7_6__double_quoted_lines():
         !!str " 1st non-empty\n\
               2nd non-empty \
               3rd non-empty "
-
+        
     """
 
     text = dedent("""
-        " 1st non-empty
-
-         2nd non-empty
+        " 1st non-empty 
+         
+         2nd non-empty 
          3rd non-empty "
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str(' 1st non-empty  2nd non-empty  3rd non-empty '),
@@ -1666,14 +1666,14 @@ def test_example_7_7__single_quoted_characters():
         %YAML 1.2
         ---
         !!str "here's to \"quotes\""
-
+        
     """
 
     text = dedent("""
          'here''s to "quotes"'
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('\'here\'\'s to "quotes"\''),
@@ -1701,17 +1701,17 @@ def test_example_7_8__single_quoted_implicit_keys():
             }
           ]
         }
-
+        
     """
 
     text = dedent("""
         'implicit block key' : [
           'implicit flow key' : value,
          ]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('implicit block key'),
@@ -1743,18 +1743,18 @@ def test_example_7_9__single_quoted_lines():
         !!str " 1st non-empty\n\
               2nd non-empty \
               3rd non-empty "
-
+        
     """
 
     text = dedent("""
-        ' 1st non-empty
-
-         2nd non-empty
+        ' 1st non-empty 
+         
+         2nd non-empty 
          3rd non-empty '
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str(' 1st non-empty \n \n 2nd non-empty \n 3rd non-empty '),
@@ -1787,7 +1787,7 @@ def test_example_7_10__plain_characters():
             !!str "http://example.com/foo#bar",
           ],
         ]
-
+        
     """
 
     text = dedent("""
@@ -1803,7 +1803,7 @@ def test_example_7_10__plain_characters():
           "Up, up and away!",
           -123,
           http://example.com/foo#bar ]
-
+        
     """)[1:-1]
 
     expected = None
@@ -1829,17 +1829,17 @@ def test_example_7_11__plain_implicit_keys():
             }
           ]
         }
-
+        
     """
 
     text = dedent("""
         implicit block key : [
           implicit flow key : value,
          ]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -1868,18 +1868,18 @@ def test_example_7_12__plain_lines():
         !!str "1st non-empty\n\
               2nd non-empty \
               3rd non-empty"
-
+        
     """
 
     text = dedent("""
-        1st non-empty
-
-         2nd non-empty
+        1st non-empty 
+         
+         2nd non-empty 
          3rd non-empty
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('1st non-empty'),
@@ -1911,16 +1911,16 @@ def test_example_7_13__flow_sequence():
             !!str "four",
           ],
         ]
-
+        
     """
 
     text = dedent("""
         - [ one, two, ]
         - [three ,four]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -1960,7 +1960,7 @@ def test_example_7_14__flow_sequence_entries():
             : !!str "pair",
           },
         ]
-
+        
     """
 
     text = dedent("""
@@ -1972,7 +1972,7 @@ def test_example_7_14__flow_sequence_entries():
          text, [ nested ],
         single: pair,
         ]
-
+        
     """)[1:-1]
 
     expected = None
@@ -1999,13 +1999,13 @@ def test_example_7_15__flow_mappings():
             ? !!str "seven" : !!str "eight",
           },
         ]
-
+        
     """
 
     text = dedent("""
         - { one : two , three: four , }
         - {five: six,seven : eight}
-
+        
     """)[1:-1]
 
     expected = None
@@ -2027,16 +2027,16 @@ def test_example_7_16__flow_mapping_entries():
           ? !!str "implicit" : !!str "entry",
           ? !!null "" : !!null "",
         }
-
+        
     """
 
     text = dedent("""
         {
         ? explicit: entry,
         implicit: entry,
-        ?
+        ?  
         }
-
+        
     """)[1:-1]
 
     expected = None
@@ -2059,7 +2059,7 @@ def test_example_7_17__flow_mapping_separate_values():
           ? !!str "omitted value" : !!null "",
           ? !!null "" : !!str "omitted key",
         }
-
+        
     """
 
     text = dedent("""
@@ -2069,7 +2069,7 @@ def test_example_7_17__flow_mapping_separate_values():
         omitted value: ,
          : omitted key,
         }
-
+        
     """)[1:-1]
 
     expected = None
@@ -2091,19 +2091,19 @@ def test_example_7_18__flow_mapping_adjacent_values():
           ? !!str "readable" : !!str "value",
           ? !!str "empty"    : !!null "",
         }
-
+        
     """
 
     text = dedent("""
         {
         "adjacent":value,
         "readable": value,
-        "empty":
+        "empty": 
         }
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -2129,17 +2129,17 @@ def test_example_7_19__single_pair_flow_mappings():
         !!seq [
           !!map { ? !!str "foo" : !!str "bar" }
         ]
-
+        
     """
 
     text = dedent("""
         [
         foo: bar
         ]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -2166,7 +2166,7 @@ def test_example_7_20__single_pair_explicit_entry():
             : !!str "baz",
           },
         ]
-
+        
     """
 
     text = dedent("""
@@ -2174,7 +2174,7 @@ def test_example_7_20__single_pair_explicit_entry():
         ? foo
          bar : baz
         ]
-
+        
     """)[1:-1]
 
     expected = None
@@ -2213,17 +2213,17 @@ def test_example_7_21__single_pair_implicit_entries():
             },
           ],
         ]
-
+        
     """
 
     text = dedent("""
         - [ YAML : separate ]
         - [  : empty key entry ]
         - [ {JSON: like}:adjacent ]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -2253,14 +2253,14 @@ def test_example_7_22__invalid_implicit_keys():
         ERROR:
         - The foo bar key spans multiple lines
         - The foo...bar key is too long
-
+        
     """
 
     text = dedent("""
         [ foo
          bar: invalid,
          "foo...>1K characters...bar": invalid ]
-
+        
     """)[1:-1]
 
     expected = None
@@ -2284,7 +2284,7 @@ def test_example_7_23__flow_content():
           !!str "b",
           !!str "c",
         ]
-
+        
     """
 
     text = dedent("""
@@ -2293,10 +2293,10 @@ def test_example_7_23__flow_content():
         - "a"
         - 'b'
         - c
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -2333,7 +2333,7 @@ def test_example_7_24__flow_nodes():
           *A,
           !!str "",
         ]
-
+        
     """
 
     text = dedent("""
@@ -2341,8 +2341,8 @@ def test_example_7_24__flow_nodes():
         - 'b'
         - &anchor "c"
         - *anchor
-        - !!str
-
+        - !!str 
+        
     """)[1:-1]
 
     expected = None
@@ -2365,21 +2365,21 @@ def test_example_8_1__block_scalar_header():
           !!str "keep\n\n",
           !!str " strip",
         ]
-
+        
     """
 
     text = dedent("""
-        - | # Empty header
+        - | # Empty header 
          literal
-        - >1 # Indentation indicator
+        - >1 # Indentation indicator 
           folded
-        - |+ # Chomping indicator
+        - |+ # Chomping indicator 
          keep
-
-        - >1- # Both indicators
+        
+        - >1- # Both indicators 
           strip
-
-
+        
+        
     """)[1:-1]
 
     expected = None
@@ -2402,25 +2402,25 @@ def test_example_8_2__block_indentation_indicator():
           !!str " explicit\n",
           !!str "\t detected\n",
         ]
-
+        
     """
 
     text = dedent("""
-        - |
+        - | 
          detected
-        - >
-
-
+        - > 
+         
+          
           # detected
         - |1
           explicit
-        - >
-
+        - > 
+          
          detected
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -2456,22 +2456,22 @@ def test_example_8_3__invalid_block_scalar_indentation_indicators():
           not be less indented.
         - The text is less indented
           than the indicated level.
-
+        
     """
 
     text = dedent("""
         - |
-
+          
          text
         - >
           text
          text
         - |2
          text
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Sequence(
@@ -2505,17 +2505,17 @@ def test_example_8_4__chomping_final_line_break():
           ? !!str "keep"
           : !!str "text\n",
         }
-
+        
     """
 
     text = dedent("""
         strip: |-
-          text
+          text 
         clip: |
-          text
+          text 
         keep: |+
-          text
-
+          text 
+        
     """)[1:-1]
 
     expected = None
@@ -2540,30 +2540,30 @@ def test_example_8_5__chomping_trailing_lines():
           ? !!str "keep"
           : !!str "# text\n",
         }
-
+        
     """
 
     text = dedent("""
          # Strip
           # Comments:
         strip: |-
-          # text
-
+          # text 
+           
          # Clip
           # comments:
-
+         
         clip: |
-          # text
-
+          # text 
+          
          # Keep
           # comments:
-
+         
         keep: |+
-          # text
-
+          # text 
+         
          # Trail
           # comments.
-
+        
     """)[1:-1]
 
     expected = None
@@ -2588,20 +2588,20 @@ def test_example_8_6__empty_scalar_chomping():
           ? !!str "keep"
           : !!str "\n",
         }
-
+        
     """
 
     text = dedent("""
         strip: >-
-
+         
         clip: >
-
+         
         keep: |+
-
-
+         
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -2625,18 +2625,18 @@ def test_example_8_7__literal_scalar():
         %YAML 1.2
         ---
         !!str "literal\n\ttext\n"
-
+        
     """
 
     text = dedent("""
-        |
-         literal
-          text
-
-
+        | 
+         literal 
+          text 
+         
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('literal \n text \n\n'),
@@ -2656,23 +2656,23 @@ def test_example_8_8__literal_content():
         %YAML 1.2
         ---
         !!str "\n\nliteral\n \n\ntext\n"
-
+        
     """
 
     text = dedent("""
         |
-
-
-          literal
-
-
-          text
-
+         
+          
+          literal 
+            
+          
+          text 
+         
          # Comment
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('\n\n literal \n text \n\n# Comment\n'),
@@ -2692,18 +2692,18 @@ def test_example_8_9__folded_scalar():
         %YAML 1.2
         ---
         !!str "folded text\n"
-
+        
     """
 
     text = dedent("""
-        >
-         folded
-         text
-
-
+        > 
+         folded 
+         text 
+         
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('folded  text\n'),
@@ -2731,30 +2731,30 @@ def test_example_8_10__folded_lines():
               \  * lines\n\
               \n\
               last line\n"
-
+        
     """
 
     text = dedent("""
         >
-
-         folded
-         line
-
+        
+         folded 
+         line 
+         
          next
-         line
+         line 
            * bullet
-
+        
            * list
            * lines
-
-         last
-         line
-
+        
+         last 
+         line 
+        
         # Comment
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str(' folded  line \nnext line    * bullet\n  * list   * lines\nlast  line\n'),
@@ -2782,30 +2782,30 @@ def test_example_8_11__more_indented_lines():
               \  * lines\n\
               \n\
               last line\n"
-
+        
     """
 
     text = dedent("""
         >
-
+        
          folded
          line
-
+        
          next
          line
-           * bullet
-
-           * list
-           * lines
-
+           * bullet 
+         
+           * list 
+           * lines 
+        
          last
          line
-
+        
         # Comment
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str(' folded line\nnext line   * bullet \n  * list    * lines \nlast line\n'),
@@ -2833,30 +2833,30 @@ def test_example_8_12__empty_separation_lines():
               \  * lines\n\
               \n\
               last line\n"
-
+        
     """
 
     text = dedent("""
         >
-
+         
          folded
-         line
-
+         line 
+         
          next
-         line
+         line 
            * bullet
-
+        
            * list
-           * line
-
+           * line 
+         
          last
          line
-
+        
         # Comment
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str(' folded line \nnext line    * bullet\n  * list   * line \nlast line\n'),
@@ -2884,29 +2884,29 @@ def test_example_8_13__final_empty_lines():
               \  * lines\n\
               \n\
               last line\n"
-
+        
     """
 
     text = dedent("""
         >
          folded
          line
-
+        
          next
          line
            * bullet
-
+        
            * list
            * line
-
+        
          last
-         line
-
+         line 
+         
         # Comment
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('folded line\nnext line   * bullet\n  * list   * line\nlast line\n'),
@@ -2935,17 +2935,17 @@ def test_example_8_14__block_sequence():
             },
           ],
         }
-
+        
     """
 
     text = dedent("""
         block sequence:
-          - one
-          - two : three
-
+          - one 
+          - two : three 
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -2986,7 +2986,7 @@ def test_example_8_15__block_sequence_entry_types():
             : !!str "two",
           },
         ]
-
+        
     """
 
     text = dedent("""
@@ -2996,7 +2996,7 @@ def test_example_8_15__block_sequence_entry_types():
         - - one # Compact
           - two # sequence
         - one: two # Compact mapping
-
+        
     """)[1:-1]
 
     expected = None
@@ -3020,16 +3020,16 @@ def test_example_8_16__block_mappings():
             : !!str "value",
           },
         }
-
+        
     """
 
     text = dedent("""
         block mapping:
-         key: value
-
+         key: value 
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -3064,16 +3064,16 @@ def test_example_8_17__explicit_block_mapping_entries():
             !!str "two",
           ],
         }
-
+        
     """
 
     text = dedent("""
-        ? explicit key # Empty value
+        ? explicit key # Empty value  
         ? |
-          block key
+          block key 
         : - one # Explicit compact
-          - two # block value
-
+          - two # block value 
+        
     """)[1:-1]
 
     expected = None
@@ -3098,7 +3098,7 @@ def test_example_8_18__implicit_block_mapping_entries():
           ? !!str "quoted key"
           : !!seq [ !!str "entry" ],
         }
-
+        
     """
 
     text = dedent("""
@@ -3106,7 +3106,7 @@ def test_example_8_18__implicit_block_mapping_entries():
          :  # Both empty
         "quoted key":
         - entry
-
+        
     """)[1:-1]
 
     expected = None
@@ -3138,14 +3138,14 @@ def test_example_8_19__compact_block_mappings():
             },
           }
         ]
-
+        
     """
 
     text = dedent("""
-        - sun: yellow
-        - ? earth: blue
-          : moon: white
-
+        - sun: yellow 
+        - ? earth: blue 
+          : moon: white 
+        
     """)[1:-1]
 
     expected = None
@@ -3170,17 +3170,17 @@ def test_example_8_20__block_node_types():
             : !!str "bar",
           },
         ]
-
+        
     """
 
     text = dedent("""
-        -
-          "flow in block"
+        - 
+          "flow in block" 
         - >
-         Block scalar
+         Block scalar 
         - !!map # Block collection
-          foo : bar
-
+          foo : bar 
+        
     """)[1:-1]
 
     expected = None
@@ -3203,17 +3203,17 @@ def test_example_8_21__block_scalar_nodes():
           ? !!str "folded"
           : !<!foo> "value",
         }
-
+        
     """
 
     text = dedent("""
         literal: |2
           value
-        folded:
+        folded: 
            !foo
           >1
          value
-
+        
     """)[1:-1]
 
     expected = None
@@ -3241,7 +3241,7 @@ def test_example_8_22__block_collection_nodes():
             ? !!str "foo" : !!str "bar",
           },
         }
-
+        
     """
 
     text = dedent("""
@@ -3251,7 +3251,7 @@ def test_example_8_22__block_collection_nodes():
          - nested
         mapping: !!map
          foo: bar
-
+        
     """)[1:-1]
 
     expected = None
@@ -3269,17 +3269,17 @@ def test_example_9_1__document_prefix():
         %YAML 1.2
         ---
         !!str "Document"
-
+        
     """
 
     text = dedent("""
          # Comment
         # lines
         Document
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('Document'),
@@ -3299,7 +3299,7 @@ def test_example_9_2__document_markers():
         %YAML 1.2
         ---
         !!str "Document"
-
+        
     """
 
     text = dedent("""
@@ -3307,10 +3307,10 @@ def test_example_9_2__document_markers():
         ---
         Document
         ... # Suffix
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Str('%YAML 1.2'),
@@ -3336,7 +3336,7 @@ def test_example_9_3__bare_documents():
         %YAML 1.2
         ---
         !!str "%!PS-Adobe-2.0\n"
-
+        
     """
 
     text = dedent("""
@@ -3347,7 +3347,7 @@ def test_example_9_3__bare_documents():
         ...
         |
         %!PS-Adobe-2.0 # Not the first line
-
+        
     """)[1:-1]
 
     expected = None
@@ -3371,7 +3371,7 @@ def test_example_9_4__explicit_documents():
         %YAML 1.2
         ---
         !!null ""
-
+        
     """
 
     text = dedent("""
@@ -3382,7 +3382,7 @@ def test_example_9_4__explicit_documents():
         ---
         # Empty
         ...
-
+        
     """)[1:-1]
 
     expected = None
@@ -3404,7 +3404,7 @@ def test_example_9_5__directives_documents():
         %YAML 1.2
         ---
         !!null ""
-
+        
     """
 
     text = dedent("""
@@ -3416,7 +3416,7 @@ def test_example_9_5__directives_documents():
         ---
         # Empty
         ...
-
+        
     """)[1:-1]
 
     expected = None
@@ -3444,7 +3444,7 @@ def test_example_9_6__stream():
         !!map {
           !!str "matches %": !!int "20"
         }
-
+        
     """
 
     text = dedent("""
@@ -3455,7 +3455,7 @@ def test_example_9_6__stream():
         %YAML 1.2
         ---
         matches %: 20
-
+        
     """)[1:-1]
 
     expected = None
@@ -3491,7 +3491,7 @@ def test_example_10_8__json_tag_resolution():
           ],
         }
         ...
-
+        
     """
 
     text = dedent("""
@@ -3500,10 +3500,10 @@ def test_example_10_8__json_tag_resolution():
         Integers: [ 0, -0, 3, -19 ]
         Floats: [ 0., -0.0, 12e03, -2E+05 ]
         Invalid: [ True, Null, 0o7, 0x3A, +12.3 ]
-
+        
     """)[1:-1]
 
-
+    
     expected = Docs(  # :off
             Doc(
                 Map(
@@ -3575,7 +3575,7 @@ def test_example_10_9__core_tag_resolution():
           ],
         }
         ...
-
+        
     """
 
     text = dedent("""
@@ -3586,7 +3586,7 @@ def test_example_10_9__core_tag_resolution():
         Integers: [ 0, 0o7, 0x3A, -19 ]
         Floats: [ 0., -0.0, .5, +12e03, -2E+05 ]
         Also floats: [ .inf, -.Inf, +.INF, .NAN ]
-
+        
     """)[1:-1]
 
     expected = None
