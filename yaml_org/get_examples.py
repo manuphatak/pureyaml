@@ -50,7 +50,6 @@ def get_examples(html_text):
         except (AttributeError, TypeError, IndexError):
             continue
 
-
         yield Example(title_text, clean_pre_block(codeblock_yaml), clean_pre_block(codeblock_nodes))
 
 
@@ -60,11 +59,20 @@ def write(examples, f):
         # coding=utf-8
         from textwrap import dedent
 
+        from pytest import raises
+
+        from pureyaml.exceptions import YAMLSyntaxError
         from pureyaml.nodes import *  # noqa
         from pureyaml.parser import YAMLParser
-        from tests.utils import serialize_nodes
+        from tests.utils import serialize_nodes, feature_not_supported
 
         parser = YAMLParser(debug=True)
+
+
+        def print_nodes(nodes):
+            active = True
+            if active:
+                print(serialize_nodes(nodes))
 
     """)[1:]
 
@@ -80,42 +88,56 @@ def write(examples, f):
         inline_key = re.sub(r'\s', ' ', example.name)
         indented_data = indent_text(example.data, indent=2)
         indented_hint = indent_text(example.nodes, indent=2)
-        expected_line = "expected = None"
-        encoding = ''
 
         if '\\N' in example.data or '\\xq-' in example.data:
             encoding = 'r'
+        else:
+            encoding = ''
 
         try:
             nodes = parser.parse(example.data)
             serialized = serialize_nodes(nodes)
-            expected_line = indent_text(serialized, indent=1)
+            expected_line = indent_text('%s\n' % serialized, indent=1)
+            decorator = ''
         except (YAMLUnknownSyntaxError, YAMLSyntaxError):
-            pass
+            decorator = '\n@feature_not_supported'
+            expected_line = indent_text('\nexpected = None\n', indent=1)
         except (YAMLCastTypeError, AttributeError):
             # TODO, investigate
-            pass
+            decorator = '\n@feature_not_supported'
+            expected_line = indent_text('\nexpected = None\n', indent=1)
 
-        template = dedent("""
+        if example.nodes.startswith('ERROR'):
+            expected_line = ''
+            test_assert = indent_text(dedent('''
+                with raises(YAMLSyntaxError):
+                    nodes = parser.parse(text)
+                    print_nodes(nodes)
+            ''')[1:], indent=1)
+        else:
+            test_assert = indent_text(dedent('''
+                nodes = parser.parse(text)
+                print_nodes(nodes)
+
+                assert nodes == expected
+            ''')[1:], indent=1)
+
+        template = dedent('''
+            {decorator}
             def test_{function_name}():
-                \"\"\"
+                """
                 {inline_key}
 
                 Expected:
                     {indented_hint}
-                \"\"\"
+                """
 
-                text = dedent({encoding}\"\"\"
+                text = dedent({encoding}"""
                     {indented_data}
-                \"\"\")[1:-1]
-
+                """)[1:-1]
                 {expected_line}
-
-                nodes = parser.parse(text)
-                print(serialize_nodes(nodes))
-
-                assert nodes == expected
-        """).format_map(vars())
+                {test_assert}
+        ''')[1:].format_map(vars())
 
         f.write(template)
         yield

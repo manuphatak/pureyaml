@@ -13,7 +13,7 @@ def test_dir(*paths):
     return os.path.abspath(os.path.join(dirname, *paths))
 
 
-feature_not_supported = mark.skipif(True, reason='Feature not supported.')
+feature_not_supported = mark.xfail(True, reason='Feature not supported.')
 
 PY33 = sys.version_info[0:2] == (3, 3)
 PY34 = sys.version_info[0:2] == (3, 4)

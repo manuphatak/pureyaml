@@ -2,13 +2,23 @@
 # coding=utf-8
 from textwrap import dedent
 
+from pytest import raises
+
+from pureyaml.exceptions import YAMLSyntaxError
 from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
-from tests.utils import serialize_nodes
+from tests.utils import serialize_nodes, feature_not_supported
 
 parser = YAMLParser(debug=True)
 
 
+def print_nodes(nodes):
+    active = True
+    if active:
+        print(serialize_nodes(nodes))
+
+
+@feature_not_supported
 def test_example_5_1__byte_order_mark():
     """
     Example 5.1. Byte Order Mark
@@ -22,13 +32,14 @@ def test_example_5_1__byte_order_mark():
     text = dedent("""
          # Comment only.
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_2__invalid_byte_order_mark():
     """
@@ -47,21 +58,11 @@ def test_example_5_2__invalid_byte_order_mark():
         - Inside a document.
         
     """)[1:-1]
-
     
-    expected = Docs(  # :off
-            Doc(
-                Sequence(
-                    Str('Invalid use of BOM'),
-                    Str('Inside a document.'),
-                ),
-            ),
-        )  # :on
-
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
 def test_example_5_3__block_structure_indicators():
     """
@@ -92,7 +93,6 @@ def test_example_5_3__block_structure_indicators():
           sea : green
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -114,11 +114,12 @@ def test_example_5_3__block_structure_indicators():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_4__flow_collection_indicators():
     """
@@ -144,7 +145,6 @@ def test_example_5_4__flow_collection_indicators():
         mapping: { sky: blue, sea: green }
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -166,12 +166,14 @@ def test_example_5_4__flow_collection_indicators():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_5_5__comment_indicator():
     """
     Example 5.5. Comment Indicator
@@ -185,14 +187,16 @@ def test_example_5_5__comment_indicator():
     text = dedent("""
         # Comment only.
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_5_6__node_property_indicators():
     """
     Example 5.6. Node Property Indicators
@@ -214,13 +218,14 @@ def test_example_5_6__node_property_indicators():
         alias: *anchor
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_7__block_scalar_indicators():
     """
@@ -247,7 +252,6 @@ def test_example_5_7__block_scalar_indicators():
           text
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -257,11 +261,12 @@ def test_example_5_7__block_scalar_indicators():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_8__quoted_scalar_indicators():
     """
@@ -284,7 +289,6 @@ def test_example_5_8__quoted_scalar_indicators():
         double: "text"
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -294,11 +298,12 @@ def test_example_5_8__quoted_scalar_indicators():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_9__directive_indicator():
     """
@@ -316,7 +321,6 @@ def test_example_5_9__directive_indicator():
         --- text
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -326,11 +330,12 @@ def test_example_5_9__directive_indicator():
                 Str('text'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_10__invalid_use_of_reserved_indicators():
     """
@@ -348,21 +353,11 @@ def test_example_5_10__invalid_use_of_reserved_indicators():
         grave-accent: `text
         
     """)[1:-1]
-
     
-    expected = Docs(  # :off
-            Doc(
-                Map(
-                    (Str('commercial-at'), Str('@text')),
-                    (Str('grave-accent'), Str('`text')),
-                ),
-            ),
-        )  # :on
-
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
 def test_example_5_11__line_break_characters():
     """
@@ -382,18 +377,18 @@ def test_example_5_11__line_break_characters():
           Line break (glyphed) 
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('Line break (no glyph)\nLine break (glyphed) \n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_12__tabs_and_spaces():
     """
@@ -422,7 +417,6 @@ def test_example_5_12__tabs_and_spaces():
           }
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -432,11 +426,12 @@ def test_example_5_12__tabs_and_spaces():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_5_13__escaped_characters():
     """
@@ -461,19 +456,20 @@ def test_example_5_13__escaped_characters():
         \x41 \u0041 \U00000041"
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('Fun with \\\\\n" \\a \\b \\e \\f \\ \n\\n \\r \\t \\v \\0 \\ \n\\  \\_ \\N \\L \\P \\ \n\\x41 \\u0041 \\U00000041'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_5_14__invalid_escaped_characters():
     """
     Example 5.14. Invalid Escaped Characters
@@ -491,14 +487,13 @@ def test_example_5_14__invalid_escaped_characters():
           \xq-"
         
     """)[1:-1]
+    
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
-    expected = None
-
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
-
+@feature_not_supported
 def test_example_6_1__indentation_spaces():
     """
     Example 6.1. Indentation Spaces
@@ -537,14 +532,16 @@ def test_example_6_1__indentation_spaces():
             ]             # indentation.
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_2__indentation_indicators():
     """
     Example 6.2. Indentation Indicators
@@ -568,13 +565,14 @@ def test_example_6_2__indentation_indicators():
              - d
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_3__separation_spaces():
     """
@@ -598,7 +596,6 @@ def test_example_6_3__separation_spaces():
           - baz
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -613,11 +610,12 @@ def test_example_6_3__separation_spaces():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_4__line_prefixes():
     """
@@ -646,7 +644,6 @@ def test_example_6_4__line_prefixes():
             lines
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -657,12 +654,14 @@ def test_example_6_4__line_prefixes():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_5__empty_lines():
     """
     Example 6.5. Empty Lines
@@ -689,13 +688,14 @@ def test_example_6_5__empty_lines():
          
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_6__line_folding():
     """
@@ -718,7 +718,6 @@ def test_example_6_6__line_folding():
           space
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -728,11 +727,12 @@ def test_example_6_6__line_folding():
                 Str('trimmed  as  space'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_7__block_folding():
     """
@@ -754,18 +754,18 @@ def test_example_6_7__block_folding():
           baz 
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('foo  \n  bar \nbaz\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_8__flow_folding():
     """
@@ -788,19 +788,20 @@ def test_example_6_8__flow_folding():
         "
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('  foo   bar  baz \n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_9__separated_comment():
     """
     Example 6.9. Separated Comment
@@ -820,14 +821,16 @@ def test_example_6_9__separated_comment():
           valueeof
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_10__comment_lines():
     """
     Example 6.10. Comment Lines
@@ -843,14 +846,16 @@ def test_example_6_10__comment_lines():
          
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_11__multi_line_comments():
     """
     Example 6.11. Multi-Line Comments
@@ -872,14 +877,16 @@ def test_example_6_11__multi_line_comments():
          
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_12__separation_spaces():
     """
     Example 6.12. Separation Spaces
@@ -913,14 +920,16 @@ def test_example_6_12__separation_spaces():
            0.278
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_13__reserved_directives():
     """
     Example 6.13. Reserved Directives
@@ -938,14 +947,16 @@ def test_example_6_13__reserved_directives():
         --- "foo"
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_14__yaml__directive():
     """
     Example 6.14. “ YAML ” directive
@@ -964,13 +975,14 @@ def test_example_6_14__yaml__directive():
         "foo"
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_15__invalid_repeated_yaml_directive():
     """
@@ -989,25 +1001,13 @@ def test_example_6_15__invalid_repeated_yaml_directive():
         foo
         
     """)[1:-1]
-
     
-    expected = Docs(  # :off
-            Doc(
-                Str('%YAML 1.2'),
-            ),
-            Doc(
-                Str('%YAML 1.1'),
-            ),
-            Doc(
-                Str('foo'),
-            ),
-        )  # :on
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
-
+@feature_not_supported
 def test_example_6_16__tag__directive():
     """
     Example 6.16. “ TAG ” directive
@@ -1025,13 +1025,14 @@ def test_example_6_16__tag__directive():
         !yaml!str "foo"
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_17__invalid_repeated_tag_directive():
     """
@@ -1051,25 +1052,13 @@ def test_example_6_17__invalid_repeated_tag_directive():
         bar
         
     """)[1:-1]
-
     
-    expected = Docs(  # :off
-            Doc(
-                Str('%TAG ! !foo'),
-            ),
-            Doc(
-                Str('%TAG ! !foo'),
-            ),
-            Doc(
-                Str('bar'),
-            ),
-        )  # :on
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
-
+@feature_not_supported
 def test_example_6_18__primary_tag_handle():
     """
     Example 6.18. Primary Tag Handle
@@ -1094,13 +1083,14 @@ def test_example_6_18__primary_tag_handle():
         !foo "bar"
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_19__secondary_tag_handle():
     """
@@ -1119,7 +1109,6 @@ def test_example_6_19__secondary_tag_handle():
         !!int 1 - 3 # Interval, not integer
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1134,12 +1123,14 @@ def test_example_6_19__secondary_tag_handle():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_20__tag_handles():
     """
     Example 6.20. Tag Handles
@@ -1157,14 +1148,16 @@ def test_example_6_20__tag_handles():
         !e!foo "bar"
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_21__local_tag_prefix():
     """
     Example 6.21. Local Tag Prefix
@@ -1190,14 +1183,16 @@ def test_example_6_21__local_tag_prefix():
         !m!light green
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_22__global_tag_prefix():
     """
     Example 6.22. Global Tag Prefix
@@ -1215,14 +1210,16 @@ def test_example_6_22__global_tag_prefix():
         - !e!foo "bar"
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_23__node_properties():
     """
     Example 6.23. Node Properties
@@ -1245,14 +1242,16 @@ def test_example_6_23__node_properties():
         &a2 baz : *a1
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_24__verbatim_tags():
     """
     Example 6.24. Verbatim Tags
@@ -1272,14 +1271,16 @@ def test_example_6_24__verbatim_tags():
           !<!bar> baz
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_25__invalid_verbatim_tags():
     """
     Example 6.25. Invalid Verbatim Tags
@@ -1299,14 +1300,13 @@ def test_example_6_25__invalid_verbatim_tags():
         - !<$:?> bar
         
     """)[1:-1]
+    
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
-    expected = None
-
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
-
+@feature_not_supported
 def test_example_6_26__tag_shorthands():
     """
     Example 6.26. Tag Shorthands
@@ -1330,14 +1330,16 @@ def test_example_6_26__tag_shorthands():
         - !e!tag%21 baz
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_6_27__invalid_tag_shorthands():
     """
     Example 6.27. Invalid Tag Shorthands
@@ -1356,13 +1358,11 @@ def test_example_6_27__invalid_tag_shorthands():
         - !h!bar baz
         
     """)[1:-1]
-
-    expected = None
-
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
+    
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
 def test_example_6_28__non_specific_tags():
     """
@@ -1386,7 +1386,6 @@ def test_example_6_28__non_specific_tags():
         - ! 12
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1397,11 +1396,12 @@ def test_example_6_28__non_specific_tags():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_6_29__node_anchors():
     """
@@ -1424,7 +1424,6 @@ def test_example_6_29__node_anchors():
         Second occurrence: *anchor
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1434,11 +1433,12 @@ def test_example_6_29__node_anchors():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_1__alias_nodes():
     """
@@ -1467,7 +1467,6 @@ def test_example_7_1__alias_nodes():
         Reuse anchor: *anchor
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1479,12 +1478,14 @@ def test_example_7_1__alias_nodes():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_2__empty_content():
     """
     Example 7.2. Empty Content
@@ -1506,14 +1507,16 @@ def test_example_7_2__empty_content():
         }
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_3__completely_empty_flow_nodes():
     """
     Example 7.3. Completely Empty Flow Nodes
@@ -1535,13 +1538,14 @@ def test_example_7_3__completely_empty_flow_nodes():
         }
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_4__double_quoted_implicit_keys():
     """
@@ -1568,7 +1572,6 @@ def test_example_7_4__double_quoted_implicit_keys():
          ]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1585,11 +1588,12 @@ def test_example_7_4__double_quoted_implicit_keys():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_5__double_quoted_line_breaks():
     """
@@ -1612,18 +1616,18 @@ def test_example_7_5__double_quoted_line_breaks():
          \  non-content"
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('folded  \nto a space,   to a line feed, or  \\  \\  non-content'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_6__double_quoted_lines():
     """
@@ -1645,18 +1649,18 @@ def test_example_7_6__double_quoted_lines():
          3rd non-empty "
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str(' 1st non-empty  2nd non-empty  3rd non-empty '),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_7__single_quoted_characters():
     """
@@ -1672,18 +1676,18 @@ def test_example_7_7__single_quoted_characters():
     text = dedent("""
          'here''s to "quotes"'
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('\'here\'\'s to "quotes"\''),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_8__single_quoted_implicit_keys():
     """
@@ -1710,7 +1714,6 @@ def test_example_7_8__single_quoted_implicit_keys():
          ]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1727,11 +1730,12 @@ def test_example_7_8__single_quoted_implicit_keys():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_9__single_quoted_lines():
     """
@@ -1753,19 +1757,20 @@ def test_example_7_9__single_quoted_lines():
          3rd non-empty '
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str(' 1st non-empty \n \n 2nd non-empty \n 3rd non-empty '),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_10__plain_characters():
     """
     Example 7.10. Plain Characters
@@ -1805,13 +1810,14 @@ def test_example_7_10__plain_characters():
           http://example.com/foo#bar ]
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_11__plain_implicit_keys():
     """
@@ -1838,7 +1844,6 @@ def test_example_7_11__plain_implicit_keys():
          ]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1852,11 +1857,12 @@ def test_example_7_11__plain_implicit_keys():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_12__plain_lines():
     """
@@ -1878,7 +1884,6 @@ def test_example_7_12__plain_lines():
          3rd non-empty
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1888,11 +1893,12 @@ def test_example_7_12__plain_lines():
                 Str('2nd non-empty  3rd non-empty'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_13__flow_sequence():
     """
@@ -1919,7 +1925,6 @@ def test_example_7_13__flow_sequence():
         - [three ,four]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -1935,12 +1940,14 @@ def test_example_7_13__flow_sequence():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_14__flow_sequence_entries():
     """
     Example 7.14. Flow Sequence Entries
@@ -1974,14 +1981,16 @@ def test_example_7_14__flow_sequence_entries():
         ]
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_15__flow_mappings():
     """
     Example 7.15. Flow Mappings
@@ -2007,14 +2016,16 @@ def test_example_7_15__flow_mappings():
         - {five: six,seven : eight}
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_16__flow_mapping_entries():
     """
     Example 7.16. Flow Mapping Entries
@@ -2038,14 +2049,16 @@ def test_example_7_16__flow_mapping_entries():
         }
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_17__flow_mapping_separate_values():
     """
     Example 7.17. Flow Mapping Separate Values
@@ -2071,13 +2084,14 @@ def test_example_7_17__flow_mapping_separate_values():
         }
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_18__flow_mapping_adjacent_values():
     """
@@ -2102,7 +2116,6 @@ def test_example_7_18__flow_mapping_adjacent_values():
         }
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2113,11 +2126,12 @@ def test_example_7_18__flow_mapping_adjacent_values():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_19__single_pair_flow_mappings():
     """
@@ -2138,7 +2152,6 @@ def test_example_7_19__single_pair_flow_mappings():
         ]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2147,12 +2160,14 @@ def test_example_7_19__single_pair_flow_mappings():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_20__single_pair_explicit_entry():
     """
     Example 7.20. Single Pair Explicit Entry
@@ -2176,13 +2191,14 @@ def test_example_7_20__single_pair_explicit_entry():
         ]
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_7_21__single_pair_implicit_entries():
     """
@@ -2222,7 +2238,6 @@ def test_example_7_21__single_pair_implicit_entries():
         - [ {JSON: like}:adjacent ]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2239,12 +2254,14 @@ def test_example_7_21__single_pair_implicit_entries():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_22__invalid_implicit_keys():
     """
     Example 7.22. Invalid Implicit Keys
@@ -2262,13 +2279,11 @@ def test_example_7_22__invalid_implicit_keys():
          "foo...>1K characters...bar": invalid ]
         
     """)[1:-1]
-
-    expected = None
-
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
+    
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
 def test_example_7_23__flow_content():
     """
@@ -2295,7 +2310,6 @@ def test_example_7_23__flow_content():
         - c
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2313,12 +2327,14 @@ def test_example_7_23__flow_content():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_7_24__flow_nodes():
     """
     Example 7.24. Flow Nodes
@@ -2344,14 +2360,16 @@ def test_example_7_24__flow_nodes():
         - !!str 
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_1__block_scalar_header():
     """
     Example 8.1. Block Scalar Header
@@ -2381,13 +2399,14 @@ def test_example_8_1__block_scalar_header():
         
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_2__block_indentation_indicator():
     """
@@ -2419,7 +2438,6 @@ def test_example_8_2__block_indentation_indicator():
          detected
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2438,11 +2456,12 @@ def test_example_8_2__block_indentation_indicator():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_3__invalid_block_scalar_indentation_indicators():
     """
@@ -2470,26 +2489,13 @@ def test_example_8_3__invalid_block_scalar_indentation_indicators():
          text
         
     """)[1:-1]
-
     
-    expected = Docs(  # :off
-            Doc(
-                Sequence(
-                    Str('\ntext\n'),
-                    Str(' text text\n'),
-                    Str('|2'),
-                ),
-            ),
-            Doc(
-                Str('text'),
-            ),
-        )  # :on
+    with raises(YAMLSyntaxError):
+        nodes = parser.parse(text)
+        print_nodes(nodes)
+    
 
-    nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
-    assert nodes == expected
-
+@feature_not_supported
 def test_example_8_4__chomping_final_line_break():
     """
     Example 8.4. Chomping Final Line Break
@@ -2517,14 +2523,16 @@ def test_example_8_4__chomping_final_line_break():
           text 
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_5__chomping_trailing_lines():
     """
     Example 8.5. Chomping Trailing Lines
@@ -2565,13 +2573,14 @@ def test_example_8_5__chomping_trailing_lines():
           # comments.
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_6__empty_scalar_chomping():
     """
@@ -2600,7 +2609,6 @@ def test_example_8_6__empty_scalar_chomping():
          
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2611,11 +2619,12 @@ def test_example_8_6__empty_scalar_chomping():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_7__literal_scalar():
     """
@@ -2635,18 +2644,18 @@ def test_example_8_7__literal_scalar():
          
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('literal \n text \n\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_8__literal_content():
     """
@@ -2671,18 +2680,18 @@ def test_example_8_8__literal_content():
          # Comment
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('\n\n literal \n text \n\n# Comment\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_9__folded_scalar():
     """
@@ -2702,18 +2711,18 @@ def test_example_8_9__folded_scalar():
          
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('folded  text\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_10__folded_lines():
     """
@@ -2753,18 +2762,18 @@ def test_example_8_10__folded_lines():
         # Comment
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str(' folded  line \nnext line    * bullet\n  * list   * lines\nlast  line\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_11__more_indented_lines():
     """
@@ -2804,18 +2813,18 @@ def test_example_8_11__more_indented_lines():
         # Comment
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str(' folded line\nnext line   * bullet \n  * list    * lines \nlast line\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_12__empty_separation_lines():
     """
@@ -2855,18 +2864,18 @@ def test_example_8_12__empty_separation_lines():
         # Comment
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str(' folded line \nnext line    * bullet\n  * list   * line \nlast line\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_13__final_empty_lines():
     """
@@ -2905,18 +2914,18 @@ def test_example_8_13__final_empty_lines():
         # Comment
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('folded line\nnext line   * bullet\n  * list   * line\nlast line\n'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_14__block_sequence():
     """
@@ -2944,7 +2953,6 @@ def test_example_8_14__block_sequence():
           - two : three 
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -2961,12 +2969,14 @@ def test_example_8_14__block_sequence():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_15__block_sequence_entry_types():
     """
     Example 8.15. Block Sequence Entry Types
@@ -2998,13 +3008,14 @@ def test_example_8_15__block_sequence_entry_types():
         - one: two # Compact mapping
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_8_16__block_mappings():
     """
@@ -3028,7 +3039,6 @@ def test_example_8_16__block_mappings():
          key: value 
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -3042,12 +3052,14 @@ def test_example_8_16__block_mappings():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_17__explicit_block_mapping_entries():
     """
     Example 8.17. Explicit Block Mapping Entries
@@ -3075,14 +3087,16 @@ def test_example_8_17__explicit_block_mapping_entries():
           - two # block value 
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_18__implicit_block_mapping_entries():
     """
     Example 8.18. Implicit Block Mapping Entries
@@ -3108,14 +3122,16 @@ def test_example_8_18__implicit_block_mapping_entries():
         - entry
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_19__compact_block_mappings():
     """
     Example 8.19. Compact Block Mappings
@@ -3147,14 +3163,16 @@ def test_example_8_19__compact_block_mappings():
           : moon: white 
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_20__block_node_types():
     """
     Example 8.20. Block Node Types
@@ -3182,14 +3200,16 @@ def test_example_8_20__block_node_types():
           foo : bar 
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_21__block_scalar_nodes():
     """
     Example 8.21. Block Scalar Nodes
@@ -3215,14 +3235,16 @@ def test_example_8_21__block_scalar_nodes():
          value
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_8_22__block_collection_nodes():
     """
     Example 8.22. Block Collection Nodes
@@ -3253,13 +3275,14 @@ def test_example_8_22__block_collection_nodes():
          foo: bar
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_9_1__document_prefix():
     """
@@ -3278,18 +3301,18 @@ def test_example_9_1__document_prefix():
         Document
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
                 Str('Document'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_9_2__document_markers():
     """
@@ -3309,7 +3332,6 @@ def test_example_9_2__document_markers():
         ... # Suffix
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -3319,12 +3341,14 @@ def test_example_9_2__document_markers():
                 Str('Document'),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_9_3__bare_documents():
     """
     Example 9.3. Bare Documents
@@ -3349,14 +3373,16 @@ def test_example_9_3__bare_documents():
         %!PS-Adobe-2.0 # Not the first line
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_9_4__explicit_documents():
     """
     Example 9.4. Explicit Documents
@@ -3384,14 +3410,16 @@ def test_example_9_4__explicit_documents():
         ...
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_9_5__directives_documents():
     """
     Example 9.5. Directives Documents
@@ -3418,14 +3446,16 @@ def test_example_9_5__directives_documents():
         ...
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_9_6__stream():
     """
     Example 9.6. Stream
@@ -3457,13 +3487,14 @@ def test_example_9_6__stream():
         matches %: 20
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
 def test_example_10_8__json_tag_resolution():
     """
@@ -3502,7 +3533,6 @@ def test_example_10_8__json_tag_resolution():
         Invalid: [ True, Null, 0o7, 0x3A, +12.3 ]
         
     """)[1:-1]
-
     
     expected = Docs(  # :off
             Doc(
@@ -3540,12 +3570,14 @@ def test_example_10_8__json_tag_resolution():
                 ),
             ),
         )  # :on
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
 
+@feature_not_supported
 def test_example_10_9__core_tag_resolution():
     """
     Example 10.9. Core Tag Resolution
@@ -3588,10 +3620,11 @@ def test_example_10_9__core_tag_resolution():
         Also floats: [ .inf, -.Inf, +.INF, .NAN ]
         
     """)[1:-1]
-
+    
     expected = None
-
+    
     nodes = parser.parse(text)
-    print(serialize_nodes(nodes))
-
+    print_nodes(nodes)
+    
     assert nodes == expected
+    
