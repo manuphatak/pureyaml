@@ -2572,6 +2572,7 @@ def test_example_8_5__chomping_trailing_lines():
 
     assert nodes == expected
 
+
 @feature_not_supported
 def test_example_8_6__empty_scalar_chomping():
     """
@@ -2662,7 +2663,7 @@ def test_example_8_8__literal_content():
     text = dedent("""
         |
 
-          
+
           literal
 
 
@@ -2674,7 +2675,7 @@ def test_example_8_8__literal_content():
 
     expected = Docs(  # :off
             Doc(
-                Str('\n\nliteral\n text \n\n# Comment\n'),
+                Str('\n\nliteral\n \n\ntext\n'),
             ),
         )  # :on
 
@@ -2756,7 +2757,17 @@ def test_example_8_10__folded_lines():
 
     expected = Docs(  # :off
             Doc(
-                Str(' folded  line \nnext line    * bullet\n  * list   * lines\nlast  line\n'),
+                Str(
+                    '\n'
+                    'folded line\n'
+                    'next line\n'
+                    '  * bullet\n'
+                    '\n'
+                    '  * list\n'
+                    '  * lines\n'
+                    '\n'
+                    'last line\n'
+                ),
             ),
         )  # :on
 
@@ -2807,7 +2818,17 @@ def test_example_8_11__more_indented_lines():
 
     expected = Docs(  # :off
             Doc(
-                Str(' folded line\nnext line   * bullet \n  * list    * lines \nlast line\n'),
+                Str(
+                    '\n'
+                    'folded line\n'
+                    'next line\n'
+                    '  * bullet\n'
+                    '\n'
+                    '  * list\n'
+                    '  * lines\n'
+                    '\n'
+                    'last line\n'
+                ),
             ),
         )  # :on
 
@@ -2858,7 +2879,17 @@ def test_example_8_12__empty_separation_lines():
 
     expected = Docs(  # :off
             Doc(
-                Str(' folded line \nnext line    * bullet\n  * list   * line \nlast line\n'),
+                Str(
+                    '\n'
+                    'folded line\n'
+                    'next line\n'
+                    '  * bullet\n'
+                    '\n'
+                    '  * list\n'
+                    '  * lines\n'
+                    '\n'
+                    'last line\n'
+                ),
             ),
         )  # :on
 
@@ -2908,7 +2939,17 @@ def test_example_8_13__final_empty_lines():
 
     expected = Docs(  # :off
             Doc(
-                Str('folded line\nnext line   * bullet\n  * list   * line\nlast line\n'),
+                Str(
+                    '\n'
+                    'folded line\n'
+                    'next line\n'
+                    '  * bullet\n'
+                    '\n'
+                    '  * list\n'
+                    '  * lines\n'
+                    '\n'
+                    'last line\n'
+                ),
             ),
         )  # :on
 
@@ -3122,7 +3163,6 @@ def test_example_8_18__implicit_block_mapping_entries():
     assert nodes == expected
 
 
-@feature_not_supported
 def test_example_8_19__compact_block_mappings():
     """
     Example 8.19. Compact Block Mappings
@@ -3163,7 +3203,6 @@ def test_example_8_19__compact_block_mappings():
     assert nodes == expected
 
 
-@feature_not_supported
 def test_example_8_20__block_node_types():
     """
     Example 8.20. Block Node Types
@@ -3235,7 +3274,6 @@ def test_example_8_21__block_scalar_nodes():
     assert nodes == expected
 
 
-@feature_not_supported
 def test_example_8_22__block_collection_nodes():
     """
     Example 8.22. Block Collection Nodes
@@ -3326,9 +3364,6 @@ def test_example_9_2__document_markers():
 
     expected = Docs(  # :off
             Doc(
-                Str('%YAML 1.2'),
-            ),
-            Doc(
                 Str('Document'),
             ),
         )  # :on
@@ -3373,7 +3408,6 @@ def test_example_9_3__bare_documents():
     assert nodes == expected
 
 
-@feature_not_supported
 def test_example_9_4__explicit_documents():
     """
     Example 9.4. Explicit Documents
@@ -3487,6 +3521,144 @@ def test_example_9_6__stream():
     assert nodes == expected
 
 
+def test_example_10_1__map_examples():
+    """
+    Example 10.1. !!map Examples
+    """
+
+    text = dedent("""
+        Block style: !!map
+          Clark : Evans
+          Ingy  : döt Net
+          Oren  : Ben-Kiki
+
+        Flow style: !!map { Clark: Evans, Ingy: döt Net, Oren: Ben-Kiki }
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+
+def test_example_10_2__seq_examples():
+    """
+    Example 10.2. !!seq Examples
+    """
+
+    text = dedent("""
+        Block style: !!seq
+        - Clark Evans
+        - Ingy döt Net
+        - Oren Ben-Kiki
+
+        Flow style: !!seq [ Clark Evans, Ingy döt Net, Oren Ben-Kiki ]
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+def test_example_10_3__str_examples():
+    """
+    Example 10.3. !!str Examples
+    """
+
+    text = dedent("""
+        Block style: !!str |-
+          String: just a theory.
+
+        Flow style: !!str "String: just a theory."
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+def test_example_10_4__null_examples():
+    """
+    Example 10.4. !!null Examples
+    """
+
+    text = dedent("""
+        Block style: !!str |-
+          String: just a theory.
+
+        Flow style: !!str "String: just a theory."
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+def test_example_10_5__bool_examples():
+    """
+    Example 10.5. !!bool Examples
+    """
+
+    text = dedent("""
+        YAML is a superset of JSON: !!bool true
+        Pluto is a planet: !!bool false
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+def test_example_10_6__int_examples():
+    """
+    Example 10.6. !!int Examples
+    """
+
+    text = dedent("""
+        negative: !!int -12
+        zero: !!int 0
+        positive: !!int 34
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+def test_example_10_7__float_examples():
+    """
+    Example 10.7. !!float Examples
+    """
+
+    text = dedent("""
+        negative: !!float -1
+        zero: !!float 0
+        positive: !!float 2.3e4
+        infinity: !!float .inf
+        not a number: !!float .nan
+
+    """)[1:-1]
+
+    expected = None
+
+    nodes = parser.parse(text)
+    print_nodes(nodes)
+
+    assert nodes == expected
+
+
 def test_example_10_8__json_tag_resolution():
     """
     Example 10.8. JSON Tag Resolution
@@ -3533,11 +3705,14 @@ def test_example_10_8__json_tag_resolution():
                         Str('Booleans'),
                         Sequence(
                             Bool(True),
+                            Bool(False),
                         ),
                     ),
                     (
                         Str('Integers'),
                         Sequence(
+                            Int(0),
+                            Int(-0),
                             Int(3),
                             Int(-19),
                         ),
@@ -3545,17 +3720,20 @@ def test_example_10_8__json_tag_resolution():
                     (
                         Str('Floats'),
                         Sequence(
-                            Float(12000.0),
-                            Float(-200000.0),
+                            Float(0),
+                            Float(-0),
+                            Float(12e03),
+                            Float(-2E+05),
                         ),
                     ),
                     (
                         Str('Invalid'),
                         Sequence(
                             Bool(True),
-                            Int(7),
-                            Int(58),
-                            Float(12.3),
+                            Null(None),
+                            Int(0o7),
+                            Int(0x3A),
+                            Float(+12.3),
                         ),
                     ),
                 ),
