@@ -105,18 +105,20 @@ def write(examples, fs):
 
         if example.nodes.startswith('ERROR'):
             expected_line = ''  # noqa
-            test_assert = indent_text(dedent('''
-                with raises(YAMLSyntaxError):
+            test_assert = indent_text(dedent(  # noqa
+                '''
+                    with raises(YAMLSyntaxError):
+                        nodes = parser.parse(text)
+                        print_nodes(nodes)
+                ''')[1:], indent=1)
+        else:
+            test_assert = indent_text(dedent(  # noqa
+                '''
                     nodes = parser.parse(text)
                     print_nodes(nodes)
-            ''')[1:], indent=1)
-        else:
-            test_assert = indent_text(dedent('''
-                nodes = parser.parse(text)
-                print_nodes(nodes)
 
-                assert nodes == expected
-            ''')[1:], indent=1)
+                    assert nodes == expected
+                ''')[1:], indent=1)
 
         template = dedent('''
             {decorator}
