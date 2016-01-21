@@ -161,6 +161,15 @@ class Map(MappingMixin, Collection):
             if self_value != other_value:
                 return False
 
+        for key, other_value in iteritems(other):
+            try:
+                self_value = self[key]
+            except KeyError:
+                return False
+
+            if self_value != other_value:
+                return False
+
         if len(self) != len(other):
             return False
 

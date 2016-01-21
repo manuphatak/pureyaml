@@ -2,67 +2,19 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from collections import Mapping
 from difflib import Differ, unified_diff
 
-from future.utils import iteritems
-
-from pureyaml.nodes import Scalar, Collection, Node
-
-
-def pformat_node(node, depth=0):  # noqa
-
-    def indent():
-        return '  ' * depth
-
-    if isinstance(node, Scalar):
-        yield indent() + str(node)
-
-    elif isinstance(node, Mapping):
-        yield indent() + '<%s:(' % node.__class__.__name__
-        depth += 1
-
-        for k, v in iteritems(node):
-
-            if isinstance(k, Scalar) and isinstance(v, Scalar):
-                depth += 1
-                yield indent() + '%s, %s' % (k, v)
-                depth -= 1
-            else:
-
-                lines = pformat_node(k, depth=depth + 1)
-                yield indent() + '? ' + next(lines).strip(' ')
-
-                for line in lines:
-                    yield line
-
-                lines = pformat_node(v, depth=depth + 1)
-                yield indent() + ': ' + next(lines).strip(' ')
-                for line in lines:
-                    yield line
-
-        depth -= 1
-        yield indent() + ')>'
-
-    elif isinstance(node, Collection):
-        yield indent() + '<%s:(' % node.__class__.__name__
-        depth += 1
-        for value in node.value:
-            if not isinstance(value, Node) or not value.value:
-                continue
-            for line in pformat_node(value, depth=depth):
-                yield line
-        depth -= 1
-        yield indent() + ')>'
+from pureyaml.nodes import Collection, Node
+from tests.utils.serialize_nodes import serialize_nodes
 
 
 def get_node_diff(a, b, root=True):  # noqa
 
     d = Differ()
     if root is True:
-        str_a = list(pformat_node(a))
-        str_b = list(pformat_node(b))
-        for line in unified_diff(str_a, str_b, n=2, lineterm=''):
+        str_a = serialize_nodes(a, paste_friendly=False).splitlines()
+        str_b = serialize_nodes(b, paste_friendly=False).splitlines()
+        for line in unified_diff(str_a, str_b, n=10, lineterm=''):
             yield line
         yield ''
         yield '%s != %s' % (a, b)
@@ -79,12 +31,14 @@ def get_node_diff(a, b, root=True):  # noqa
     elif isinstance(a, tuple) and isinstance(b, tuple):
         # (ak, av), (bk, bv) = a, b
         if not a == b:
-            for line in d.compare([repr(a)], [repr(b)]):
+            for line in d.compare(serialize_nodes(a, paste_friendly=False).splitlines(),
+                                  serialize_nodes(b, paste_friendly=False).splitlines()):
                 yield line.rstrip('\n')
                 # yield '(%s, %s) != (%s, %s)' % (ak, av, bk, bv)
 
     elif isinstance(a, (Node, tuple)) and isinstance(b, (Node, tuple)):
-        for line in d.compare([repr(a)], [repr(b)]):
+        for line in d.compare(serialize_nodes(a, paste_friendly=False).splitlines(),
+                              serialize_nodes(b, paste_friendly=False).splitlines()):
             yield line.rstrip('\n')
     else:
         raise ValueError('%s != %s' % (a, b))

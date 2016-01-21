@@ -7,11 +7,11 @@ from collections import Mapping
 from pureyaml.nodes import Scalar, Collection, Node, Docs
 
 
-def serialize_nodes(nodes):
-    return '\n'.join(_serialize_nodes(nodes))
+def serialize_nodes(nodes, paste_friendly=True):
+    return '\n'.join(_serialize_nodes(nodes, paste_friendly=paste_friendly))
 
 
-def _serialize_nodes(node, depth=0):  # noqa
+def _serialize_nodes(node, depth=0, paste_friendly=False):  # noqa
 
     def indent():
         return '    ' * depth
@@ -43,9 +43,12 @@ def _serialize_nodes(node, depth=0):  # noqa
         yield indent() + ')'
 
     elif isinstance(node, Collection):
-        off = '  # :off' if isinstance(node, Docs) else ''
-        on = '  # :on' if isinstance(node, Docs) else ''
-        var = 'expected = ' if isinstance(node, Docs) else ''
+        if paste_friendly:
+            off = '  # :off' if isinstance(node, Docs) else ''
+            on = '  # :on' if isinstance(node, Docs) else ''
+            var = 'expected = ' if isinstance(node, Docs) else ''
+        else:
+            off, on, var = '', '', ''
         if isinstance(node, Docs):
             yield ''
         yield indent() + '%s%s(%s' % (var, node.__class__.__name__, off)
