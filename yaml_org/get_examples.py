@@ -53,7 +53,8 @@ def get_examples(html_text):
         yield Example(title_text, clean_pre_block(codeblock_yaml), clean_pre_block(codeblock_nodes))
 
 
-def write(examples, f):
+# noinspection PyUnusedLocal
+def write(examples, fs):
     file_header = dedent("""
         #!/usr/bin/env python
         # coding=utf-8
@@ -76,7 +77,7 @@ def write(examples, f):
 
     """)[1:]
 
-    f.write(file_header)
+    fs.write(file_header)
 
     def indent_text(text, indent=0):
         indent_width = indent * 4 + 1
@@ -84,31 +85,26 @@ def write(examples, f):
 
     for example in examples:
         function_name_pre = re.sub(r'\W', '_', example.name.lower(), flags=re.U)
-        function_name = re.sub(r'__+', '__', function_name_pre)
-        inline_key = re.sub(r'\s', ' ', example.name)
-        indented_data = indent_text(example.data, indent=2)
-        indented_hint = indent_text(example.nodes, indent=2)
+        function_name = re.sub(r'__+', '__', function_name_pre)  # noqa
+        inline_key = re.sub(r'\s', ' ', example.name)  # noqa
+        indented_data = indent_text(example.data, indent=2)  # noqa
+        indented_hint = indent_text(example.nodes, indent=2)  # noqa
 
         if '\\N' in example.data or '\\xq-' in example.data:
-            encoding = 'r'
+            encoding = 'r'  # noqa
         else:
-            encoding = ''
-
+            encoding = ''  # noqa
         try:
             nodes = parser.parse(example.data)
             serialized = serialize_nodes(nodes)
-            expected_line = indent_text('%s\n' % serialized, indent=1)
-            decorator = ''
-        except (YAMLUnknownSyntaxError, YAMLSyntaxError):
-            decorator = '\n@feature_not_supported'
-            expected_line = indent_text('\nexpected = None\n', indent=1)
-        except (YAMLCastTypeError, AttributeError):
-            # TODO, investigate
-            decorator = '\n@feature_not_supported'
-            expected_line = indent_text('\nexpected = None\n', indent=1)
+            expected_line = indent_text('%s\n' % serialized, indent=1)  # noqa
+            decorator = ''  # noqa
+        except (YAMLUnknownSyntaxError, YAMLSyntaxError, YAMLCastTypeError):
+            decorator = '\n@feature_not_supported'  # noqa
+            expected_line = indent_text('\nexpected = None\n', indent=1)  # noqa
 
         if example.nodes.startswith('ERROR'):
-            expected_line = ''
+            expected_line = ''  # noqa
             test_assert = indent_text(dedent('''
                 with raises(YAMLSyntaxError):
                     nodes = parser.parse(text)
@@ -139,7 +135,7 @@ def write(examples, f):
                 {test_assert}
         ''')[1:].format_map(vars())
 
-        f.write(template)
+        fs.write(template)
         yield
 
 
@@ -152,6 +148,6 @@ def report(writer):
 
 if __name__ == '__main__':
     html = get_html()
-    examples = get_examples(html)
+    _examples = get_examples(html)
     with open('examples.py', 'w') as f:
-        report(write(examples, f))
+        report(write(_examples, f))

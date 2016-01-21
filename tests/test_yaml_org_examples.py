@@ -3543,6 +3543,7 @@ def test_example_10_1__map_examples():
 
     assert nodes == expected
 
+
 def test_example_10_2__seq_examples():
     """
     Example 10.2. !!seq Examples
@@ -3564,6 +3565,8 @@ def test_example_10_2__seq_examples():
     print_nodes(nodes)
 
     assert nodes == expected
+
+
 def test_example_10_3__str_examples():
     """
     Example 10.3. !!str Examples
@@ -3583,6 +3586,8 @@ def test_example_10_3__str_examples():
     print_nodes(nodes)
 
     assert nodes == expected
+
+
 def test_example_10_4__null_examples():
     """
     Example 10.4. !!null Examples
@@ -3602,6 +3607,8 @@ def test_example_10_4__null_examples():
     print_nodes(nodes)
 
     assert nodes == expected
+
+
 def test_example_10_5__bool_examples():
     """
     Example 10.5. !!bool Examples
@@ -3619,6 +3626,8 @@ def test_example_10_5__bool_examples():
     print_nodes(nodes)
 
     assert nodes == expected
+
+
 def test_example_10_6__int_examples():
     """
     Example 10.6. !!int Examples
@@ -3637,6 +3646,8 @@ def test_example_10_6__int_examples():
     print_nodes(nodes)
 
     assert nodes == expected
+
+
 def test_example_10_7__float_examples():
     """
     Example 10.7. !!float Examples

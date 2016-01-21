@@ -315,7 +315,11 @@ class ScalarDispatch(object):
             return Null(value)
 
         match = cls.re_dispatch.match(value)
-        return cls.map[match.lastgroup](value)
+        try:
+            return cls.map[match.lastgroup](value)
+        except AttributeError:
+            message = 'Cannot cast data: {value}'.format(value=value)
+            raise YAMLCastTypeError(message=message)
 
 
 # noinspection PyMethodMayBeStatic
