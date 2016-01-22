@@ -8,7 +8,7 @@ from warnings import warn
 
 from pytest import mark
 
-from tests.utils import PY34, PY35, PY33
+from tests.utils import PY34, PY35, PY33, PY26, PY27, PYPY, PY2, PY3
 
 try:
     from collections import OrderedDict
@@ -20,7 +20,7 @@ try:
 except ImportError:
     from future.moves.collections import defaultdict
 
-from future.utils import with_metaclass, iteritems, PY26, PY27, PYPY, PY2, PY3, iterkeys
+from future.utils import with_metaclass, iteritems, iterkeys
 
 
 def get_error_message(message, needle=None, haystack=None, ignore=None):  # noqa
@@ -84,8 +84,8 @@ def separate_action_tags(meta):
 
 
 map_version = {  # :off
-    'PY26': PY26 and not PYPY,
-    'PY27': PY27 and not PYPY,
+    'PY26': PY26,
+    'PY27': PY27,
     'PY33': PY33,
     'PY34': PY34,
     'PY35': PY35,

@@ -1691,7 +1691,7 @@ pureyaml_parser = YAMLParser(debug=True)
 @mark.parametrize('case', DecoderTestCase.keys('parser'))
 def test_parser(case):
     text, expected = DecoderTestCase.get('parser', case)
-    nodes = pureyaml_parser.parse(text)
+    nodes = pureyaml_parser.parsedebug(text)
     print(serialize_nodes(nodes))
     assert nodes == expected
 

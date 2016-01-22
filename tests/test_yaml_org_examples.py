@@ -2,7 +2,7 @@
 # coding=utf-8
 from textwrap import dedent
 
-from pytest import raises
+from pytest import raises, mark, fail
 
 from pureyaml.exceptions import YAMLSyntaxError
 from pureyaml.nodes import *  # noqa
@@ -41,6 +41,7 @@ def test_example_5_1__byte_order_mark():
     assert nodes == expected
 
 
+@feature_not_supported
 def test_example_5_2__invalid_byte_order_mark():
     """
     Example 5.2. Invalid Byte Order Mark
@@ -147,25 +148,25 @@ def test_example_5_4__flow_collection_indicators():
     """)[1:-1]
 
     expected = Docs(  # :off
-            Doc(
-                Map(
-                    (
-                        Str('sequence'),
-                        Sequence(
-                            Str('one'),
-                            Str('two'),
-                        ),
+        Doc(
+            Map(
+                (
+                    Str('sequence'),
+                    Sequence(
+                        Str('one'),
+                        Str('two'),
                     ),
-                    (
-                        Str('mapping'),
-                        Map(
-                            (Str('sky'), Str('blue')),
-                            (Str('sea'), Str('green')),
-                        ),
+                ),
+                (
+                    Str('mapping'),
+                    Map(
+                        (Str('sky'), Str('blue')),
+                        (Str('sea'), Str('green')),
                     ),
                 ),
             ),
-        )  # :on
+        ),
+    )  # :on
 
     nodes = parser.parse(text)
     print_nodes(nodes)
@@ -407,22 +408,29 @@ def test_example_5_12__tabs_and_spaces():
 
     text = dedent("""
         # Tabs and spaces
-        quoted: "Quoted \t"
+        quoted: "Quoted "
         block: |
           void main() {
-          \tprintf("Hello, world!\n");
+           printf("Hello, world!");
           }
 
-    """)[1:-1]
+    """)[1:]
 
     expected = Docs(  # :off
-            Doc(
-                Map(
-                    (Str('quoted'), Str('Quoted \t')),
-                    (Str('block'), Str('void main() {\n\tprintf("Hello, world!\\n");\n}\n')),
+        Doc(
+            Map(
+                (Str('quoted'), Str('Quoted ')),
+                (
+                    Str('block'),
+                    Str(
+                        'void main() {\n'
+                        ' printf("Hello, world!");\n'
+                        '}\n'
+                    )
                 ),
             ),
-        )  # :on
+        ),
+    )  # :on
 
     nodes = parser.parse(text)
     print_nodes(nodes)
@@ -430,6 +438,7 @@ def test_example_5_12__tabs_and_spaces():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_5_13__escaped_characters():
     """
     Example 5.13. Escaped Characters
@@ -468,6 +477,7 @@ def test_example_5_13__escaped_characters():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_5_14__invalid_escaped_characters():
     """
     Example 5.14. Invalid Escaped Characters
@@ -530,7 +540,26 @@ def test_example_6_1__indentation_spaces():
 
     """)[1:-1]
 
-    expected = None
+    expected = Docs(  # :off
+        Doc(
+            Map(
+                (
+                    Str('Not indented'),
+                    Map(
+                        (Str('By one space'), Str('By four\n  spaces\n')),
+                        (
+                            Str('Flow style'),
+                            Sequence(
+                                Str('By two'),
+                                Str('Also by two'),
+                                Str('Still by two'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )  # :on
 
     nodes = parser.parse(text)
     print_nodes(nodes)
@@ -538,6 +567,7 @@ def test_example_6_1__indentation_spaces():
     assert nodes == expected
 
 
+@mark.skipif
 def test_example_6_2__indentation_indicators():
     """
     Example 6.2. Indentation Indicators
@@ -632,7 +662,8 @@ def test_example_6_4__line_prefixes():
     """
 
     text = dedent("""
-        plain: text  lines
+        plain: text
+          lines
         quoted: "text
            lines"
         block: |
@@ -684,7 +715,14 @@ def test_example_6_5__empty_lines():
 
     """)[1:-1]
 
-    expected = None
+    expected = Docs(  # :off
+        Doc(
+            Map(
+                (Str('Folding'), Str('Empty \nline as a line feed')),
+                (Str('Chomping'), Str('Clipped empty lines\n')),
+            ),
+        ),
+    )  # :on
 
     nodes = parser.parse(text)
     print_nodes(nodes)
@@ -740,13 +778,13 @@ def test_example_6_7__block_folding():
 
     text = dedent("""
         >
-          foo
-
+          foo&nbsp;
+        &nbsp;
           \t bar
 
           baz
 
-    """)[1:-1]
+    """)[1:-1].replace('&nbsp;', ' ')
 
     expected = Docs(  # :off
             Doc(
@@ -814,7 +852,13 @@ def test_example_6_9__separated_comment():
 
     """)[1:-1]
 
-    expected = None
+    expected = Docs(  # :off
+        Doc(
+            Map(
+                (Str('key'), Str('value')),
+            ),
+        ),
+    )  # :on
 
     nodes = parser.parse(text)
     print_nodes(nodes)
@@ -869,7 +913,13 @@ def test_example_6_11__multi_line_comments():
 
     """)[1:-1]
 
-    expected = None
+    expected = Docs(  # :off
+        Doc(
+            Map(
+                (Str('key'), Str('value')),
+            ),
+        ),
+    )  # :on
 
     nodes = parser.parse(text)
     print_nodes(nodes)
@@ -877,6 +927,7 @@ def test_example_6_11__multi_line_comments():
     assert nodes == expected
 
 
+@feature_not_supported
 def test_example_6_12__separation_spaces():
     """
     Example 6.12. Separation Spaces
@@ -1289,6 +1340,8 @@ def test_example_6_25__invalid_verbatim_tags():
     with raises(YAMLSyntaxError):
         nodes = parser.parse(text)
         print_nodes(nodes)
+
+    fail('Passing for the wrong reasons')
 
 
 @feature_not_supported

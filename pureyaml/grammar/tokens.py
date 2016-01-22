@@ -138,8 +138,8 @@ class YAMLTokens(TokenList):
     # -------------------------------------------------------------------
     t_comment_ignore_COMMENT = r'[^\n]+'
 
-    def t_begin_comment(self, t):
-        r'\s*\#\ ?'
+    def t_INITIAL_flowsequence_flowmap_begin_comment(self, t):
+        r'\s*[\#\%]\ ?'
         t.lexer.push_state('comment')
         # t.lexer.begin('comment')
 
@@ -213,15 +213,18 @@ class YAMLTokens(TokenList):
             t.type = 'SCALAR'
         return t
 
-    # state: flowsequence
+    # state: flowsequence and flowmap
     # -------------------------------------------------------------------
     def t_flowsequence_flowmap_F_SEP(self, t):
         r','
         return t
 
+    def t_flowsequence_flowmap_ignore_space(self, t):
+        r'\s+'
+
     # state: flowsequence
     # -------------------------------------------------------------------
-    t_flowsequence_SCALAR = r'[^\[\],]+'
+    t_flowsequence_SCALAR = r'[^\[\],\#]+'
 
     def t_begin_flowsequence(self, t):
         r'\['
@@ -237,7 +240,7 @@ class YAMLTokens(TokenList):
 
     # state: flowmap
     # -------------------------------------------------------------------
-    t_flowmap_SCALAR = r'[^\{\}\:,]+'
+    t_flowmap_SCALAR = r'[^\{\}\:,\#]+'
 
     def t_flowmap_F_MAP_KEY(self, t):
         r'\:\ ?'
@@ -351,6 +354,9 @@ class YAMLTokens(TokenList):
     def t_B_MAP_VALUE(self, t):
         r':\ +|:(?=\n)'
         return t
+
+    def t_ignore_unused_indicators(self, t):
+        r'\ *[\@\`].*(?=\n)'
 
     def t_SCALAR(self, t):
         r'(?:\\.|[^\n\#\:\-\|\>]|[\:\-\|\>]\S)+'

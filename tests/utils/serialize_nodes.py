@@ -2,9 +2,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-from collections import Mapping
-
-from pureyaml.nodes import Scalar, Collection, Node, Docs
+from pureyaml.nodes import Scalar, Collection, Node, Docs, Map
 
 
 def serialize_nodes(nodes, paste_friendly=True):
@@ -19,11 +17,11 @@ def _serialize_nodes(node, depth=0, paste_friendly=False):  # noqa
     if isinstance(node, Scalar):
         yield indent() + '%s(%r)' % (node.__class__.__name__, node.value)
 
-    elif isinstance(node, Mapping):
+    elif isinstance(node, Map):
         yield indent() + '%s(' % node.__class__.__name__
         depth += 1
 
-        for k, v in node.items():
+        for k, v in node.value:
 
             if isinstance(k, Scalar) and isinstance(v, Scalar):
                 k_value = next(_serialize_nodes(k))
@@ -33,9 +31,22 @@ def _serialize_nodes(node, depth=0, paste_friendly=False):  # noqa
                 yield indent() + '('
                 depth += 1
                 for line in _serialize_nodes(k):
-                    yield indent() + line + ','
+                    if line.strip():
+                        yield indent() + line + ','
                 for line in _serialize_nodes(v):
-                    yield indent() + line
+                    if line.strip():
+                        yield indent() + line
+                depth -= 1
+                yield indent() + '),'
+            else:
+                yield indent() + '('
+                depth += 1
+                for line in _serialize_nodes(k):
+                    if line.strip():
+                        yield indent() + line + ','
+                for line in _serialize_nodes(v):
+                    if line.strip():
+                        yield indent() + line
                 depth -= 1
                 yield indent() + '),'
 

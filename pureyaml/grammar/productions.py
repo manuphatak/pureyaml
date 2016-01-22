@@ -46,6 +46,13 @@ class YAMLProductions(YAMLTokens):
         """
         p[0] = Doc(p[1])
 
+    def p_doc_scalar_collection_ignore(self, p):
+        """
+        scalar      : ignore_indent_dedent  scalar
+        """
+
+        p[0] = p[2]
+
     @strict(Sequence, Map)
     def p_collection(self, p):
         """
@@ -119,6 +126,13 @@ class YAMLProductions(YAMLTokens):
         """
         p[0] = p[2]
 
+    @strict(Scalar)
+    def p_map_item_value__scalar_indented(self, p):
+        """
+        map_item_value  : B_MAP_VALUE INDENT scalar DEDENT
+        """
+        p[0] = p[3]
+
     @strict(Sequence)
     def p_map_item_value__sequence_no_indent(self, p):
         """
@@ -189,8 +203,10 @@ class YAMLProductions(YAMLTokens):
         """
         scalar  : DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END
         """
-        scalar = re.sub('\n\s+', ' ', str(p[2]))
-        p[0] = Str(scalar.replace('\\"', '"'))
+
+        scalar = re.sub('\n\s+', '\n', str(p[2]))
+        folded = fold(scalar)
+        p[0] = Str(folded.replace('\\"', '"'))
 
     @strict(Str)
     def p_scalar__singlequote(self, p):
@@ -235,8 +251,8 @@ class YAMLProductions(YAMLTokens):
         scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
         scalar_group = ''.join(p[2])
-        cleaned_scalar = fold(dedent(scalar_group)).rstrip()
-        p[0] = ScalarDispatch('%s\n' % cleaned_scalar, cast='str')
+        folded_scalar = fold(dedent(scalar_group)).rstrip().replace('\n', '\n\n')
+        p[0] = ScalarDispatch('%s\n' % folded_scalar, cast='str')
 
     @strict(Str)
     def p_scalar__indented_flow(self, p):
@@ -244,8 +260,17 @@ class YAMLProductions(YAMLTokens):
         scalar  : INDENT scalar_group DEDENT
         """
         scalar_group = '\n'.join(p[2])
-        cleaned_scalar = fold(dedent(scalar_group))
-        p[0] = ScalarDispatch(cleaned_scalar, cast='str')
+        folded_scalar = fold(dedent(scalar_group))
+        p[0] = ScalarDispatch(folded_scalar, cast='str')
+
+    @strict(Str)
+    def p_scalar__string_indented_multiline(self, p):
+        """
+        scalar  : scalar INDENT SCALAR DEDENT
+        """
+        scalar = '\n'.join([p[1].value, p[3]])
+
+        p[0] = ScalarDispatch(fold(scalar), cast='str')
 
     @strict(tuple)
     def p_scalar_group(self, p):
@@ -259,11 +284,22 @@ class YAMLProductions(YAMLTokens):
         if len(p) == 3:
             p[0] = p[1] + (str(p[2]),)
 
+        if len(p) == 4:
+            p[0] = p[1] + (str(p[3]),)
+
+
+    def p_ignore_indent_dedent(self, p):
+        """
+        ignore_indent_dedent    : INDENT DEDENT
+        """
+
     @strict(Sequence, Map)
     def p_flow_collection(self, p):
         """
         flow_collection : F_SEQUENCE_START flow_sequence F_SEQUENCE_END
+                        | F_SEQUENCE_START flow_sequence F_SEP F_SEQUENCE_END
                         | F_MAP_START flow_map F_MAP_END
+                        | F_MAP_START flow_map F_SEP F_MAP_END
         """
         p[0] = p[2]
 

@@ -9,7 +9,7 @@ from base64 import standard_b64decode, standard_b64encode
 from functools import partial
 from math import isnan
 
-from future.utils import implements_iterator, iteritems, binary_type, text_type
+from future.utils import implements_iterator, binary_type, text_type
 
 from ._compat import collections_abc as abc, total_ordering
 from .exceptions import YAMLCastTypeError
@@ -139,7 +139,14 @@ class MappingMixin(abc.Mapping):
 class Map(MappingMixin, Collection):
     def init_value(self, *values, **kwargs):
         for value in values:
-            if len(value) == 2:
+            k, v = value
+            is_valid = all([  # :off
+                isinstance(k, Node),
+                isinstance(v, Node),
+                len(value) == 2
+            ])  # :on
+
+            if is_valid:
                 continue
 
             msg = 'Unexpected Value: %s :: %s values must come in pairs'
@@ -152,21 +159,9 @@ class Map(MappingMixin, Collection):
         if type(self) != type(other):
             return False
 
-        for key, self_value in iteritems(self):
-            try:
-                other_value = other[key]
-            except KeyError:
+        for (self_key, self_value), (other_key, other_value) in zip(sorted(self.value), sorted(other.value)):
+            if self_key != other_key:
                 return False
-
-            if self_value != other_value:
-                return False
-
-        for key, other_value in iteritems(other):
-            try:
-                self_value = self[key]
-            except KeyError:
-                return False
-
             if self_value != other_value:
                 return False
 
@@ -186,6 +181,9 @@ class Scalar(Node):
 
     def init_value(self, value, *args, **kwargs):
         return self.type(value)
+
+    def __eq__(self, other):
+        return str(self.value) == str(other.value) and type(self) == type(other)
 
     def __gt__(self, other):
         return str(self.value) > str(other.value)
