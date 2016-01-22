@@ -10,7 +10,7 @@ from .utils import strict, fold
 from ..nodes import *  # noqa
 
 
-# noinspection PyIncorrectDocstring
+# noinspection PyIncorrectDocstring,PyMethodMayBeStatic
 class YAMLProductions(YAMLTokens):
     # PARSER
     # ===================================================================
@@ -286,7 +286,6 @@ class YAMLProductions(YAMLTokens):
 
         if len(p) == 4:
             p[0] = p[1] + (str(p[3]),)
-
 
     def p_ignore_indent_dedent(self, p):
         """

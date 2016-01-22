@@ -25,12 +25,11 @@ PY33 = sys.version_info[0:2] == (3, 3)
 PY34 = sys.version_info[0:2] == (3, 4)
 PY35 = sys.version_info[0:2] == (3, 5)
 
-
-from .logger import init_logger
-from .multi_test_case import MultiTestCaseBase
-from .node_diff import get_node_diff
-from .parametrized_tests_data import ParametrizedTestData
-from .serialize_nodes import serialize_nodes
+from .logger import init_logger  # noqa
+from .multi_test_case import MultiTestCaseBase  # noqa
+from .node_diff import get_node_diff  # noqa
+from .parametrized_tests_data import ParametrizedTestData  # noqa
+from .serialize_nodes import serialize_nodes  # noqa
 
 __all__ = [  # :off
         'test_dir',

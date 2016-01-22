@@ -3,7 +3,6 @@
 from __future__ import absolute_import
 
 import logging
-from pprint import pformat
 
 from .exceptions import YAMLSyntaxError, YAMLUnknownSyntaxError
 from .grammar.productions import YAMLProductions
@@ -64,7 +63,6 @@ class YAMLParser(YAMLProductions):
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
-        # print(self.tokenize(data))
         logger.info('\n'.join(repr(token) for token in self.tokenize(data)))
         kwargs.setdefault('lexer', YAMLLexer.build(debug=True, optimize=not self.debug))
         kwargs.setdefault('debug', True)
