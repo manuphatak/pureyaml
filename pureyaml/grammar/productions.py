@@ -204,9 +204,8 @@ class YAMLProductions(YAMLTokens):
         scalar  : DOUBLEQUOTE_START SCALAR DOUBLEQUOTE_END
         """
 
-        scalar = re.sub('\n\s+', '\n', str(p[2]))
-        folded = fold(scalar)
-        p[0] = Str(folded.replace('\\"', '"'))
+        scalar = re.sub('\n\s+', ' ', str(p[2]))
+        p[0] = Str(scalar.replace('\\"', '"'))
 
     @strict(Str)
     def p_scalar__singlequote(self, p):
@@ -251,7 +250,7 @@ class YAMLProductions(YAMLTokens):
         scalar  : B_FOLD_START scalar_group B_FOLD_END
         """
         scalar_group = ''.join(p[2])
-        folded_scalar = fold(dedent(scalar_group)).rstrip().replace('\n', '\n\n')
+        folded_scalar = fold(dedent(scalar_group)).rstrip()
         p[0] = ScalarDispatch('%s\n' % folded_scalar, cast='str')
 
     @strict(Str)
@@ -264,7 +263,7 @@ class YAMLProductions(YAMLTokens):
         p[0] = ScalarDispatch(folded_scalar, cast='str')
 
     @strict(Str)
-    def p_scalar__string_indented_multiline(self, p):
+    def p_scalar__string_indented_multi_line(self, p):
         """
         scalar  : scalar INDENT SCALAR DEDENT
         """

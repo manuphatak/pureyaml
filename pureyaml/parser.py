@@ -24,8 +24,9 @@ class YAMLLexer(YAMLTokens):
         kwargs.setdefault('module', self)
         kwargs.setdefault('debuglog', lex_logger)
         kwargs.setdefault('errorlog', lex_logger)
+        if kwargs.get('optimize', False):
+            kwargs.setdefault('lextab', 'pureyaml.grammar._lextab')
         kwargs.setdefault('optimize', True)
-        kwargs.setdefault('lextab', 'pureyaml.grammar._lextab')
         return lex(**kwargs)
 
     @classmethod
@@ -58,13 +59,14 @@ class YAMLParser(YAMLProductions):
         self.parser = yacc(**kwargs)
 
     def parse(self, data, **kwargs):
+        optimize = not self.debug
         kwargs.setdefault('debug', False)
-        kwargs.setdefault('lexer', YAMLLexer.build(optimize=not self.debug))
+        kwargs.setdefault('lexer', YAMLLexer.build(optimize=optimize))
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
         logger.info('\n'.join(repr(token) for token in self.tokenize(data)))
-        kwargs.setdefault('lexer', YAMLLexer.build(debug=True, optimize=not self.debug))
+        kwargs.setdefault('lexer', YAMLLexer.build(debug=True, optimize=False))
         kwargs.setdefault('debug', True)
 
         return self.parser.parse(data, **kwargs)

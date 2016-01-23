@@ -2,7 +2,6 @@
 # coding=utf-8
 
 import logging
-
 import sys
 
 from tests.utils import test_dir, PY26, PY27, PY33, PY34, PY35, PYPY
@@ -17,20 +16,37 @@ version = {  # :off
 }  # :on
 
 
+class MaxLevelFilter(logging.Filter):
+    def __init__(self, level=0):
+        self.levelno = level
+
+    def filter(self, record):
+        """:type record: logging.LogRecord"""
+        if record.levelno > self.levelno:
+            return False
+        return True
+
+
 def init_logger():
     # FORMATTERS
     # ------------------------------------------------------------------------
     message_formatter = logging.Formatter('%(message)s')
     simple_formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    spaced_formatter = logging.Formatter('\n%(levelname)s - %(message)s')
+
+    # FILTERS
+    # ------------------------------------------------------------------------
+    info_or_lower_filter = MaxLevelFilter(logging.INFO)
 
     # HANDLERS
     # ------------------------------------------------------------------------
     stderr_handler = logging.StreamHandler(sys.stderr)
     stderr_handler.setFormatter(message_formatter)
     stderr_handler.setLevel(logging.INFO)
+    stderr_handler.addFilter(info_or_lower_filter)
 
     stdout_handler = logging.StreamHandler(sys.stdout)
-    stdout_handler.setFormatter(message_formatter)
+    stdout_handler.setFormatter(spaced_formatter)
     stdout_handler.setLevel(logging.WARNING)
 
     filename = test_dir('logs', '%s_pureyaml.log' % version[True].lower())

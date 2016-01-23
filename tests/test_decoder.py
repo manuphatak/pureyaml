@@ -10,6 +10,7 @@ from pureyaml.nodes import *  # noqa
 from pureyaml.parser import YAMLParser
 from tests.utils import MultiTestCaseBase, serialize_nodes
 
+pureyaml_parser = YAMLParser(debug=True)
 
 class DecoderTestCase(MultiTestCaseBase):
     # TEST CASE
@@ -1685,14 +1686,19 @@ class DecoderTestCase(MultiTestCaseBase):
     )))  # :on
 
 
-pureyaml_parser = YAMLParser(debug=True)
+
+
+def print_nodes(nodes):
+    verbose = True
+    if verbose:
+        print(serialize_nodes(nodes, paste_friendly=False))
 
 
 @mark.parametrize('case', DecoderTestCase.keys('parser'))
 def test_parser(case):
     text, expected = DecoderTestCase.get('parser', case)
-    nodes = pureyaml_parser.parsedebug(text)
-    print(serialize_nodes(nodes))
+    nodes = pureyaml_parser.parse(text)
+    print_nodes(nodes)
     assert nodes == expected
 
 

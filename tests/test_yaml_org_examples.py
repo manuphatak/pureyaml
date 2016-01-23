@@ -397,10 +397,10 @@ def test_example_5_12__tabs_and_spaces():
         ---
         !!map {
           ? !!str "quoted"
-          : "Quoted \t",
+          : "Quoted  ",
           ? !!str "block"
           : "void main() {\n\
-            \tprintf(\"Hello, world!\\n\");\n\
+             printf(\"Hello, world!\\n\");\n\
             }\n",
         }
 
@@ -457,7 +457,7 @@ def test_example_5_13__escaped_characters():
     text = dedent(r"""
         "Fun with \\
         \" \a \b \e \f \
-        \n \r \t \v \0 \
+        \n \r   \v \0 \
         \  \_ \N \L \P \
         \x41 \u0041 \U00000041"
 
@@ -465,7 +465,7 @@ def test_example_5_13__escaped_characters():
 
     expected = Docs(  # :off
             Doc(
-                Str('Fun with \\\\\n" \\a \\b \\e \\f \\ \n\\n \\r \\t \\v '
+                Str('Fun with \\\\\n" \\a \\b \\e \\f \\ \n\\n \\r \  \\v '
                     '\\0 \\ \n\\  \\_ \\N \\L \\P \\ \n\\x41 \\u0041 '
                     '\\U00000041'),
             ),
@@ -772,7 +772,7 @@ def test_example_6_7__block_folding():
     Expected:
         %YAML 1.2
         --- !!str
-        "foo \n\n\t bar\n\nbaz\n"
+        "foo \n\n  bar\n\nbaz\n"
 
     """
 
@@ -780,7 +780,7 @@ def test_example_6_7__block_folding():
         >
           foo&nbsp;
         &nbsp;
-          \t bar
+            bar
 
           baz
 
@@ -788,7 +788,7 @@ def test_example_6_7__block_folding():
 
     expected = Docs(  # :off
             Doc(
-                Str('foo \n\n\t bar\n\nbaz\n'),
+                Str('foo \n\n  bar\n\nbaz\n'),
             ),
         )  # :on
 
@@ -1644,7 +1644,7 @@ def test_example_7_5__double_quoted_line_breaks():
         ---
         !!str "folded to a space,\n\
               to a line feed, \
-              or \t \tnon-content"
+              or    non-content"
 
     """
 
@@ -1652,14 +1652,14 @@ def test_example_7_5__double_quoted_line_breaks():
         "folded
         to a space,
 
-        to a line feed, or \t
-         \t non-content"
+        to a line feed, or
+           non-content"
 
     """)[1:-1]
 
     expected = Docs(  # :off
             Doc(
-                Str('folded  \nto a space,   to a line feed, or  \t \t  non-content'),
+                Str('folded  \nto a space,   to a line feed, or       non-content'),
             ),
         )  # :on
 
@@ -2463,7 +2463,7 @@ def test_example_8_2__block_indentation_indicator():
           !!str "detected\n",
           !!str "\n\n# detected\n",
           !!str " explicit\n",
-          !!str "\t detected\n",
+          !!str "  detected\n",
         ]
 
     """
@@ -2478,7 +2478,7 @@ def test_example_8_2__block_indentation_indicator():
         - |1
           explicit
         - >
-         \t
+
          detected
 
     """)[1:-1]
@@ -2496,7 +2496,7 @@ def test_example_8_2__block_indentation_indicator():
             ),
             Doc(
                 Sequence(
-                    Str('\t detected\n'),
+                    Str('  detected\n'),
                 ),
             ),
         )  # :on
@@ -2678,21 +2678,21 @@ def test_example_8_7__literal_scalar():
     Expected:
         %YAML 1.2
         ---
-        !!str "literal\n\ttext\n"
+        !!str "literal\n text\n"
 
     """
 
     text = dedent("""
         |
          literal
-         \ttext
+          text
 
 
     """)[1:-1]
 
     expected = Docs(  # :off
             Doc(
-                Str('literal\n\ttext\n'),
+                Str('literal\n text\n'),
             ),
         )  # :on
 
