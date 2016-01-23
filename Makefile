@@ -134,8 +134,8 @@ register:
 
 requirements:
 	pip install --quiet --upgrade setuptools pip wheel pip-tools
-	pip-compile -i $(PYPI) requirements_dev.in > /dev/null
-	pip-compile -i $(PYPI) requirements.in > /dev/null
+	pip-compile --no-index requirements_dev.in > /dev/null
+	pip-compile --no-index requirements.in > /dev/null
 	pip wheel -r requirements_dev.txt --quiet &
 	pip-sync requirements_dev.txt > /dev/null
 	git diff requirements.txt requirements_dev.txt 2>&1 | tee .requirements.diff
