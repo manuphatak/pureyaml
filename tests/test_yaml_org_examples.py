@@ -13,7 +13,7 @@ parser = YAMLParser(debug=True)
 
 
 def print_nodes(nodes):
-    active = True
+    active = False
     if active:
         print(serialize_nodes(nodes))
 

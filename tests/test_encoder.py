@@ -21,7 +21,8 @@ class EncoderTestCase(MultiTestCaseBase):
         1
         ...
     """)[1:]
-    it_handles_simple_int__test_pureyaml_sanity = dedent("""
+    it_handles_simple_int__test_sanity = None
+    it_handles_simple_int__test_pureyaml = dedent("""
         1
         ...
     """)[1:]
@@ -33,7 +34,8 @@ class EncoderTestCase(MultiTestCaseBase):
     it_handles_simple_str__test_pyyaml = dedent("""
         '1'
     """)[1:]
-    it_handles_simple_str__test_pureyaml_sanity = dedent("""
+    it_handles_simple_str__test_sanity = None
+    it_handles_simple_str__test_pureyaml = dedent("""
         '1'
     """)[1:]
     it_handles_simple_str__test_encode = Str(1)
@@ -45,7 +47,8 @@ class EncoderTestCase(MultiTestCaseBase):
         1.0
         ...
     """)[1:]
-    it_handles_simple_implicit_float__test_pureyaml_sanity = dedent("""
+    it_handles_simple_implicit_float__test_sanity = None
+    it_handles_simple_implicit_float__test_pureyaml = dedent("""
         1.0
         ...
     """)[1:]
@@ -58,7 +61,8 @@ class EncoderTestCase(MultiTestCaseBase):
         1.0
         ...
     """)[1:]
-    it_handles_simple_explicit_float__test_pureyaml_sanity = dedent("""
+    it_handles_simple_explicit_float__test_sanity = None
+    it_handles_simple_explicit_float__test_pureyaml = dedent("""
         1.0
         ...
     """)[1:]
@@ -71,7 +75,8 @@ class EncoderTestCase(MultiTestCaseBase):
         .nan
         ...
     """)[1:]
-    it_handles_simple_nan_float__test_pureyaml_sanity = dedent("""
+    it_handles_simple_nan_float__test_sanity = None
+    it_handles_simple_nan_float__test_pureyaml = dedent("""
         .nan
         ...
     """)[1:]
@@ -84,7 +89,8 @@ class EncoderTestCase(MultiTestCaseBase):
         -.inf
         ...
     """)[1:]
-    it_handles_simple_inf_float__test_pureyaml_sanity = dedent("""
+    it_handles_simple_inf_float__test_sanity = None
+    it_handles_simple_inf_float__test_pureyaml = dedent("""
         -.inf
         ...
     """)[1:]
@@ -97,7 +103,8 @@ class EncoderTestCase(MultiTestCaseBase):
         true
         ...
     """)[1:]
-    it_handles_simple_bool__test_pureyaml_sanity = dedent("""
+    it_handles_simple_bool__test_sanity = None
+    it_handles_simple_bool__test_pureyaml = dedent("""
         true
         ...
     """)[1:]
@@ -111,7 +118,8 @@ class EncoderTestCase(MultiTestCaseBase):
         - 2
         - 3
     """)[1:]
-    it_handles_simple_list__test_pureyaml_sanity = dedent("""
+    it_handles_simple_list__test_sanity = None
+    it_handles_simple_list__test_pureyaml = dedent("""
         - 1
         - 2
         - 3
@@ -130,7 +138,8 @@ class EncoderTestCase(MultiTestCaseBase):
           - 5
           - 6
     """)[1:]
-    it_handles_lists_of_list__test_pureyaml_sanity = dedent("""
+    it_handles_lists_of_list__test_sanity = None
+    it_handles_lists_of_list__test_pureyaml = dedent("""
         - - 1
           - 2
         - - 3
@@ -150,7 +159,8 @@ class EncoderTestCase(MultiTestCaseBase):
     it_handles_simple_dict__test_pyyaml = dedent("""
         '1': 1
     """)[1:]
-    it_handles_simple_dict__test_pureyaml_sanity = dedent("""
+    it_handles_simple_dict__test_sanity = None
+    it_handles_simple_dict__test_pureyaml = dedent("""
         '1': 1
     """)[1:]
     it_handles_simple_dict__test_encode = Map((Str(1), Int(1)))
@@ -269,11 +279,12 @@ class EncoderTestCase(MultiTestCaseBase):
     # TEST CASE
     # ------------------------------------------------------------------------
     it_handles_dict__data = {'name': 'John Smith', 'age': 33}
-    it_handles_dict__test_pureyaml_sanity__not_PYPY = dedent("""
+    it_handles_dict__test_sanity = None
+    it_handles_dict__test_pureyaml__not_PYPY = dedent("""
         age: 33
         name: John Smith
     """)[1:]
-    it_handles_dict__test_pureyaml_sanity__PYPY = dedent("""
+    it_handles_dict__test_pureyaml__PYPY = dedent("""
         name: John Smith
         age: 33
     """)[1:]

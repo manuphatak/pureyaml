@@ -1688,7 +1688,7 @@ class DecoderTestCase(MultiTestCaseBase):
 
 
 def print_nodes(nodes):
-    verbose = True
+    verbose = False
     if verbose:
         print(serialize_nodes(nodes, paste_friendly=False))
 
