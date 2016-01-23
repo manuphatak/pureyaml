@@ -1,24 +1,39 @@
-diff --git i/requirements.txt w/requirements.txt
-index 8bdc51e..4dbebb6 100644
---- i/requirements.txt
-+++ w/requirements.txt
-@@ -5,5 +5,3 @@
- #    pip-compile requirements.in
- #
- future==0.15.2
--singledispatch==3.4.0.3
--six==1.10.0               # via singledispatch
 diff --git i/requirements_dev.txt w/requirements_dev.txt
-index 2d48fe2..758ee37 100644
+index 758ee37..4d8dc9b 100644
 --- i/requirements_dev.txt
 +++ w/requirements_dev.txt
-@@ -34,8 +34,7 @@ pytest==2.8.5
+@@ -16,21 +16,21 @@ execnet==1.4.1            # via pytest-xdist
+ first==2.0.1              # via pip-tools
+ flake8==2.5.1
+ future==0.15.2
+-jinja2==2.8               # via sphinx
+-markupsafe==0.23          # via jinja2
++Jinja2==2.8
++MarkupSafe==0.23
+ mccabe==0.3.1             # via flake8
+ mock==1.3.0
+ pathtools==0.1.2          # via watchdog
+ pbr==1.8.1                # via mock
+ pep8==1.7.0               # via flake8
+-pip-tools==1.4.4
++pip-tools==1.5
+ pluggy==0.3.1             # via tox
+ py==1.4.31                # via pytest, pytest-xdist, tox
+ pyflakes==1.0.0           # via flake8
+-pygments==2.1             # via sphinx
++Pygments==2.1
+ pytest-cov==2.2.0
+ pytest-xdist==1.13.1
+-pytest==2.8.5
++pytest==2.8.6
  pytz==2015.7              # via babel
  pyyaml==3.11
  restructuredtext-lint==0.14.0
--singledispatch==3.4.0.3
--six==1.10.0               # via mock, pip-tools, singledispatch, sphinx
-+six==1.10.0               # via mock, pip-tools, sphinx
- snowballstemmer==1.2.1    # via sphinx
+@@ -39,6 +39,6 @@ snowballstemmer==1.2.1    # via sphinx
  sphinx-rtd-theme==0.1.9   # via sphinx
  sphinx==1.3.4
+ tox==2.3.1
+-virtualenv==13.1.2        # via tox
++virtualenv==14.0.1        # via tox
+ watchdog==0.8.3
+ wheel==0.26.0

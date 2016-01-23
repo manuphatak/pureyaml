@@ -137,9 +137,9 @@ requirements:
 	pip-compile -i $(PYPI) requirements_dev.in > /dev/null
 	pip-compile -i $(PYPI) requirements.in > /dev/null
 	pip wheel -r requirements_dev.txt --quiet &
-	pip install -r requirements_dev.txt > /dev/null
+	pip-sync requirements_dev.txt > /dev/null
 	git diff requirements.txt requirements_dev.txt 2>&1 | tee .requirements.diff
 
 sync:
 	pip install --quiet --upgrade pip-tools
-	pip-sync -i $(PYPI) requirements_dev.txt > /dev/null
+	pip-sync requirements_dev.txt > /dev/null
