@@ -11,10 +11,9 @@ from tests.utils import get_node_diff, init_logger
 
 @fixture(scope='session', autouse=True)
 def create_tabs():
-    # from pureyaml.parser import YAMLLexer
-    #
-    # YAMLLexer.build(optimize=True)
-    pass
+    from pureyaml.parser import YAMLLexer
+
+    YAMLLexer.build(debug=False, optimize=True)
 
 
 @fixture(scope='session', autouse=True)

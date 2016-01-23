@@ -688,6 +688,7 @@ def test_example_6_4__line_prefixes():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_6_5__empty_lines():
     """
     Example 6.5. Empty Lines
@@ -765,6 +766,7 @@ def test_example_6_6__line_folding():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_6_7__block_folding():
     """
     Example 6.7. Block Folding
@@ -798,6 +800,7 @@ def test_example_6_7__block_folding():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_6_8__flow_folding():
     """
     Example 6.8. Flow Folding
@@ -1588,6 +1591,7 @@ def test_example_7_3__completely_empty_flow_nodes():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_4__double_quoted_implicit_keys():
     """
     Example 7.4. Double Quoted Implicit Keys
@@ -1635,6 +1639,7 @@ def test_example_7_4__double_quoted_implicit_keys():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_5__double_quoted_line_breaks():
     """
     Example 7.5. Double Quoted Line Breaks
@@ -1669,6 +1674,7 @@ def test_example_7_5__double_quoted_line_breaks():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_6__double_quoted_lines():
     """
     Example 7.6. Double Quoted Lines
@@ -1729,6 +1735,7 @@ def test_example_7_7__single_quoted_characters():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_8__single_quoted_implicit_keys():
     """
     Example 7.8. Single Quoted Implicit Keys
@@ -1776,6 +1783,7 @@ def test_example_7_8__single_quoted_implicit_keys():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_9__single_quoted_lines():
     """
     Example 7.9. Single Quoted Lines
@@ -1809,6 +1817,7 @@ def test_example_7_9__single_quoted_lines():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_10__plain_characters():
     """
     Example 7.10. Plain Characters
@@ -1902,6 +1911,7 @@ def test_example_7_11__plain_implicit_keys():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_12__plain_lines():
     """
     Example 7.12. Plain Lines
@@ -1982,6 +1992,7 @@ def test_example_7_13__flow_sequence():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_14__flow_sequence_entries():
     """
     Example 7.14. Flow Sequence Entries
@@ -2024,6 +2035,7 @@ def test_example_7_14__flow_sequence_entries():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_15__flow_mappings():
     """
     Example 7.15. Flow Mappings
@@ -2091,6 +2103,7 @@ def test_example_7_16__flow_mapping_entries():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_17__flow_mapping_separate_values():
     """
     Example 7.17. Flow Mapping Separate Values
@@ -2125,6 +2138,7 @@ def test_example_7_17__flow_mapping_separate_values():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_18__flow_mapping_adjacent_values():
     """
     Example 7.18. Flow Mapping Adjacent Values
@@ -2165,6 +2179,7 @@ def test_example_7_18__flow_mapping_adjacent_values():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_19__single_pair_flow_mappings():
     """
     Example 7.19. Single Pair Flow Mappings
@@ -2234,6 +2249,7 @@ def test_example_7_20__single_pair_explicit_entry():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_21__single_pair_implicit_entries():
     """
     Example 7.21. Single Pair Implicit Entries
@@ -2306,6 +2322,7 @@ def test_example_7_21__single_pair_implicit_entries():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_7_22__invalid_implicit_keys():
     """
     Example 7.22. Invalid Implicit Keys
@@ -2452,6 +2469,7 @@ def test_example_8_1__block_scalar_header():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_2__block_indentation_indicator():
     """
     Example 8.2. Block Indentation Indicator
@@ -2507,6 +2525,7 @@ def test_example_8_2__block_indentation_indicator():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_3__invalid_block_scalar_indentation_indicators():
     """
     Example 8.3. Invalid Block Scalar Indentation Indicators
@@ -2702,6 +2721,7 @@ def test_example_8_7__literal_scalar():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_8__literal_content():
     """
     Example 8.8. Literal Content
@@ -2738,6 +2758,7 @@ def test_example_8_8__literal_content():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_9__folded_scalar():
     """
     Example 8.9. Folded Scalar
@@ -2769,6 +2790,7 @@ def test_example_8_9__folded_scalar():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_10__folded_lines():
     """
     Example 8.10. Folded Lines
@@ -2830,6 +2852,7 @@ def test_example_8_10__folded_lines():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_11__more_indented_lines():
     """
     Example 8.11. More Indented Lines
@@ -2891,6 +2914,7 @@ def test_example_8_11__more_indented_lines():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_12__empty_separation_lines():
     """
     Example 8.12. Empty Separation Lines
@@ -2952,6 +2976,7 @@ def test_example_8_12__empty_separation_lines():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_13__final_empty_lines():
     """
     Example 8.13. Final Empty Lines
@@ -3216,6 +3241,7 @@ def test_example_8_18__implicit_block_mapping_entries():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_19__compact_block_mappings():
     """
     Example 8.19. Compact Block Mappings
@@ -3256,6 +3282,7 @@ def test_example_8_19__compact_block_mappings():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_20__block_node_types():
     """
     Example 8.20. Block Node Types
@@ -3327,6 +3354,7 @@ def test_example_8_21__block_scalar_nodes():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_8_22__block_collection_nodes():
     """
     Example 8.22. Block Collection Nodes
@@ -3461,6 +3489,7 @@ def test_example_9_3__bare_documents():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_9_4__explicit_documents():
     """
     Example 9.4. Explicit Documents
@@ -3574,6 +3603,7 @@ def test_example_9_6__stream():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_1__map_examples():
     """
     Example 10.1. !!map Examples
@@ -3597,6 +3627,7 @@ def test_example_10_1__map_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_2__seq_examples():
     """
     Example 10.2. !!seq Examples
@@ -3620,6 +3651,7 @@ def test_example_10_2__seq_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_3__str_examples():
     """
     Example 10.3. !!str Examples
@@ -3641,6 +3673,7 @@ def test_example_10_3__str_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_4__null_examples():
     """
     Example 10.4. !!null Examples
@@ -3662,6 +3695,7 @@ def test_example_10_4__null_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_5__bool_examples():
     """
     Example 10.5. !!bool Examples
@@ -3681,6 +3715,7 @@ def test_example_10_5__bool_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_6__int_examples():
     """
     Example 10.6. !!int Examples
@@ -3701,6 +3736,7 @@ def test_example_10_6__int_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_7__float_examples():
     """
     Example 10.7. !!float Examples
@@ -3723,6 +3759,7 @@ def test_example_10_7__float_examples():
     assert nodes == expected
 
 
+@mark.xfail
 def test_example_10_8__json_tag_resolution():
     """
     Example 10.8. JSON Tag Resolution

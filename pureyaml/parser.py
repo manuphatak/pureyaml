@@ -3,12 +3,15 @@
 from __future__ import absolute_import
 
 import logging
+from os import environ
 
 from .exceptions import YAMLSyntaxError, YAMLUnknownSyntaxError
 from .grammar.productions import YAMLProductions
 from .grammar.tokens import YAMLTokens
 from .ply.lex import lex
 from .ply.yacc import yacc
+
+OPTIMIZE = environ.get('PUREYAML_OPTIMIZE', 'true').lower() == 'true'
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +27,9 @@ class YAMLLexer(YAMLTokens):
         kwargs.setdefault('module', self)
         kwargs.setdefault('debuglog', lex_logger)
         kwargs.setdefault('errorlog', lex_logger)
-        if kwargs.get('optimize', False):
+        if OPTIMIZE or kwargs.get('optimize', False):
             kwargs.setdefault('lextab', 'pureyaml.grammar._lextab')
-        kwargs.setdefault('optimize', True)
+            kwargs.setdefault('optimize', True)
         return lex(**kwargs)
 
     @classmethod
@@ -49,7 +52,7 @@ class YAMLParser(YAMLProductions):
     def __init__(self, **kwargs):
         kwargs.setdefault('debug', False)
         self.debug = kwargs.get('debug')
-        kwargs.setdefault('optimize', not self.debug)
+        self.optimize = OPTIMIZE or kwargs.get('optimize')
 
         kwargs.setdefault('module', self)
         kwargs.setdefault('tabmodule', 'pureyaml.grammar._parsetab')
@@ -59,9 +62,8 @@ class YAMLParser(YAMLProductions):
         self.parser = yacc(**kwargs)
 
     def parse(self, data, **kwargs):
-        optimize = not self.debug
         kwargs.setdefault('debug', False)
-        kwargs.setdefault('lexer', YAMLLexer.build(optimize=optimize))
+        kwargs.setdefault('lexer', YAMLLexer.build(optimize=self.optimize))
         return self.parser.parse(data, **kwargs)
 
     def parsedebug(self, data, **kwargs):
