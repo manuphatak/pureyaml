@@ -12,6 +12,7 @@ from tests.utils import MultiTestCaseBase, serialize_nodes
 
 pureyaml_parser = YAMLParser(debug=True)
 
+
 class DecoderTestCase(MultiTestCaseBase):
     # TEST CASE
     # ------------------------------------------------------------------------
@@ -1684,8 +1685,6 @@ class DecoderTestCase(MultiTestCaseBase):
             ),
         ),
     )))  # :on
-
-
 
 
 def print_nodes(nodes):
