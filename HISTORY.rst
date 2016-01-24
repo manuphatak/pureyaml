@@ -7,7 +7,7 @@ Next Release
 
 * Coming Soon
 
-0.1.0 (2015-12-13)
+0.1.0 (2016-01-xx)
 ------------------
 
-* First release on PyPI.
+* Coming Soon

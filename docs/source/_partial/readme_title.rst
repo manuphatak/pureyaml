@@ -1,6 +1,6 @@
-===============================
+========
 pureyaml
-===============================
+========
 
 .. image:: https://badge.fury.io/py/pureyaml.svg
     :target: https://pypi.python.org/pypi/pureyaml/

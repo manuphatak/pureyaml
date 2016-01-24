@@ -23,9 +23,9 @@
 .. END Source defined in docs/github_docs.py
 .. START Source defined in docs/source/_partial/readme_title.rst
 
-===============================
+========
 pureyaml
-===============================
+========
 
 .. image:: https://badge.fury.io/py/pureyaml.svg
     :target: https://pypi.python.org/pypi/pureyaml/
@@ -60,6 +60,9 @@ Features
 - Documentation: https://pureyaml.readthedocs.org
 - Open Source: https://github.com/bionikspoon/pureyaml
 - MIT license
+
+
+- YAML encoder/decoder written in pure python
 
 
 .. END Source defined in docs/source/_partial/readme_features.rst
@@ -99,6 +102,7 @@ Or, if you have virtualenvwrapper installed
 .. END Source defined in docs/source/installation.rst
 .. START Source defined in docs/source/usage.rst
 
+
 =====
 Usage
 =====
@@ -108,6 +112,34 @@ To use pureyaml in a project
 .. code-block:: python
 
     import pureyaml
+
+    >>> import pureyaml
+    >>> from textwrap import dedent
+    >>> from pprint import pprint
+    >>> text = dedent("""
+    ...     marvel:
+    ...     - iron man
+    ...     - the hulk
+    ...     - captain america
+    ...     dc:
+    ...     - batman
+    ...     - the joker
+    ...     - superman
+    ... """)[1:]
+
+    >>> pprint(pureyaml.load(text))
+    {'dc': ['batman', 'the joker', 'superman'],
+     'marvel': ['iron man', 'the hulk', 'captain america']}
+
+    >>> print(pureyaml.dump(pureyaml.load(text)))
+    dc:
+    - batman
+    - the joker
+    - superman
+    marvel:
+    - iron man
+    - the hulk
+    - captain america
 
 
 .. END Source defined in docs/source/usage.rst
