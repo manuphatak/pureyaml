@@ -44,7 +44,7 @@ pureyaml
     :alt: Coverage Status
 
 .. image:: https://readthedocs.org/projects/pureyaml/badge/?version=develop
-    :target: https://pureyaml.readthedocs.org/en/develop/?badge=develop
+    :target: https://pureyaml.readthedocs.io/en/develop/?badge=develop
     :alt: Documentation Status
 
 
@@ -57,7 +57,7 @@ Yet another yaml parser, in pure python.
 Features
 --------
 
-- Documentation: https://pureyaml.readthedocs.org
+- Documentation: https://pureyaml.readthedocs.io
 - Open Source: https://github.com/bionikspoon/pureyaml
 - MIT license
 

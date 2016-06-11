@@ -19,7 +19,7 @@ pureyaml
     :alt: Coverage Status
 
 .. image:: https://readthedocs.org/projects/pureyaml/badge/?version=develop
-    :target: https://pureyaml.readthedocs.org/en/develop/?badge=develop
+    :target: https://pureyaml.readthedocs.io/en/develop/?badge=develop
     :alt: Documentation Status
 
 

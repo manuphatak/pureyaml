@@ -1,7 +1,7 @@
 Features
 --------
 
-- Documentation: https://pureyaml.readthedocs.org
+- Documentation: https://pureyaml.readthedocs.io
 - Open Source: https://github.com/bionikspoon/pureyaml
 - MIT license
 

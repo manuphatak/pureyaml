@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-"""The full documentation is at https://pureyaml.readthedocs.org."""
+"""The full documentation is at https://pureyaml.readthedocs.io."""
 
 try:
     from setuptools import setup
